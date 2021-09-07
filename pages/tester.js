@@ -2,9 +2,6 @@ import * as React from 'react'
 import Head from 'next/head'
 import Image from 'next/image'
 import styled from 'styled-components'
-import { Canvas } from '@react-three/fiber'
-
-import { Html, useFBX, useCubeTexture } from '@react-three/drei'
 
 const Hero = styled.div`
   height: 90vh;
@@ -29,13 +26,6 @@ const Container = styled.div`
   justify-content: center;
 `
 
-function Model() {
-  const fbx = useFBX('/models/logo/logo.fbx')
-  const envMap = useCubeTexture(['px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png'], { path: 'cube/' })
-
-  return <mesh {...fbx.children[0]} material-envMap={envMap} material-reflectivity={1} />
-}
-
 export default function Tester() {
   return (
     <>
@@ -45,22 +35,7 @@ export default function Tester() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Hero>
-        <Canvas
-          colorManagement
-          camera={{position:[0,0,120], fov: 80}}>
-            <Html fullscreen>
-              <Container>
-                <Heading>Model</Heading>
-              </Container>
-            </Html>
-            <React.Suspense fallback={null}>
-              <group position={[0, 250, 0]}>
-                <mesh position={[0, 35, 0]}>
-                  <Model />
-                </mesh>
-              </group>
-            </React.Suspense>
-        </Canvas> 
+        <Heading>Model</Heading>
       </Hero>
     </>
   )
