@@ -1,6 +1,6 @@
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import Scrollbar from "./scrollbar";
+import 'react-'
 
 export default function Layout({children}) {
   return (
