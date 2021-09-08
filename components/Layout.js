@@ -1,15 +1,15 @@
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import 'react-'
+import { Scrollbar } from "react-scrollbars-custom";
 
 export default function Layout({children}) {
   return (
     <div>
-      <Navbar />
-        <Scrollbar>
-          {children}
-        </Scrollbar>
-      <Footer />
+      <Scrollbar className="ul" style={{ position: "" }}>
+        <Navbar />
+        {children}
+        <Footer />
+      </Scrollbar>
     </div>
   )
 }

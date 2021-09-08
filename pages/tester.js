@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import Model from '../components/Crown'
 
 const Hero = styled.div`
-  height: 90vh;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,9 +56,9 @@ export default function Tester() {
           <h1>Model</h1>
         </Foreground>
         <Background>
-          <Canvas colorManagement camera={{ position: [0, 0, 10], fov: 80}}>
+          <Canvas colorManagement camera={{ position: [0, 0, 120], fov: 80}}>
             <Suspense fallback={null}>
-              <Model scale={[1, 1, 1]}/>
+              <Model scale={[100, 100, 100]}/>
             </Suspense>
           </Canvas>
         </Background>

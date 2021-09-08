@@ -1,22 +1,13 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 
-const Nav = styled.nav`
-  height: 80px;
-  background: #000000;
-  color: #ffffff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`
-
 const StyledLink = styled.a`
-  padding: 0rem 2rem;
+  padding: var(--nav-padding);
 `
 
 const Navbar = () => {
   return (
-    <Nav>
+    <nav>
       <div>
         <Link href="/" passHref>
           <StyledLink>Ruben</StyledLink>
@@ -33,7 +24,7 @@ const Navbar = () => {
           <StyledLink>Contact</StyledLink>
         </Link>
       </div>
-    </Nav>
+    </nav>
   )
 }
 
