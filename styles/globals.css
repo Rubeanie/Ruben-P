@@ -14,3 +14,31 @@ a {
 * {
   box-sizing: border-box;
 }
+
+:root {
+  --color-foreground: #1B9AAA;
+  --color-alt-foreground: #105058;
+  --color-mid-ground: #DDDBCB;
+  --color-background: #F5F1E3;
+
+  --text-main: #050505;
+  --text-alt: #FFFFFF;
+
+  --heading-size: 10vw;
+  --heading-alignment: center;
+  --heading-weight: 900;
+
+  --scrollbar-margin-left: 30px;
+  --scrollbar-float: left;
+  --scrollbar-height: 300px;
+  --scrollbar-width: 65px;
+  --scrollbar-overflow-y: scroll;
+  --scrollbar-margin-bottom: 25px;
+}
+
+h1 {
+  color: var(--text-main);
+  font-size: var(--heading-size);
+  font-weight: var(--heading-weight);
+  text-align: var(--heading-alignment);
+}

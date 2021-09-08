@@ -1,0 +1,28 @@
+.scrollbar {
+  margin-left: var(--scrollbar-margin-left);
+  float: var(--scrollbar-float);
+  height: var(--scrollbar-height);
+  width: var(--scrollbar-width);
+  background: var(--background);
+  overflow-y: var(--scrollbar-overflow-y);
+  margin-bottom: var(--scrollbar-margin-bottom); }
+  
+  .scrollbar-custom {
+    scrollbar-color: var(--color-alt-foreground) var(--background);
+  }
+  
+  .scrollbar-custom::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: var(--background);
+  border-radius: 10px; }
+  
+  .scrollbar-custom::-webkit-scrollbar {
+  width: 12px;
+  background-color: var(--background); }
+  
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-image: -webkit-gradient(linear, left bottom, left top, from(var(--color-foreground)), to(var(--color-alt-foreground)));
+  background-image: -webkit-linear-gradient(bottom, var(--color-foreground) 0%, var(--color-alt-foreground) 100%);
+  background-image: linear-gradient(to top, var(--color-foreground) 0%, var(--color-alt-foreground) 100%); }

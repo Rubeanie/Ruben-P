@@ -1,7 +1,9 @@
-import * as React from 'react'
+import { Suspense } from 'react'
+import { Canvas } from '@react-three/fiber'
 import Head from 'next/head'
 import Image from 'next/image'
 import styled from 'styled-components'
+import Model from '../components/Crown'
 
 const Hero = styled.div`
   height: 90vh;
@@ -12,7 +14,7 @@ const Hero = styled.div`
 `
 const Heading = styled.h1`
   color: #000000;
-  font-size: 10rem;
+  font-size: 10vw;
   font-weight: 900;
   text-align: center;
 `
@@ -26,6 +28,21 @@ const Container = styled.div`
   justify-content: center;
 `
 
+const Foreground = styled.div`
+  position: absolute; 
+  z-index: 2;
+`
+
+const Midground = styled.div`
+  position: absolute; 
+  z-index: 1;
+`
+
+const Background = styled.div`
+  position: absolute; 
+  z-index: 0;
+`
+
 export default function Tester() {
   return (
     <>
@@ -35,7 +52,16 @@ export default function Tester() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Hero>
-        <Heading>Model</Heading>
+        <Foreground>
+          <h1>Model</h1>
+        </Foreground>
+        <Background>
+          <Canvas colorManagement camera={{ position: [0, 0, 10], fov: 80}}>
+            <Suspense fallback={null}>
+              <Model scale={[1, 1, 1]}/>
+            </Suspense>
+          </Canvas>
+        </Background>
       </Hero>
     </>
   )
