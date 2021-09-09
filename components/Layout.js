@@ -1,14 +1,15 @@
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import { Scrollbar } from "react-scrollbars-custom";
 
 export default function Layout({children}) {
   return (
     <div>
-      <Navbar />
-      <div className="scrollbar-custom">
+      <Scrollbar trackYProps={{ className: "trackY" }} style={{ position: "" }}>
+        <Navbar />
         {children}
-      </div>
-      <Footer />
+        <Footer />
+      </Scrollbar>
     </div>
   )
 }

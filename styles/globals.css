@@ -30,12 +30,32 @@ a {
   --heading-alignment: center;
   --heading-weight: 900;
 
-  --scrollbar-margin-left: 30px;
+  --nav-height: 80px;
+  --nav-display: flex;
+  --nav-justify-content: space-between;
+  --nav-align-items: center;
+  --nav-padding: 0rem 2vh;
+
+  --foot-height: 60px;
+  --foot-display: flex;
+  --foot-justify-content: center;
+  --foot-align-items: center;
+
+/*   --scrollbar-margin-left: 30px;
   --scrollbar-float: left;
   --scrollbar-height: 300px;
   --scrollbar-width: 65px;
   --scrollbar-overflow-y: scroll;
-  --scrollbar-margin-bottom: 25px;
+  --scrollbar-margin-bottom: 25px; */
+}
+
+.App {
+  font-family: sans-serif;
+  text-align: center;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  background-color: red;
 }
 
 h1 {
@@ -43,4 +63,47 @@ h1 {
   font-size: var(--heading-size);
   font-weight: var(--heading-weight);
   text-align: var(--heading-alignment);
+}
+
+nav {
+  height: var(--nav-height);
+  background: var(--color-foreground);
+  color: var(--text-alt);
+  display: var(--nav-display);
+  justify-content: var(--nav-justify-content);
+  align-items: var(--nav-align-items);
+}
+
+foot {
+  height: var(--foot-height);
+  background: var(--color-foreground);
+  color: var(--text-alt);
+  display: var(--foot-display);
+  justify-content: var(--foot-justify-content);
+  align-items: var(--foot-align-items);
+}
+
+
+
+.ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 100%;
+  overflow: auto;
+}
+.ul span {
+  display: inline-block;
+  padding: 1rem;
+  box-sizing: border-box;
+  width: 100px;
+  text-align: center;
+  margin: 0.2rem;
+  border: 1px solid #000;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.trackY {
+  background: var(--color-foreground) !important;
 }
