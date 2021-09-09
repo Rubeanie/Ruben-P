@@ -5,7 +5,7 @@ import { Scrollbar } from "react-scrollbars-custom";
 export default function Layout({children}) {
   return (
     <div>
-      <Scrollbar className="ul" style={{ position: "" }}>
+      <Scrollbar trackYProps={{ className: "trackY" }} style={{ position: "" }}>
         <Navbar />
         {children}
         <Footer />
