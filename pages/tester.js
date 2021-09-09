@@ -10,22 +10,6 @@ const Hero = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #ffffff;
-`
-const Heading = styled.h1`
-  color: #000000;
-  font-size: 10vw;
-  font-weight: 900;
-  text-align: center;
-`
-const Container = styled.div`
-  margin: 0 auto;
-  width: 100%;
-  max-width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `
 
 const Foreground = styled.div`

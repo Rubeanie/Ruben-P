@@ -58,6 +58,10 @@ a {
   background-color: red;
 }
 
+.bg-colour {
+  background: var(--color-background);
+}
+
 h1 {
   color: var(--text-main);
   font-size: var(--heading-size);
@@ -84,8 +88,6 @@ foot {
   justify-content: var(--foot-justify-content);
   align-items: var(--foot-align-items);
 }
-
-
 
 .ul {
   margin: 0;
