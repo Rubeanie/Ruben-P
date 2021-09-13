@@ -1,27 +1,23 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 
-const StyledLink = styled.a`
-  padding: var(--nav-padding);
-`
-
 const Navbar = () => {
   return (
     <nav>
       <div>
         <Link href="/" passHref>
-          <StyledLink>Ruben</StyledLink>
+          <a>Ruben</a>
         </Link>
       </div>
       <div>
       <Link href="/" passHref>
-          <StyledLink>Home</StyledLink>
+          <a>Home</a>
         </Link>
         <Link href="/about" passHref>
-          <StyledLink>About</StyledLink>
+          <a>About</a>
         </Link>
         <Link href="/contact" passHref>
-          <StyledLink>Contact</StyledLink>
+          <a>Contact</a>
         </Link>
       </div>
     </nav>
