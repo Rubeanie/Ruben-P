@@ -1,0 +1,121 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+$color-foreground: rgba(0, 0, 0, 0.325);
+$color-mid-ground: #E36E58;
+$color-background: #0d192b;
+
+$text-image: url('https://images.unsplash.com/photo-1510561467401-91b9835f745e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+$text-main: #EAF6FF;
+$text-alt: #EAF6FF;
+
+$heading-size: 15vw;
+$heading-line-size: 100%;
+$heading-alignment: center;
+$heading-weight: 900;
+
+$nav-height: 80px;
+$nav-width: 100%;
+$nav-display: flex;
+$nav-justify-content: space-between;
+$nav-position: Fixed;
+$nav-align-items: center;
+$nav-padding: 0rem 2vh;
+
+$foot-height: 60px;
+$foot-width: 100%;
+$foot-display: flex;
+$foot-justify-content: center;
+$foot-align-items: center;
+
+/* $scrollbar-margin-left: 30px;
+$scrollbar-float: left;
+$scrollbar-height: 300px;
+$scrollbar-width: 65px;
+$scrollbar-overflow-y: scroll;
+$scrollbar-margin-bottom: 25px; */
+
+.App {
+  font-family: sans-serif;
+  text-align: center;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+}
+
+.bg-colour {
+  background: $color-background;
+}
+
+page {
+  position: inherit;
+  h1 {
+    color: $text-main;
+    line-height: $heading-line-size;
+    font-size: $heading-size;
+    font-weight: $heading-weight;
+    text-align: $heading-alignment;
+  }
+
+  h1-image {
+    @extend h1;
+    background: $text-image 0 0;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  hero {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+layer {
+  display: flex;
+  position: absolute;
+}
+
+nav {
+  height: $nav-height;
+  width: $nav-width;
+  background: $color-foreground;
+  color: $text-alt;
+  display: $nav-display;
+  position: $nav-position;
+  justify-content: $nav-justify-content;
+  align-items: $nav-align-items;
+  z-index: 1;
+
+  a {
+    padding: $nav-padding;
+  }
+}
+
+foot {
+  height: $foot-height;
+  width: $foot-width;
+  background: $color-foreground;
+  color: $text-alt;
+  display: $foot-display;
+  justify-content: $foot-justify-content;
+  align-items: $foot-align-items;
+}
