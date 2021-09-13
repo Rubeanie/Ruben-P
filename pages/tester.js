@@ -1,7 +1,6 @@
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import Head from 'next/head'
-import Image from 'next/image'
 import Model from '../components/Crown'
 
 export default function Tester() {
