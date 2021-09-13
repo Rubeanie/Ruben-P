@@ -15,37 +15,39 @@ a {
   box-sizing: border-box;
 }
 
-$color-foreground: #2A2A72;
-$color-alt-foreground: #009FFD;
-$color-mid-ground: #FFA400;
-$color-background: #232528;
+:root {
+  --color-foreground: #2A2A72;
+  --color-alt-foreground: #009FFD;
+  --color-mid-ground: #FFA400;
+  --color-background: #232528;
 
-$text-main: #EAF6FF;
-$text-alt: #EAF6FF;
+  --text-main: #EAF6FF;
+  --text-alt: #EAF6FF;
 
-$heading-size: 10vw;
-$heading-alignment: center;
-$heading-weight: 900;
+  --heading-size: 10vw;
+  --heading-alignment: center;
+  --heading-weight: 900;
 
-$nav-height: 80px;
-$nav-width: 100%;
-$nav-display: flex;
-$nav-justify-content: space-between;
-$nav-align-items: center;
-$nav-padding: 0rem 2vh;
+  --nav-height: 80px;
+  --nav-width: 100%;
+  --nav-display: flex;
+  --nav-justify-content: space-between;
+  --nav-align-items: center;
+  --nav-padding: 0rem 2vh;
 
-$foot-height: 60px;
-$foot-width: 100%;
-$foot-display: flex;
-$foot-justify-content: center;
-$foot-align-items: center;
+  --foot-height: 60px;
+  --foot-width: 100%;
+  --foot-display: flex;
+  --foot-justify-content: center;
+  --foot-align-items: center;
 
-/* $scrollbar-margin-left: 30px;
-$scrollbar-float: left;
-$scrollbar-height: 300px;
-$scrollbar-width: 65px;
-$scrollbar-overflow-y: scroll;
-$scrollbar-margin-bottom: 25px; */
+/*   --scrollbar-margin-left: 30px;
+  --scrollbar-float: left;
+  --scrollbar-height: 300px;
+  --scrollbar-width: 65px;
+  --scrollbar-overflow-y: scroll;
+  --scrollbar-margin-bottom: 25px; */
+}
 
 .App {
   font-family: sans-serif;
@@ -73,8 +75,6 @@ hero {
   justify-content: center;
   align-items: center;
 }
-
-
 
 foreground {
   position: absolute; 
