@@ -9,7 +9,7 @@ const Navbar = () => {
         </Link>
       </div>
       <div>
-      <Link href="/model" passHref>
+      <Link href="/" passHref>
           <a>Home</a>
         </Link>
         <Link href="/about" passHref>
