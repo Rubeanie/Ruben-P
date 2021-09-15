@@ -16,10 +16,10 @@ export default function Tester() {
         <layer>
           <Canvas 
           colorManagement camera={{ position: [0, 0, 2], fov: 80}}
-          style={{width: "90vw", height: "90vh"}}
-          frameloop="demand">
+          style={{width: "90vw", height: "90vh"}}>
           <pointLight position={[0, 0, 1]} />
             <Suspense fallback={null}>
+              <OrbitControls />
               <Model scale={[1, 1, 1]}/>
             </Suspense>
           </Canvas>
