@@ -15,11 +15,10 @@ export default function Tester() {
       <hero>
         <layer>
           <Canvas 
-          colorManagement camera={{ position: [0, 0, 2], fov: 80}} 
-          resize={{ scroll: false, resize: 10000 }}
+          colorManagement camera={{ position: [0, 0, 2], fov: 80}}
           style={{width: "90vw", height: "90vh"}}
           frameloop="demand">
-          <pointLight position={[0, 0, 6]} />
+          <pointLight position={[0, 0, 1]} />
             <Suspense fallback={null}>
               <Model scale={[1, 1, 1]}/>
             </Suspense>
