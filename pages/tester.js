@@ -1,7 +1,7 @@
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import Head from 'next/head'
-import Model from '../components/Crown'
+import Model from '../components/RP-Logo'
 
 export default function Tester() {
   return (
@@ -13,9 +13,9 @@ export default function Tester() {
       </Head>
       <hero>
         <layer>
-          <Canvas colorManagement camera={{ position: [0, 0, 120], fov: 80}}>
+          <Canvas colorManagement camera={{ position: [0, 0, 0], fov: 80}}>
             <Suspense fallback={null}>
-              <Model scale={[100, 100, 100]}/>
+              <Model scale={[1, 1, 1]}/>
             </Suspense>
           </Canvas>
         </layer>
