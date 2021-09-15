@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
+import { OrbitControls, Environment, Effects, Loader, useTexture } from '@react-three/drei'
 import Head from 'next/head'
 import Model from '../components/RP-Logo'
 
@@ -13,7 +14,12 @@ export default function Tester() {
       </Head>
       <hero>
         <layer>
-          <Canvas colorManagement camera={{ position: [0, 0, 0], fov: 80}}>
+          <Canvas 
+          colorManagement camera={{ position: [0, 0, 2], fov: 80}} 
+          resize={{ scroll: false, resize: 10000 }}
+          style={{width: "90vw", height: "90vh"}}
+          frameloop="demand">
+          <pointLight position={[0, 0, 6]} />
             <Suspense fallback={null}>
               <Model scale={[1, 1, 1]}/>
             </Suspense>
@@ -23,6 +29,7 @@ export default function Tester() {
           <h1-image>Model</h1-image>
         </layer>
       </hero>
+      <Loader />
     </page>
   )
 }

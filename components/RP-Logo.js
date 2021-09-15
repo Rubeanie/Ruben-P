@@ -7,18 +7,13 @@ import { useGLTF, useAnimations } from '@react-three/drei'
 
 export default function Model(props) {
   const group = useRef()
-  const { nodes, materials, animations } = useGLTF('/RP-Logo.glb')
+  const { nodes, materials, animations } = useGLTF('/RP-Logo.gltf')
   const { actions } = useAnimations(animations, group)
   return (
     <group ref={group} {...props} dispose={null}>
-      <mesh
-        name="RP_-_Logo"
-        geometry={nodes['RP_-_Logo'].geometry}
-        material={materials['SVGMat.004']}
-        position={[0, 0, 4.74]}
-      />
+      <mesh name="RP_-_Logo" geometry={nodes['RP_-_Logo'].geometry} material={materials['Material.002']} />
     </group>
   )
 }
 
-useGLTF.preload('/RP-Logo.glb')
+useGLTF.preload('/RP-Logo.gltf')

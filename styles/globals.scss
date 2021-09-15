@@ -17,6 +17,7 @@ a {
 
 $color-foreground: rgba(0, 0, 0, 0.325);
 $color-mid-ground: #E36E58;
+$color-alt-mid-ground: #FD666C;
 $color-background: #0d192b;
 
 //$text-image: url('https://images.unsplash.com/photo-1621024195817-996ac53edb84?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2134&q=80');
@@ -84,7 +85,6 @@ page {
     background-size: cover;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    display: flex;
   }
 
   hero {
@@ -97,6 +97,7 @@ page {
 
 layer {
   position: absolute;
+  display: flex;
 }
 
 nav {
@@ -115,7 +116,7 @@ nav {
     font-size: $nav-font-size;
     line-height: $nav-font-line-size;
     font-weight: $nav-font-weight;
-    color: #FD666C;
+    color: $color-alt-mid-ground;
   }
 }
 
