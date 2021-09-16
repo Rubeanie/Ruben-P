@@ -1,0 +1,21 @@
+{
+  "auth": {
+    "cognitoae19dd9f": {
+      "service": "Cognito",
+      "serviceType": "managed",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "analytics": {
+    "personalwebsite": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "storage": {
+    "s3efc79ada": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
+  }
+}
