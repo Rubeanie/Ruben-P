@@ -2,6 +2,7 @@
 
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import { useGLTF, Loader } from '@react-three/drei'
 
 export default function Layout({children}) {
   return (
@@ -9,6 +10,9 @@ export default function Layout({children}) {
       <Navbar />
       {children}
       <Footer />
+      <Loader />
     </div>
   )
 }
+
+useGLTF.preload('/RP-Logo.gltf')
