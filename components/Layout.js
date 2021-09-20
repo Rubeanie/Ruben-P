@@ -14,5 +14,3 @@ export default function Layout({children}) {
     </div>
   )
 }
-
-useGLTF.preload('/RP-Logo.gltf')

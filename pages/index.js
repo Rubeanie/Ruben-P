@@ -17,7 +17,6 @@ function Logo() {
       scale = 1;
     }
     myMesh.current.scale.set(scale, scale, scale);
-    console.log(scale);
   });
 
   
@@ -43,8 +42,8 @@ export default function Home() {
           <Canvas
           colorManagement camera={{ position: [0, 0, 2], fov: 80}}
           style={{width: "90vw", height: "90vh"}}>
-          <pointLight position={[0, 0, 1]} color="$color-alt-mid-ground" />
-          <ambientLight intensity={0.5} />
+          <pointLight position={[0, 0, 1]} color="#B6465C" />
+          <ambientLight intensity={0.5} color="#2C4968" />
             <Suspense fallback={null}>
               <Logo />
             </Suspense>
