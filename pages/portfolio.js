@@ -1,14 +1,14 @@
 import Head from 'next/head'
 
-export default function About() {
+export default function Portfolio() {
   return (
     <page>
       <Head>
-        <title>About</title>
+        <title>Portfolio</title>
         <meta name="description" content="Freelance creative developer / Ruben Panzich/ Rubeanie" />\
       </Head>
       <hero>
-        <h1-image>ABOUT</h1-image>
+        <h1-image>Portfolio</h1-image>
       </hero>
     </page>
   )
