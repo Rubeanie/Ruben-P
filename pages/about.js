@@ -5,8 +5,7 @@ export default function About() {
     <page>
       <Head>
         <title>About</title>
-        <meta name="description" content="Freelance creative developer / Ruben Panzich/ Rubeanie" />
-        <link rel="icon" href="/favicon.ico" />
+        <meta name="description" content="Freelance creative developer / Ruben Panzich/ Rubeanie" />\
       </Head>
       <hero>
         <h1-image>ABOUT</h1-image>
