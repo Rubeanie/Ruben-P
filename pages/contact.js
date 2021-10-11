@@ -6,7 +6,6 @@ export default function Contact() {
       <Head>
         <title>Contact</title>
         <meta name="description" content="Freelance creative developer / Ruben Panzich/ Rubeanie" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <hero>
         <h1-image>CONTACT</h1-image>
