@@ -17,10 +17,8 @@ function Logo() {
       scale = 1;
     }
     myMesh.current.scale.set(scale, scale, scale);
-    console.log(scale);
   });
 
-  
 
   return (
     <animated.mesh
@@ -36,19 +34,20 @@ export default function Home() {
       <Head>
         <title>Home</title>
         <meta name="description" content="Freelance creative developer / Ruben Panzich" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <hero>
         <layer>
-          <Canvas
-          colorManagement camera={{ position: [0, 0, 2], fov: 80}}
-          style={{width: "90vw", height: "90vh"}}>
-          <pointLight position={[0, 0, 1]} color='$color-alt-mid-ground' />
-          <ambientLight intensity={0.5} />
-            <Suspense fallback={null}>
-              <Logo />
-            </Suspense>
-          </Canvas>
+          <model>
+            <Canvas
+            colorManagement camera={{ position: [0, 0, 2], fov: 80}}
+            style={{width: "90vw", height: "90vh"}}>
+              <pointLight position={[0, 0, 1]} />
+              <ambientLight intensity={0.1} />
+              <Suspense fallback={null}>
+                <Logo />
+              </Suspense>
+            </Canvas>
+          </model>
         </layer>
         <layer>
           <h1-image>Ruben<br />Panzich</h1-image>

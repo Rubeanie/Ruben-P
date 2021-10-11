@@ -36,6 +36,7 @@ $nav-justify-content: space-between;
 $nav-position: Fixed;
 $nav-align-items: center;
 $nav-padding: 0rem 2vw;
+$nav-icon-padding: 0rem 0.5rem;
 $nav-font-size: 22px;
 $nav-font-line-size: 100%;
 $nav-font-weight: 700;
@@ -114,6 +115,14 @@ nav {
     font-size: $nav-font-size;
     line-height: $nav-font-line-size;
     font-weight: $nav-font-weight;
+    color: $color-alt-mid-ground;
+  }
+
+  svg {
+    padding: $nav-icon-padding;
+    size: $nav-height;
+    height: $nav-height;
+    width: $nav-height;
     color: $color-alt-mid-ground;
   }
 }
