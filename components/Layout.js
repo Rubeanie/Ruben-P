@@ -9,7 +9,7 @@ export default function Layout({children}) {
   return (
     <div className="bg-colour">
       <Head>
-        <link rel="icon" type="image/png" href="/RP-Logo-Contrast.svg" />
+        <link rel="apple-touch-icon" href="/RP-Logo-Apple.png" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="icon" type="image/png" href="/favicon.png" />
       </Head>
