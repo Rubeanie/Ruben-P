@@ -1,8 +1,10 @@
-$color-overlay: rgba(0, 0, 0, 0.325);
+$color-overlay-hex: #000000;
+$color-overlay-alpha: 0.325;
 $color-foreground: #FD666C;
 $color-mid-ground: #2A4867;
 $color-background: #0d192b;
 $text-image: url('/Background1.webp');
+$color-overlay: rgba($color-overlay-hex, $color-overlay-alpha);
 
 :export {
   overlayc: $color-overlay;
