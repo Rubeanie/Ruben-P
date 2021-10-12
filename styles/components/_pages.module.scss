@@ -1,0 +1,29 @@
+@use '../abstracts/index.module' as var;
+
+page {
+  position: inherit;
+  h1 {
+    color: var.$text-main;
+    line-height: var.$heading-line-size;
+    font-size: var.$heading-size;
+    font-weight: var.$heading-weight;
+    text-align: var.$heading-alignment;
+  }
+
+  h1-image {
+    @extend h1;
+    background: var.$text-image 0 0;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  hero {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

@@ -1,0 +1,11 @@
+@use '../abstracts/index.module' as var;
+
+foot {
+  height: var.$foot-height;
+  width: var.$foot-width;
+  background: var.$color-overlay;
+  color: var.$text-alt;
+  display: var.$foot-display;
+  justify-content: var.$foot-justify-content;
+  align-items: var.$foot-align-items;
+}
