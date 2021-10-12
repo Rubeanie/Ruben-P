@@ -1,10 +1,5 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-}
+@use './abstracts/index.module' as var;
+@use './components/index.module' as com;
 
 a {
   color: inherit;
@@ -15,45 +10,6 @@ a {
   box-sizing: border-box;
 }
 
-$color-foreground: rgba(0, 0, 0, 0.325);
-$color-mid-ground: #E36E58;
-$color-alt-mid-ground: #FD666C;
-$color-background: #0d192b;
-
-$text-image: url("../public/Background1.webp");
-$text-main: #EAF6FF;
-$text-alt: #EAF6FF;
-
-$heading-size: 15vw;
-$heading-line-size: 100%;
-$heading-alignment: center;
-$heading-weight: 900;
-
-$nav-height: 80px;
-$nav-width: 100%;
-$nav-display: flex;
-$nav-justify-content: space-between;
-$nav-position: Fixed;
-$nav-align-items: center;
-$nav-padding: 0rem 2vw;
-$nav-icon-padding: 0rem 0.5rem;
-$nav-font-size: 22px;
-$nav-font-line-size: 100%;
-$nav-font-weight: 700;
-
-$foot-height: 60px;
-$foot-width: 100%;
-$foot-display: flex;
-$foot-justify-content: center;
-$foot-align-items: center;
-
-/* $scrollbar-margin-left: 30px;
-$scrollbar-float: left;
-$scrollbar-height: 300px;
-$scrollbar-width: 65px;
-$scrollbar-overflow-y: scroll;
-$scrollbar-margin-bottom: 25px; */
-
 .App {
   font-family: sans-serif;
   text-align: center;
@@ -63,76 +19,10 @@ $scrollbar-margin-bottom: 25px; */
 }
 
 .bg-colour {
-  background: $color-background;
-}
-
-page {
-  position: inherit;
-  h1 {
-    color: $text-main;
-    line-height: $heading-line-size;
-    font-size: $heading-size;
-    font-weight: $heading-weight;
-    text-align: $heading-alignment;
-  }
-
-  h1-image {
-    @extend h1;
-    background: $text-image 0 0;
-    background-position: center;
-    background-attachment: fixed;
-    background-size: cover;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  hero {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  background: var.$color-background;
 }
 
 layer {
   position: absolute;
   display: flex;
-}
-
-nav {
-  height: $nav-height;
-  width: $nav-width;
-  background: $color-foreground;
-  color: $text-alt;
-  display: $nav-display;
-  position: $nav-position;
-  justify-content: $nav-justify-content;
-  align-items: $nav-align-items;
-  z-index: 1;
-
-  a {
-    padding: $nav-padding;
-    font-size: $nav-font-size;
-    line-height: $nav-font-line-size;
-    font-weight: $nav-font-weight;
-    color: $color-alt-mid-ground;
-  }
-
-  svg {
-    padding: $nav-icon-padding;
-    size: $nav-height;
-    height: $nav-height;
-    width: $nav-height;
-    color: $color-alt-mid-ground;
-  }
-}
-
-foot {
-  height: $foot-height;
-  width: $foot-width;
-  background: $color-foreground;
-  color: $text-alt;
-  display: $foot-display;
-  justify-content: $foot-justify-content;
-  align-items: $foot-align-items;
 }
