@@ -1,6 +1,7 @@
 @use '../abstracts/index.module' as var;
 
 nav {
+  padding: var.$nav-padding;
   height: var.$nav-height;
   width: var.$nav-width;
   background: var.$color-overlay;
@@ -12,7 +13,7 @@ nav {
   z-index: 1;
 
   a {
-    padding: var.$nav-padding;
+    padding: var.$nav-button-padding;
     font-size: var.$nav-font-size;
     line-height: var.$nav-font-line-size;
     font-weight: var.$nav-font-weight;

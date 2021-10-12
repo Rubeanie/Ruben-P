@@ -41,8 +41,8 @@ export default function Home() {
             <Canvas
             colorManagement camera={{ position: [0, 0, 2], fov: 80}}
             style={{width: "90vw", height: "90vh"}}>
-              <pointLight position={[0, 0, 1]} color={ Var.forec } />
-              <ambientLight intensity={ 0.1 } color={ Var.backc }/>
+              <pointLight position={[0, 1, 8]} color={ Var.forec } intensity={ 0.25 } />
+              <ambientLight intensity={ 0.5 } color={ Var.midc }/>
               <Suspense fallback={null}>
                 <Logo />
               </Suspense>
