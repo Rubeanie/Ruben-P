@@ -4,6 +4,7 @@ import { OrbitControls, Environment, Effects, Loader, useTexture } from '@react-
 import { useSpring, animated, config } from '@react-spring/three'
 import Head from 'next/head'
 import Model from '../components/RP-Logo'
+import Var from '../styles/abstracts/_colors.module.scss'
 
 function Logo() {
   const myMesh = React.useRef();
@@ -18,7 +19,6 @@ function Logo() {
     }
     myMesh.current.scale.set(scale, scale, scale);
   });
-
 
   return (
     <animated.mesh
@@ -41,8 +41,8 @@ export default function Home() {
             <Canvas
             colorManagement camera={{ position: [0, 0, 2], fov: 80}}
             style={{width: "90vw", height: "90vh"}}>
-              <pointLight position={[0, 0, 1]} />
-              <ambientLight intensity={0.1} />
+              <pointLight position={[0, 0, 1]} color={ Var.forec } />
+              <ambientLight intensity={ 0.1 } color={ Var.backc }/>
               <Suspense fallback={null}>
                 <Logo />
               </Suspense>

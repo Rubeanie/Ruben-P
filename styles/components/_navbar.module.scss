@@ -1,0 +1,29 @@
+@use '../abstracts/index.module' as var;
+
+nav {
+  height: var.$nav-height;
+  width: var.$nav-width;
+  background: var.$color-overlay;
+  color: var.$text-alt;
+  display: var.$nav-display;
+  position: var.$nav-position;
+  justify-content: var.$nav-justify-content;
+  align-items: var.$nav-align-items;
+  z-index: 1;
+
+  a {
+    padding: var.$nav-padding;
+    font-size: var.$nav-font-size;
+    line-height: var.$nav-font-line-size;
+    font-weight: var.$nav-font-weight;
+    color: var.$color-foreground;
+  }
+
+  svg {
+    padding: var.$nav-icon-padding;
+    size: var.$nav-height;
+    height: var.$nav-height;
+    width: var.$nav-height;
+    color: var.$color-foreground;
+  }
+}
