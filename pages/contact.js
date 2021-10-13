@@ -2,7 +2,7 @@ import Head from 'next/head'
 
 export default function Contact() {
   return (
-    <page>
+    <div className='page'>
       <Head>
         <title>Contact</title>
         <meta name="description" content="Freelance creative developer / Ruben Panzich/ Rubeanie" />
@@ -10,6 +10,6 @@ export default function Contact() {
       <hero>
         <h1-image>CONTACT</h1-image>
       </hero>
-    </page>
+    </div>
   )
 }

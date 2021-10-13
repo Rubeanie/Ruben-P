@@ -5,10 +5,12 @@ $color-mid-ground: #2A4867;
 $color-background: #0d192b;
 $text-image: url('/images/Background.webp');
 $color-overlay: rgba($color-overlay-hex, $color-overlay-alpha);
+$color-overlay-back: mix($color-overlay-hex, $color-background, $color-overlay-alpha * 100);
 
 :export {
-  overlayc: $color-overlay;
   forec: $color-foreground;
   midc: $color-mid-ground;
   backc: $color-background;
+  overbackc: $color-overlay-back;
+  overlayc: $color-overlay;
 }
