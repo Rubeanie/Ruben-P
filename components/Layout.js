@@ -9,7 +9,7 @@ export default function Layout({children}) {
       <Head>
         <link rel="apple-touch-icon" href="/favicon/RP-Logo-Apple.png" />
         <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
-        <link rel="icon" type="image/png" href="/favicon/favicon.png" />
+        <link rel="icon" type="image/png" href="/favicon/RP-Logo-Apple.png" />
         <link rel="mask-icon" href="/favicon/RP-Logo.svg" color="#000000" />
       </Head>
       <Navbar />

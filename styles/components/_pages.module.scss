@@ -23,6 +23,7 @@ page {
   hero {
     height: 100vh;
     display: flex;
+    display: -ms-flexbox;
     justify-content: center;
     align-items: center;
   }
