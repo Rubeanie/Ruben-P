@@ -8,7 +8,17 @@ export default function About() {
         <meta name="description" content="Freelance creative developer / Ruben Panzich/ Rubeanie" />\
       </Head>
       <hero>
-        <h1-image>ABOUT</h1-image>
+        <div width={ "33%" }>
+          <img src={ '/images/School-Photo.webp' } alt="A photo of Ruben Panzich" className='global-padding' width={ "100%" } />
+        </div>
+        <table width={ "67%" }>
+          <tbody>
+            <tr>
+              <h1-image>ABOUT</h1-image>
+              <body>brakdjnawdkanwjdkjadnadjknawdk /n/n/n/n/nkdaldmlakdmaw</body>
+            </tr>
+          </tbody>
+        </table>
       </hero>
     </page>
   )
