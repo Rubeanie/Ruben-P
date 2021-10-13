@@ -19,7 +19,7 @@ export default function Layout({children}) {
         <link rel="manifest" href="/favicon/site.webmanifest" />
 
         <meta name="msapplication-TileColor" content={ Var.forec } />
-        <meta name="theme-color" content={ Var.forec } />
+        <meta name="theme-color" content={ Var.overbackc } />
 
       </Head>
       <Navbar />

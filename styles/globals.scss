@@ -22,11 +22,26 @@ a {
   background: var.$color-background;
 }
 
-layer {
+.layer {
   position: absolute;
-  display: flex;
 }
 
-.global-padding {
-  padding: 10px;
+.row {
+  flex-direction: row;
+  display: -ms-flexbox; /* IE10 */
+  display: flex;
+  -ms-flex-wrap: wrap; /* IE10 */
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
+}
+
+.column {
+  flex-direction: column;
+  display: -ms-flexbox; /* IE10 */
+  display: flex;
+  -ms-flex-wrap: wrap; /* IE10 */
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
 }

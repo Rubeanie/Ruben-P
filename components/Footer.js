@@ -1,8 +1,8 @@
 const Footer = () => {
   return (
-    <foot>
+    <div className='foot'>
       <p>2021 All Rights Reserved</p>
-    </foot>
+    </div>
   )
 }
 

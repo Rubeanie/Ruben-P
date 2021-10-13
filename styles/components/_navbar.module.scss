@@ -1,6 +1,6 @@
 @use '../abstracts/index.module' as var;
 
-nav {
+.nav {
   padding: var.$nav-padding;
   height: var.$nav-height;
   width: var.$nav-width;
@@ -12,7 +12,7 @@ nav {
   align-items: var.$nav-align-items;
   z-index: 1;
 
-  a {
+  .button {
     padding: var.$nav-button-padding;
     font-size: var.$nav-font-size;
     line-height: var.$nav-font-line-size;
@@ -20,7 +20,7 @@ nav {
     color: var.$color-foreground;
   }
 
-  svg {
+  .svg {
     padding: var.$nav-icon-padding;
     size: var.$nav-height;
     height: var.$nav-height;

@@ -1,6 +1,6 @@
 @use '../abstracts/index.module' as var;
 
-page {
+.page {
   position: inherit;
   h1 {
     color: var.$text-main;
@@ -20,11 +20,36 @@ page {
     -webkit-text-fill-color: transparent;
   }
 
+  h2 {
+    color: var.$color-foreground;
+    line-height: var.$heading-line-size;
+    font-size: var.$title-size;
+    font-weight: var.$heading-weight;
+    text-align: var.$heading-alignment;
+  }
+
   hero {
     height: 100vh;
     display: flex;
     display: -ms-flexbox;
     justify-content: center;
     align-items: center;
+    padding-top: var.$nav-height;
+  }
+
+  .container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+  }
+
+  .item {
+    flex: 0 1 auto;
+    margin: 20px;
   }
 }
