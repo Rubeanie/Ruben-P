@@ -28,20 +28,20 @@ a {
 
 .row {
   flex-direction: row;
-  display: -ms-flexbox; /* IE10 */
   display: flex;
-  -ms-flex-wrap: wrap; /* IE10 */
   flex-wrap: wrap;
-  height: 100%;
-  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
-.column {
-  flex-direction: column;
-  display: -ms-flexbox; /* IE10 */
-  display: flex;
-  -ms-flex-wrap: wrap; /* IE10 */
-  flex-wrap: wrap;
-  height: 100%;
-  width: 100%;
+.flex-div {
+  flex: attr(flex-size);
+  padding: 20px;
+}
+
+/* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 700px) {
+  .row {   
+    flex-direction: column;
+  }
 }

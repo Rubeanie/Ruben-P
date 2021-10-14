@@ -20,7 +20,6 @@ export default function Layout({children}) {
 
         <meta name="msapplication-TileColor" content={ Var.forec } />
         <meta name="theme-color" content={ Var.overbackc } />
-
       </Head>
       <Navbar />
       {children}
