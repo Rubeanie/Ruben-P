@@ -11,7 +11,7 @@ export default function About() {
         <div className="row">
           <div className="flex-padding flex-side" >
             <img src={ '/images/Personal-Photo.webp' } alt="A photo of Ruben Panzich" width={ "100%" } />
-            <h2>-Ruben.P</h2>
+            <h2>-Ruben.P<br/>▼</h2>
           </div>
           <div className="flex-padding flex-main" >
             <div className="row">
@@ -31,7 +31,7 @@ export default function About() {
                the wonderful world of stem where I have been taken to many places ranging from school to university. 
                Since I’ve begun this journey I’ve learnt about Unity, design, 3D modeling, coding and many other skills, 
                during this journey a lot of these skills have been given time to flourish in the subject AIT, leading 
-               me to the point I am now.</p>
+               me to the point I am now. Currently as of 2021 a Hale student.</p>
           </div>
         </div>
       </heros>

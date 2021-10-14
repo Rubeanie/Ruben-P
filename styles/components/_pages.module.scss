@@ -52,6 +52,27 @@
     @extend hero;
     min-height: unset;
     justify-content: flex-start;
+    padding-top: unset;
+  }
+
+  .line {
+    background-color: var.$color-foreground;
+    height: 2px;
+    width: 33%;
+  }
+
+  .button {
+    background-color: var.$color-foreground;
+    border: none;
+    color: var.$color-background;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    padding: 12px 28px;
+    border-radius: 4px;
   }
 
   .container {
