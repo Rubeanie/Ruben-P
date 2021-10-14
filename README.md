@@ -3,5 +3,5 @@ This personal website was originally created for a school assignment and I thoug
 
 # Access
 If you want to view the public deployed:
-- Master branch - [Click here](https://ruben-p.com)
-- Beta branch - [Click here](https://beta.ruben-p.com)
+- Master branch - [Click here](http://ruben-p.com)
+- Beta branch - [Click here](http://beta.ruben-p.com)
