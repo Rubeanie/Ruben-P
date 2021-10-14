@@ -50,7 +50,12 @@ export default function Home() {
           </model>
         </div>
         <div className='layer'>
-          <h1-image>Ruben<br />Panzich</h1-image>
+          <div className="row">
+            <div className="column">
+              <h1-image>Ruben<br/>Panzich</h1-image>
+              <p>17-year-old student<br/>freelance creative artist/developer</p>
+            </div>
+          </div>
         </div>
       </hero>
     </div>

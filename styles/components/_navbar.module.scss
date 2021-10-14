@@ -5,7 +5,7 @@
   height: var.$nav-height;
   width: var.$nav-width;
   background: var.$color-overlay;
-  color: var.$text-alt;
+  color: var.$font-body-color;
   display: var.$nav-display;
   position: var.$nav-position;
   justify-content: var.$nav-justify-content;
@@ -17,7 +17,7 @@
     padding: var.$nav-button-padding;
     font-size: var.$nav-font-size;
     line-height: var.$nav-font-line-size;
-    font-weight: var.$nav-font-weight;
+    font-weight: var.$nav-font-weight;  
     color: var.$color-foreground;
     flex: 0 1 auto;
   }
