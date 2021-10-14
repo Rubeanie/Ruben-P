@@ -6,7 +6,7 @@ import Var from '../styles/abstracts/_colors.module.scss'
 
 export default function Layout({children}) {
   return (
-    <div className="bg-colour">
+    <div>
       <Head>
         <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
         <link rel="icon" type="image/png" href="/favicon/RP-Logo-Apple.png" />
@@ -21,10 +21,14 @@ export default function Layout({children}) {
         <meta name="msapplication-TileColor" content={ Var.forec } />
         <meta name="theme-color" content={ Var.overbackc } />
       </Head>
-      <Navbar />
-      {children}
-      <Footer />
-      <Loader />
+      <div>
+        <Loader />
+      </div>
+      <div className="bg-colour">
+        <Navbar />
+        {children}
+        <Footer />
+      </div>
     </div>
   )
 }

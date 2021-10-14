@@ -3,11 +3,12 @@
 .page {
   position: inherit;
   h1 {
-    color: var.$text-main;
+    color: var.$font-body-color;
     line-height: var.$heading-line-size;
     font-size: var.$heading-size;
     font-weight: var.$heading-weight;
     text-align: var.$heading-alignment;
+    font-family: var.$font-title;
   }
 
   h1-image {
@@ -26,15 +27,31 @@
     font-size: var.$title-size;
     font-weight: var.$heading-weight;
     text-align: var.$heading-alignment;
+    font-family: var.$font-title;
+  }
+
+  p {
+    color: var.$font-body-color;
+    font-size: var.$body-size;
+    max-width: 60%;
+    line-height:35px;
+    overflow: auto;
+    text-align: var.$body-alignment;
   }
 
   hero {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
-    display: -ms-flexbox;
     justify-content: center;
     align-items: center;
     padding-top: var.$nav-height;
+    flex-direction: column;
+  }
+
+  heros {
+    @extend hero;
+    min-height: unset;
+    justify-content: flex-start;
   }
 
   .container {
@@ -51,5 +68,12 @@
   .item {
     flex: 0 1 auto;
     margin: 20px;
+  }
+
+  /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+  @media screen and (max-width: 700px) {
+    hero {
+      padding-top: var.$nav-height-phone;
+    }
   }
 }

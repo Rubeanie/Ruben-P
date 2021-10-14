@@ -1,11 +1,50 @@
 @use '../abstracts/index.module' as var;
 
 .foot {
+  padding: var.$foot-padding;
   height: var.$foot-height;
   width: var.$foot-width;
   background: var.$color-overlay;
-  color: var.$text-alt;
+  color: var.$font-body-color;
   display: var.$foot-display;
   justify-content: var.$foot-justify-content;
   align-items: var.$foot-align-items;
+  flex-direction: row;
+
+
+  p {
+    padding: var.$foot-text-padding;
+  }
+
+  foot-info {
+    @extend p;
+    text-align: start;
+    align-self: flex-start;
+  }
+
+  foot-github {
+    @extend foot-info;
+    color: #4285F4;
+    text-decoration-color: #4285F4;
+    text-decoration: underline;
+  }
+
+  foot-contact {
+    @extend p;
+    text-align: end;
+  }
+}
+
+
+/* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 700px) {
+  .foot {
+    height: var.$foot-height * 2;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
+  foot-left {
+    align-items: center;
+  }
 }
