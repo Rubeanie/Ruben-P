@@ -157,7 +157,7 @@ export default function Portfolio() {
             </div>
             <div className="flex-padding flex-split">
               <div className="column">
-                <h2>Task 7<br/>Semester 1 Examination</h2>
+                <h2>Task 7<br/>Semester 1 Exam</h2>
                 <p>The first semester's examination covered all of the topics which we had learnt. The exam also
                    included a section where we were required to create an advertisement and annotate various aspects
                     such as Elements and Principles of Design.</p>
