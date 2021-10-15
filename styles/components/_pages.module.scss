@@ -1,13 +1,14 @@
 @use '../abstracts/index.module' as var;
 
-page {
+.page {
   position: inherit;
   h1 {
-    color: var.$text-main;
+    color: var.$font-body-color;
     line-height: var.$heading-line-size;
     font-size: var.$heading-size;
     font-weight: var.$heading-weight;
     text-align: var.$heading-alignment;
+    font-family: var.$font-title;
   }
 
   h1-image {
@@ -20,10 +21,80 @@ page {
     -webkit-text-fill-color: transparent;
   }
 
+  h2 {
+    color: var.$color-foreground;
+    line-height: var.$heading-line-size;
+    font-size: var.$title-size;
+    font-weight: var.$heading-weight;
+    text-align: var.$heading-alignment;
+    font-family: var.$font-title;
+  }
+
+  p {
+    color: var.$font-body-color;
+    font-size: var.$body-size;
+    max-width: 60%;
+    line-height:35px;
+    overflow: auto;
+    text-align: var.$body-alignment;
+  }
+
   hero {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-top: var.$nav-height;
+    flex-direction: column;
+  }
+
+  heros {
+    @extend hero;
+    min-height: unset;
+    justify-content: flex-start;
+    padding-top: unset;
+  }
+
+  .line {
+    background-color: var.$color-foreground;
+    height: 2px;
+    width: 33%;
+  }
+
+  .button {
+    background-color: var.$color-foreground;
+    border: none;
+    color: var.$color-background;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    padding: 12px 28px;
+    border-radius: 4px;
+  }
+
+  .container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+  }
+
+  .item {
+    flex: 0 1 auto;
+    margin: 20px;
+  }
+
+  /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+  @media screen and (max-width: 700px) {
+    hero {
+      padding-top: var.$nav-height-phone;
+    }
   }
 }

@@ -30,13 +30,13 @@ function Logo() {
 
 export default function Home() {
   return (
-    <page>
+    <div className='page'>
       <Head>
         <title>Home</title>
         <meta name="description" content="Freelance creative developer / Ruben Panzich" />
       </Head>
       <hero>
-        <layer>
+        <div className='layer'>
           <model>
             <Canvas
             colorManagement camera={{ position: [0, 0, 2], fov: 80}}
@@ -48,11 +48,16 @@ export default function Home() {
               </Suspense>
             </Canvas>
           </model>
-        </layer>
-        <layer>
-          <h1-image>Ruben<br />Panzich</h1-image>
-        </layer>
+        </div>
+        <div className='layer'>
+          <div className="row">
+            <div className="column">
+              <h1-image>Ruben<br/>Panzich</h1-image>
+              <p>17-year-old student<br/>freelance creative artist/developer</p>
+            </div>
+          </div>
+        </div>
       </hero>
-    </page>
+    </div>
   )
 }

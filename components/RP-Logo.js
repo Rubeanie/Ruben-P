@@ -7,7 +7,7 @@ import { useGLTF, useAnimations } from '@react-three/drei'
 
 export default function Model(props) {
   const group = useRef()
-  const { nodes, materials, animations } = useGLTF('/RP-Logo.gltf')
+  const { nodes, materials, animations } = useGLTF('/models/RP-Logo.gltf')
   const { actions } = useAnimations(animations, group)
   return (
     <group ref={group} {...props} dispose={null}>
@@ -16,4 +16,4 @@ export default function Model(props) {
   )
 }
 
-useGLTF.preload('/RP-Logo.gltf')
+useGLTF.preload('/models/RP-Logo.gltf')
