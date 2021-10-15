@@ -25,8 +25,7 @@ export default function Portfolio() {
             <div className="flex-padding flex-split">
               <div className="column">
                 <h2>Task 1<br/>Hardware Topic Test</h2>
-                <p>This topic was about the hardware inside of computers, including parts such as the CPU, operating
-                   systems and what they do. For access to a PDF version, click the text or image to the left.</p>
+                <p>Task 1 what about the hardware located in computers, like CPUs, GPUs operating systems and more.</p>
               </div>
             </div>
           </div>
@@ -46,8 +45,8 @@ export default function Portfolio() {
             <div className="flex-padding flex-split">
               <div className="column">
                 <h2>Task 2<br/>Managing Data and Application Skills</h2>
-                <p>This was an extended answer task where we were required to research about RAW files and create a step
-                   by step plan on how a photographer would convert the photographs for publication.</p>
+                <p>In task 2 we wrote a extended answer on RAW files and a step by step plan on how a photographer
+                  would use and convert them for publication.</p>
               </div>
             </div>
           </div>
@@ -67,8 +66,8 @@ export default function Portfolio() {
             <div className="flex-padding flex-split">
               <div className="column">
                 <h2>Task 3<br/>Design Concepts Topic Test</h2>
-                <p>This test was based on the information which we learnt about Design Concepts. This includes the Elements
-                   and Principles of Design and Compositional Rules</p>
+                <p>This task was a test on design concepts, more specifically the elements and principles of design
+                   and Compositional Rules.</p>
               </div>
             </div>
           </div>
@@ -88,10 +87,8 @@ export default function Portfolio() {
             <div className="flex-padding flex-split">
               <div className="column">
                 <h2>Task 4<br/>Application Skills</h2>
-                <p>This task was used to show the skills which we had learnt about Design Concepts and put them to use. In 
-                  Adobe Illustrator, we made logos, analysed a Coca-Cola advertisement and remake the "Arngren" website 
-                  following grid and alignment rules. We were also required to make a Powerpoint describing each of the 
-                  Elements and Principles of Design</p>
+                <p>In this task we had to put the design skills we had been learning to the test in Adobe Photoshop 
+                  by redesigning the popular website "Arngren" using grid and alignment rules.</p>
               </div>
             </div>
           </div>
@@ -112,10 +109,8 @@ export default function Portfolio() {
             <div className="flex-padding flex-split">
               <div className="column">
                 <h2>Task 5<br/>VR Art Gallery</h2>
-                <p>This task required us to create a virtual art gallery through the means of a virtual reality game. 
-                  We were required to choose an artist and gather both 2D and 3D versions of their artwork. I chose 
-                  Jim Lee, a comic book artist for Batman and the Justice League. This video showcases the gallery 
-                  and its interactive elements.</p>
+                <p>Task 5 required us to create a virtual reality art gallery using Unity and Oculus Rifts to display 3D and 2D media. 
+                  I chose to do mine on Syd Mead, the artist behind Tron and Bladerunner.</p>
               </div>
             </div>
           </div>
@@ -136,9 +131,8 @@ export default function Portfolio() {
             <div className="flex-padding flex-split">
               <div className="column">
                 <h2>Task 6<br/>Impacts of Technology Topic Test</h2>
-                <p>The Impacts of Technology topic covered areas such as digital divide, cyber bullying, responsible
-                   use of social media, copyright and eCommerce. These topics are important in the world due to the
-                    increased use of technology in day to day life.</p>
+                <p>This topic test covers digital divide, cyber bullying, responsible use of social media, 
+                  copyright and eCommerce.</p>
               </div>
             </div>
           </div>
@@ -159,8 +153,7 @@ export default function Portfolio() {
               <div className="column">
                 <h2>Task 7<br/>Semester 1 Exam</h2>
                 <p>The first semester's examination covered all of the topics which we had learnt. The exam also
-                   included a section where we were required to create an advertisement and annotate various aspects
-                    such as Elements and Principles of Design.</p>
+                   included a section on design where we created a advertisement and annotate the design of another.</p>
               </div>
             </div>
           </div>
@@ -180,8 +173,8 @@ export default function Portfolio() {
             <div className="flex-padding flex-split">
               <div className="column">
                 <h2>Task 8<br/>Managing Data Topic Test</h2>
-                <p>The managing data topic covered content such as cloud computing and its uses, utility tools for
-                   maintenance of data (disk defragmentation and cleanup) and boolean internet search.</p>
+                <p>This topic test covered cloud computing and its uses, utility tools for
+                   maintenance of data and boolean internet search.</p>
               </div>
             </div>
           </div>
@@ -229,9 +222,9 @@ export default function Portfolio() {
             <div className="flex-padding flex-split">
               <div className="column">
                 <h2>Task 10<br/>Software Licensing Extended Answer</h2>
-                <p>This extended answer task required us to find a software package and research it. 
-                  This included areas such as what type of license covers the package and its intended 
-                  use. I chose to cover the iWork package from Apple Inc.</p>
+                <p>This extended answer entailed finding a software package and research it. 
+                  This included the topic of licenses that cover the package and its intended 
+                  use. I chose to cover the Substance 3D package.</p>
               </div>
             </div>
           </div>
@@ -251,10 +244,7 @@ export default function Portfolio() {
             <div className="flex-padding flex-split">
               <div className="column">
                 <h2>Task 11<br/>Networking Topic Test</h2>
-                <p>The networking topic is very important as it helped to enchance my understanding 
-                  on how the internet works and the many different types of connections there are. 
-                  This topic also covered many other topics such as network topologies and server 
-                  networks.</p>
+                <p>This topic test covered network topologies and server networks.</p>
               </div>
             </div>
           </div>
