@@ -10,15 +10,14 @@ export default function About() {
       <hero>
         <div className="row">
           <div className="flex-padding flex-side" >
-            <img src={ '/images/Personal-Photo.webp' } alt="A photo of Ruben Panzich" width={ "100%" } />
-            <h2>-Ruben.P<br/>▼</h2>
+            <div className="column">
+              <img src={ '/images/Personal-Photo.webp' } alt="A photo of Ruben Panzich" width={ "100%" } />
+              <h2>-Ruben.P<br/>▼</h2>
+            </div>
           </div>
           <div className="flex-padding flex-main" >
-            <div className="row">
+            <div className="column">
               <h1-image>ABOUT</h1-image>
-              <p>Hi! <br /> My name is Ruben Panzich, I am a student currently attending year 11 at Hale school, 
-              my subjects include: <br /> AIT (ATAR) <br /> Engineering (ATAR) <br /> Maths applications (ATAR) <br /> 
-              English (ATAR) <br /> Economics (ATAR) <br /> Cert IV in Game Development</p>
             </div>
           </div>
         </div>
@@ -26,6 +25,9 @@ export default function About() {
       <heros>
         <div className="row">
           <div className="column">
+            <p>Hi! <br /> My name is Ruben Panzich, I am a student currently attending year 11 at Hale school, 
+            my subjects include: <br /> AIT (ATAR) <br /> Engineering (ATAR) <br /> Maths applications (ATAR) <br /> 
+            English (ATAR) <br /> Economics (ATAR) <br /> Cert IV in Game Development</p>
             <h2>My Story</h2>
             <p>Ever since I was a little boy, I’ve been obsessed with video games. This passion has propelled me into
                the wonderful world of stem where I have been taken to many places ranging from school to university. 
