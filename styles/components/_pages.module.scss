@@ -96,5 +96,10 @@
     hero {
       padding-top: var.$nav-height-phone;
     }
+
+    h1-image {
+      background-size: auto;
+      background-attachment: unset;
+    }
   }
 }
