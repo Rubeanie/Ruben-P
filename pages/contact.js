@@ -1,15 +1,20 @@
-import Head from 'next/head'
+import Head from "next/head";
 
 export default function Contact() {
   return (
-    <div className='page'>
+    <div className="page">
       <Head>
         <title>Contact</title>
-        <meta name="description" content="Freelance creative developer / Ruben Panzich/ Rubeanie" />
+        <meta
+          name="description"
+          content="Freelance creative developer / Ruben Panzich/ Rubeanie"
+        />
       </Head>
       <hero>
         <h1-image>CONTACT</h1-image>
-        <p>If you would for any reason like to contact me you can do so through:</p>
+        <p>
+          If you would for any reason like to contact me you can do so through:
+        </p>
         <div className="row">
           <div className="flex-split">
             <div className="column">
@@ -26,5 +31,5 @@ export default function Contact() {
         </div>
       </hero>
     </div>
-  )
+  );
 }

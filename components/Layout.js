@@ -1,8 +1,8 @@
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { useGLTF, Loader } from '@react-three/drei'
+import { useGLTF, Loader } from "@react-three/drei";
 
-export default function Layout({children}) {
+export default function Layout({ children }) {
   return (
     <div>
       <div>
@@ -14,5 +14,5 @@ export default function Layout({children}) {
         <Footer />
       </div>
     </div>
-  )
+  );
 }
