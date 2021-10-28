@@ -1,7 +1,8 @@
-@use '../abstracts/index.module' as var;
+@use "../abstracts/index.module" as var;
 
 .page {
   position: inherit;
+
   h1 {
     color: var.$font-body-color;
     line-height: var.$heading-line-size;
@@ -34,7 +35,7 @@
     color: var.$font-body-color;
     font-size: var.$body-size;
     max-width: 60%;
-    line-height:35px;
+    line-height: 35px;
     overflow: auto;
     text-align: var.$body-alignment;
   }
@@ -96,9 +97,14 @@
     hero {
       padding-top: var.$nav-height-phone;
     }
+
     h1-image {
       background-size: auto;
       background-attachment: unset;
+    }
+
+    h2 {
+      font-size: var.$title-size - 10;
     }
   }
 }
