@@ -8,22 +8,37 @@ function MyApp({ Component, pageProps }) {
     <div>
       <Head>
         <link rel="icon" type="image/png" href="/favicon/RP-Logo-Apple.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon/favicon-16x16.png"
+        />
+        <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/favicon/apple-touch-icon.png"
+        />
         <link rel="mask-icon" href="/favicon/RP-Logo.svg" color="#000000" />
         <link rel="manifest" href="/favicon/site.webmanifest" />
 
         <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
 
-        <meta name="msapplication-TileColor" content={ Var.forec } />
-        <meta name="theme-color" content={ Var.overbackc } />
+        <meta name="msapplication-TileColor" content={Var.forec} />
+        <meta name="theme-color" content={Var.overbackc} />
       </Head>
       <Layout>
         <Component {...pageProps} />
       </Layout>
     </div>
-  )
+  );
 }
 
 export default MyApp
