@@ -20,7 +20,6 @@ function MyApp({ Component, pageProps }) {
           sizes="16x16"
           href="/favicon/favicon-16x16.png"
         />
-        <link rel="icon" href="/favicon.ico" />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
