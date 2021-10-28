@@ -29,9 +29,6 @@ export default function Portfolio() {
               </div>
             </div>
           </div>
-          <div className="row">
-            <a href="/ait/Task1/Task1.pdf" download><div className="button">Download</div></a>
-          </div>
         </div>
         <div className="line"/>
         {/* Task 2 */}
@@ -49,9 +46,6 @@ export default function Portfolio() {
                   would use and convert them for publication.</p>
               </div>
             </div>
-          </div>
-          <div className="row">
-            <a href="/ait/Task2/Managing Data and Application Skills - Ruben Panzich.docx" download><div className="button">Download</div></a>
           </div>
         </div>
         <div className="line"/>
@@ -71,9 +65,6 @@ export default function Portfolio() {
               </div>
             </div>
           </div>
-          <div className="row">
-            <a href="/ait/Task3/Task3.pdf" download><div className="button">Download</div></a>
-          </div>
         </div>
         <div className="line"/>
         {/* Task 4 */}
@@ -91,10 +82,6 @@ export default function Portfolio() {
                   by redesigning the popular website "Arngren" using grid and alignment rules.</p>
               </div>
             </div>
-          </div>
-          <div className="row">
-            <a href="/ait/Task4/Redesigned Arngren - Ruben Panzich.png" download><div className="button">Download PNG</div></a>
-            <a href="/ait/Task4/Redesigned Arngren - Ruben Panzich.psd" download><div className="button">Download PSD</div></a>
           </div>
         </div>
         <div className="line"/>
@@ -114,10 +101,6 @@ export default function Portfolio() {
               </div>
             </div>
           </div>
-          <div className="row">
-            <a href="/ait/Task5/VR Art Gallery - Ruben Panzich.zip" download><div className="button">Download App</div></a>
-            <a href="/ait/Task5/VR Art Gallery Folio - Ruben Panzich.pptx" download><div className="button">Download Folio</div></a>
-          </div>
         </div>
         <div className="line"/>
         {/* Task 6 */}
@@ -135,9 +118,6 @@ export default function Portfolio() {
                   copyright and eCommerce.</p>
               </div>
             </div>
-          </div>
-          <div className="row">
-            <a href="/ait/Task6/Task6.pdf" download><div className="button">Download</div></a>
           </div>
         </div>
         <div className="line"/>
@@ -157,9 +137,6 @@ export default function Portfolio() {
               </div>
             </div>
           </div>
-          <div className="row">
-            <a href="/ait/Task7/Exam.pdf" download><div className="button">Download</div></a>
-          </div>
         </div>
         <div className="line"/>
         {/* Task 8 */}
@@ -177,9 +154,6 @@ export default function Portfolio() {
                    maintenance of data and boolean internet search.</p>
               </div>
             </div>
-          </div>
-          <div className="row">
-            <a href="/ait/Task8/Task8.pdf" download><div className="button">Download</div></a>
           </div>
         </div>
         <div className="line"/>
@@ -205,10 +179,6 @@ export default function Portfolio() {
               </div>
             </div>
           </div>
-          <div className="row">
-            <a href="/ait/Task9/Simple Animation - Ruben Panzich.pptx" download><div className="button">Download Folio</div></a>
-            <a href="/ait/Task9/Simple Animation - Ruben Panzich.docx" download><div className="button">Download Journal</div></a>
-          </div>
         </div>
         <div className="line"/>
         {/* Task 10 */}
@@ -228,9 +198,6 @@ export default function Portfolio() {
               </div>
             </div>
           </div>
-          <div className="row">
-            <a href="/ait/Task10/Extended Answer - Ruben Panzich.docx" download><div className="button">Download</div></a>
-          </div>
         </div>
         <div className="line"/>
         {/* Task 11 */}
@@ -247,9 +214,6 @@ export default function Portfolio() {
                 <p>This topic test covered network topologies and server networks.</p>
               </div>
             </div>
-          </div>
-          <div className="row">
-            <a href="/ait/Task11/Task11.pdf" download><div className="button">Download</div></a>
           </div>
         </div>
       </heros>
