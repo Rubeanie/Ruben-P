@@ -18,7 +18,7 @@
 
   foot-info {
     @extend p;
-    text-align: start;
+    text-align: center;
     align-self: flex-start;
   }
 
@@ -27,11 +27,6 @@
     color: #4285F4;
     text-decoration-color: #4285F4;
     text-decoration: underline;
-  }
-
-  foot-contact {
-    @extend p;
-    text-align: end;
   }
 }
 
