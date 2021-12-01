@@ -2,6 +2,7 @@ import Layout from "../components/Layout";
 import "../styles/globals.scss";
 import Head from "next/head";
 import Var from "../styles/abstracts/_colors.module.scss";
+import Signature from "../components/Signature";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -33,6 +34,7 @@ function MyApp({ Component, pageProps }) {
         <meta name="msapplication-TileColor" content={Var.forec} />
         <meta name="theme-color" content={Var.overbackc} />
       </Head>
+      <Signature />
       <Layout>
         <Component {...pageProps} />
       </Layout>
