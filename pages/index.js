@@ -51,12 +51,22 @@ export default function Home() {
               camera={{ position: [0, 0, 2], fov: 80 }}
               style={{ width: "90vw", height: "90vh" }}
             >
+              <ambientLight intensity={1} />
+              <pointLight
+                position={[-8, 1, 8]}
+                color={Var.midc}
+                intensity={0.05}
+              />
               <pointLight
                 position={[0, 1, 8]}
                 color={Var.forec}
-                intensity={0.25}
+                intensity={2}
               />
-              <ambientLight intensity={0.5} color={Var.midc} />
+              <pointLight
+                position={[8, 1, 8]}
+                color={Var.midc}
+                intensity={0.05}
+              />
               <Suspense fallback={null}>
                 <Logo />
               </Suspense>
