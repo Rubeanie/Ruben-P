@@ -20,7 +20,6 @@ $font-title: ailerons, serif;
 $font-body: kollektif, serif;
 
 $heading-size: 13vw;
-$heading-line-size: 100%;
 $heading-alignment: center;
 $heading-weight: 700;
 
@@ -28,3 +27,7 @@ $title-size: 47px;
 
 $body-size: 25px;
 $body-alignment: center;
+
+:export {
+  textc: $font-body-color;
+}

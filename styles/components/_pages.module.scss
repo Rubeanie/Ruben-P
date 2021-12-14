@@ -5,7 +5,7 @@
 
   h1 {
     color: var.$font-body-color;
-    line-height: var.$heading-line-size;
+    line-height: 1em;
     font-size: var.$heading-size;
     font-weight: var.$heading-weight;
     text-align: var.$heading-alignment;
@@ -24,7 +24,7 @@
 
   h2 {
     color: var.$color-foreground;
-    line-height: var.$heading-line-size;
+    line-height: 1em;
     font-size: var.$title-size;
     font-weight: var.$heading-weight;
     text-align: var.$heading-alignment;
@@ -35,7 +35,7 @@
     color: var.$font-body-color;
     font-size: var.$body-size;
     max-width: 60%;
-    line-height: 35px;
+    line-height: 1.33em;
     overflow: auto;
     text-align: var.$body-alignment;
   }
@@ -49,11 +49,21 @@
     flex-direction: column;
   }
 
+  hero-no-padding {
+    @extend hero;
+    padding-top: unset;
+  }
+
   heros {
     @extend hero;
     min-height: unset;
     justify-content: flex-start;
     padding-top: unset;
+  }
+
+  icon {
+    vertical-align: middle;
+    height: 100%;
   }
 
   .line {

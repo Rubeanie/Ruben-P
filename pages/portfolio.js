@@ -8,9 +8,8 @@ export default function Portfolio() {
         <title>Portfolio</title>
         <meta
           name="description"
-          content="Freelance creative developer / Ruben Panzich/ Rubeanie"
+          content="Portfolio of past work."
         />
-        \
       </Head>
       <hero>
         <h1-image>Portfolio</h1-image>
