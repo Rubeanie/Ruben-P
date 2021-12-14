@@ -17,24 +17,20 @@ a {
   box-sizing: border-box;
 }
 
-.App {
-  font-family: sans-serif;
-  text-align: center;
-  box-sizing: border-box;
-  height: 100%;
-  width: 100%;
+url {
+  color: #4285F4;
+  text-decoration-color: #4285F4;
+  text-decoration: underline;
 }
 
-.bg-colour {
+.App {
+  text-align: center;
+  box-sizing: border-box;
   background: var.$color-background;
 }
 
 .layer {
   position: absolute;
-}
-
-.fixed {
-  position: fixed;
 }
 
 .row {
