@@ -7,7 +7,7 @@ export default function Contact() {
         <title>Contact</title>
         <meta
           name="description"
-          content="Freelance creative developer / Ruben Panzich/ Rubeanie"
+          content="How to get in contact."
         />
       </Head>
       <hero>

@@ -1,18 +1,23 @@
 import Link from "next/link";
+import React from "react";
 
-const Footer = () => {
-  return (
-    <div className="foot">
-      <div className="column">
-        <foot-info>© 2021 by Ruben Panzich</foot-info>
-        <Link href="https://github.com/Rubeanie/Personal-Website">
-          <a>
-            <foot-github>Source code on GitHub</foot-github>
-          </a>
-        </Link>
+class Footer extends React.Component {
+  render() {
+    return (
+      <div className="foot">
+        <div className="column">
+          <foot-info>© 2021 by Ruben Panzich</foot-info>
+          <Link href="https://github.com/Rubeanie/Personal-Website">
+            <a>
+              <foot-github>
+                <url>Source code on GitHub</url>
+              </foot-github>
+            </a>
+          </Link>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default Footer;

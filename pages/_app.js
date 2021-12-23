@@ -3,10 +3,11 @@ import "../styles/globals.scss";
 import Head from "next/head";
 import Var from "../styles/abstracts/_colors.module.scss";
 import Signature from "../components/Signature";
+import { Loader } from "@react-three/drei";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <div>
+    <div className="App">
       <Head>
         <link rel="icon" type="image/png" href="/favicon/RP-Logo-Apple.png" />
         <link
@@ -38,6 +39,9 @@ function MyApp({ Component, pageProps }) {
       <Layout>
         <Component {...pageProps} />
       </Layout>
+      <div className="loading">
+        <Loader />
+      </div>
     </div>
   );
 }
