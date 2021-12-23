@@ -1,13 +1,7 @@
 import React, { Suspense, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import {
-  OrbitControls,
-  Environment,
-  Effects,
-  Loader,
-  useTexture,
-} from "@react-three/drei";
-import { useSpring, animated, config } from "@react-spring/three";
+
+import { animated } from "@react-spring/three";
 import Head from "next/head";
 import Model from "../components/RP-Logo";
 import Var from "../styles/abstracts/_colors.module.scss";
@@ -37,10 +31,10 @@ export default function Home() {
   return (
     <div className="page">
       <Head>
-        <title>Home</title>
+        <title>Home | Ruben Panzich</title>
         <meta
           name="description"
-          content="Freelance creative developer / Ruben Panzich"
+          content="I'm Ruben Panzich, I am a 17-Year-Old Freelance creative developer, with qualifications in game design and development."
         />
       </Head>
       <hero>

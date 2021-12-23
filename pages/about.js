@@ -7,9 +7,8 @@ export default function About() {
         <title>About</title>
         <meta
           name="description"
-          content="Freelance creative developer / Ruben Panzich/ Rubeanie"
+          content="More about me."
         />
-        \
       </Head>
       <hero>
         <div className="row">
