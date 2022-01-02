@@ -11,9 +11,9 @@ function Logo() {
   const [active, setActive] = useState(false);
 
   useFrame(({ clock }) => {
-    const a = clock.getElapsedTime();
+    const a = clock.getElapsedTime() / 3;
     myMesh.current.rotation.y = a;
-    let scale = Math.cbrt(window.innerWidth / 700) * 0.65;
+    let scale = window.screen.width / 600;
     if (scale > 1) {
       scale = 1;
     }
@@ -38,48 +38,50 @@ export default function Home() {
         />
       </Head>
       <hero>
-        <div className="layer">
-          <model>
-            <Canvas
-              colorManagement
-              camera={{ position: [0, 0, 2], fov: 80 }}
-              style={{ width: "90vw", height: "90vh" }}
-            >
-              <ambientLight intensity={1} />
-              <pointLight
-                position={[-8, 1, 6]}
-                color={Var.midc}
-                intensity={0.65}
-              />
-              <pointLight
-                position={[0, 1, 8]}
-                color={Var.forec}
-                intensity={0.65}
-              />
-              <pointLight
-                position={[8, 1, 6]}
-                color={Var.midc}
-                intensity={0.65}
-              />
-              <Suspense fallback={null}>
-                <Logo />
-              </Suspense>
-            </Canvas>
-          </model>
-        </div>
-        <div className="layer">
-          <div className="row">
-            <div className="column">
-              <h1-image>
-                Ruben
-                <br />
-                Panzich
-              </h1-image>
-              <p>
-                17-year-old student
-                <br />
-                freelance creative artist/developer
-              </p>
+        <div className="column">
+          <div className="layer">
+            <model>
+              <Canvas
+                colorManagement
+                camera={{ position: [0, 0, 2], fov: 80 }}
+                style={{ width: "90vw", height: "90vh" }}
+              >
+                <ambientLight intensity={1} />
+                <pointLight
+                  position={[-8, 1, 6]}
+                  color={Var.midc}
+                  intensity={0.65}
+                />
+                <pointLight
+                  position={[0, 1, 8]}
+                  color={Var.forec}
+                  intensity={0.65}
+                />
+                <pointLight
+                  position={[8, 1, 6]}
+                  color={Var.midc}
+                  intensity={0.65}
+                />
+                <Suspense fallback={null}>
+                  <Logo />
+                </Suspense>
+              </Canvas>
+            </model>
+          </div>
+          <div className="layer">
+            <div className="row">
+              <div className="column">
+                <h1-image>
+                  Ruben
+                  <br />
+                  Panzich
+                </h1-image>
+                <p>
+                  17-year-old student
+                  <br />
+                  freelance creative artist/developer
+                </p>
+              </div>
             </div>
           </div>
         </div>
