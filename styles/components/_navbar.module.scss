@@ -2,6 +2,7 @@
 
 .nav {
   padding: var.$nav-padding;
+  padding: var.$nav-padding-safe;
   height: var.$nav-height;
   width: var.$nav-width;
   background: var.$color-overlay;

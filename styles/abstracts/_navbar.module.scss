@@ -1,6 +1,7 @@
 $nav-height: 80px;
 $nav-height-phone: $nav-height + 50px;
 $nav-width: 100%;
+$nav-padding-safe: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 $nav-display: flex;
 $nav-justify-content: space-between;
 $nav-justify-content-phone: space-evenly;
