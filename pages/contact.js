@@ -5,16 +5,11 @@ export default function Contact() {
     <div className="page">
       <Head>
         <title>Contact</title>
-        <meta
-          name="description"
-          content="How to get in contact."
-        />
+        <meta name="description" content="How to get in contact." />
       </Head>
       <hero>
         <h1-image>CONTACT</h1-image>
-        <p>
-          Coming Soon...
-        </p>
+        <p>Coming Soon...</p>
       </hero>
     </div>
   );
