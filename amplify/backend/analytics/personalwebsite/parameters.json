@@ -1,11 +1,11 @@
 {
-    "appName": "personalwebsite",
-    "roleName": "pinpointLambdaRole517fdcfc",
-    "cloudformationPolicyName": "cloudformationPolicy517fdcfc",
-    "cloudWatchPolicyName": "cloudWatchPolicy517fdcfc",
-    "pinpointPolicyName": "pinpointPolicy517fdcfc",
-    "authPolicyName": "pinpoint_amplify_517fdcfc",
-    "unauthPolicyName": "pinpoint_amplify_517fdcfc",
+    "appName": "personalWebsite",
+    "roleName": "pinpointLambdaRoleae52841e",
+    "cloudformationPolicyName": "cloudformationPolicyae52841e",
+    "cloudWatchPolicyName": "cloudWatchPolicyae52841e",
+    "pinpointPolicyName": "pinpointPolicyae52841e",
+    "authPolicyName": "pinpoint_amplify_ae52841e",
+    "unauthPolicyName": "pinpoint_amplify_ae52841e",
     "authRoleName": {
         "Ref": "AuthRoleName"
     },
