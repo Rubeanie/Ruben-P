@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "cognitoae19dd9f": {}
+        "cognitoae19dd9f": {},
+        "undefined": {}
       }
     }
   }

@@ -1,20 +1,25 @@
 {
   "auth": {
-    "cognitoae19dd9f": {
+    "personalwebsite": {
       "service": "Cognito",
       "serviceType": "managed",
-      "providerPlugin": "awscloudformation"
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "socialProviders": [],
+        "usernameAttributes": [],
+        "signupAttributes": [],
+        "passwordProtectionSettings": {
+          "passwordPolicyCharacters": []
+        },
+        "mfaTypes": [],
+        "verificationMechanisms": []
+      }
     }
   },
   "analytics": {
-    "personalwebsite": {
+    "personalWebsite": {
       "service": "Pinpoint",
-      "providerPlugin": "awscloudformation"
-    }
-  },
-  "storage": {
-    "s3efc79ada": {
-      "service": "S3",
       "providerPlugin": "awscloudformation"
     }
   }
