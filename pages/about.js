@@ -5,17 +5,16 @@ export default function About() {
     <div className="page">
       <Head>
         <title>About</title>
-        <meta
-          name="description"
-          content="More about me."
-        />
+        <meta name="description" content="More about me." />
       </Head>
       <hero>
         <div className="row">
           <div className="flex-padding flex-side">
             <div className="column">
               <img
-                src={"/images/Personal-Photo.webp"}
+                src={
+                  "https://res.cloudinary.com/ruben-p/image/upload/v1642990790/Images/About/Personal-Photo.webp"
+                }
                 alt="A photo of Ruben Panzich"
                 width={"100%"}
               />

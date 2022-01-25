@@ -3,7 +3,7 @@ $color-overlay-alpha: 0.325;
 $color-foreground: #FD666C;
 $color-mid-ground: #2A4867;
 $color-background: #0d192b;
-$text-image: url('/images/Background.webp');
+$text-image: url('https://res.cloudinary.com/ruben-p/image/upload/v1642653033/Images/Backgrounds/Background.webp');
 $color-overlay: rgba($color-overlay-hex, $color-overlay-alpha);
 $color-overlay-back: mix($color-overlay-hex, $color-background, $color-overlay-alpha * 100);
 
