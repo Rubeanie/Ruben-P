@@ -5,10 +5,9 @@
   width: var.$socials-width;
   max-width: var.$socials-max-width;
   height: var.$socials-height;
-  min-height: var.$socials-min-height;
   display: flex;
   align-items: center;
-  justify-content: center;
+  transition: transform 0.25s;
 
   p {
     font-size: var.$socials-text-size;
@@ -19,7 +18,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100px;
+    height: 100%;
   }
 
   .icon {
@@ -35,22 +34,27 @@
   }
 }
 
+.socials:hover {
+  transform: scale(1.1) perspective(1px);
+}
+
 /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 700px) {
   .socials {
+    max-width: var.$socials-width-mobile !important;
+    height: fit-content;
+
     section {
-      height: 75px;
+      height: 75px !important;
     }
 
     .icon {
-      width: 100%;
+      width: 100% !important;
     }
 
     .overlay {
-      width: 100%;
-      height: 100px;
+      width: 100% !important;
+      height: 100px !important;
     }
-
-    max-width: var.$socials-max-width-mobile;
   }
 }

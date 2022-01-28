@@ -1,8 +1,8 @@
 import Head from "next/head";
 import Social from "../../components/Social";
 import Var from "../../styles/abstracts/_colors.module.scss";
-import { BsTwitch, BsYoutube, BsSpotify, BsInstagram } from "react-icons/bs";
-import { FaSteam } from "react-icons/fa";
+import { BsTwitch, BsYoutube, BsSpotify, BsInstagram, BsTwitter, BsGithub } from "react-icons/bs";
+import { FaSteam, FaDiscord } from "react-icons/fa";
 
 export default function links() {
   return (
@@ -33,13 +33,22 @@ export default function links() {
               color={"#6441a5"}
             />
           </a>
-          <a href="/socials/spotify" target="_blank">
+          <a href="/socials/discord" target="_blank">
             <Social
-              name={"Spotify"}
-              logo={<BsSpotify />}
-              username={"@ruben"}
+              name={"Discord"}
+              logo={<FaDiscord />}
+              username={"discord.gg/B98bJGU"}
               textColor={Var.backc}
-              color={"#1DB954"}
+              color={"#5865f2"}
+            />
+          </a>
+          <a href="/socials/twitter" target="_blank">
+            <Social
+              name={"Twitter"}
+              logo={<BsTwitter />}
+              username={"@TwitchRubeanie"}
+              textColor={Var.backc}
+              color={"#1da1f2"}
             />
           </a>
           <a href="/socials/instagram" target="_blank">
@@ -51,6 +60,15 @@ export default function links() {
               color={"#f09433"}
             />
           </a>
+          <a href="/socials/spotify" target="_blank">
+            <Social
+              name={"Spotify"}
+              logo={<BsSpotify />}
+              username={"@ruben"}
+              textColor={Var.backc}
+              color={"#1DB954"}
+            />
+          </a>
           <a href="/socials/steam" target="_blank">
             <Social
               name={"Steam"}
@@ -58,6 +76,15 @@ export default function links() {
               username={"@rubeanie"}
               textColor={Var.backc}
               color={"#66c0f4"}
+            />
+          </a>
+          <a href="/socials/github" target="_blank">
+            <Social
+              name={"Github"}
+              logo={<BsGithub />}
+              username={"@Rubeanie"}
+              textColor={Var.backc}
+              color={"#e1e8ed"}
             />
           </a>
         </div>
