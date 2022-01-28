@@ -2,7 +2,7 @@ import Head from "next/head";
 import Social from "../../components/Social";
 import Var from "../../styles/abstracts/_colors.module.scss";
 import { BsTwitch, BsYoutube, BsSpotify, BsInstagram, BsTwitter, BsGithub } from "react-icons/bs";
-import { FaSteam, FaDiscord } from "react-icons/fa";
+import { FaSteam, FaDiscord, FaWpforms } from "react-icons/fa";
 
 export default function links() {
   return (
@@ -85,6 +85,15 @@ export default function links() {
               username={"@Rubeanie"}
               textColor={Var.backc}
               color={"#e1e8ed"}
+            />
+          </a>
+          <a href="/contact" passHref>
+            <Social
+              name={"Contact"}
+              logo={<FaWpforms />}
+              username={"Information"}
+              textColor={Var.backc}
+              color={Var.forec}
             />
           </a>
         </div>
