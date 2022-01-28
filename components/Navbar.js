@@ -25,9 +25,6 @@ class Navbar extends React.Component {
             <Link href="/socials" passHref>
               <a className="button">Socials</a>
             </Link>
-            <Link href="/contact" passHref>
-              <a className="button">Contact</a>
-            </Link>
           </div>
         </div>
       </div>

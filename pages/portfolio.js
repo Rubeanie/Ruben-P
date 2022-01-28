@@ -1,5 +1,4 @@
 import Head from "next/head";
-import ReactPlayer from "react-player";
 
 export default function Portfolio() {
   return (
