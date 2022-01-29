@@ -3,7 +3,7 @@ import "../styles/globals.scss";
 import Head from "next/head";
 import Var from "../styles/abstracts/_colors.module.scss";
 import Signature from "../components/Signature";
-import { Loader } from "@react-three/drei";
+import Loader from "../components/Loading";
 
 function MyApp({ Component, pageProps }) {
   return (
