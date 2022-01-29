@@ -1,8 +1,33 @@
-$socials-overlay-color: rgba(0, 0, 0, 0.212);
-$socials-text-size: 20px;
-$socials-text-weight: 700;
+/* Social Buttons */
+$socials-transition-time: 0.25s;
+$socials-margin: 10px;
 $socials-width: 100vw;
 $socials-max-width: 385px;
-$socials-max-width-mobile: 265px;
-$socials-height: fit-content;
-$socials-min-height: 100px;
+$socials-height: 100px;
+/* Hover */
+$socials-transform-hover: scale(1.1) perspective(1px);
+
+/* Text */
+$socials-text-size: 20px;
+$socials-text-weight: 700;
+
+/* Sections */
+$socials-section-height: 100%;
+
+/* Icon */
+$socials-icon-width: 30%;
+
+/* Overlay */
+$socials-overlay-color: rgba(0, 0, 0, 0.212);
+$socials-overlay-width: 70%;
+
+/* Mobile */
+$socials-width-mobile: 265px;
+$socials-height-mobile: fit-content;
+/* Sections */
+$socials-section-height-mobile: 75px;
+/* Icon */
+$socials-icon-width-mobile: 100%;
+/* Overlay */
+$socials-overlay-width-mobile: 100%;
+$socials-overlay-height-mobile: 100px;

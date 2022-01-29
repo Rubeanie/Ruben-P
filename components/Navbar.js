@@ -6,7 +6,7 @@ class Navbar extends React.Component {
   render() {
     return (
       <div>
-        <div className="nav">
+        <div className="navbar">
           <div>
             <Link href="/" passHref>
               <a>
@@ -22,8 +22,8 @@ class Navbar extends React.Component {
             <Link href="/portfolio" passHref>
               <a className="button">Portfolio</a>
             </Link>
-            <Link href="/contact" passHref>
-              <a className="button">Contact</a>
+            <Link href="/socials" passHref>
+              <a className="button">Socials</a>
             </Link>
           </div>
         </div>
