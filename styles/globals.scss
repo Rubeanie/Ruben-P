@@ -1,16 +1,16 @@
-@use './abstracts/index.module' as var;
-@use './components/index.module' as com;
+@use './abstracts/index.module'as var;
+@use './components/index.module'as com;
 
 html,
 body {
-  padding: 0;
   margin: 0;
+  padding: 0;
   font-family: var.$font-body;
 }
 
 a {
-  color: inherit;
   text-decoration: none;
+  color: inherit;
 }
 
 * {
@@ -18,15 +18,15 @@ a {
 }
 
 url {
-  color: #4285F4;
-  text-decoration-color: #4285F4;
   text-decoration: underline;
+  text-decoration-color: #4285F4;
+  color: #4285F4;
 }
 
 .App {
-  text-align: center;
   box-sizing: border-box;
   background: var.$color-background;
+  text-align: center;
 }
 
 .layer {
@@ -34,8 +34,8 @@ url {
 }
 
 .row {
-  flex-direction: row;
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
@@ -44,8 +44,8 @@ url {
 }
 
 .column {
-  flex-direction: column;
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
@@ -57,21 +57,9 @@ url {
   padding: 20px;
 }
 
-.flex-main {
-  flex: 66%;
-}
-
-.flex-side {
-  flex: 33%;
-}
-
-.flex-split {
-  flex: 50%;
-}
-
 /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 700px) {
-  .row {   
+  .row {
     flex-direction: column;
   }
 }

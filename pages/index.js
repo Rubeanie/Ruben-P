@@ -1,6 +1,6 @@
 import React, { Suspense, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-
+//
 import { animated } from "@react-spring/three";
 import Head from "next/head";
 import Model from "../components/RP-Logo";
@@ -27,6 +27,12 @@ function Logo() {
   );
 }
 
+function Age() {
+   let { AgeFromDate } = require("age-calculator");
+   
+   return new AgeFromDate(new Date("2004-07-26")).age;
+}
+
 export default function Home() {
   return (
     <div className="page">
@@ -34,7 +40,7 @@ export default function Home() {
         <title>Home | Ruben Panzich</title>
         <meta
           name="description"
-          content="I'm Ruben Panzich, I am a 17-Year-Old Freelance creative developer, with qualifications in game design and development."
+          content="I'm Ruben Panzich, I am a Freelance creative developer, with qualifications in game design and development."
         />
       </Head>
       <hero>
@@ -49,17 +55,17 @@ export default function Home() {
                 <ambientLight intensity={1} />
                 <pointLight
                   position={[-8, 1, 6]}
-                  color={Var.midc}
+                  color={Var.midground_color}
                   intensity={0.65}
                 />
                 <pointLight
                   position={[0, 1, 8]}
-                  color={Var.forec}
+                  color={Var.foreground_color}
                   intensity={0.65}
                 />
                 <pointLight
                   position={[8, 1, 6]}
-                  color={Var.midc}
+                  color={Var.midground_color}
                   intensity={0.65}
                 />
                 <Suspense fallback={null}>
@@ -77,7 +83,8 @@ export default function Home() {
                   Panzich
                 </h1-image>
                 <p>
-                  17-year-old student
+                  <Age />
+                  -year-old student
                   <br />
                   freelance creative artist/developer
                 </p>
