@@ -1,17 +1,22 @@
-$navbar-align-items: center;
-$navbar-button-padding: 0rem 2vw;
-$navbar-display: flex;
-$navbar-flex-direction-phone: column;
+/* Navbar */
+$navbar-position: Fixed;
 $navbar-flex-direction: row;
-$navbar-font-line-size: 100%;
+$navbar-justify-content: space-between;
+$navbar-padding: 0rem 4px;
+$navbar-padding-safe: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+$navbar-width: 100%;
+$navbar-height: 80px;
+
+/* Buttons */
+$navbar-button-padding: 0rem 2vw;
+$navbar-button-line-height: 100%;
 $navbar-font-size: 22px;
 $navbar-font-weight: 700;
-$navbar-height-phone: $nav-height + 50px;
-$navbar-height: 80px;
+
+/* SVG */
 $navbar-icon-padding: 0rem 0.5rem;
-$navbar-justify-content-phone: space-evenly;
-$navbar-justify-content: space-between;
-$navbar-padding-safe: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-$navbar-padding: 0rem 4px;
-$navbar-position: Fixed;
-$navbar-width: 100%;
+
+/* Mobile */
+$navbar-justify-content-mobile: space-evenly;
+$navbar-height-mobile: $navbar-height+50px;
+$navbar-flex-direction-mobile: column;

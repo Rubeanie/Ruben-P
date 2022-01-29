@@ -32,8 +32,8 @@ function MyApp({ Component, pageProps }) {
 
         <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
 
-        <meta name="msapplication-TileColor" content={Var.forec} />
-        <meta name="theme-color" content={Var.overbackc} />
+        <meta name="msapplication-TileColor" content={Var.foreground_color} />
+        <meta name="theme-color" content={Var.overlay_background_color} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
       </Head>
       <Signature />
@@ -41,7 +41,7 @@ function MyApp({ Component, pageProps }) {
         <Component {...pageProps} />
       </Layout>
       <div className="loading">
-        <Loader />
+{/*         <Loader /> */}
       </div>
     </div>
   );
