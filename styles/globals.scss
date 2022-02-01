@@ -29,6 +29,14 @@ url {
   text-align: center;
 }
 
+.logo {
+  padding: var.$navbar-icon-padding;
+  width: var.$navbar-height;
+  height: var.$navbar-height;
+  color: var.$color-foreground;
+  size: var.$navbar-height;
+}
+
 .layer {
   position: absolute;
 }

@@ -10,8 +10,7 @@ class Navbar extends React.Component {
           <div>
             <Link href="/" passHref>
               <a>
-                {" "}
-                <Icon className="svg" />{" "}
+                <Icon className="logo" />
               </a>
             </Link>
           </div>
