@@ -3,7 +3,7 @@ import "../styles/globals.scss";
 import Head from "next/head";
 import Var from "../styles/abstracts/_colors.module.scss";
 import Signature from "../components/Signature";
-import Loader from "../components/Loading";
+import Loader from "../components/Loader";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -41,7 +41,7 @@ function MyApp({ Component, pageProps }) {
         <Component {...pageProps} />
       </Layout>
       <div className="loading">
-{/*         <Loader /> */}
+        <Loader />
       </div>
     </div>
   );
