@@ -11,13 +11,14 @@
   "dependencies": {
     "@babel/core": "^7.16.7",
     "@react-spring/three": "^9.4.1",
-    "@react-three/drei": "^7.27.5",
+    "@react-three/drei": "^8.8.0",
     "@react-three/fiber": "^7.0.24",
     "acorn": "^8.7.0",
     "age-calculator": "^1.0.0",
     "babel-plugin-styled-components": "^1.13.2",
     "next": "^12.0.8",
     "react": "^17.0.2",
+    "react-customizable-progressbar": "^1.0.3",
     "react-dom": "^17.0.2",
     "react-html-comment": "^2.0.11",
     "react-icons": "^4.3.1",
@@ -30,7 +31,7 @@
     "sass-loader": "^12.4.0",
     "ssl-root-cas": "^1.3.1",
     "styled-components": "^5.3.1",
-    "three": "^0.132.2",
+    "three": "^0.137.4",
     "webpack": "^5.65.0"
   },
   "devDependencies": {

@@ -55,17 +55,17 @@ export default function Home() {
                 <ambientLight intensity={1} />
                 <pointLight
                   position={[-8, 1, 6]}
-                  color={Var.midc}
+                  color={Var.midground_color}
                   intensity={0.65}
                 />
                 <pointLight
                   position={[0, 1, 8]}
-                  color={Var.forec}
+                  color={Var.foreground_color}
                   intensity={0.65}
                 />
                 <pointLight
                   position={[8, 1, 6]}
-                  color={Var.midc}
+                  color={Var.midground_color}
                   intensity={0.65}
                 />
                 <Suspense fallback={null}>

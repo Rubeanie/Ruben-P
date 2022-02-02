@@ -1,13 +1,13 @@
-@use "../abstracts/index.module" as var;
+@use "../abstracts/index.module"as var;
 
 .socials {
-  margin: 10px;
+  display: flex;
+  align-items: center;
+  transition: transform var.$socials-transition-time;
+  margin: var.$socials-margin;
   width: var.$socials-width;
   max-width: var.$socials-max-width;
   height: var.$socials-height;
-  display: flex;
-  align-items: center;
-  transition: transform 0.25s;
 
   p {
     font-size: var.$socials-text-size;
@@ -18,43 +18,43 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    height: var.$socials-section-height;
   }
 
   .icon {
     @extend section;
-    width: 30%;
+    width: var.$socials-icon-width;
     vertical-align: middle;
   }
 
   .overlay {
     @extend section;
-    width: 70%;
     background: var.$socials-overlay-color;
+    width: var.$socials-overlay-width;
   }
 }
 
 .socials:hover {
-  transform: scale(1.1) perspective(1px);
+  transform: var.$socials-transform-hover;
 }
 
 /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 700px) {
   .socials {
     max-width: var.$socials-width-mobile !important;
-    height: fit-content;
+    height: var.$socials-height-mobile;
 
     section {
-      height: 75px !important;
+      height: var.$socials-section-height-mobile !important;
     }
 
     .icon {
-      width: 100% !important;
+      width: var.$socials-icon-width-mobile !important;
     }
 
     .overlay {
-      width: 100% !important;
-      height: 100px !important;
+      width: var.$socials-overlay-width-mobile !important;
+      height: var.$socials-overlay-height-mobile !important;
     }
   }
 }

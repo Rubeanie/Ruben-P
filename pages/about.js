@@ -9,7 +9,7 @@ export default function About() {
       </Head>
       <hero>
         <div className="row">
-          <div className="flex-padding flex-side">
+          <div className="flex-padding" style={{ flex: "33%" }}>
             <div className="column">
               <img
                 src={
@@ -24,7 +24,7 @@ export default function About() {
               </h2>
             </div>
           </div>
-          <div className="flex-padding flex-main">
+          <div className="flex-padding" style={{ flex: "66%" }}>
             <div className="column">
               <h1-image>ABOUT</h1-image>
             </div>
