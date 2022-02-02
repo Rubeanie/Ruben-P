@@ -1,12 +1,12 @@
-@use '../abstracts/index.module' as var;
+@use '../abstracts/index.module'as var;
 
 html::-webkit-scrollbar {
   width: 7.5px;
 }
 
 html::-webkit-scrollbar-thumb {
-  background: rgba(var.$color-foreground, 0.4);
   border-radius: 20px;
+  background: rgba(var.$color-foreground, 0.4);
 }
 
 html::-webkit-scrollbar-thumb:hover {

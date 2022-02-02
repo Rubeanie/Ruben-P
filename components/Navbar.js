@@ -6,12 +6,11 @@ class Navbar extends React.Component {
   render() {
     return (
       <div>
-        <div className="nav">
+        <div className="navbar">
           <div>
             <Link href="/" passHref>
               <a>
-                {" "}
-                <Icon className="svg" />{" "}
+                <Icon className="logo" />
               </a>
             </Link>
           </div>
