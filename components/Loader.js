@@ -1,13 +1,12 @@
 import * as React from "react";
 import { useProgress } from "@react-three/drei";
+import Icon from "./Icon";
+import ProgressBar from "react-customizable-progressbar";
+import Var from "../styles/abstracts/_colors.module.scss";
 
-const defaultDataInterpolation = (p) => `Loading ${p.toFixed(2)}%`;
+const defaultDataInterpolation = (p) => `${p.toFixed(2)}%`;
 
 function Loader({
-  containerStyles,
-  innerStyles,
-  barStyles,
-  dataStyles,
   dataInterpolation = defaultDataInterpolation,
   initialState = (active) => active,
 }) {
@@ -34,77 +33,40 @@ function Loader({
     updateProgress();
     return () => cancelAnimationFrame(rafRef.current);
   }, [updateProgress]);
-  return shown
-    ? /*#__PURE__*/ React.createElement(
-        "div",
-        {
-          style: {
-            ...styles.container,
-            opacity: active ? 1 : 0,
-            ...containerStyles,
-          },
-        },
-        /*#__PURE__*/ React.createElement(
-          "div",
-          null,
-          /*#__PURE__*/ React.createElement(
-            "div",
-            {
-              style: { ...styles.inner, ...innerStyles },
-            },
-            /*#__PURE__*/ React.createElement("div", {
-              style: {
-                ...styles.bar,
-                transform: `scaleX(${progress / 100})`,
-                ...barStyles,
-              },
-            }),
-            /*#__PURE__*/ React.createElement("span", {
-              ref: progressSpanRef,
-              style: { ...styles.data, ...dataStyles },
-            })
-          )
-        )
-      )
-    : null;
+  return shown ? (
+    <html>
+      <div className="loading" style={{ opacity: active ? 1 : 0 }}>
+        <div className="item">
+          <div className="row">
+            <ProgressBar
+              radius={100}
+              progress={progress}
+              cut={/* 130 */ 0}
+              rotate={/* 155 */ 90}
+              initialAnimation={true}
+              strokeColor={Var.foreground_color}
+              transition=".4s ease"
+              strokeLinecap="square"
+              trackTransition=".1s ease"
+              trackStrokeLinecap="butt"
+              trackStrokeColor={Var.midground_color}
+            >
+              <div className="indicator">
+                <div className="inner">
+                  <Icon className="icon" />
+                </div>
+              </div>
+              <span className="percentage" ref={progressSpanRef} />
+            </ProgressBar>
+          </div>
+        </div>
+        {/*  */}
+        {/*           <span className="data">
+            <progressSpanRef />
+          </span> */}
+      </div>
+    </html>
+  ) : null;
 }
-const styles = {
-  container: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    background: "#171717",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    transition: "opacity 300ms ease",
-    zIndex: 1000,
-  },
-  inner: {
-    width: 100,
-    height: 3,
-    background: "#272727",
-    textAlign: "center",
-  },
-  bar: {
-    height: 3,
-    width: "100%",
-    background: "white",
-    transition: "transform 200ms",
-    transformOrigin: "left center",
-  },
-  data: {
-    display: "inline-block",
-    position: "relative",
-    fontVariantNumeric: "tabular-nums",
-    marginTop: "0.8em",
-    color: "#f0f0f0",
-    fontSize: "0.6em",
-    fontFamily: `-apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", "Helvetica Neue", Helvetica, Arial, Roboto, Ubuntu, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"`,
-    whiteSpace: "nowrap",
-  },
-};
 
 export { Loader };

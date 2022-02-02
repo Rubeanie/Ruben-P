@@ -3,7 +3,7 @@ import "../styles/globals.scss";
 import Head from "next/head";
 import Var from "../styles/abstracts/_colors.module.scss";
 import Signature from "../components/Signature";
-import Loader from "../components/Loader";
+import { Loader } from "../components/Loader";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -34,15 +34,16 @@ function MyApp({ Component, pageProps }) {
 
         <meta name="msapplication-TileColor" content={Var.foreground_color} />
         <meta name="theme-color" content={Var.overlay_background_color} />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+        />
       </Head>
       <Signature />
       <Layout>
         <Component {...pageProps} />
       </Layout>
-      <div className="loading">
-        <Loader />
-      </div>
+      <Loader />
     </div>
   );
 }
