@@ -3,6 +3,7 @@ import Social from "../../components/Social";
 import Var from "../../styles/abstracts/_colors.module.scss";
 import { BsTwitch, BsYoutube, BsSpotify, BsInstagram, BsTwitter, BsGithub } from "react-icons/bs";
 import { FaSteam, FaDiscord, FaWpforms } from "react-icons/fa";
+import Link from "next/link";
 
 export default function links() {
   return (
@@ -87,15 +88,17 @@ export default function links() {
               color={"#e1e8ed"}
             />
           </a>
-          <a href="/contact" passHref>
-            <Social
-              name={"Contact"}
-              logo={<FaWpforms />}
-              username={"Information"}
-              textColor={Var.background_color}
-              color={Var.foreground_color}
-            />
-          </a>
+          <Link href="/contact">
+            <a>
+              <Social
+                name={"Contact"}
+                logo={<FaWpforms />}
+                username={"Information"}
+                textColor={Var.background_color}
+                color={Var.foreground_color}
+              />
+            </a>
+          </Link>
         </div>
       </hero>
     </div>
