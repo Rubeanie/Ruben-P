@@ -41,15 +41,16 @@ function Loader({
             <ProgressBar
               radius={100}
               progress={progress}
-              cut={/* 130 */ 0}
-              rotate={/* 155 */ 90}
+              cut={0}
+              rotate={90}
               initialAnimation={true}
               strokeColor={Var.foreground_color}
-              transition=".4s ease"
+              transition=".0s"
               strokeLinecap="square"
-              trackTransition=".1s ease"
+              trackTransition=".2s ease"
               trackStrokeLinecap="butt"
               trackStrokeColor={Var.midground_color}
+              initialAnimationDelay={250}
             >
               <div className="indicator">
                 <div className="inner">

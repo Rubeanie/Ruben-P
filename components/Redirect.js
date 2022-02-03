@@ -21,13 +21,13 @@ class Redirect extends React.Component {
             <icon>{this.props.logo}</icon> Redirecting...
           </h2>
           <p>
-            Click{" "}
+            Click
             <Link href={this.props.url} passHref>
               <a>
                 <url>here</url>
               </a>
-            </Link>{" "}
-            if the {this.props.name} redirect doesn't work.
+            </Link>
+            if the {this.props.name} redirect doesn&apos;t work.
           </p>
         </div>
       </div>

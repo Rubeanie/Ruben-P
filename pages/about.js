@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Image from "next/image";
 
 export default function About() {
   return (
@@ -11,7 +12,7 @@ export default function About() {
         <div className="row">
           <div className="flex-padding" style={{ flex: "33%" }}>
             <div className="column">
-              <img
+              <Image
                 src={
                   "https://res.cloudinary.com/ruben-p/image/upload/v1642990790/Images/About/Personal-Photo.webp"
                 }
