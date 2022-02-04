@@ -1,16 +1,20 @@
+/* Colors */
 $color-overlay-hex: #000000;
 $color-overlay-alpha: 0.325;
 $color-foreground: #FD666C;
 $color-mid-ground: #2A4867;
 $color-background: #0d192b;
+$color-body-font: #EAF6FF;
 $text-image: url('https://res.cloudinary.com/ruben-p/image/upload/v1642653033/Images/Backgrounds/Background.webp');
 $color-overlay: rgba($color-overlay-hex, $color-overlay-alpha);
-$color-overlay-back: mix($color-overlay-hex, $color-background, $color-overlay-alpha * 100);
+$color-overlay-background: mix($color-overlay-hex, $color-background, $color-overlay-alpha * 100);
 
+/* Color Exports */
 :export {
-  forec: $color-foreground;
-  midc: $color-mid-ground;
-  backc: $color-background;
-  overbackc: $color-overlay-back;
-  overlayc: $color-overlay;
+  foreground_color: $color-foreground;
+  midground_color: $color-mid-ground;
+  background_color: $color-background;
+  overlay_color: $color-overlay;
+  text_color: $color-body-font;
+  overlay_background_color: $color-overlay-background;
 }

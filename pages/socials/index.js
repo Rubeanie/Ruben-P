@@ -3,6 +3,7 @@ import Social from "../../components/Social";
 import Var from "../../styles/abstracts/_colors.module.scss";
 import { BsTwitch, BsYoutube, BsSpotify, BsInstagram, BsTwitter, BsGithub } from "react-icons/bs";
 import { FaSteam, FaDiscord, FaWpforms } from "react-icons/fa";
+import Link from "next/link";
 
 export default function links() {
   return (
@@ -20,7 +21,7 @@ export default function links() {
               name={"YouTube"}
               logo={<BsYoutube />}
               username={"@Rubeanie"}
-              textColor={Var.backc}
+              textColor={Var.background_color}
               color={"#c4302b"}
             />
           </a>
@@ -29,7 +30,7 @@ export default function links() {
               name={"Twitch"}
               logo={<BsTwitch />}
               username={"@Rubeanie"}
-              textColor={Var.backc}
+              textColor={Var.background_color}
               color={"#6441a5"}
             />
           </a>
@@ -38,7 +39,7 @@ export default function links() {
               name={"Discord"}
               logo={<FaDiscord />}
               username={"discord.gg/B98bJGU"}
-              textColor={Var.backc}
+              textColor={Var.background_color}
               color={"#5865f2"}
             />
           </a>
@@ -47,7 +48,7 @@ export default function links() {
               name={"Twitter"}
               logo={<BsTwitter />}
               username={"@TwitchRubeanie"}
-              textColor={Var.backc}
+              textColor={Var.background_color}
               color={"#1da1f2"}
             />
           </a>
@@ -56,7 +57,7 @@ export default function links() {
               name={"Instagram"}
               logo={<BsInstagram />}
               username={"@rubeanie"}
-              textColor={Var.backc}
+              textColor={Var.background_color}
               color={"#f09433"}
             />
           </a>
@@ -65,7 +66,7 @@ export default function links() {
               name={"Spotify"}
               logo={<BsSpotify />}
               username={"@ruben"}
-              textColor={Var.backc}
+              textColor={Var.background_color}
               color={"#1DB954"}
             />
           </a>
@@ -74,7 +75,7 @@ export default function links() {
               name={"Steam"}
               logo={<FaSteam />}
               username={"@rubeanie"}
-              textColor={Var.backc}
+              textColor={Var.background_color}
               color={"#66c0f4"}
             />
           </a>
@@ -83,19 +84,21 @@ export default function links() {
               name={"Github"}
               logo={<BsGithub />}
               username={"@Rubeanie"}
-              textColor={Var.backc}
+              textColor={Var.background_color}
               color={"#e1e8ed"}
             />
           </a>
-          <a href="/contact" passHref>
-            <Social
-              name={"Contact"}
-              logo={<FaWpforms />}
-              username={"Information"}
-              textColor={Var.backc}
-              color={Var.forec}
-            />
-          </a>
+          <Link href="/contact">
+            <a>
+              <Social
+                name={"Contact"}
+                logo={<FaWpforms />}
+                username={"Information"}
+                textColor={Var.background_color}
+                color={Var.foreground_color}
+              />
+            </a>
+          </Link>
         </div>
       </hero>
     </div>

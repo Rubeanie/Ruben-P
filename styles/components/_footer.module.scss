@@ -1,33 +1,27 @@
-@use '../abstracts/index.module' as var;
+@use "../abstracts/index.module"as var;
 
-.foot {
-  padding: var.$foot-padding;
-  height: var.$foot-height;
-  width: var.$foot-width;
-  background: var.$color-overlay;
-  color: var.$font-body-color;
-  display: var.$foot-display;
-  justify-content: var.$foot-justify-content;
-  align-items: var.$foot-align-items;
+.footer {
+  display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: var.$footer-justify-content;
+  z-index: 5;
+  background: var.$color-overlay;
+  padding: var.$footer-padding;
+  width: var.$footer-width;
+  height: var.$footer-height;
+  color: var.$color-body-font;
 
-
-  p {
-    padding: var.$foot-text-padding;
-  }
-
-  foot-info {
-    @extend p;
+  footer-info {
     text-align: center;
   }
 }
 
-
 /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 700px) {
-  .foot {
-    height: var.$foot-height * 2;
+  .footer {
     flex-direction: column;
     justify-content: space-evenly;
+    height: var.$footer-height * 2;
   }
 }
