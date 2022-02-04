@@ -32,6 +32,7 @@
   }
 
   p {
+    max-width: 70vw;
     overflow: auto;
     text-align: var.$body-alignment;
     line-height: 1.33em;
