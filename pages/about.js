@@ -1,7 +1,19 @@
 import Head from "next/head";
 import Image from "next/image";
+import { AdvancedImage } from "@cloudinary/react";
+import { Cloudinary } from "@cloudinary/url-gen";
 
 export default function About() {
+  const cld = new Cloudinary({
+    cloud: {
+      cloudName: "ruben-p",
+    },
+  });
+
+  const personalPhoto = cld.image(
+    "v1642990790/Images/About/Personal-Photo.webp"
+  );
+
   return (
     <div className="page">
       <Head>
@@ -12,13 +24,7 @@ export default function About() {
         <div className="row">
           <div className="flex-padding" style={{ flex: "33%" }}>
             <div className="column">
-              <Image
-                src={
-                  "https://res.cloudinary.com/ruben-p/image/upload/v1642990790/Images/About/Personal-Photo.webp"
-                }
-                alt="A photo of Ruben Panzich"
-                width={"100%"}
-              />
+              <AdvancedImage cldImg={personalPhoto} style={{ width: "100%" }}/>
               <h2>
                 -Ruben.P
                 <br />▼
