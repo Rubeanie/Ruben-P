@@ -4,6 +4,71 @@ import Head from "next/head";
 import Var from "../styles/abstracts/_colors.module.scss";
 import Signature from "../components/Signature";
 import { Loader } from "../components/Loader";
+import Particles from "react-tsparticles";
+
+const options = {
+  fpsLimit: 30,
+  background: {
+    color: {
+      value: Var.background_color,
+    },
+  },
+  fullScreen: {
+    enable: true,
+    zIndex: -1,
+  },
+  interactivity: {
+    events: {
+      onClick: {
+        enable: true,
+        mode: "push",
+      },
+      onHover: {
+        enable: true,
+        mode: "repulse",
+      },
+    },
+  },
+  particles: {
+    color: {
+      value: Var.foreground_color,
+    },
+    links: {
+      color: {
+        value: Var.midground_color,
+      },
+      enable: true,
+      opacity: 0.75,
+    },
+    move: {
+      enable: true,
+      outModes: {
+        bottom: "out",
+        left: "out",
+        right: "out",
+        top: "out",
+      },
+      speed: 1,
+    },
+    number: {
+      density: {
+        enable: true,
+      },
+      limit: 120,
+      value: 80,
+    },
+    opacity: {
+      value: 0.75,
+    },
+    size: {
+      value: {
+        min: 0.1,
+        max: 3,
+      },
+    },
+    detectRetina: true,
+  },
+};
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -39,11 +104,12 @@ function MyApp({ Component, pageProps }) {
           content="width=device-width, initial-scale=1.0, viewport-fit=cover"
         />
       </Head>
-      <Signature />
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-      <Loader />
+      <Particles options={options} />
+        <Signature />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+        <Loader />
     </div>
   );
 }
