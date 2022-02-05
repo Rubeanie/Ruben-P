@@ -1,6 +1,5 @@
 import Head from "next/head";
-import Image from "next/image";
-import { AdvancedImage } from "@cloudinary/react";
+import { AdvancedImage, placeholder } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen";
 
 export default function About() {
@@ -24,7 +23,11 @@ export default function About() {
         <div className="row">
           <div className="flex-padding" style={{ flex: "33%" }}>
             <div className="column">
-              <AdvancedImage cldImg={personalPhoto} style={{ width: "100%" }}/>
+              <AdvancedImage
+                cldImg={personalPhoto}
+                style={{ width: "100%" }}
+                plugins={[placeholder({ mode: "blur" })]}
+              />
               <h2>
                 -Ruben.P
                 <br />▼
