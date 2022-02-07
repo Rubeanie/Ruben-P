@@ -1,7 +1,14 @@
 import Head from "next/head";
 import Social from "../../components/Social";
 import Var from "../../styles/abstracts/_colors.module.scss";
-import { BsTwitch, BsYoutube, BsSpotify, BsInstagram, BsTwitter, BsGithub } from "react-icons/bs";
+import {
+  BsTwitch,
+  BsYoutube,
+  BsSpotify,
+  BsInstagram,
+  BsTwitter,
+  BsGithub,
+} from "react-icons/bs";
 import { FaSteam, FaDiscord, FaWpforms } from "react-icons/fa";
 import Link from "next/link";
 
@@ -9,9 +16,10 @@ export default function links() {
   return (
     <div className="page">
       <Head>
-        <title>Socials</title>
-        <meta key="robots" name="robots" content="noindex,follow" />
-        <meta key="googlebot" name="googlebot" content="noindex,follow" />
+        <title>Socials | Ruben Panzich</title>
+        <meta name="description" content="Ruben Panzich's other social links" />
+        <meta key="robots" name="robots" content="index,follow" />
+        <meta key="googlebot" name="googlebot" content="index,follow" />
       </Head>
       <hero>
         <div className="column">

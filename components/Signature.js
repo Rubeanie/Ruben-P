@@ -23,7 +23,7 @@ const str =
 
 class Signature extends React.Component {
   render() {
-    return <HTMLComment text={str} />
+    return <HTMLComment text={str} />;
   }
 }
 
