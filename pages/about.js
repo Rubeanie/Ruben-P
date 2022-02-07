@@ -16,8 +16,13 @@ export default function About() {
   return (
     <div className="page">
       <Head>
-        <title>About</title>
-        <meta name="description" content="More about me." />
+        <title>About | Ruben Panzich</title>
+        <meta
+          name="description"
+          content="More information about Ruben Panzich"
+        />
+        <meta key="robots" name="robots" content="index,follow" />
+        <meta key="googlebot" name="googlebot" content="index,follow" />
       </Head>
       <hero>
         <div className="row">

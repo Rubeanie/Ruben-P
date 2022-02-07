@@ -27,13 +27,11 @@ class Social extends React.Component {
             </div>
             <div className="overlay">
               <div className="column">
-                  <p
-                    style={{ color: this.props.textColor, overflow: "visible" }}
-                  >
-                    {this.props.name}
-                    <br />
-                    {this.props.username}
-                  </p>
+                <p style={{ color: this.props.textColor, overflow: "visible" }}>
+                  {this.props.name}
+                  <br />
+                  {this.props.username}
+                </p>
               </div>
             </div>
           </div>
