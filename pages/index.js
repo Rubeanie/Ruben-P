@@ -28,9 +28,9 @@ function Logo() {
 }
 
 function Age() {
-   let { AgeFromDate } = require("age-calculator");
-   
-   return new AgeFromDate(new Date("2004-07-26")).age;
+  let { AgeFromDate } = require("age-calculator");
+
+  return new AgeFromDate(new Date("2004-07-26")).age;
 }
 
 export default function Home() {
@@ -41,6 +41,10 @@ export default function Home() {
         <meta
           name="description"
           content="I'm Ruben Panzich, I am a Freelance creative developer, with qualifications in game design and development."
+        />
+        <meta
+          name="keywords"
+          content="Ruben, Panzich, Portfolio, About, Links, Contact, Artist, Developer"
         />
       </Head>
       <hero>
