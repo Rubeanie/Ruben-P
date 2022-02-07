@@ -103,13 +103,16 @@ function MyApp({ Component, pageProps }) {
           name="viewport"
           content="width=device-width, initial-scale=1.0, viewport-fit=cover"
         />
+
+        <meta key="robots" name="robots" content="index,follow" />
+        <meta key="googlebot" name="googlebot" content="index,follow" />
       </Head>
       <Particles options={options} />
-        <Signature />
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-        <Loader />
+      <Signature />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+      <Loader />
     </div>
   );
 }
