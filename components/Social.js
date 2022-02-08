@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-class Social extends React.Component {
+export default class Social extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -40,5 +40,3 @@ class Social extends React.Component {
     );
   }
 }
-
-export default Social;
