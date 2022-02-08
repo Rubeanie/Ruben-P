@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 
-class Footer extends React.Component {
+export default class Footer extends React.Component {
   render() {
     return (
       <div className="footer">
@@ -19,5 +19,3 @@ class Footer extends React.Component {
     );
   }
 }
-
-export default Footer;

@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { AdvancedImage, placeholder } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen";
+import Analytics from "../components/Ga";
 
 export default function About() {
   const cld = new Cloudinary({
@@ -24,6 +25,7 @@ export default function About() {
         <meta key="robots" name="robots" content="index,follow" />
         <meta key="googlebot" name="googlebot" content="index,follow" />
       </Head>
+      <Analytics />
       <hero>
         <div className="row">
           <div className="flex-padding" style={{ flex: "33%" }}>
