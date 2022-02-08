@@ -2,7 +2,7 @@ import Link from "next/link";
 import Icon from "./Icon";
 import React from "react";
 
-class Navbar extends React.Component {
+export default class Navbar extends React.Component {
   render() {
     return (
       <div>
@@ -30,5 +30,3 @@ class Navbar extends React.Component {
     );
   }
 }
-
-export default Navbar;

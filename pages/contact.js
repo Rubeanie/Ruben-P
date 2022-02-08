@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Analytics from "../components/Ga";
 
 export default function Contact() {
   return (
@@ -12,6 +13,7 @@ export default function Contact() {
         <meta key="robots" name="robots" content="index,follow" />
         <meta key="googlebot" name="googlebot" content="index,follow" />
       </Head>
+      <Analytics />
       <hero>
         <h1-image>CONTACT</h1-image>
         <p>Coming Soon...</p>

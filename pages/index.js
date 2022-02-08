@@ -1,10 +1,10 @@
 import React, { Suspense, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-//
 import { animated } from "@react-spring/three";
 import Head from "next/head";
 import Model from "../components/RP-Logo";
 import Var from "../styles/abstracts/_colors.module.scss";
+import Analytics from "../components/Ga";
 
 function Logo() {
   const myMesh = React.useRef();
@@ -47,6 +47,7 @@ export default function Home() {
           content="Ruben, Panzich, Portfolio, About, Links, Contact, Artist, Developer"
         />
       </Head>
+      <Analytics />
       <hero>
         <div className="column">
           <div className="layer">
