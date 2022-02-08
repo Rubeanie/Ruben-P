@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Analytics from "../components/Ga";
 
 export default function Error() {
   return (
@@ -10,7 +9,6 @@ export default function Error() {
         <meta key="robots" name="robots" content="noindex,follow" />
         <meta key="googlebot" name="googlebot" content="noindex,follow" />
       </Head>
-      <Analytics pathname="/404" />
       <hero>
         <div className="column">
           <h2>Error</h2>
