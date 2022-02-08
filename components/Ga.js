@@ -1,29 +1,21 @@
-import { useEffect, useState } from "react";
-import ReactGA from "react-ga";
+import Script from 'next/script'
 
-const Analytics = (props) => {
-  const [initialized, setInitialized] = useState(false);
-
-  useEffect(() => {
-    ReactGA.initialize("G-2ZRD55KVE8"/* , { debug: true } */);
-    setInitialized(true);
-  }, []);
-
-  useEffect(() => {
-      if (initialized) {
-        let path = window.location.pathname + window.location.search;
-        if (props.pathname != null) {
-          path = props.pathname;
-        }
-        ReactGA.pageview(path);
-      }
-    },
-    [initialized, props.pathname]
+function Analytics() {
+  return (
+    <div className="container">
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+          ga('create', 'G-2ZRD55KVE8', 'auto');
+          ga('send', 'pageview');
+        `}
+      </Script>
+      <Script
+        src="https://www.google-analytics.com/analytics.js"
+        strategy="afterInteractive"
+      />
+    </div>
   );
-
-  return(
-    <div />
-  );
-};
+}
 
 export default Analytics;
