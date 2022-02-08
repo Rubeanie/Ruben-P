@@ -11,7 +11,6 @@ import {
 } from "react-icons/bs";
 import { FaSteam, FaDiscord, FaWpforms } from "react-icons/fa";
 import Link from "next/link";
-import Analytics from "../../components/Ga";
 
 export default function links() {
   return (
@@ -22,7 +21,6 @@ export default function links() {
         <meta key="robots" name="robots" content="index,follow" />
         <meta key="googlebot" name="googlebot" content="index,follow" />
       </Head>
-      <Analytics />
       <hero>
         <div className="column">
           <h2>Socials</h2>
