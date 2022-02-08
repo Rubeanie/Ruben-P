@@ -1,21 +1,17 @@
-import Script from 'next/script'
+export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID
 
-function Analytics() {
-  return (
-    <div className="container">
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-          window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-          ga('create', 'G-2ZRD55KVE8', 'auto');
-          ga('send', 'pageview');
-        `}
-      </Script>
-      <Script
-        src="https://www.google-analytics.com/analytics.js"
-        strategy="afterInteractive"
-      />
-    </div>
-  );
+// https://developers.google.com/analytics/devguides/collection/gtagjs/pages
+export const pageview = (url) => {
+  window.gtag('config', GA_TRACKING_ID, {
+    page_path: url,
+  })
 }
 
-export default Analytics;
+// https://developers.google.com/analytics/devguides/collection/gtagjs/events
+export const event = ({ action, category, label, value }) => {
+  window.gtag('event', action, {
+    event_category: category,
+    event_label: label,
+    value: value,
+  })
+}

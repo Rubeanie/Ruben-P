@@ -1,10 +1,14 @@
+import { useEffect } from "react";
 import Layout from "../components/Layout";
 import "../styles/globals.scss";
+import Script from "next/script";
 import Head from "next/head";
 import Var from "../styles/abstracts/_colors.module.scss";
 import Signature from "../components/Signature";
 import { Loader } from "../components/Loader";
 import Particles from "react-tsparticles";
+import { useRouter } from "next/router";
+import * as gtag from "../components/Ga";
 
 const options = {
   fpsLimit: 30,
@@ -70,9 +74,39 @@ const options = {
   },
 };
 
-function MyApp({ Component, pageProps }) {
+function App({ Component, pageProps }) {
+  const router = useRouter();
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      gtag.pageview(url);
+    };
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
+
   return (
     <div className="App">
+      {/* Global Site Tag (gtag.js) - Google Analytics */}
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
+      />
+      <Script
+        id="gtag-init"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${gtag.GA_TRACKING_ID}', {
+              page_path: window.location.pathname,
+            });
+          `,
+        }}
+      />
       <Head>
         <link rel="icon" type="image/png" href="/favicon/RP-Logo-Apple.png" />
         <link
@@ -115,6 +149,6 @@ function MyApp({ Component, pageProps }) {
       <Loader />
     </div>
   );
-}
+};
 
-export default MyApp;
+export default App;

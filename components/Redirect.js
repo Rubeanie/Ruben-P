@@ -1,7 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
-import Analytics from "./Ga";
 
 export default class Redirect extends React.Component {
   constructor(props) {
@@ -17,7 +16,6 @@ export default class Redirect extends React.Component {
           <meta key="robots" name="robots" content="noindex,follow" />
           <meta key="googlebot" name="googlebot" content="noindex,follow" />
         </Head>
-        <Analytics />
         <div className="column">
           <h2>
             <icon>{this.props.logo}</icon> Redirecting...
