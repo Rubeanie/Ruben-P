@@ -1,0 +1,41 @@
+@use '../abstracts/index.module' as var;
+
+.nav {
+  padding: var.$nav-padding;
+  height: var.$nav-height;
+  width: var.$nav-width;
+  background: var.$color-overlay;
+  color: var.$font-body-color;
+  display: var.$nav-display;
+  position: var.$nav-position;
+  justify-content: var.$nav-justify-content;
+  align-items: var.$nav-align-items;
+  flex-direction: var.$nav-flex-direction;
+  z-index: 1;
+
+  .button {
+    padding: var.$nav-button-padding;
+    font-size: var.$nav-font-size;
+    line-height: var.$nav-font-line-size;
+    font-weight: var.$nav-font-weight;  
+    color: var.$color-foreground;
+    flex: 0 1 auto;
+  }
+
+  .svg {
+    padding: var.$nav-icon-padding;
+    size: var.$nav-height;
+    height: var.$nav-height;
+    width: var.$nav-height;
+    color: var.$color-foreground;
+  }
+}
+
+/* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 700px) {
+  .nav {
+    height: var.$nav-height-phone;
+    flex-direction: var.$nav-flex-direction-phone;
+    justify-content: var.$nav-justify-content-phone;
+  }
+}

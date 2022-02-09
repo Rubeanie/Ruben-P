@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'ailerons';
+  src: url('/fonts/ailerons-regular-webfont.woff2') format('woff2'),
+       url('/fonts/ailerons-regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'kollektif';
+  src: url('/fonts/kollektif-webfont.woff2') format('woff2'),
+       url('/fonts/kollektif-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+$font-body-color: #EAF6FF;
+
+$font-title: ailerons, serif;
+$font-body: kollektif, serif;
+
+$heading-size: 13vw;
+$heading-line-size: 100%;
+$heading-alignment: center;
+$heading-weight: 700;
+
+$title-size: 47px;
+
+$body-size: 25px;
+$body-alignment: center;
