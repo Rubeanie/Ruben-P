@@ -1,0 +1,50 @@
+@use '../abstracts/index.module'as var;
+
+.navbar {
+  display: flex;
+  position: var.$navbar-position;
+  flex-direction: var.$navbar-flex-direction;
+  align-items: center;
+  justify-content: var.$navbar-justify-content;
+  z-index: 5;
+  background: var.$color-overlay;
+  padding: var.$navbar-padding;
+  padding: var.$navbar-padding-safe;
+  width: var.$navbar-width;
+  height: var.$navbar-height;
+  color: var.$color-body-font;
+
+  .button {
+    flex: 0 1 auto;
+    padding: var.$navbar-button-padding;
+    line-height: var.$navbar-button-line-height;
+    color: var.$color-foreground;
+    font-size: var.$navbar-font-size;
+    font-weight: var.$navbar-font-weight;
+  }
+
+  .svg {
+    padding: var.$navbar-icon-padding;
+    width: var.$navbar-height;
+    height: var.$navbar-height;
+    color: var.$color-foreground;
+    size: var.$navbar-height;
+  }
+
+  .logo {
+    padding: var.$navbar-icon-padding;
+    width: var.$navbar-height;
+    height: var.$navbar-height;
+    color: var.$color-foreground;
+    size: var.$navbar-height;
+  }
+}
+
+/* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 700px) {
+  .navbar {
+    flex-direction: var.$navbar-flex-direction-mobile;
+    justify-content: var.$navbar-justify-content-mobile;
+    height: var.$navbar-height-mobile;
+  }
+}
