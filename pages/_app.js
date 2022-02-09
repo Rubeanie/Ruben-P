@@ -141,7 +141,7 @@ function App({ Component, pageProps }) {
         <meta key="robots" name="robots" content="index,follow" />
         <meta key="googlebot" name="googlebot" content="index,follow" />
       </Head>
-      <Particles options={options} />
+      <Particles options={options} height={"100vh"} />
       <Signature />
       <Layout>
         <Component {...pageProps} />

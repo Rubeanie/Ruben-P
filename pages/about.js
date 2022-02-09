@@ -19,7 +19,7 @@ export default function About() {
         <title>About | Ruben Panzich</title>
         <meta
           name="description"
-          content="More information about Ruben Panzich"
+          content="More information about Ruben Panzich."
         />
         <meta key="robots" name="robots" content="index,follow" />
         <meta key="googlebot" name="googlebot" content="index,follow" />
@@ -51,11 +51,9 @@ export default function About() {
           <div className="column">
             <p>
               Hi! <br /> My name is Ruben Panzich, I am a student currently
-              attending year 11 at Hale school, my subjects include: <br /> AIT
-              (ATAR) <br /> Engineering (ATAR) <br /> Maths applications (ATAR){" "}
-              <br />
-              English (ATAR) <br /> Economics (ATAR) <br /> Cert IV in Game
-              Development
+              attending year 12 at Hale school, &apos;I am currently doing ATAR
+              and have already achieved a Certificate IV in Digital and
+              Interactive Games&apos;
             </p>
             <h2>My Story</h2>
             <p>
@@ -65,8 +63,7 @@ export default function About() {
               university. Since I’ve begun this journey I’ve learnt about Unity,
               design, 3D modeling, coding and many other skills, during this
               journey a lot of these skills have been given time to flourish in
-              the subject AIT, leading me to the point I am now. Currently as of
-              2021 a Hale student.
+              the subject AIT, leading me to the point I am now.
             </p>
           </div>
         </div>

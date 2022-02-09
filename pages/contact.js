@@ -7,7 +7,7 @@ export default function Contact() {
         <title>Contact | Ruben Panzich</title>
         <meta
           name="description"
-          content="How to get in contact with Ruben Panzich"
+          content="How to get in contact with Ruben Panzich."
         />
         <meta key="robots" name="robots" content="index,follow" />
         <meta key="googlebot" name="googlebot" content="index,follow" />

@@ -13,21 +13,26 @@ export default class Redirect extends React.Component {
     return (
       <div>
         <Head>
-          <meta key="robots" name="robots" content="noindex,follow" />
-          <meta key="googlebot" name="googlebot" content="noindex,follow" />
+          <title>{`${this.props.name} redirect`}</title>
+          <meta
+            name="description"
+            content={`${this.props.name} redirect page.`}
+          />
+          <meta key="robots" name="robots" content="index,follow" />
+          <meta key="googlebot" name="googlebot" content="index,follow" />
         </Head>
         <div className="column">
           <h2>
             <icon>{this.props.logo}</icon> Redirecting...
           </h2>
           <p>
-            Click
+            Click{" "}
             <Link href={this.props.url} passHref>
               <a>
                 <url>here</url>
               </a>
-            </Link>
-            if the {this.props.name} redirect doesn&apos;t work.
+            </Link>{" "}
+            if the {this.props.name} redirect doesn’t work.
           </p>
         </div>
       </div>

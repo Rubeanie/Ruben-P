@@ -6,7 +6,7 @@ export default class Footer extends React.Component {
     return (
       <div className="footer">
         <div className="column">
-          <foot-info>© 2021 by Ruben Panzich</foot-info>
+          <foot-info>©2022 Ruben Panzich</foot-info>
           <Link href="https://github.com/Rubeanie/Personal-Website">
             <a>
               <foot-github>

@@ -1,6 +1,6 @@
 import Head from "next/head";
-import Social from "../../components/Social";
-import Var from "../../styles/abstracts/_colors.module.scss";
+import Social from "../components/Social";
+import Var from "../styles/abstracts/_colors.module.scss";
 import {
   BsTwitch,
   BsYoutube,
@@ -17,7 +17,7 @@ export default function links() {
     <div className="page">
       <Head>
         <title>Socials | Ruben Panzich</title>
-        <meta name="description" content="Ruben Panzich's other social links" />
+        <meta name="description" content="Ruben Panzich's other social links." />
         <meta key="robots" name="robots" content="index,follow" />
         <meta key="googlebot" name="googlebot" content="index,follow" />
       </Head>
