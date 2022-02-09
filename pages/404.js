@@ -5,7 +5,7 @@ export default function Error() {
     <div className="page">
       <Head>
         <title>Page cannot be found</title>
-        <meta name="description" content="Error 404, page cannot be found" />
+        <meta name="description" content="Error 404, page cannot be found." />
         <meta key="robots" name="robots" content="noindex,follow" />
         <meta key="googlebot" name="googlebot" content="noindex,follow" />
       </Head>

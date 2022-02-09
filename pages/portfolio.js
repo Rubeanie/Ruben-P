@@ -5,7 +5,7 @@ export default function Portfolio() {
     <div className="page">
       <Head>
         <title>Portfolio | Ruben Panzich</title>
-        <meta name="description" content="Ruben Panzich's work portfolio" />
+        <meta name="description" content="Ruben Panzich's work portfolio." />
         <meta key="robots" name="robots" content="index,follow" />
         <meta key="googlebot" name="googlebot" content="index,follow" />
       </Head>
