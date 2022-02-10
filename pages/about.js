@@ -51,9 +51,9 @@ export default function About() {
           <div className="column">
             <p>
               Hi! <br /> My name is Ruben Panzich, I am a student currently
-              attending year 12 at Hale school, &apos;I am currently doing ATAR
-              and have already achieved a Certificate IV in Digital and
-              Interactive Games&apos;
+              attending year 12 at Hale school, I am currently doing ATAR and
+              have already achieved a: <br /> &quot;Certificate IV in Digital
+              and Interactive Games&quot;
             </p>
             <h2>My Story</h2>
             <p>
