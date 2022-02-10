@@ -1,6 +1,6 @@
 import Head from "next/head";
-import Social from "../components/Social";
-import Var from "../styles/abstracts/_colors.module.scss";
+import Social from "../../components/Social";
+import Var from "../../styles/abstracts/_colors.module.scss";
 import {
   BsTwitch,
   BsYoutube,
