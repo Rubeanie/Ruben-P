@@ -179,3 +179,8 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+#sitemaps
+/public/sitemap.xml
+/public/sitemap-[0-9]*.xml
+/public/robots.txt
