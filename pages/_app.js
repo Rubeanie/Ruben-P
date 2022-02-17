@@ -3,76 +3,11 @@ import Layout from "../components/Layout";
 import "../styles/globals.scss";
 import Script from "next/script";
 import Head from "next/head";
-import Var from "../styles/abstracts/_colors.module.scss";
 import Signature from "../components/Signature";
 import { Loader } from "../components/Loader";
-import Particles from "react-tsparticles";
 import { useRouter } from "next/router";
 import * as gtag from "../components/Ga";
-
-const options = {
-  fpsLimit: 30,
-  background: {
-    color: {
-      value: Var.background_color,
-    },
-  },
-  fullScreen: {
-    enable: true,
-    zIndex: -1,
-  },
-  interactivity: {
-    events: {
-      onClick: {
-        enable: true,
-        mode: "push",
-      },
-      onHover: {
-        enable: true,
-        mode: "repulse",
-      },
-    },
-  },
-  particles: {
-    color: {
-      value: Var.foreground_color,
-    },
-    links: {
-      color: {
-        value: Var.midground_color,
-      },
-      enable: true,
-      opacity: 0.75,
-    },
-    move: {
-      enable: true,
-      outModes: {
-        bottom: "out",
-        left: "out",
-        right: "out",
-        top: "out",
-      },
-      speed: 1,
-    },
-    number: {
-      density: {
-        enable: true,
-      },
-      limit: 120,
-      value: 80,
-    },
-    opacity: {
-      value: 0.75,
-    },
-    size: {
-      value: {
-        min: 0.1,
-        max: 3,
-      },
-    },
-    detectRetina: true,
-  },
-};
+import { GetColor, StyleGenerator } from "../components/Style";
 
 function App({ Component, pageProps }) {
   const router = useRouter();
@@ -131,8 +66,11 @@ function App({ Component, pageProps }) {
 
         <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
 
-        <meta name="msapplication-TileColor" content={Var.foreground_color} />
-        <meta name="theme-color" content={Var.overlay_background_color} />
+        <meta
+          name="msapplication-TileColor"
+          content={GetColor("--color-foreground")}
+        />
+        <meta name="theme-color" content={GetColor("--color-background")} />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, viewport-fit=cover"
@@ -141,7 +79,7 @@ function App({ Component, pageProps }) {
         <meta key="robots" name="robots" content="index,follow" />
         <meta key="googlebot" name="googlebot" content="index,follow" />
       </Head>
-      <Particles options={options} height={"100vh"} />
+      <StyleGenerator />
       <Signature />
       <Layout>
         <Component {...pageProps} />
@@ -149,6 +87,6 @@ function App({ Component, pageProps }) {
       <Loader />
     </div>
   );
-};
+}
 
 export default App;

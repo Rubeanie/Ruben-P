@@ -3,23 +3,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { animated } from "@react-spring/three";
 import Head from "next/head";
 import Model from "../components/RP-Logo";
-import Var from "../styles/abstracts/_colors.module.scss";
-import { usePalette } from "react-palette";
-
-function Tmp() {
-  const { data, loading, error } = usePalette(
-    "https://res.cloudinary.com/ruben-p/image/upload/v1642653033/Images/Backgrounds/Background.webp"
-  );
-  const Color = require("color");
-  /* Background Color */
-  //console.log(Color(data.darkMuted).saturate(0.75).darken(0.55).hex());
-  /* Foreground Color */
-  //console.log(Color(data.lightVibrant).hex());
-  /* Midground Color */
-  //console.log(Color(data.darkMuted).saturate(0.25).lighten(0.2).hex());
-  
-  return null;
-}
+import { GetColor, StyleGenerator } from "../components/Style";
 
 function Logo() {
   const myMesh = React.useRef();
@@ -62,7 +46,6 @@ export default function Home() {
           content="Ruben, Panzich, Portfolio, About, Links, Contact, Artist, Developer"
         />
       </Head>
-      <Tmp />
       <hero>
         <div className="column">
           <div className="layer">
@@ -75,17 +58,17 @@ export default function Home() {
                 <ambientLight intensity={1} />
                 <pointLight
                   position={[-8, 1, 6]}
-                  color={Var.midground_color}
+                  color={GetColor("--color-mid-ground")}
                   intensity={0.65}
                 />
                 <pointLight
                   position={[0, 1, 8]}
-                  color={Var.foreground_color}
+                  color={GetColor("--color-foreground")}
                   intensity={0.65}
                 />
                 <pointLight
                   position={[8, 1, 6]}
-                  color={Var.midground_color}
+                  color={GetColor("--color-mid-ground")}
                   intensity={0.65}
                 />
                 <Suspense fallback={null}>

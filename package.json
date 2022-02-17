@@ -36,7 +36,6 @@
     "react-router-dom": "^6.2.1",
     "react-spinners": "^0.11.0",
     "react-spring": "^9.4.3",
-    "react-tsparticles": "^1.41.0",
     "request": "^2.88.2",
     "sass": "^1.49.7",
     "sass-loader": "^12.4.0",
