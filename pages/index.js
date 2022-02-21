@@ -3,7 +3,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { animated } from "@react-spring/three";
 import Head from "next/head";
 import Model from "../components/RP-Logo";
-import { GetColor, StyleGenerator } from "../components/Style";
+import { GetColor } from "../components/Style";
 
 function Logo() {
   const myMesh = React.useRef();
