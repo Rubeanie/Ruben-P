@@ -3,7 +3,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { animated } from "@react-spring/three";
 import Head from "next/head";
 import Model from "../components/RP-Logo";
-import Var from "../styles/abstracts/_colors.module.scss";
+import { GetColor } from "../components/Style";
 
 function Logo() {
   const myMesh = React.useRef();
@@ -58,17 +58,17 @@ export default function Home() {
                 <ambientLight intensity={1} />
                 <pointLight
                   position={[-8, 1, 6]}
-                  color={Var.midground_color}
+                  color={GetColor("--color-mid-ground")}
                   intensity={0.65}
                 />
                 <pointLight
                   position={[0, 1, 8]}
-                  color={Var.foreground_color}
+                  color={GetColor("--color-foreground")}
                   intensity={0.65}
                 />
                 <pointLight
                   position={[8, 1, 6]}
-                  color={Var.midground_color}
+                  color={GetColor("--color-mid-ground")}
                   intensity={0.65}
                 />
                 <Suspense fallback={null}>

@@ -1,6 +1,18 @@
 @use './abstracts/index.module'as var;
 @use './components/index.module'as com;
 
+:root {
+  /* Colors */
+  --color-overlay-rgb:0,0,0;
+  --color-overlay-alpha:0.325;
+  --color-foreground:237,95,104;
+  --color-mid-ground:51,69,109;
+  --color-background:15,24,45;
+  --color-body-font:234,246,255;
+  --text-image: url('https://res.cloudinary.com/ruben-p/image/upload/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq.webp');
+  --color-overlay: rgba(var(--color-overlay-rgb), var(--color-overlay-alpha));
+}
+
 html,
 body {
   margin: 0;
@@ -26,6 +38,7 @@ url {
 .App {
   box-sizing: border-box;
   text-align: center;
+  background: var.$color-background;
 }
 
 .layer {
