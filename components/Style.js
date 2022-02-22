@@ -71,7 +71,7 @@ function SetStyle() {
 }
 function StyleGenerator() {
   const urls = require('../styles/abstracts/_backgrounds.json');
-  const index = Math.round(Math.random() * urls.length - 1)
+  const index = Math.floor(Math.random() * urls.length)
   url = urls[index];
   console.log(`Url: ${url} | Index: ${index}`);
 
