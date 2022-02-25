@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { AdvancedImage, placeholder } from "@cloudinary/react";
+import { AdvancedImage, lazyload, placeholder } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/url-gen";
 
 export default function About() {
@@ -31,7 +31,11 @@ export default function About() {
               <AdvancedImage
                 cldImg={personalPhoto}
                 style={{ width: "100%" }}
-                plugins={[placeholder({ mode: "blur" })]}
+                plugins={[
+                  lazyload(),
+                  placeholder({ mode: "predominant-color" }),
+                  placeholder({ mode: "blur" })
+                ]}
               />
               <h2>
                 -Ruben.P
