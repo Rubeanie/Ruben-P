@@ -65,6 +65,11 @@ function SetStyle() {
       /* Text Image */
       document.documentElement.style.setProperty("--text-image", `url('${url}')`);
     }
+    const doc = document.documentElement;
+    doc.style.display = "none";
+    doc.offsetHeight;
+    doc.style.display = "";
+    
   }, [data]);
 
   return null;
