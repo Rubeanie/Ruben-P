@@ -1,6 +1,8 @@
 <p >
 <img src="https://img.shields.io/github/stars/Rubeanie/Ruben-P?color=efc20f&style=for-the-badge" />&nbsp;
 <img src="https://img.shields.io/github/issues/Rubeanie/Ruben-P?style=for-the-badge" />&nbsp;
+ <img alt="Scrutinizer code quality (GitHub/Bitbucket)" src="https://img.shields.io/scrutinizer/quality/g/Rubeanie/Ruben-P?style=for-the-badge">
+ <img alt="Scrutinizer build (GitHub/Bitbucket)" src="https://img.shields.io/scrutinizer/build/g/Rubeanie/Ruben-P?style=for-the-badge">
 </p>
 
 ## Important
