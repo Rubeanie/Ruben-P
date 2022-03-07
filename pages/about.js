@@ -55,7 +55,7 @@ export default function About() {
           <div className="column">
             <p>
               Hi! <br /> My name is Ruben Panzich, I am a student currently
-              attending year 12 at Hale school, I am currently doing ATAR and
+              attending year 12 at Hale school, I am doing ATAR and
               have already achieved a: <br /> &quot;Certificate IV in Digital
               and Interactive Games&quot;
             </p>
