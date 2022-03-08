@@ -1,7 +1,8 @@
 /* Social Buttons */
 $skills-transition-time: 0.25s;
 $skills-margin: 10px;
-$skills-width: 115px;
+$skills-min-width: 115px;
+$skills-width: fit-content;
 $skills-max-width: 385px;
 $skills-height: fit-content;
 /* Hover */

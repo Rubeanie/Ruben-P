@@ -5,6 +5,7 @@
   align-items: center;
   transition: transform var.$skills-transition-time;
   margin: var.$skills-margin;
+  min-width: var.$skills-min-width;
   width: var.$skills-width;
   max-width: var.$skills-max-width;
   height: var.$skills-height;
@@ -12,6 +13,7 @@
   p {
     font-size: var.$skills-text-size;
     font-weight: var.$skills-text-weight;
+    margin: 0px 10px 0px 10px;
   }
 
   section {
