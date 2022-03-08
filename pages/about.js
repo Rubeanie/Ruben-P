@@ -82,7 +82,7 @@ export default function About() {
             &quot;Certificate IV in Digital and Interactive Games&quot;
           </p>
           <h2>My Skills</h2>
-          <div className="flex-box" style={{ width: "60%" }}>
+          <div className="flex-box" style={{ width: "85%" }}>
             <div className="item shadow">
               <Skill
                 name={"C++"}
