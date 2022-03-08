@@ -52,13 +52,12 @@
 
   hero-no-padding {
     @extend hero;
-    padding-top: unset;
+    padding-top: unset !important;
   }
 
   heros {
-    @extend hero;
+    @extend hero-no-padding;
     justify-content: flex-start;
-    padding-top: unset;
     min-height: unset;
   }
 
@@ -85,17 +84,6 @@
     text-decoration: none;
     color: var.$color-background;
     font-size: 16px;
-  }
-
-  .container {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-content: center;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    height: 100%;
   }
 
   .item {

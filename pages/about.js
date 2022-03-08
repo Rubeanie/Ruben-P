@@ -24,17 +24,17 @@ export default function About() {
         <meta key="robots" name="robots" content="index,follow" />
         <meta key="googlebot" name="googlebot" content="index,follow" />
       </Head>
-      <hero>
+      <hero className="about" >
         <div className="row">
-          <div className="flex-padding" style={{ flex: "33%" }}>
+          <div className="flex-padding" style={{ flex: "40%" }}>
             <div className="column">
               <AdvancedImage
                 cldImg={personalPhoto}
-                style={{ width: "100%" }}
+                className="photo"
                 plugins={[
                   lazyload(),
                   placeholder({ mode: "predominant-color" }),
-                  placeholder({ mode: "blur" })
+                  placeholder({ mode: "blur" }),
                 ]}
               />
               <h2>
@@ -43,7 +43,7 @@ export default function About() {
               </h2>
             </div>
           </div>
-          <div className="flex-padding" style={{ flex: "66%" }}>
+          <div className="flex-padding" style={{ flex: "60%" }}>
             <div className="column">
               <h1-image>ABOUT</h1-image>
             </div>
@@ -55,9 +55,9 @@ export default function About() {
           <div className="column">
             <p>
               Hi! <br /> My name is Ruben Panzich, I am a student currently
-              attending year 12 at Hale school, I am doing ATAR and
-              have already achieved a: <br /> &quot;Certificate IV in Digital
-              and Interactive Games&quot;
+              attending year 12 at Hale school, I am doing ATAR and have already
+              achieved a: <br /> &quot;Certificate IV in Digital and Interactive
+              Games&quot;
             </p>
             <h2>My Story</h2>
             <p>
