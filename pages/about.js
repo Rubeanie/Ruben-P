@@ -101,7 +101,7 @@ export default function About() {
             </div>
             <div className="item shadow">
               <Skill
-                name={"C#"}
+                name={"HTML5"}
                 logo={<SiHtml5 />}
                 textColor={"#121212"}
                 color={"#E35D38"}
