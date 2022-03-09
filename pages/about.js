@@ -82,7 +82,7 @@ export default function About() {
             &quot;Certificate IV in Digital and Interactive Games&quot;
           </p>
           <h2>My Skills</h2>
-          <div className="flex-box" style={{ width: "85%" }}>
+          <div className="flex-box">
             <div className="item shadow">
               <Skill
                 name={"C++"}
@@ -236,16 +236,6 @@ export default function About() {
               />
             </div>
           </div>
-          <h2>My Story</h2>
-          <p>
-            Ever since I was a little boy, I’ve been obsessed with video games.
-            This passion has propelled me into the wonderful world of stem where
-            I have been taken to many places ranging from school to university.
-            Since I’ve begun this journey I’ve learnt about Unity, design, 3D
-            modeling, coding and many other skills, during this journey a lot of
-            these skills have been given time to flourish in the subject AIT,
-            leading me to the point I am now.
-          </p>
         </div>
       </heros>
     </div>

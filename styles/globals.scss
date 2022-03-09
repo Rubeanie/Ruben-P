@@ -81,15 +81,16 @@ url {
   justify-content: center;
   align-items: center;
   align-content: flex-start;
+  width: 75%;
 
   .item {
     flex: 0 0 auto;
-    margin: 2px;
+    margin: 0.25vw;
   }
 
   .shadow {
     filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.6));
-    margin: 5px !important;
+    margin: 0.5vw !important;
   }
 }
 
@@ -97,5 +98,9 @@ url {
 @media screen and (max-width: 700px) {
   .row {
     flex-direction: column;
+  }
+
+  .flex-box {
+    width: 100%;
   }
 }
