@@ -1,8 +1,8 @@
 /* Social Buttons */
 $socials-transition-time: 0.25s;
 $socials-margin: 10px;
-$socials-width: 100vw;
-$socials-max-width: 385px;
+$socials-width: 385px;
+$socials-max-width: 100vw;
 $socials-height: 100px;
 /* Hover */
 $socials-transform-hover: scale(1.1) perspective(1px);
@@ -22,7 +22,7 @@ $socials-overlay-color: rgba(0, 0, 0, 0.212);
 $socials-overlay-width: 70%;
 
 /* Mobile */
-$socials-width-mobile: 265px;
+$socials-width-mobile: 250px;
 $socials-height-mobile: fit-content;
 /* Sections */
 $socials-section-height-mobile: 75px;

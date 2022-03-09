@@ -10,6 +10,7 @@
     font-family: var.$font-title;
     font-size: var.$heading-size;
     font-weight: var.$heading-weight;
+    max-width: 100%;
   }
 
   h1-image {
@@ -30,6 +31,7 @@
     font-family: var.$font-title;
     font-size: var.$title-size;
     font-weight: var.$heading-weight;
+    max-width: 100%;
   }
 
   p {
