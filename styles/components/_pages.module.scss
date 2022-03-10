@@ -11,6 +11,7 @@
     font-size: var.$heading-size;
     font-weight: var.$heading-weight;
     max-width: 100%;
+    transition: font-size 0.2s;
   }
 
   h1-image {

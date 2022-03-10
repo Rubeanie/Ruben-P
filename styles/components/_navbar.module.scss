@@ -23,6 +23,14 @@
     font-weight: var.$navbar-font-weight;
   }
 
+  .logo {
+    padding: var.$navbar-icon-padding;
+    width: var.$navbar-height;
+    height: var.$navbar-height;
+    color: var.$color-foreground;
+    size: var.$navbar-height;
+  }
+
   .svg {
     padding: var.$navbar-icon-padding;
     width: var.$navbar-height;
@@ -31,12 +39,17 @@
     size: var.$navbar-height;
   }
 
-  .logo {
-    padding: var.$navbar-icon-padding;
-    width: var.$navbar-height;
-    height: var.$navbar-height;
-    color: var.$color-foreground;
-    size: var.$navbar-height;
+  .dropdown {
+    position: fixed;
+    z-index: 6;
+    background: var.$color-overlay;
+    padding: var.$navbar-padding;
+    padding: var.$navbar-padding-safe;
+    width: var.$navbar-width;
+    height: calc(100vh - var.$navbar-height);
+    color: var.$color-body-font;
+    transform-origin: top;
+    transform: translate(0, 50vh);
   }
 }
 
