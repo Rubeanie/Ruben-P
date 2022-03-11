@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Icon from "./Icon";
-import React, { useState } from "react";
+import React from "react";
 import UseAnimations from "react-useanimations";
 import menu4 from "react-useanimations/lib/menu4";
 
@@ -26,14 +26,12 @@ export default class Navbar extends React.Component {
     window.addEventListener("resize", null);
   }
   componentDidResize(useDropdown) {
-    this.setState({ useDropdown: false });
-    this.setState({
+    this.setState(() => ({ useDropdown: false }));
+    this.setState(() => ({
       useDropdown:
         this.logoRef.current.offsetWidth + this.pagesRef.current.offsetWidth >=
         this.navRef.current.offsetWidth / 1.4,
-    });
-    console.log(this.state.reverseIcon);
-    console.log(`${this.state.reverseIcon}`);
+    }));
   }
   render() {
     return (
@@ -52,12 +50,14 @@ export default class Navbar extends React.Component {
               className="column"
               style={{ justifyContent: "flex-start" }}
               onClick={() => {
-                this.setState({ openDropdown: !this.state.openDropdown });
+                this.setState(() => ({
+                  openDropdown: !this.state.openDropdown,
+                }));
                 document.documentElement.style.setProperty(
                   "--color-overlay-alpha",
                   `${!this.state.openDropdown ? 0.7 : 0.325}`
                 );
-                this.setState({ reverseIcon: !this.state.reverseIcon });
+                this.setState(() => ({ reverseIcon: !this.state.reverseIcon }));
               }}
             >
               <Link href="/about" passHref>
@@ -103,12 +103,16 @@ export default class Navbar extends React.Component {
               <a
                 onClick={() => {
                   if (this.state.useDropdown && this.state.openDropdown) {
-                    this.setState({ openDropdown: !this.state.openDropdown });
+                    this.setState(() => ({
+                      openDropdown: !this.state.openDropdown,
+                    }));
                     document.documentElement.style.setProperty(
                       "--color-overlay-alpha",
                       `${!this.state.openDropdown ? 0.7 : 0.325}`
                     );
-                    this.setState({ reverseIcon: !this.state.reverseIcon });
+                    this.setState(() => ({
+                      reverseIcon: !this.state.reverseIcon,
+                    }));
                   }
                 }}
               >
@@ -130,11 +134,14 @@ export default class Navbar extends React.Component {
           <div ref={this.dropdownRef} hidden={!this.state.useDropdown}>
             <a className="button">
               <UseAnimations
+                speed={3}
                 reverse={this.state.reverseIcon}
-                size={56}
+                size={65}
                 strokeColor={"rgb(var(--color-foreground))"}
                 onClick={() => {
-                  this.setState({ openDropdown: !this.state.openDropdown });
+                  this.setState(() => ({
+                    openDropdown: !this.state.openDropdown,
+                  }));
                   document.documentElement.style.setProperty(
                     "--color-overlay-alpha",
                     `${!this.state.openDropdown ? 0.7 : 0.325}`
