@@ -67,6 +67,18 @@ export default class Navbar extends React.Component {
                 this.setState(() => ({ reverseIcon: !this.state.reverseIcon }));
               }}
             >
+              <Link href="/" passHref>
+                <a
+                  className="button"
+                  style={{
+                    transform: `scale(${this.state.openDropdownInt}, ${
+                      this.state.openDropdownInt
+                    })`,
+                  }}
+                >
+                  Home
+                </a>
+              </Link>
               <Link href="/about" passHref>
                 <a
                   className="button"
