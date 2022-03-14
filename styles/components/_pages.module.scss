@@ -49,9 +49,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: var.$padding-safe;
     padding-top: var.$navbar-height;
     min-height: 100vh;
-    padding: var.$padding-safe;
   }
 
   hero-no-padding {
