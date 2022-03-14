@@ -15,6 +15,7 @@ export default class Navbar extends React.Component {
       useDropdown: false,
       openDropdown: false,
       reverseIcon: false,
+      openDropdownInt: 0,
     };
     this.componentDidResize = this.componentDidResize.bind(this);
   }
@@ -33,6 +34,18 @@ export default class Navbar extends React.Component {
         this.navRef.current.offsetWidth / 1.4,
     }));
   }
+  changeDropdown() {
+    this.setState(() => ({
+      openDropdown: !this.state.openDropdown,
+    }));
+    this.setState(() => ({
+      openDropdownInt: !this.state.openDropdown ? 1 : 0,
+    }));
+    document.documentElement.style.setProperty(
+      "--color-overlay-alpha",
+      `${!this.state.openDropdown ? 0.7 : 0.325}`
+    );
+  }
   render() {
     return (
       <div>
@@ -41,22 +54,16 @@ export default class Navbar extends React.Component {
             className="dropdown"
             style={{
               transform: `translate(0, 50vh) scale(1, ${
-                this.state.openDropdown ? 1 : 0
+                this.state.openDropdownInt
               })`,
-              opacity: this.state.openDropdown ? 1 : 0,
+              opacity: this.state.openDropdownInt,
             }}
           >
             <div
               className="column"
               style={{ justifyContent: "flex-start" }}
               onClick={() => {
-                this.setState(() => ({
-                  openDropdown: !this.state.openDropdown,
-                }));
-                document.documentElement.style.setProperty(
-                  "--color-overlay-alpha",
-                  `${!this.state.openDropdown ? 0.7 : 0.325}`
-                );
+                this.changeDropdown();
                 this.setState(() => ({ reverseIcon: !this.state.reverseIcon }));
               }}
             >
@@ -64,8 +71,8 @@ export default class Navbar extends React.Component {
                 <a
                   className="button"
                   style={{
-                    transform: `scale(${this.state.openDropdown ? 1 : 0}, ${
-                      this.state.openDropdown ? 1 : 0
+                    transform: `scale(${this.state.openDropdownInt}, ${
+                      this.state.openDropdownInt
                     })`,
                   }}
                 >
@@ -76,8 +83,8 @@ export default class Navbar extends React.Component {
                 <a
                   className="button"
                   style={{
-                    transform: `scale(${this.state.openDropdown ? 1 : 0}, ${
-                      this.state.openDropdown ? 1 : 0
+                    transform: `scale(${this.state.openDropdownInt}, ${
+                      this.state.openDropdownInt
                     })`,
                   }}
                 >
@@ -88,8 +95,8 @@ export default class Navbar extends React.Component {
                 <a
                   className="button"
                   style={{
-                    transform: `scale(${this.state.openDropdown ? 1 : 0}, ${
-                      this.state.openDropdown ? 1 : 0
+                    transform: `scale(${this.state.openDropdownInt}, ${
+                      this.state.openDropdownInt
                     })`,
                   }}
                 >
@@ -103,13 +110,7 @@ export default class Navbar extends React.Component {
               <a
                 onClick={() => {
                   if (this.state.useDropdown && this.state.openDropdown) {
-                    this.setState(() => ({
-                      openDropdown: !this.state.openDropdown,
-                    }));
-                    document.documentElement.style.setProperty(
-                      "--color-overlay-alpha",
-                      `${!this.state.openDropdown ? 0.7 : 0.325}`
-                    );
+                    this.changeDropdown();
                     this.setState(() => ({
                       reverseIcon: !this.state.reverseIcon,
                     }));
@@ -139,13 +140,7 @@ export default class Navbar extends React.Component {
                 size={65}
                 strokeColor={"rgb(var(--color-foreground))"}
                 onClick={() => {
-                  this.setState(() => ({
-                    openDropdown: !this.state.openDropdown,
-                  }));
-                  document.documentElement.style.setProperty(
-                    "--color-overlay-alpha",
-                    `${!this.state.openDropdown ? 0.7 : 0.325}`
-                  );
+                  this.changeDropdown();
                 }}
                 animation={menu4}
               />
