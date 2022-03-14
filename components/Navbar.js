@@ -134,8 +134,8 @@ export default class Navbar extends React.Component {
           <div ref={this.dropdownRef} hidden={!this.state.useDropdown}>
             <a className="button">
               <UseAnimations
-                speed={3}
-                reverse={this.state.reverseIcon}
+                speed={-3}
+                reverse={`${this.state.reverseIcon}`}
                 size={65}
                 strokeColor={"rgb(var(--color-foreground))"}
                 onClick={() => {
