@@ -7,12 +7,13 @@
   align-items: center;
   justify-content: var.$navbar-justify-content;
   z-index: 5;
-  background: var.$color-overlay;
+  background-color: var.$color-overlay;
   padding: var.$navbar-padding;
   padding: var.$navbar-padding-safe;
   width: var.$navbar-width;
   height: var.$navbar-height;
   color: var.$color-body-font;
+  transition: background-color 0.25s;
 
   .button {
     flex: 0 1 auto;
@@ -21,14 +22,7 @@
     color: var.$color-foreground;
     font-size: var.$navbar-font-size;
     font-weight: var.$navbar-font-weight;
-  }
-
-  .svg {
-    padding: var.$navbar-icon-padding;
-    width: var.$navbar-height;
-    height: var.$navbar-height;
-    color: var.$color-foreground;
-    size: var.$navbar-height;
+    transition: transform 0.25s;
   }
 
   .logo {
@@ -38,13 +32,22 @@
     color: var.$color-foreground;
     size: var.$navbar-height;
   }
-}
 
-/* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 700px) {
-  .navbar {
-    flex-direction: var.$navbar-flex-direction-mobile;
-    justify-content: var.$navbar-justify-content-mobile;
-    height: var.$navbar-height-mobile;
+  .dropdown {
+    position: fixed;
+    z-index: 6;
+    background-color: var.$color-overlay;
+    padding: var.$navbar-padding;
+    padding: var.$navbar-padding-safe;
+    width: var.$navbar-width;
+    height: calc(100vh - var.$navbar-height);
+    color: var.$color-body-font;
+    transform-origin: top;
+    transition: transform 0.25s, opacity 0.25s, background-color 0.25s;
+
+    .button {
+      margin: 25px 0px;
+      font-size: var.$navbar-font-size * 1.75;
+    }
   }
 }

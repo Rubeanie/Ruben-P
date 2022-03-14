@@ -6,11 +6,12 @@
   align-items: center;
   justify-content: var.$footer-justify-content;
   z-index: 5;
-  background: var.$color-overlay;
+  background-color: var.$color-overlay;
   padding: var.$footer-padding;
   width: var.$footer-width;
   height: var.$footer-height;
   color: var.$color-body-font;
+  transition: background-color 0.25s;
 
   footer-info {
     text-align: center;

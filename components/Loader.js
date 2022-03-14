@@ -17,7 +17,7 @@ function Loader({
   const [shown, setShown] = React.useState(initialState(active));
   React.useEffect(() => {
     let t;
-    if (active !== shown) t = setTimeout(() => setShown(active), 300);
+    if (active !== shown) t = setTimeout(() => setShown(active), 500);
     return () => clearTimeout(t);
   }, [shown, active]);
   const updateProgress = React.useCallback(() => {
@@ -61,10 +61,6 @@ function Loader({
             </ProgressBar>
           </div>
         </div>
-        {/*  */}
-        {/*           <span className="data">
-            <progressSpanRef />
-          </span> */}
       </div>
     </html>
   ) : null;
