@@ -41,10 +41,6 @@ export default function Home() {
           name="description"
           content="I'm Ruben Panzich, I am a Freelance creative developer, with qualifications in game design and development."
         />
-        <meta
-          name="keywords"
-          content="Ruben, Panzich, Portfolio, About, Links, Contact, Artist, Developer"
-        />
       </Head>
       <hero>
         <div className="column">

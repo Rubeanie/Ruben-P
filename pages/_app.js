@@ -75,6 +75,11 @@ function App({ Component, pageProps }) {
             content="width=device-width, initial-scale=1.0, viewport-fit=cover"
           />
 
+          <meta
+            name="keywords"
+            content="Ruben, Panzich, Rubeanie, Portfolio, About, Links, Contact, Artist, Developer"
+          />
+
           <meta key="robots" name="robots" content="index,follow" />
           <meta key="googlebot" name="googlebot" content="index,follow" />
         </Head>

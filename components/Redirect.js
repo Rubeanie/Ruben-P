@@ -4,19 +4,22 @@ import React, { useEffect, useState } from "react";
 
 export default function Redirect(props) {
   const [count, setCount] = React.useState(5);
+  const [counting, setCounting] = React.useState(true);
   useEffect(() => {
-    let counting = true;
-    if(counting){
+    if (counting) {
       if (count > 0) {
         setTimeout(() => {
           setCount((count) => count - 1);
         }, 1000);
       } else {
+        clearTimeout();
+        setCounting(() => {
+          false;
+        });
         window.location.href = props.url;
-        counting = false;
       }
     }
-  }, [count, props]);
+  }, [count, counting, props.url]);
   return (
     <div>
       <Head>

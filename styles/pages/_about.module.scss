@@ -1,0 +1,20 @@
+@use "../abstracts/index.module"as var;
+
+.about {
+  .photo {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  @media screen and (max-width: 700px) {
+    .row {
+      flex-direction: column-reverse;
+    }
+
+    .photo {
+      width: unset;
+      max-width: 100%;
+      max-height: 40vh;
+    }
+  }
+}

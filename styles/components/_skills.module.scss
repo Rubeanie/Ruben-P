@@ -1,0 +1,43 @@
+@use "../abstracts/index.module"as var;
+
+.skills {
+  display: flex;
+  align-items: center;
+  transition: transform var.$skills-transition-time;
+  margin: var.$skills-margin;
+  min-width: var.$skills-min-width;
+  width: var.$skills-width;
+  max-width: var.$skills-max-width;
+  height: var.$skills-height;
+
+  p {
+    font-size: var.$skills-text-size;
+    font-weight: var.$skills-text-weight;
+    margin: 0px 10px 0px 10px;
+  }
+
+  section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var.$skills-section-height;
+  }
+
+  .icon {
+    @extend section;
+    width: var.$skills-icon-width;
+    height: var.$skills-icon-height;
+    vertical-align: middle;
+  }
+
+  .overlay {
+    @extend section;
+    background: var.$skills-overlay-color;
+    width: var.$skills-overlay-width;
+    height: var.$skills-overlay-height;
+  }
+}
+
+.skills:hover {
+  transform: var.$skills-transform-hover;
+}

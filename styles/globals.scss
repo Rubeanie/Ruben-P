@@ -1,14 +1,15 @@
 @use './abstracts/index.module'as var;
 @use './components/index.module'as com;
+@use './pages/index.module'as pag;
 
 :root {
   /* Colors */
-  --color-overlay-rgb:0,0,0;
-  --color-overlay-alpha:0.325;
-  --color-foreground:237,95,104;
-  --color-mid-ground:51,69,109;
-  --color-background:15,24,45;
-  --color-body-font:234,246,255;
+  --color-overlay-rgb: 0, 0, 0;
+  --color-overlay-alpha: 0.325;
+  --color-foreground: 237, 95, 104;
+  --color-mid-ground: 51, 69, 109;
+  --color-background: 15, 24, 45;
+  --color-body-font: 234, 246, 255;
   --text-image: url('https://res.cloudinary.com/ruben-p/image/upload/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq.webp');
   --color-overlay: rgba(var(--color-overlay-rgb), var(--color-overlay-alpha));
 }
@@ -45,7 +46,7 @@ url {
   position: absolute;
 }
 
-.row {
+.row-fixed {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -53,6 +54,10 @@ url {
   justify-content: center;
   width: 100%;
   height: 100%;
+}
+
+.row {
+  @extend .row-fixed;
 }
 
 .column {
@@ -66,12 +71,36 @@ url {
 }
 
 .flex-padding {
-  padding: 20px;
+  padding: 15px;
+}
+
+.flex-box {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  align-content: flex-start;
+  width: 75%;
+
+  .item {
+    flex: 0 0 auto;
+    margin: 0.25vw;
+  }
+
+  .shadow {
+    filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.6));
+    margin: 0.5vw !important;
+  }
 }
 
 /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 700px) {
   .row {
     flex-direction: column;
+  }
+
+  .flex-box {
+    width: 100%;
   }
 }
