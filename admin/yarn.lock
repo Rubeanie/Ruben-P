@@ -1632,6 +1632,11 @@
     lodash "^4.17.15"
     slate "0.72.3"
 
+"@sanity/production-preview@^2.15.0":
+  version "2.15.0"
+  resolved "https://registry.npmjs.org/@sanity/production-preview/-/production-preview-2.15.0.tgz#95e1b554876105be970166c71f96e0e4ac1ce76d"
+  integrity sha512-qwhxogxfXeKmWLf4gqh0XEhLD+zEzX3YYHunJqVnT0K1SvRgSQce81zF7Zau8mZI1vPuNaUO+g+DzHs3p/wYTg==
+
 "@sanity/react-hooks@2.29.2":
   version "2.29.2"
   resolved "https://registry.npmjs.org/@sanity/react-hooks/-/react-hooks-2.29.2.tgz#829a25470b3583bf75deba49653e4bb0b497e459"
@@ -1763,7 +1768,7 @@
     react "17.0.1"
     rxjs "^6.5.3"
 
-"@sanity/ui@^0.37.2":
+"@sanity/ui@^0.37.2", "@sanity/ui@^0.37.5":
   version "0.37.5"
   resolved "https://registry.npmjs.org/@sanity/ui/-/ui-0.37.5.tgz#51da805174628fc84f508785f172cdd059dd69dd"
   integrity sha512-uP86UTuSiTcbY3udbgqztbrTmCPCUbQjpdJQ68YjWdfnRNYUiMfvpXRu0oYQnBEtUz10hltNoXwxmHZMucjhpA==
@@ -9015,6 +9020,11 @@ sanity-diff-patch@^1.0.9:
   integrity sha512-J5YeuM/S7rLTp51iqUunwzz7Rf68K/jCDGKtNCj6Wzcfgf9CH+0GtPlvf2DFsg0QQhYYZ72FOVn6skmoLjMCdw==
   dependencies:
     diff-match-patch "^1.0.5"
+
+sanity-plugin-dark-mode@^0.0.33:
+  version "0.0.33"
+  resolved "https://registry.npmjs.org/sanity-plugin-dark-mode/-/sanity-plugin-dark-mode-0.0.33.tgz#ab5b2a09ba5cf9fe300f7c58111b7c46bebef583"
+  integrity sha512-WGptmz++WvBJ9Tjl9701x6k+zR4ppuKlZ8yEVQHt4OoVrQepdryCNZo8z+xdiREYCLZaLQyEuPnIc1CPt2lHoQ==
 
 sax@~1.2.4:
   version "1.2.4"
