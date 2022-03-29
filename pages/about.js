@@ -33,7 +33,7 @@ const query = `*[_type == "aboutPage"] | order(priority asc) {
   title,
   priority,
   content,
-}[0...50]
+}
 `;
 
 export default function About({ about }) {

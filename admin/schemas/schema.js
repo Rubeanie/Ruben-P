@@ -5,7 +5,9 @@ import createSchema from "part:@sanity/base/schema-creator";
 import schemaTypes from "all:part:@sanity/base/schema-type";
 
 // We import object and document schemas
-import aboutPage from "./objects/pages/about";
+import aboutPage from "./documents/pages/about";
+import cloudinaryImage from "./documents/cloudinaryImage";
+import themes from "./documents/theme";
 
 import blockContent from "./objects/blockContent";
 import embedHTML from "./objects/embedHTML";
@@ -13,9 +15,9 @@ import hero from "./objects/hero";
 import link from "./objects/link";
 import simplePortableText from "./objects/simplePortableText";
 
-import category from "./objects/category";
-import post from "./objects/post";
-import author from "./objects/author";
+import category from "./documents/category";
+import post from "./documents/post";
+import author from "./documents/author";
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -27,6 +29,8 @@ export default createSchema({
     // The following are document types which will appear
     // in the studio.
     aboutPage,
+    cloudinaryImage,
+    themes,
 
     post,
     author,
