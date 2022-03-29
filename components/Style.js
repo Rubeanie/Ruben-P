@@ -77,9 +77,10 @@ function SetStyle() {
 
   return null;
 }
+
+function StyleGenerator() {
   let urls = [];
   let messages = [];
-function StyleGenerator() {
   const query = `*[_type == "theme"]{
     _id, 
     assets,
