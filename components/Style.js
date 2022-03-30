@@ -39,10 +39,13 @@ function GetValue(x) {
 
 /* Generator */
 function SetStyle() {
+  console.log("attempting");
   const { data, loading, error } = usePalette(url);
   useEffect(() => {
+    console.log("UseEffect Loop")
     const Color = require("color");
-    if (data.vibrant != null) {
+    if (loading == false && url != null) {
+      console.log("UseEffect worked");
       /* Foreground Color */
       document.documentElement.style.setProperty(
         "--color-foreground",
@@ -73,7 +76,7 @@ function SetStyle() {
     doc.style.display = "none";
     doc.offsetHeight;
     doc.style.display = "";
-  }, [data]);
+  }, [data, loading]);
 
   return null;
 }
@@ -98,6 +101,7 @@ function StyleGenerator() {
     if (messages[index] != null) {
       console.log(messages[index]);
     }
+    console.log("Finished");
   });
   return null;
 }
