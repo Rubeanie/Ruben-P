@@ -184,3 +184,6 @@ amplifytools.xcconfig
 /public/sitemap.xml
 /public/sitemap-[0-9]*.xml
 /public/robots.txt
+
+#sanity admin page
+/public/admin

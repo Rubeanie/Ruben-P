@@ -14,23 +14,22 @@
     "sanity"
   ],
   "dependencies": {
-    "@sanity/base": "^2.29.2",
-    "@sanity/core": "^2.28.1",
-    "@sanity/default-layout": "^2.29.2",
-    "@sanity/default-login": "^2.29.2",
-    "@sanity/desk-tool": "^2.29.2",
+    "@sanity/base": "^2.29.3",
+    "@sanity/core": "^2.29.3",
+    "@sanity/default-layout": "^2.29.3",
+    "@sanity/default-login": "^2.29.3",
+    "@sanity/desk-tool": "^2.29.3",
     "@sanity/eslint-config-studio": "^2.0.0",
-    "@sanity/production-preview": "^2.15.0",
-    "@sanity/ui": "^0.37.5",
-    "@sanity/vision": "^2.29.2",
+    "@sanity/production-preview": "^2.29.3",
+    "@sanity/vision": "^2.29.3",
     "eslint": "^8.6.0",
     "prop-types": "^15.7",
     "react": "^17.0",
     "react-dom": "^17.0",
     "sanity-plugin-dark-mode": "^0.0.33",
-    "styled-components": "^5.2.0"
+    "styled-components": "^5.2.0",
+    "webpack": "^5.70.0"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/Rubeanie/Personal-Website.git"

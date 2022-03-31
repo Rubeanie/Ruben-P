@@ -8,11 +8,9 @@ export default class ThemeSwitcher extends React.Component {
       renderStyleSet: false,
     };
   }
-  componentDidMount() {
-    if (StyleGenerator() == null) {
-      console.log("Starting");
-      this.setState(() => ({ renderStyleSet: true }));
-    }
+  async componentDidMount() {
+    await StyleGenerator();
+    this.setState(() => ({ renderStyleSet: true }));
   }
   render() {
     return this.state.renderStyleSet ? ( 

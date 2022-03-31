@@ -39,13 +39,10 @@ function GetValue(x) {
 
 /* Generator */
 function SetStyle() {
-  console.log("attempting");
   const { data, loading, error } = usePalette(url);
   useEffect(() => {
-    console.log("UseEffect Loop")
     const Color = require("color");
     if (loading == false && url != null) {
-      console.log("UseEffect worked");
       /* Foreground Color */
       document.documentElement.style.setProperty(
         "--color-foreground",
@@ -81,7 +78,7 @@ function SetStyle() {
   return null;
 }
 
-function StyleGenerator() {
+async function StyleGenerator() {
   let urls = [];
   let messages = [];
   const query = `*[_type == "theme"]{
@@ -90,20 +87,18 @@ function StyleGenerator() {
     "urls": assets[]->url,
     "messages": assets[]->message
   }`;
-  sanity.fetch(query).then((themes) => {
+  await sanity.fetch(query).then((themes) => {
     themes.forEach((theme) => {
       urls.push.apply(urls, theme.urls);
       messages.push.apply(messages, theme.messages);
     });
-    const index = Math.floor(Math.random() * urls.length);
-    url = urls[index];
-    console.log(`Url: ${url} | Index: ${index}`);
-    if (messages[index] != null) {
-      console.log(messages[index]);
-    }
-    console.log("Finished");
   });
-  return null;
+  const index = Math.floor(Math.random() * urls.length);
+  url = urls[index];
+  console.log(`Url: ${url} | Index: ${index}`);
+  if (messages[index] != null) {
+    console.log(messages[index]);
+  }
 }
 
 function ColorValue(x) {
