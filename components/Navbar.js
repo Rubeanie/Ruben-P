@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Icon from "./Icon";
+import { RubenP } from "./Icons";
 import React from "react";
 import UseAnimations from "react-useanimations";
 import menu4 from "react-useanimations/lib/menu4";
@@ -129,7 +129,7 @@ export default class Navbar extends React.Component {
                   }
                 }}
               >
-                <Icon className="logo" />
+                <RubenP className="logo" />
               </a>
             </Link>
           </div>

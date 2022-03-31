@@ -42,7 +42,6 @@ function App({ Component, pageProps }) {
           }}
         />
         <Head>
-          <link rel="icon" type="image/png" href="/favicon/RP-Logo-Apple.png" />
           <link
             rel="icon"
             type="image/png"

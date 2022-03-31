@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { usePalette } from "react-palette";
+import sanity from "../lib/sanity";
 
 let url = null;
 
@@ -41,7 +42,7 @@ function SetStyle() {
   const { data, loading, error } = usePalette(url);
   useEffect(() => {
     const Color = require("color");
-    if (data.vibrant != null) {
+    if (loading == false && url != null) {
       /* Foreground Color */
       document.documentElement.style.setProperty(
         "--color-foreground",
@@ -63,24 +64,41 @@ function SetStyle() {
         ColorValue(Color(data.darkMuted).saturate(1.3).lighten(2.5).hex())
       );
       /* Text Image */
-      document.documentElement.style.setProperty("--text-image", `url('${url}')`);
+      document.documentElement.style.setProperty(
+        "--text-image",
+        `url('${url}')`
+      );
     }
     const doc = document.documentElement;
     doc.style.display = "none";
     doc.offsetHeight;
     doc.style.display = "";
-    
-  }, [data]);
+  }, [data, loading]);
 
   return null;
 }
-function StyleGenerator() {
-  const urls = require('../styles/abstracts/_backgrounds.json');
-  const index = Math.floor(Math.random() * urls.length)
+
+async function StyleGenerator() {
+  let urls = [];
+  let messages = [];
+  const query = `*[_type == "theme"]{
+    _id, 
+    assets,
+    "urls": assets[]->url,
+    "messages": assets[]->message
+  }`;
+  await sanity.fetch(query).then((themes) => {
+    themes.forEach((theme) => {
+      urls.push.apply(urls, theme.urls);
+      messages.push.apply(messages, theme.messages);
+    });
+  });
+  const index = Math.floor(Math.random() * urls.length);
   url = urls[index];
   console.log(`Url: ${url} | Index: ${index}`);
-
-  return null;
+  if (messages[index] != null) {
+    console.log(messages[index]);
+  }
 }
 
 function ColorValue(x) {
