@@ -8,6 +8,14 @@ const STUDIO_REWRITE = {
 
 module.exports = {
   rewrites: () => [STUDIO_REWRITE],
+  rewrites: async () => {
+    return [
+      {
+        source: "/admin/:path*",
+        destination: "/admin/index.html",
+      },
+    ];
+  },
   reactStrictMode: true,
   images: {
     domains: ["res.cloudinary.com"],
