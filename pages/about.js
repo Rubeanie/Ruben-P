@@ -16,6 +16,7 @@ import {
   SiAdobepremierepro,
   SiAdobeaudition,
   SiAdobephotoshop,
+  SiAdobeillustrator,
   SiBlender,
 } from "react-icons/si";
 import { 
@@ -198,9 +199,9 @@ export default function About() {
             <div className="item shadow">
               <Skill
                 name={"Illustrator"}
-                logo={<SiAdobephotoshop />}
+                logo={<SiAdobeillustrator />}
                 textColor={"#121212"}
-                color={"#31a8ff"}
+                color={"#ff9a00"}
               />
             </div>
             <div className="item shadow">
