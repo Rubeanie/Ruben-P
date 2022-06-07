@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Icon from "./Icon";
+import { RubenP } from "./Icons";
 import React from "react";
 import UseAnimations from "react-useanimations";
 import menu4 from "react-useanimations/lib/menu4";
@@ -53,9 +53,7 @@ export default class Navbar extends React.Component {
           <div
             className="dropdown"
             style={{
-              transform: `translate(0, 50vh) scale(1, ${
-                this.state.openDropdownInt
-              })`,
+              transform: `translate(0, 50vh) scale(1, ${this.state.openDropdownInt})`,
               opacity: this.state.openDropdownInt,
             }}
           >
@@ -71,9 +69,7 @@ export default class Navbar extends React.Component {
                 <a
                   className="button"
                   style={{
-                    transform: `scale(${this.state.openDropdownInt}, ${
-                      this.state.openDropdownInt
-                    })`,
+                    transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
                   }}
                 >
                   Home
@@ -83,9 +79,7 @@ export default class Navbar extends React.Component {
                 <a
                   className="button"
                   style={{
-                    transform: `scale(${this.state.openDropdownInt}, ${
-                      this.state.openDropdownInt
-                    })`,
+                    transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
                   }}
                 >
                   About
@@ -95,9 +89,7 @@ export default class Navbar extends React.Component {
                 <a
                   className="button"
                   style={{
-                    transform: `scale(${this.state.openDropdownInt}, ${
-                      this.state.openDropdownInt
-                    })`,
+                    transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
                   }}
                 >
                   Portfolio
@@ -107,9 +99,7 @@ export default class Navbar extends React.Component {
                 <a
                   className="button"
                   style={{
-                    transform: `scale(${this.state.openDropdownInt}, ${
-                      this.state.openDropdownInt
-                    })`,
+                    transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
                   }}
                 >
                   Socials
@@ -129,7 +119,7 @@ export default class Navbar extends React.Component {
                   }
                 }}
               >
-                <Icon className="logo" />
+                <RubenP className="logo" />
               </a>
             </Link>
           </div>

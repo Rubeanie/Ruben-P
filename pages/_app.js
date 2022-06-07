@@ -60,8 +60,12 @@ function App({ Component, pageProps }) {
             sizes="180x180"
             href="/favicon/apple-touch-icon.png"
           />
-          <link rel="mask-icon" href="/favicon/RP-Logo.svg" color="#000000" />
-          <link rel="manifest" href="/favicon/site.webmanifest" />
+          <link
+            rel="mask-icon"
+            href="/favicon/safari-pinned-tab.svg"
+            color={GetColor("--color-foreground")}
+          />
+          <link rel="manifest" href="/site.webmanifest" />
 
           <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
 

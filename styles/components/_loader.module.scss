@@ -30,10 +30,9 @@
 
     .indicator {
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       justify-content: center;
       text-align: center;
-      position: absolute;
       top: 0;
       width: 100%;
       height: 100%;
@@ -41,15 +40,14 @@
       font-size: 1.3em;
 
       .inner {
-        margin-bottom: 45px;
         width: 55%;
         height: 55%;
       }
 
       .icon {
-        font-size: 3em;
         color: var.$color-foreground;
-        margin-bottom: 15px;
+        width: 100%;
+        height: 100%;
       }
     }
   }
