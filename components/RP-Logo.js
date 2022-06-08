@@ -13,7 +13,7 @@ export default function Model(props) {
   return (
     <group ref={group} {...props} dispose={null}>
       <mesh
-        geometry={nodes["RP_-_Logo002"].geometry}
+        geometry={nodes["RP_-_Logo001"].geometry}
         material={materials.Abstract}
       />
     </group>
