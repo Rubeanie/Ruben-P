@@ -42,6 +42,7 @@ function App({ Component, pageProps }) {
           }}
         />
         <Head>
+          <link rel="icon" type="image/png" href="/favicon/apple-touch-icon.png" />
           <link
             rel="icon"
             type="image/png"
