@@ -8,7 +8,7 @@ import { useGLTF } from "@react-three/drei";
 export default function Model(props) {
   const group = useRef();
   const { nodes, materials } = useGLTF(
-    "https://res.cloudinary.com/ruben-p/image/upload/v1643094126/3D%20Models/Logo/RP-Logo_bgizyd.glb"
+    "https://res.cloudinary.com/ruben-p/image/upload/3D%20Models/Logo/RP-Logo.glb"
   );
   return (
     <group ref={group} {...props} dispose={null}>
@@ -21,5 +21,5 @@ export default function Model(props) {
 }
 
 useGLTF.preload(
-  "https://res.cloudinary.com/ruben-p/image/upload/v1643094126/3D%20Models/Logo/RP-Logo_bgizyd.glb"
+  "https://res.cloudinary.com/ruben-p/image/upload/3D%20Models/Logo/RP-Logo.glb"
 );
