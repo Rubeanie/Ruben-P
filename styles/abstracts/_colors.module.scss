@@ -1,10 +1,10 @@
 /* Colors */
-$color-overlay-rgb: rgb(var(--color-overlay-rgb));
+$color-overlay-rgb: var(--color-overlay-rgb);
 $color-overlay-alpha: var(--color-overlay-alpha);
-$color-foreground: rgb(var(--color-foreground));
-$color-mid-ground: rgb(var(--color-mid-ground));
-$color-background: rgb(var(--color-background));
-$color-body-font: rgb(var(--color-body-font));
+$color-foreground: var(--color-foreground);
+$color-mid-ground: var(--color-mid-ground);
+$color-background: var(--color-background);
+$color-body-font: var(--color-body-font);
 $text-image: var(--text-image);
 $color-overlay: var(--color-overlay);
 

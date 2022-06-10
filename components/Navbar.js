@@ -21,18 +21,21 @@ export default class Navbar extends React.Component {
   }
   componentDidMount() {
     window.addEventListener("resize", this.componentDidResize);
-    this.componentDidResize(this);
+    this.componentDidResize();
   }
   componentWillUnmount() {
     window.addEventListener("resize", null);
   }
   componentDidResize(useDropdown) {
-    this.setState(() => ({ useDropdown: false }));
-    this.setState(() => ({
-      useDropdown:
-        this.logoRef.current.offsetWidth + this.pagesRef.current.offsetWidth >=
-        this.navRef.current.offsetWidth / 1.4,
-    }));
+    this.timer = setInterval(() => {
+      this.setState(() => ({ useDropdown: false }));
+      this.setState(() => ({
+        useDropdown:
+          this.logoRef.current.offsetWidth +
+            this.pagesRef.current.offsetWidth >=
+          this.navRef.current.offsetWidth / 1.4,
+      }));
+    }, 250);
   }
   changeDropdown() {
     this.setState(() => ({
@@ -140,7 +143,7 @@ export default class Navbar extends React.Component {
                 speed={-3}
                 reverse={`${this.state.reverseIcon}`}
                 size={65}
-                strokeColor={"rgb(var(--color-foreground))"}
+                strokeColor={"var(--color-foreground)"}
                 onClick={() => {
                   this.changeDropdown();
                 }}

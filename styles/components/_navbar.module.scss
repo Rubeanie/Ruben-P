@@ -37,6 +37,7 @@
     position: fixed;
     z-index: 6;
     background-color: var.$color-overlay;
+    margin: var.$inverted-padding-safe;
     padding: var.$navbar-padding;
     padding: var.$padding-safe;
     width: var.$navbar-width;

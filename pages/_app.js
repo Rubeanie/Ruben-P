@@ -7,7 +7,7 @@ import Signature from "../components/Signature";
 import { Loader } from "../components/Loader";
 import { useRouter } from "next/router";
 import * as gtag from "../components/Ga";
-import { GetColor } from "../components/Style";
+import { GetColor, GetBackgroundColor } from "../components/Style";
 
 function App({ Component, pageProps }) {
   const router = useRouter();
@@ -42,7 +42,11 @@ function App({ Component, pageProps }) {
           }}
         />
         <Head>
-          <link rel="icon" type="image/png" href="/favicon/apple-touch-icon.png" />
+          <link
+            rel="icon"
+            type="image/png"
+            href="/favicon/apple-touch-icon.png"
+          />
           <link
             rel="icon"
             type="image/png"
@@ -73,10 +77,10 @@ function App({ Component, pageProps }) {
             name="msapplication-TileColor"
             content={GetColor("--color-foreground")}
           />
-          <meta name="theme-color" content={GetColor("--color-background")} />
+          <meta name="theme-color" content={GetBackgroundColor()} />
           <meta
             name="viewport"
-            content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+            content="width=device-width, initial-scale=1.0, viewport-fit=cover,maximum-scale=1"
           />
 
           <meta
