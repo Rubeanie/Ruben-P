@@ -1,5 +1,5 @@
 module.exports = {
-  rewrites: async () => {
+  async rewrites() {
     return [
       {
         source: "/admin/:path*",
@@ -7,7 +7,7 @@ module.exports = {
         process.env.NODE_ENV === "development"
         ? "http://localhost:3333/admin/:path*"
         : "/admin/index.html",
-      }
+      },
     ]
   },
   reactStrictMode: true,
