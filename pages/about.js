@@ -26,7 +26,18 @@ import {
 } from "../components/Icons";
 import Skill from "../components/Skill";
 
-export default function About() {
+import sanity from "../lib/sanity";
+import { PortableText } from "@portabletext/react";
+
+const query = `*[_type == "aboutPage"] | order(priority asc) {
+  _id,
+  title,
+  priority,
+  content,
+}
+`;
+
+export default function About({ about }) {
   const cld = new Cloudinary({
     cloud: {
       cloudName: "ruben-p",
@@ -76,13 +87,11 @@ export default function About() {
       </hero>
       <heros>
         <div className="column">
-          <h2>HELLO WORLD</h2>
-          <p>
-            My name is Ruben Panzich, I am a student currently attending year 12
-            at Hale school, I am doing ATAR and have already achieved a: <br />{" "}
-            &quot;Certificate IV in Digital and Interactive Games&quot;
-          </p>
-          <h2>My Skills</h2>
+          {about.map((aboutPage) => (
+            <div key={aboutPage._id}>
+              <PortableText value={aboutPage.content} />
+            </div>
+          ))}
           <div className="flex-box">
             <div className="item shadow">
               <Skill
@@ -242,3 +251,10 @@ export default function About() {
     </div>
   );
 }
+
+export const getStaticProps = async () => {
+  const about = await sanity.fetch(query);
+  return {
+    props: { about } // will be passed to the page component as props
+  };
+};

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { usePalette } from "react-palette";
+import sanity from "../lib/sanity";
 
 let url = null;
 const Color = require("color");
@@ -111,17 +112,32 @@ function SetStyle() {
     doc.style.display = "none";
     doc.offsetHeight;
     doc.style.display = "";
-  }, [data]);
+  }, [data, loading]);
 
   return null;
 }
-function StyleGenerator() {
-  const urls = require("../styles/abstracts/_backgrounds.json");
+
+async function StyleGenerator() {
+  let urls = [];
+  let messages = [];
+  const query = `*[_type == "theme"]{
+    _id, 
+    assets,
+    "urls": assets[]->url,
+    "messages": assets[]->message
+  }`;
+  await sanity.fetch(query).then((themes) => {
+    themes.forEach((theme) => {
+      urls.push.apply(urls, theme.urls);
+      messages.push.apply(messages, theme.messages);
+    });
+  });
   const index = Math.floor(Math.random() * urls.length);
   url = urls[index];
   console.log(`Url: ${url} | Index: ${index}`);
-
-  return null;
+  if (messages[index] != null) {
+    console.log(messages[index]);
+  }
 }
 
 export { GetColor, GetBackgroundColor, GetValue, SetStyle, StyleGenerator };

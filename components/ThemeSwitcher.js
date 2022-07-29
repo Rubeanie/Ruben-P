@@ -2,14 +2,23 @@ import React from "react";
 import { SetStyle, StyleGenerator } from "./Style";
 
 export default class ThemeSwitcher extends React.Component {
-  componentDidMount() {
-    StyleGenerator();
+  constructor(props) {
+    super(props);
+    this.state = {
+      renderStyleSet: false,
+    };
+  }
+  async componentDidMount() {
+    await StyleGenerator();
+    this.setState(() => ({ renderStyleSet: true }));
   }
   render() {
-    return ( 
+    return this.state.renderStyleSet ? ( 
       <div>
         <SetStyle />
       </div>
+    ) : (
+      null
     );
   }
 }
