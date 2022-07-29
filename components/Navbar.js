@@ -21,18 +21,21 @@ export default class Navbar extends React.Component {
   }
   componentDidMount() {
     window.addEventListener("resize", this.componentDidResize);
-    this.componentDidResize(this);
+    this.componentDidResize();
   }
   componentWillUnmount() {
     window.addEventListener("resize", null);
   }
   componentDidResize(useDropdown) {
-    this.setState(() => ({ useDropdown: false }));
-    this.setState(() => ({
-      useDropdown:
-        this.logoRef.current.offsetWidth + this.pagesRef.current.offsetWidth >=
-        this.navRef.current.offsetWidth / 1.4,
-    }));
+    this.timer = setInterval(() => {
+      this.setState(() => ({ useDropdown: false }));
+      this.setState(() => ({
+        useDropdown:
+          this.logoRef.current.offsetWidth +
+            this.pagesRef.current.offsetWidth >=
+          this.navRef.current.offsetWidth / 1.4,
+      }));
+    }, 250);
   }
   changeDropdown() {
     this.setState(() => ({
@@ -53,9 +56,7 @@ export default class Navbar extends React.Component {
           <div
             className="dropdown"
             style={{
-              transform: `translate(0, 50vh) scale(1, ${
-                this.state.openDropdownInt
-              })`,
+              transform: `translate(0, 50vh) scale(1, ${this.state.openDropdownInt})`,
               opacity: this.state.openDropdownInt,
             }}
           >
@@ -71,9 +72,7 @@ export default class Navbar extends React.Component {
                 <a
                   className="button"
                   style={{
-                    transform: `scale(${this.state.openDropdownInt}, ${
-                      this.state.openDropdownInt
-                    })`,
+                    transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
                   }}
                 >
                   Home
@@ -83,9 +82,7 @@ export default class Navbar extends React.Component {
                 <a
                   className="button"
                   style={{
-                    transform: `scale(${this.state.openDropdownInt}, ${
-                      this.state.openDropdownInt
-                    })`,
+                    transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
                   }}
                 >
                   About
@@ -95,9 +92,7 @@ export default class Navbar extends React.Component {
                 <a
                   className="button"
                   style={{
-                    transform: `scale(${this.state.openDropdownInt}, ${
-                      this.state.openDropdownInt
-                    })`,
+                    transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
                   }}
                 >
                   Portfolio
@@ -107,9 +102,7 @@ export default class Navbar extends React.Component {
                 <a
                   className="button"
                   style={{
-                    transform: `scale(${this.state.openDropdownInt}, ${
-                      this.state.openDropdownInt
-                    })`,
+                    transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
                   }}
                 >
                   Socials
@@ -150,7 +143,7 @@ export default class Navbar extends React.Component {
                 speed={-3}
                 reverse={`${this.state.reverseIcon}`}
                 size={65}
-                strokeColor={"rgb(var(--color-foreground))"}
+                strokeColor={"var(--color-foreground)"}
                 onClick={() => {
                   this.changeDropdown();
                 }}

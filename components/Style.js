@@ -3,6 +3,7 @@ import { usePalette } from "react-palette";
 import sanity from "../lib/sanity";
 
 let url = null;
+const Color = require("color");
 
 function GetColor(x) {
   const [output, setOutput] = React.useState(null);
@@ -16,10 +17,48 @@ function GetColor(x) {
       );
     }, 1000);
   }, [output, x]);
-  let rgb = `${output}`.split(",");
-  return require("color")
-    .rgb(parseFloat(rgb[0]), parseFloat(rgb[1]), parseFloat(rgb[2]))
-    .hex();
+  return Color(output).hex();
+}
+
+function GetBackgroundColor() {
+  const [outputX, setOutputX] = React.useState(null);
+  const [outputY, setOutputY] = React.useState(null);
+  const [outputZ, setOutputZ] = React.useState(null);
+  useEffect(() => {
+    setOutputX((outputX) =>
+      window
+        .getComputedStyle(document.documentElement)
+        .getPropertyValue("--color-background")
+    );
+    setOutputY((outputY) =>
+      window
+        .getComputedStyle(document.documentElement)
+        .getPropertyValue("--color-overlay-rgb")
+    );
+    setOutputZ((outputZ) =>
+      window
+        .getComputedStyle(document.documentElement)
+        .getPropertyValue("--color-overlay-alpha")
+    );
+    setInterval(() => {
+      setOutputX((outputX) =>
+        window
+          .getComputedStyle(document.documentElement)
+          .getPropertyValue("--color-background")
+      );
+      setOutputY((outputY) =>
+        window
+          .getComputedStyle(document.documentElement)
+          .getPropertyValue("--color-overlay-rgb")
+      );
+      setOutputZ((outputZ) =>
+        window
+          .getComputedStyle(document.documentElement)
+          .getPropertyValue("--color-overlay-alpha")
+      );
+    }, 1000);
+  }, [outputX, outputY, outputZ]);
+  return Color(outputX).mix(Color(outputY), parseFloat(outputZ)).hex();
 }
 
 function GetValue(x) {
@@ -41,27 +80,27 @@ function GetValue(x) {
 function SetStyle() {
   const { data, loading, error } = usePalette(url);
   useEffect(() => {
-    const Color = require("color");
-    if (loading == false && url != null) {
+    //const Color = require("color");
+    if (data.vibrant != null) {
       /* Foreground Color */
       document.documentElement.style.setProperty(
         "--color-foreground",
-        ColorValue(Color(data.lightVibrant).hex())
+        Color(data.lightVibrant).hex()
       );
       /* Midground Color */
       document.documentElement.style.setProperty(
         "--color-mid-ground",
-        ColorValue(Color(data.darkMuted).saturate(0.25).lighten(0.2).hex())
+        Color(data.darkMuted).saturate(0.25).lighten(0.2).hex()
       );
       /* Background Color */
       document.documentElement.style.setProperty(
         "--color-background",
-        ColorValue(Color(data.darkMuted).saturate(0.75).darken(0.55).hex())
+        Color(data.darkMuted).saturate(0.75).darken(0.55).hex()
       );
       /* Text Color */
       document.documentElement.style.setProperty(
         "--color-body-font",
-        ColorValue(Color(data.darkMuted).saturate(1.3).lighten(2.5).hex())
+        Color(data.darkMuted).saturate(1.3).lighten(2.5).hex()
       );
       /* Text Image */
       document.documentElement.style.setProperty(
@@ -101,10 +140,4 @@ async function StyleGenerator() {
   }
 }
 
-function ColorValue(x) {
-  const Color = require("color");
-  const color = Color().hex(x);
-  return `${color.red()},${color.green()},${color.blue()}`;
-}
-
-export { GetColor, GetValue, SetStyle, StyleGenerator };
+export { GetColor, GetBackgroundColor, GetValue, SetStyle, StyleGenerator };

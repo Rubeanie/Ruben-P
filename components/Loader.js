@@ -37,7 +37,7 @@ function Loader({
     <html>
       <div className="loading" style={{ opacity: active ? 1 : 0 }}>
         <div className="item">
-          <div className="row">
+          <div className="column">
             <ProgressBar
               radius={100}
               progress={progress}
@@ -52,13 +52,13 @@ function Loader({
               trackStrokeColor={Var.midground_color}
               initialAnimationDelay={250}
             >
-              <div className="indicator">
+              <div className="indicator layer">
                 <div className="inner">
                   <RubenP className="icon" />
                 </div>
               </div>
-              <span className="percentage" ref={progressSpanRef} />
             </ProgressBar>
+            <span className="percentage" ref={progressSpanRef} />
           </div>
         </div>
       </div>

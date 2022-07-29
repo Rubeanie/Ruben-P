@@ -7,7 +7,7 @@ import Signature from "../components/Signature";
 import { Loader } from "../components/Loader";
 import { useRouter } from "next/router";
 import * as gtag from "../components/Ga";
-import { GetColor } from "../components/Style";
+import { GetColor, GetBackgroundColor } from "../components/Style";
 
 function App({ Component, pageProps }) {
   const router = useRouter();
@@ -45,6 +45,11 @@ function App({ Component, pageProps }) {
           <link
             rel="icon"
             type="image/png"
+            href="/favicon/apple-touch-icon.png"
+          />
+          <link
+            rel="icon"
+            type="image/png"
             sizes="32x32"
             href="/favicon/favicon-32x32.png"
           />
@@ -59,8 +64,12 @@ function App({ Component, pageProps }) {
             sizes="180x180"
             href="/favicon/apple-touch-icon.png"
           />
-          <link rel="mask-icon" href="/favicon/RP-Logo.svg" color="#000000" />
-          <link rel="manifest" href="/favicon/site.webmanifest" />
+          <link
+            rel="mask-icon"
+            href="/favicon/safari-pinned-tab.svg"
+            color={GetColor("--color-foreground")}
+          />
+          <link rel="manifest" href="/site.webmanifest" />
 
           <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
 
@@ -68,10 +77,10 @@ function App({ Component, pageProps }) {
             name="msapplication-TileColor"
             content={GetColor("--color-foreground")}
           />
-          <meta name="theme-color" content={GetColor("--color-background")} />
+          <meta name="theme-color" content={GetBackgroundColor()} />
           <meta
             name="viewport"
-            content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+            content="width=device-width, initial-scale=1.0, viewport-fit=cover,maximum-scale=1"
           />
 
           <meta
