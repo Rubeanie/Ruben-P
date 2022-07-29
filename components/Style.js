@@ -84,22 +84,22 @@ function SetStyle() {
       /* Foreground Color */
       document.documentElement.style.setProperty(
         "--color-foreground",
-        Color(data.lightVibrant).rgb().string()
+        Color(data.lightVibrant).hex()
       );
       /* Midground Color */
       document.documentElement.style.setProperty(
         "--color-mid-ground",
-        Color(data.darkMuted).saturate(0.25).lighten(0.2).rgb().string()
+        Color(data.darkMuted).saturate(0.25).lighten(0.2).hex()
       );
       /* Background Color */
       document.documentElement.style.setProperty(
         "--color-background",
-        Color(data.darkMuted).saturate(0.75).darken(0.55).rgb().string()
+        Color(data.darkMuted).saturate(0.75).darken(0.55).hex()
       );
       /* Text Color */
       document.documentElement.style.setProperty(
         "--color-body-font",
-        Color(data.darkMuted).saturate(1.3).lighten(2.5).rgb().string()
+        Color(data.darkMuted).saturate(1.3).lighten(2.5).hex()
       );
       /* Text Image */
       document.documentElement.style.setProperty(
