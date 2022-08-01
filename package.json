@@ -26,7 +26,6 @@
     "babel-plugin-styled-components": "^2.0.7",
     "cloudinary-build-url": "^0.2.4",
     "color": "^4.2.3",
-    "maath": "^0.0.2",
     "next": "^12.2.3",
     "next-sanity": "^0.6.0",
     "next-sitemap": "^3.1.15",

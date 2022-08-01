@@ -93,7 +93,7 @@ function App({ Component, pageProps }) {
 
           <meta key="robots" name="robots" content="index,follow" />
           <meta key="googlebot" name="googlebot" content="index,follow" />
-          <meta name="darkreader" content="NO-DARKREADER-PLUGIN" />
+          {/* <meta name="darkreader" content="NO-DARKREADER-PLUGIN" /> */}
         </Head>
         <Signature />
         <Layout>

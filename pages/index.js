@@ -1,15 +1,19 @@
 import React, { Suspense, useState, useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { animated } from "@react-spring/three";
 import Head from "next/head";
 import Model from "../components/RP-Logo";
 import { GetColor } from "../components/Style";
-import { Points, PointMaterial } from "@react-three/drei";
-import * as random from "maath/random/dist/maath-random.esm";
+import * as THREE from "three";
+import {
+  AdaptiveDpr, 
+  OrbitControls,
+  CameraShake,
+  Environment,
+} from "@react-three/drei";
 
 function Logo() {
   const myMesh = React.useRef();
-  const [active, setActive] = useState(false);
 
   useFrame(({ clock }) => {
     const a = clock.getElapsedTime() / 3;
@@ -25,36 +29,6 @@ function Logo() {
     <animated.mesh ref={myMesh}>
       <Model scale={[1, 1, 1]} />
     </animated.mesh>
-  );
-}
-
-function Stars(props) {
-  const ref = useRef();
-  const [sphere] = useState(() =>
-    random.inSphere(new Float32Array(5000), { radius: 1.5 })
-  );
-  useFrame((state, delta) => {
-    ref.current.rotation.x -= delta / 10;
-    ref.current.rotation.y -= delta / 15;
-  });
-  return (
-    <group rotation={[0, 0, Math.PI / 4]}>
-      <Points
-        ref={ref}
-        positions={sphere}
-        stride={3}
-        frustumCulled={false}
-        {...props}
-      >
-        <PointMaterial
-          transparent
-          color={GetColor("--color-mid-ground")}
-          size={0.005}
-          sizeAttenuation={true}
-          depthWrite={false}
-        />
-      </Points>
-    </group>
   );
 }
 
@@ -76,9 +50,11 @@ export default function Home() {
       </Head>
       <div className="layer" style={{ width: "100%", height: "100%" }}>
         <Canvas
-          camera={{ position: [0, 0, 2], fov: 80 }}
+          camera={{ position: [0, 0, 3], fov: 60 }}
           style={{ width: "100%", height: "100%" }}
+          /* frameloop="demand" */
         >
+          <AdaptiveDpr pixelated />
           <ambientLight intensity={1} />
           <pointLight
             position={[-8, 1, 6]}
@@ -97,7 +73,6 @@ export default function Home() {
           />
           <Suspense fallback={null}>
             <Logo />
-            <Stars />
           </Suspense>
         </Canvas>
       </div>
