@@ -20,9 +20,6 @@ function App({ Component, pageProps }) {
       router.events.off("routeChangeComplete", handleRouteChange);
     };
   }, [router.events]);
-  useEffect(() => {
-    require("no-darkreader");
-  }, []);
     return (
       <div className="App">
         {/* Global Site Tag (gtag.js) - Google Analytics */}
@@ -73,9 +70,7 @@ function App({ Component, pageProps }) {
             color={GetColor("--color-foreground")}
           />
           <link rel="manifest" href="/site.webmanifest" />
-
           <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
-
           <meta
             name="msapplication-TileColor"
             content={GetColor("--color-foreground")}
@@ -85,15 +80,13 @@ function App({ Component, pageProps }) {
             name="viewport"
             content="width=device-width, initial-scale=1.0, viewport-fit=cover,maximum-scale=1"
           />
-
+          <meta name="darkreader-lock" />
           <meta
             name="keywords"
             content="Ruben, Panzich, Rubeanie, Portfolio, About, Links, Contact, Artist, Developer"
           />
-
           <meta key="robots" name="robots" content="index,follow" />
-          <meta key="googlebot" name="googlebot" content="index,follow" />
-          {/* <meta name="darkreader" content="NO-DARKREADER-PLUGIN" /> */}
+          <meta key="googlebot" name="googlebot" content="index,follow" />\
         </Head>
         <Signature />
         <Layout>

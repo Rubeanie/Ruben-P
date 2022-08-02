@@ -21,21 +21,27 @@ export default class Navbar extends React.Component {
   }
   componentDidMount() {
     window.addEventListener("resize", this.componentDidResize);
-    this.componentDidResize();
+    this.componentDidResize(this);
   }
   componentWillUnmount() {
     window.addEventListener("resize", null);
   }
   componentDidResize(useDropdown) {
-    this.timer = setInterval(() => {
-      this.setState(() => ({ useDropdown: false }));
-      this.setState(() => ({
-        useDropdown:
-          this.logoRef.current.offsetWidth +
-            this.pagesRef.current.offsetWidth >=
-          this.navRef.current.offsetWidth / 1.4,
-      }));
-    }, 250);
+    this.setState(
+      {
+        useDropdown: false,
+      },
+      function () {
+        this.setState(
+          {
+            useDropdown:
+              this.logoRef.current.offsetWidth +
+                this.pagesRef.current.offsetWidth >=
+              this.navRef.current.offsetWidth / 1.4,
+          }
+        );
+      }
+    );
   }
   changeDropdown() {
     this.setState(() => ({

@@ -4,12 +4,12 @@
 
 :root {
   /* Colors */
-  --color-overlay-rgb:rgb(0, 0, 0);
+  --color-overlay-rgb:#000000;
   --color-overlay-alpha:0.325;
-  --color-foreground:rgb(237, 95, 104);
-  --color-mid-ground:rgb(51, 69, 109);
-  --color-background:rgb(15, 24, 45);
-  --color-body-font:rgb(234, 246, 255);
+  --color-foreground:#ed5f68;
+  --color-mid-ground:#33456d;
+  --color-background:#0f182d;
+  --color-body-font:#eaf6ff;
   --text-image:url('https://res.cloudinary.com/ruben-p/image/upload/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq.webp');
   --color-overlay:rgba(0, 0, 0, var(--color-overlay-alpha));
 }

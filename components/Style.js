@@ -17,7 +17,7 @@ function GetColor(x) {
       );
     }, 1000);
   }, [output, x]);
-  return Color(output).hex();
+  return Color(output !== null ? output.replace(/ /g, "") : output).hex();
 }
 
 function GetBackgroundColor() {
@@ -58,7 +58,9 @@ function GetBackgroundColor() {
       );
     }, 1000);
   }, [outputX, outputY, outputZ]);
-  return Color(outputX).mix(Color(outputY), parseFloat(outputZ)).hex();
+  return Color(outputX !== null ? outputX.replace(/ /g, "") : outputX)
+    .mix(Color(outputY !== null ? outputY.replace(/ /g, "") : outputY), parseFloat(outputZ))
+    .hex();
 }
 
 function GetValue(x) {

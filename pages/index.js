@@ -1,16 +1,10 @@
-import React, { Suspense, useState, useRef } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import React, { Suspense  } from "react";
+import { Canvas, useFrame, } from "@react-three/fiber";
 import { animated } from "@react-spring/three";
 import Head from "next/head";
 import Model from "../components/RP-Logo";
 import { GetColor } from "../components/Style";
-import * as THREE from "three";
-import {
-  AdaptiveDpr, 
-  OrbitControls,
-  CameraShake,
-  Environment,
-} from "@react-three/drei";
+import { AdaptiveDpr } from "@react-three/drei";
 
 function Logo() {
   const myMesh = React.useRef();
@@ -51,6 +45,7 @@ export default function Home() {
       <div className="layer" style={{ width: "100%", height: "100%" }}>
         <Canvas
           camera={{ position: [0, 0, 3], fov: 60 }}
+          dpr={[0, 1]}
           style={{ width: "100%", height: "100%" }}
           /* frameloop="demand" */
         >
