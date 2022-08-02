@@ -4,14 +4,14 @@
 
 :root {
   /* Colors */
-  --color-overlay-rgb:#000000;
-  --color-overlay-alpha:0.325;
-  --color-foreground:#ed5f68;
-  --color-mid-ground:#33456d;
-  --color-background:#0f182d;
-  --color-body-font:#eaf6ff;
-  --text-image:url('https://res.cloudinary.com/ruben-p/image/upload/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq.webp');
-  --color-overlay:rgba(0, 0, 0, var(--color-overlay-alpha));
+  --color-overlay-rgb: #000000;
+  --color-overlay-alpha: 0.325;
+  --color-foreground: #ed5f68;
+  --color-mid-ground: #33456d;
+  --color-background: #0f182d;
+  --color-body-font: #eaf6ff;
+  --text-image: url('https://res.cloudinary.com/ruben-p/image/upload/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq.webp');
+  --color-overlay: rgba(0, 0, 0, var(--color-overlay-alpha));
 }
 
 html,
@@ -92,6 +92,10 @@ url {
     filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.6));
     margin: 0.5vw !important;
   }
+}
+
+.placeholder {
+  padding-top: var.$navbar-height;
 }
 
 /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */

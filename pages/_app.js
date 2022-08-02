@@ -92,7 +92,7 @@ function App({ Component, pageProps }) {
         <Layout>
           <Component {...pageProps} />
         </Layout>
-        <Loader />
+        {/* <Loader /> */}
       </div>
     );
 }

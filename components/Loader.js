@@ -34,35 +34,33 @@ function Loader({
     return () => cancelAnimationFrame(rafRef.current);
   }, [updateProgress]);
   return shown ? (
-    <html>
-      <div className="loading" style={{ opacity: active ? 1 : 0 }}>
-        <div className="item">
-          <div className="column">
-            <ProgressBar
-              radius={100}
-              progress={progress}
-              cut={0}
-              rotate={90}
-              initialAnimation={true}
-              strokeColor={Var.foreground_color}
-              transition=".0s"
-              strokeLinecap="square"
-              trackTransition=".2s ease"
-              trackStrokeLinecap="butt"
-              trackStrokeColor={Var.midground_color}
-              initialAnimationDelay={250}
-            >
-              <div className="indicator layer">
-                <div className="inner">
-                  <RubenP className="icon" />
-                </div>
+    <div className="loading" style={{ opacity: active ? 1 : 0 }}>
+      <div className="item">
+        <div className="column">
+          <ProgressBar
+            radius={100}
+            progress={progress}
+            cut={0}
+            rotate={90}
+            initialAnimation={true}
+            strokeColor={Var.foreground_color}
+            transition=".0s"
+            strokeLinecap="square"
+            trackTransition=".2s ease"
+            trackStrokeLinecap="butt"
+            trackStrokeColor={Var.midground_color}
+            initialAnimationDelay={250}
+          >
+            <div className="indicator layer">
+              <div className="inner">
+                <RubenP className="icon" />
               </div>
-            </ProgressBar>
-            <span className="percentage" ref={progressSpanRef} />
-          </div>
+            </div>
+          </ProgressBar>
+          <span className="percentage" ref={progressSpanRef} />
         </div>
       </div>
-    </html>
+    </div>
   ) : null;
 }
 

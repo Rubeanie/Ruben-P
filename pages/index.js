@@ -1,10 +1,18 @@
-import React, { Suspense  } from "react";
-import { Canvas, useFrame, } from "@react-three/fiber";
+import React, { Suspense, useState, useRef } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { animated } from "@react-spring/three";
 import Head from "next/head";
 import Model from "../components/RP-Logo";
 import { GetColor } from "../components/Style";
-import { AdaptiveDpr } from "@react-three/drei";
+import Image from "next/image";
+import * as THREE from "three";
+import {
+  AdaptiveDpr,
+  OrbitControls,
+  CameraShake,
+  Environment,
+  Html,
+} from "@react-three/drei";
 
 function Logo() {
   const myMesh = React.useRef();
@@ -66,7 +74,20 @@ export default function Home() {
             color={GetColor("--color-mid-ground")}
             intensity={0.65}
           />
-          <Suspense fallback={null}>
+          <Suspense
+            fallback={
+              <Html center className="placeholder">
+                <div style={{ height: "56vh", width: "56vw", zIndex: 1 }}>
+                  <Image
+                    src="/placeholders/Placeholder RP-Logo.webp"
+                    alt="RP-Logo 3D model placeholder"
+                    width={575.88}
+                    height={400}
+                  />
+                </div>
+              </Html>
+            }
+          >
             <Logo />
           </Suspense>
         </Canvas>
