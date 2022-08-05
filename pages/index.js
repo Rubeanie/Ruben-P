@@ -62,11 +62,6 @@ export default function Home() {
           content="I'm Ruben Panzich, I am a Freelance creative developer, with qualifications in game design and development."
         />
       </Head>
-      <link
-        rel="preload"
-        href="/placeholders/Placeholder RP-Logo Low Res.webp"
-        as="image"
-      ></link>
       <div
         className="layer"
         style={{ width: "100%", height: "100%", zIndex: 0 }}
@@ -105,7 +100,7 @@ export default function Home() {
                     width: `calc(520px/(841 / ${height}))`,
                     maxWidth: `calc(86vw/(841 / ${height}))`,
                     transition: "opacity 0.5s",
-                    opacity: progress < 80 ? 1 : 0,
+                    opacity: progress > 70 ? 1 : 0,
                   }}
                 >
                   <Image
@@ -133,12 +128,7 @@ export default function Home() {
                 <br />
                 Panzich
               </h1-image>
-              <p
-                style={{
-                  transition: "opacity 0.5s",
-                  opacity: progress > 80 ? 1 : 0,
-                }}
-              >
+              <p>
                 <Age />
                 -year-old student
                 <br />
