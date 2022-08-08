@@ -107,7 +107,7 @@ export default function Home() {
                     src="/placeholders/Placeholder RP-Logo.webp"
                     alt="RP-Logo 3D model placeholder"
                     layout="fill"
-                    priority={true}
+                    priority
                     placeholder="blur"
                     blurDataURL="/placeholders/Placeholder RP-Logo Low Res.webp"
                   />
