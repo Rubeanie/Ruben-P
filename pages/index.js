@@ -100,7 +100,7 @@ export default function Home() {
                     width: `calc(520px/(841 / ${height}))`,
                     maxWidth: `calc(86vw/(841 / ${height}))`,
                     transition: "opacity 0.5s",
-                    opacity: progress > 70 ? 1 : 0,
+                    opacity: progress < 70 ? 1 : 0,
                   }}
                 >
                   <Image
