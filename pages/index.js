@@ -136,15 +136,13 @@ export default function Home() {
             }
           >
             <Logo />
-            {
-              {/* <EffectComposer>
-                <Bloom
-                  luminanceThreshold={0}
-                  luminanceSmoothing={0.9}
-                  height={100}
-                />
-              </EffectComposer> */}
-            }
+            {/* <EffectComposer>
+              <Bloom
+                luminanceThreshold={0}
+                luminanceSmoothing={0.9}
+                height={100}
+              />
+            </EffectComposer> */}
             {/* <Preload all /> */}
           </Suspense>
         </Canvas>
