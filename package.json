@@ -19,6 +19,7 @@
     "@react-spring/three": "^9.5.2",
     "@react-three/drei": "^9.17.3",
     "@react-three/fiber": "^8.2.2",
+    "@react-three/postprocessing": "^2.6.1",
     "@sanity/client": "^3.3.2",
     "@sanity/image-url": "^1.0.1",
     "acorn": "^8.8.0",

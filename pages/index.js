@@ -2,24 +2,35 @@ import React, { Suspense, useState, useEffect, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { animated } from "@react-spring/three";
 import Head from "next/head";
-import Model from "../components/RP-Logo";
+import { Instances, Model } from "../components/RP-Logo";
 import { GetColor } from "../components/Style";
 import Image from "next/image";
+import { EffectComposer, SSAO, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
 import {
   AdaptiveDpr,
   useProgress,
+  Preload,
   OrbitControls,
   CameraShake,
   Environment,
   Html,
 } from "@react-three/drei";
+import { a, useTransition, useSpring } from "@react-spring/three";
 
 function Logo() {
   const { active, progress } = useProgress();
   const myMesh = React.useRef();
 
-  useFrame(({ clock }) => {
+  const { position } = useSpring({
+    to: {
+      position: 0,
+    },
+    from: { position: -200 },
+    config: { mass: 5, tension: 500, friction: 150 },
+  });
+
+  /* useFrame(({ clock }) => {
     const a = clock.getElapsedTime() / 3;
     //myMesh.current.rotation.y = a;
     let scale = window.screen.width / 600;
@@ -27,11 +38,13 @@ function Logo() {
       scale = 1;
     }
     myMesh.current.scale.set(scale, scale, scale);
-  });
+  }); */
 
   return (
-    <animated.mesh ref={myMesh}>
-      <Model scale={[1, 1, 1]} />
+    <animated.mesh ref={myMesh} position={position} opacity={opacity}>
+      <Instances>
+        <Model scale={[1, 1, 1]} />
+      </Instances>
     </animated.mesh>
   );
 }
@@ -67,8 +80,8 @@ export default function Home() {
         style={{ width: "100%", height: "100%", zIndex: 0 }}
       >
         <Canvas
-          camera={{ position: [0, 0, 3], fov: 60 }}
-          dpr={[0, 1]}
+          camera={{ position: [0, 0, 3], fov: 60, near: 0.5, far: 6 }}
+          dpr={[0, 0.5]}
           style={{ width: "100%", height: "100%" }}
           /* frameloop="demand" */
         >
@@ -77,17 +90,17 @@ export default function Home() {
           <pointLight
             position={[-8, 1, 6]}
             color={GetColor("--color-mid-ground")}
-            intensity={0.65}
+            intensity={1.35}
           />
-          <pointLight
+          {/* <pointLight
             position={[0, 1, 8]}
             color={GetColor("--color-foreground")}
-            intensity={0.65}
-          />
+            intensity={1}
+          /> */}
           <pointLight
             position={[8, 1, 6]}
-            color={GetColor("--color-mid-ground")}
-            intensity={0.65}
+            color={GetColor("--color-foreground")}
+            intensity={1.35}
           />
           <Suspense
             fallback={
@@ -116,6 +129,10 @@ export default function Home() {
             }
           >
             <Logo />
+            <EffectComposer>
+              <Bloom radius={4} luminanceThreshold={0.38} intensity={0.5} />
+            </EffectComposer>
+            <Preload all />
           </Suspense>
         </Canvas>
       </div>
