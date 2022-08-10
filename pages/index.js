@@ -5,7 +5,15 @@ import Head from "next/head";
 import { Instances, Model } from "../components/RP-Logo";
 import { GetColor } from "../components/Style";
 import Image from "next/image";
-import { EffectComposer, SSAO, Bloom } from "@react-three/postprocessing";
+import {
+  Noise,
+  EffectComposer,
+  SSAO,
+  Bloom,
+  Glitch,
+  ChromaticAberration,
+} from "@react-three/postprocessing";
+import { GlitchMode } from "postprocessing";
 import * as THREE from "three";
 import {
   AdaptiveDpr,
@@ -41,7 +49,7 @@ function Logo() {
   });
 
   return (
-    <animated.mesh ref={myMesh} position={position} /* opacity={opacity} */>
+    <animated.mesh ref={myMesh} /* position={position} opacity={opacity} */>
       <Instances>
         <Model scale={[1, 1, 1]} />
       </Instances>
@@ -56,7 +64,7 @@ function Age() {
 }
 
 export default function Home() {
-  const { active, progress } = useProgress()
+  const { active, progress } = useProgress();
   const [height, setHeight] = useState(0);
   const updateDimensions = () => {
     setHeight(window.innerHeight);
@@ -81,26 +89,25 @@ export default function Home() {
       >
         <Canvas
           camera={{ position: [0, 0, 3], fov: 60, near: 0.5, far: 6 }}
-          dpr={[0, 0.5]}
+          dpr={[0, 1]}
           style={{ width: "100%", height: "100%" }}
           /* frameloop="demand" */
         >
           <AdaptiveDpr pixelated />
-          <ambientLight intensity={1} />
           <pointLight
             position={[-8, 1, 6]}
             color={GetColor("--color-mid-ground")}
-            intensity={1.35}
+            intensity={1.15}
           />
-          {/* <pointLight
+          <pointLight
             position={[0, 1, 8]}
             color={GetColor("--color-foreground")}
             intensity={1}
-          /> */}
+          />
           <pointLight
             position={[8, 1, 6]}
-            color={GetColor("--color-foreground")}
-            intensity={1.35}
+            color={GetColor("--color-mid-ground")}
+            intensity={1.15}
           />
           <Suspense
             fallback={
@@ -129,10 +136,16 @@ export default function Home() {
             }
           >
             <Logo />
-            <EffectComposer>
-              <Bloom radius={4} luminanceThreshold={0.38} intensity={0.5} />
-            </EffectComposer>
-            <Preload all />
+            {
+              {/* <EffectComposer>
+                <Bloom
+                  luminanceThreshold={0}
+                  luminanceSmoothing={0.9}
+                  height={100}
+                />
+              </EffectComposer> */}
+            }
+            {/* <Preload all /> */}
           </Suspense>
         </Canvas>
       </div>
