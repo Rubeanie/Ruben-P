@@ -89,6 +89,7 @@ function App({ Component, pageProps }) {
           <meta key="googlebot" name="googlebot" content="index,follow" />\
         </Head>
         <Signature />
+        <div className="background-image"  />
         <Layout>
           <Component {...pageProps} />
         </Layout>

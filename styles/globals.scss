@@ -28,6 +28,7 @@ a {
 
 * {
   box-sizing: border-box;
+  z-index: inherit;
 }
 
 url {
@@ -40,6 +41,20 @@ url {
   box-sizing: border-box;
   text-align: center;
   background: var.$color-background;
+}
+
+.background-image {
+  background: var(--text-image) 0 0;
+  background-attachment: fixed;
+  background-position: 50%;
+  background-size: cover;
+  background-blend-mode: soft-light;
+  opacity: 0.4;
+  filter: grayscale(0) brightness(0.5);
+  width: 100%;
+  height: 100vh;
+  z-index: 0;
+  position: fixed;
 }
 
 .layer {
