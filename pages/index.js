@@ -22,26 +22,26 @@ function Logo() {
   const { active, progress } = useProgress();
   const myMesh = React.useRef();
 
-  const { position } = useSpring({
+  /* const { position } = useSpring({
     to: {
       position: 0,
     },
     from: { position: -200 },
     config: { mass: 5, tension: 500, friction: 150 },
-  });
+  }); */
 
-  /* useFrame(({ clock }) => {
+  useFrame(({ clock }) => {
     const a = clock.getElapsedTime() / 3;
-    //myMesh.current.rotation.y = a;
+    myMesh.current.rotation.y = a;
     let scale = window.screen.width / 600;
     if (scale > 1) {
       scale = 1;
     }
     myMesh.current.scale.set(scale, scale, scale);
-  }); */
+  });
 
   return (
-    <animated.mesh ref={myMesh} position={position} opacity={opacity}>
+    <animated.mesh ref={myMesh} position={position} /* opacity={opacity} */>
       <Instances>
         <Model scale={[1, 1, 1]} />
       </Instances>
