@@ -42,7 +42,7 @@ function Logo() {
     config: { mass: 5, tension: 500, friction: 150 },
   }); */
 
-  useFrame(() => {
+  useFrame(({ clock }) => {
     const a = clock.getElapsedTime() / 3;
     myMesh.current.rotation.y = a;
     let scale = window.screen.width / 600;
