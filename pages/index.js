@@ -17,7 +17,6 @@ import {
 import { GlitchMode, Resizer } from "postprocessing";
 import * as THREE from "three";
 import {
-  AdaptiveDpr,
   useProgress,
   Preload,
   OrbitControls,
@@ -99,7 +98,7 @@ export default function Home() {
           performance={{
             min: 0.1,
             max: 1,
-            /* debounce: 20, */
+            debounce: 20,
           }}
           /* frameloop="demand" */
         >
@@ -155,7 +154,7 @@ export default function Home() {
                 height={Resizer.AUTO_SIZE / 50}
               />
             </EffectComposer>
-            <AdaptiveDpr pixelated />
+            {/* <AdaptiveDpr pixelated /> */}
             <Preload all />
           </Suspense>
         </Canvas>
