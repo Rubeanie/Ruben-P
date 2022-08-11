@@ -5,6 +5,7 @@ import Head from "next/head";
 import { Instances, Model } from "../components/RP-Logo";
 import { GetColor } from "../components/Style";
 import Image from "next/image";
+import { BlendFunction } from "postprocessing";
 import {
   Noise,
   EffectComposer,
@@ -13,7 +14,7 @@ import {
   Glitch,
   ChromaticAberration,
 } from "@react-three/postprocessing";
-import { GlitchMode } from "postprocessing";
+import { GlitchMode, Resizer } from "postprocessing";
 import * as THREE from "three";
 import {
   AdaptiveDpr,
@@ -25,6 +26,10 @@ import {
   Html,
 } from "@react-three/drei";
 import { a, useTransition, useSpring } from "@react-spring/three";
+
+/* 
+TODO: Add transition animation, scroll animation, more performance increases, use react spring more, more optimization and remove unneeded packages and libraries
+*/
 
 function Logo() {
   const { active, progress } = useProgress();
@@ -38,9 +43,8 @@ function Logo() {
     config: { mass: 5, tension: 500, friction: 150 },
   }); */
 
-  useFrame(({ clock }) => {
-    const a = clock.getElapsedTime() / 3;
-    myMesh.current.rotation.y = a;
+  useFrame(() => {
+    myMesh.current.rotation.y += 0.008;
     let scale = window.screen.width / 600;
     if (scale > 1) {
       scale = 1;
@@ -88,12 +92,17 @@ export default function Home() {
         style={{ width: "100%", height: "100%", zIndex: 0 }}
       >
         <Canvas
+          shadows={true}
           camera={{ position: [0, 0, 3], fov: 60, near: 0.5, far: 6 }}
           dpr={[0, 1]}
           style={{ width: "100%", height: "100%" }}
+          performance={{
+            min: 0.1,
+            max: 1,
+            /* debounce: 20, */
+          }}
           /* frameloop="demand" */
         >
-          <AdaptiveDpr pixelated />
           <pointLight
             position={[-8, 1, 6]}
             color={GetColor("--color-mid-ground")}
@@ -136,14 +145,18 @@ export default function Home() {
             }
           >
             <Logo />
-            {/* <EffectComposer>
+            <EffectComposer>
               <Bloom
-                luminanceThreshold={0}
-                luminanceSmoothing={0.9}
-                height={100}
+                mipmapBlur
+                radius={0.75}
+                luminanceThreshold={0.8}
+                intensity={5}
+                width={Resizer.AUTO_SIZE / 50}
+                height={Resizer.AUTO_SIZE / 50}
               />
-            </EffectComposer> */}
-            {/* <Preload all /> */}
+            </EffectComposer>
+            <AdaptiveDpr pixelated />
+            <Preload all />
           </Suspense>
         </Canvas>
       </div>
