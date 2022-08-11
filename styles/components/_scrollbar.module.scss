@@ -6,11 +6,7 @@ html::-webkit-scrollbar {
 
 html::-webkit-scrollbar-thumb {
   border-radius: 20px;
-  background: rgba(var(--color-foreground), 0.4);
-}
-
-html::-webkit-scrollbar-thumb:hover {
-  background: rgba(var(--color-foreground), 0.8);
+  background: var(--color-foreground);
 }
 
 html::-webkit-scrollbar-track {

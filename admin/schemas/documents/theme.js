@@ -18,5 +18,11 @@ export default {
         { name: "asset", type: "reference", to: { type: "cloudinaryImage" } },
       ],
     },
+    {
+      title: "Should this theme be prioritized?",
+      name: "prioritize",
+      type: "boolean",
+      initialValue: false,
+    },
   ],
 };

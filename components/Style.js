@@ -17,7 +17,7 @@ function GetColor(x) {
       );
     }, 1000);
   }, [output, x]);
-  return Color(output).hex();
+  return Color(output !== null ? output.replace(/ /g, "") : output).hex();
 }
 
 function GetBackgroundColor() {
@@ -58,7 +58,9 @@ function GetBackgroundColor() {
       );
     }, 1000);
   }, [outputX, outputY, outputZ]);
-  return Color(outputX).mix(Color(outputY), parseFloat(outputZ)).hex();
+  return Color(outputX !== null ? outputX.replace(/ /g, "") : outputX)
+    .mix(Color(outputY !== null ? outputY.replace(/ /g, "") : outputY), parseFloat(outputZ))
+    .hex();
 }
 
 function GetValue(x) {
@@ -120,18 +122,29 @@ function SetStyle() {
 async function StyleGenerator() {
   let urls = [];
   let messages = [];
+  let prioritizedUrls = [];
+  let prioritizedMessages = [];
   const query = `*[_type == "theme"]{
     _id, 
     assets,
     "urls": assets[]->url,
-    "messages": assets[]->message
+    "messages": assets[]->message,
+    "prioritized": prioritize
   }`;
   await sanity.fetch(query).then((themes) => {
     themes.forEach((theme) => {
       urls.push.apply(urls, theme.urls);
       messages.push.apply(messages, theme.messages);
+      if(theme.prioritized == true) {
+        prioritizedUrls.push.apply(prioritizedUrls, theme.urls);
+        prioritizedMessages.push.apply(prioritizedMessages, theme.messages);
+      }
     });
   });
+  if(prioritizedUrls.length > 0) {
+    urls = prioritizedUrls;
+    messages = prioritizedMessages;
+  }
   const index = Math.floor(Math.random() * urls.length);
   url = urls[index];
   console.log(`Url: ${url} | Index: ${index}`);

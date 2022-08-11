@@ -45,7 +45,7 @@ export default function About({ about }) {
   });
 
   const personalPhoto = cld.image(
-    "v1642990790/Images/About/Personal-Photo.webp"
+    "Images/About/Personal-Photo.webp"
   );
 
   return (

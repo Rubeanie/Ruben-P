@@ -4,14 +4,14 @@
 
 :root {
   /* Colors */
-  --color-overlay-rgb:rgb(0, 0, 0);
-  --color-overlay-alpha:0.325;
-  --color-foreground:rgb(237, 95, 104);
-  --color-mid-ground:rgb(51, 69, 109);
-  --color-background:rgb(15, 24, 45);
-  --color-body-font:rgb(234, 246, 255);
-  --text-image:url('https://res.cloudinary.com/ruben-p/image/upload/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq.webp');
-  --color-overlay:rgba(0, 0, 0, var(--color-overlay-alpha));
+  --color-overlay-rgb: #000000;
+  --color-overlay-alpha: 0.325;
+  --color-foreground: #ed5f68;
+  --color-mid-ground: #33456d;
+  --color-background: #0f182d;
+  --color-body-font: #eaf6ff;
+  --text-image: url('https://res.cloudinary.com/ruben-p/image/upload/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq.webp');
+  --color-overlay: rgba(0, 0, 0, var(--color-overlay-alpha));
 }
 
 html,
@@ -28,6 +28,7 @@ a {
 
 * {
   box-sizing: border-box;
+  z-index: inherit;
 }
 
 url {
@@ -40,6 +41,20 @@ url {
   box-sizing: border-box;
   text-align: center;
   background: var.$color-background;
+}
+
+.background-image {
+  background: var(--text-image) 0 0;
+  background-attachment: fixed;
+  background-position: 50%;
+  background-size: cover;
+  background-blend-mode: soft-light;
+  opacity: 0.4;
+  filter: grayscale(0) brightness(0.5);
+  width: 100%;
+  height: 100vh;
+  z-index: 0;
+  position: fixed;
 }
 
 .layer {
@@ -96,6 +111,11 @@ url {
 
 /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 700px) {
+  .background-image {
+    background-attachment: unset;
+    background-size: auto;
+  }
+
   .row {
     flex-direction: column;
   }

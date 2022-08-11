@@ -2,6 +2,7 @@
 
 .page {
   position: inherit;
+  z-index: 1;
 
   h1 {
     text-align: var.$heading-alignment;

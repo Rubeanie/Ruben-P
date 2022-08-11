@@ -4,13 +4,17 @@ module.exports = {
       {
         source: "/admin/:path*",
         destination:
-        process.env.NODE_ENV === "development"
-        ? "http://localhost:3333/admin/:path*"
-        : "/admin/index.html",
+          process.env.NODE_ENV === "development"
+            ? "http://localhost:3333/admin/:path*"
+            : "/admin/index.html",
       },
-    ]
+    ];
   },
-  reactStrictMode: true,
+  i18n: {
+    locales: ["en"],
+    defaultLocale: "en",
+  },
+  reactStrictMode: false,
   images: {
     domains: ["res.cloudinary.com"],
   },
