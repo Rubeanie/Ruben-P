@@ -1,30 +1,77 @@
-import React, { Suspense, useState, useEffect, useRef } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import React, {
+  Suspense,
+  useState,
+  useEffect,
+  useRef,
+  RefObject,
+} from "react";
+import {
+  Canvas,
+  useFrame,
+  useThree,
+  addEffect,
+  addAfterEffect,
+} from "@react-three/fiber";
 import { animated } from "@react-spring/three";
 import Head from "next/head";
 import { Instances, Model } from "../components/RP-Logo";
 import { GetColor } from "../components/Style";
 import Image from "next/image";
-import { BlendFunction } from "postprocessing";
-import {
-  Noise,
-  EffectComposer,
-  SSAO,
-  Bloom,
-  Glitch,
-  ChromaticAberration,
-} from "@react-three/postprocessing";
-import { GlitchMode, Resizer } from "postprocessing";
-import * as THREE from "three";
 import {
   useProgress,
   Preload,
   OrbitControls,
   CameraShake,
   Environment,
+  AdaptiveDpr,
   Html,
 } from "@react-three/drei";
 import { a, useTransition, useSpring } from "@react-spring/three";
+
+import StatsImpl from "stats.js";
+
+/* function Stats({ showPanel = 0, className, parent }) {
+  const [stats] = useState(() => new StatsImpl());
+  useEffect(() => {
+    const node = (parent && parent.current) || document.body;
+
+    stats.showPanel(showPanel);
+    node.appendChild(stats.dom);
+
+    if (className) stats.dom.classList.add(className);
+
+    const begin = addEffect(() => stats.begin());
+    const end = addAfterEffect(() => stats.end());
+
+    return () => {
+      node.removeChild(stats.dom);
+      begin();
+      end();
+    };
+  }, [parent]);
+  return null;
+} */
+
+function FrameLimiter({ limit = 60 }) {
+  const { invalidate, clock, advance } = useThree();
+  useEffect(() => {
+    let delta = 0;
+    const interval = 1 / limit;
+    const update = () => {
+      requestAnimationFrame(update);
+      delta += clock.getDelta();
+
+      if (delta > interval) {
+        invalidate();
+        delta = delta % interval;
+      }
+    };
+
+    update();
+  }, []);
+
+  return null;
+}
 
 /* 
 TODO: Add transition animation, scroll animation, more performance increases, use react spring more, more optimization and remove unneeded packages and libraries
@@ -34,11 +81,11 @@ function Logo() {
   const { active, progress } = useProgress();
   const myMesh = React.useRef();
 
-  /* const { position } = useSpring({
+  /* const { scale } = useSpring({
     to: {
-      position: 0,
+      scale: window.screen.width / 600,
     },
-    from: { position: -200 },
+    from: { scale: 0 },
     config: { mass: 5, tension: 500, friction: 150 },
   }); */
 
@@ -53,7 +100,7 @@ function Logo() {
   });
 
   return (
-    <animated.mesh ref={myMesh} /* position={position} opacity={opacity} */>
+    <animated.mesh ref={myMesh} /*scale={scale} opacity={opacity} */>
       <Instances>
         <Model scale={[1, 1, 1]} />
       </Instances>
@@ -88,20 +135,13 @@ export default function Home() {
         />
       </Head>
       <div
-        className="layer"
+        className="row layer"
         style={{ width: "100%", height: "100%", zIndex: 0 }}
       >
         <Canvas
-          shadows={true}
           camera={{ position: [0, 0, 3], fov: 60, near: 0.5, far: 6 }}
           dpr={[0, 1]}
-          style={{ width: "100%", height: "100%" }}
-          performance={{
-            min: 0.1,
-            max: 1,
-            debounce: 20,
-          }}
-          /* frameloop="demand" */
+          frameloop="demand"
         >
           <pointLight
             position={[-8, 1, 6]}
@@ -145,17 +185,9 @@ export default function Home() {
             }
           >
             <Logo />
-            <EffectComposer>
-              <Bloom
-                mipmapBlur
-                radius={0.75}
-                luminanceThreshold={0.8}
-                intensity={5}
-                width={Resizer.AUTO_SIZE / 50}
-                height={Resizer.AUTO_SIZE / 50}
-              />
-            </EffectComposer>
-            {/* <AdaptiveDpr pixelated /> */}
+            {/* <Stats /> */}
+            <FrameLimiter limit={30} />
+            <AdaptiveDpr pixelated />
             <Preload all />
           </Suspense>
         </Canvas>

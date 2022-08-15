@@ -44,11 +44,12 @@ url {
 }
 
 .background-image {
-  background: var(--text-image) 0 0;
-  background-attachment: fixed;
-  background-position: 50%;
+  background: var.$text-image;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
   background-size: cover;
-  background-blend-mode: soft-light;
+  background-attachment: fixed;
   opacity: 0.4;
   filter: grayscale(0) brightness(0.5);
   width: 100%;
