@@ -14,7 +14,7 @@ import {
 } from "@react-three/fiber";
 import { animated } from "@react-spring/three";
 import Head from "next/head";
-import { Instances, Model } from "../components/RP-Logo";
+import { Model } from "../components/RP-Logo";
 import { GetColor } from "../components/Style";
 import Image from "next/image";
 import {
@@ -26,52 +26,10 @@ import {
   AdaptiveDpr,
   Html,
 } from "@react-three/drei";
-import { a, useTransition, useSpring } from "@react-spring/three";
-
-import StatsImpl from "stats.js";
-
-/* function Stats({ showPanel = 0, className, parent }) {
-  const [stats] = useState(() => new StatsImpl());
-  useEffect(() => {
-    const node = (parent && parent.current) || document.body;
-
-    stats.showPanel(showPanel);
-    node.appendChild(stats.dom);
-
-    if (className) stats.dom.classList.add(className);
-
-    const begin = addEffect(() => stats.begin());
-    const end = addAfterEffect(() => stats.end());
-
-    return () => {
-      node.removeChild(stats.dom);
-      begin();
-      end();
-    };
-  }, [parent]);
-  return null;
-} */
-
-function FrameLimiter({ limit = 60 }) {
-  const { invalidate, clock, advance } = useThree();
-  useEffect(() => {
-    let delta = 0;
-    const interval = 1 / limit;
-    const update = () => {
-      requestAnimationFrame(update);
-      delta += clock.getDelta();
-
-      if (delta > interval) {
-        invalidate();
-        delta = delta % interval;
-      }
-    };
-
-    update();
-  }, []);
-
-  return null;
-}
+import { a, useTransition, useSpring, config } from "@react-spring/three";
+import { Age, FPSLimiter, Stats } from "../components/HomeComponents"
+import { Material } from "three";
+import { opacity } from "@cloudinary/url-gen/actions/adjust";
 
 /* 
 TODO: Add transition animation, scroll animation, more performance increases, use react spring more, more optimization and remove unneeded packages and libraries
@@ -81,13 +39,14 @@ function Logo() {
   const { active, progress } = useProgress();
   const myMesh = React.useRef();
 
-  /* const { scale } = useSpring({
+  const { transparency } = useSpring({
+    config: { mass: 5, tension: 500, friction: 100 },
+
     to: {
-      scale: window.screen.width / 600,
+      transparency: 1,
     },
-    from: { scale: 0 },
-    config: { mass: 5, tension: 500, friction: 150 },
-  }); */
+    from: { transparency: 0 },
+  });
 
   useFrame(({ clock }) => {
     const a = clock.getElapsedTime() / 3;
@@ -100,19 +59,14 @@ function Logo() {
   });
 
   return (
-    <animated.mesh ref={myMesh} /*scale={scale} opacity={opacity} */>
-      <Instances>
-        <Model scale={[1, 1, 1]} />
-      </Instances>
+    <animated.mesh ref={myMesh} >
+      <Model scale={[1, 1, 1]} />
     </animated.mesh>
   );
 }
 
-function Age() {
-  let { AgeFromDate } = require("age-calculator");
-
-  return new AgeFromDate(new Date("2004-07-26")).age;
-}
+        {/* <animated.material opacity={0.1}>
+        </animated.material> */}
 
 export default function Home() {
   const { active, progress } = useProgress();
@@ -139,6 +93,11 @@ export default function Home() {
         style={{ width: "100%", height: "100%", zIndex: 0 }}
       >
         <Canvas
+          concurrent={"true"}
+          gl={{
+            powerPreference: "high-performance",
+            stencil: false,
+          }}
           camera={{ position: [0, 0, 3], fov: 60, near: 0.5, far: 6 }}
           dpr={[0, 1]}
           frameloop="demand"
@@ -169,16 +128,17 @@ export default function Home() {
                     width: `calc(520px/(841 / ${height}))`,
                     maxWidth: `calc(86vw/(841 / ${height}))`,
                     transition: "opacity 0.5s",
+                    position: "relative",
                     opacity: progress < 70 ? 1 : 0,
                   }}
                 >
                   <Image
-                    src="/placeholders/Placeholder RP-Logo.webp"
+                    src="https://res.cloudinary.com/ruben-p/image/upload/3D%20Models/Logo/Placeholder%20RP-Logo.webp"
                     alt="RP-Logo 3D model placeholder"
                     layout="fill"
-                    priority
+                    priority={true}
                     placeholder="blur"
-                    blurDataURL="/placeholders/Placeholder RP-Logo Low Res.webp"
+                    blurDataURL="https://res.cloudinary.com/ruben-p/image/upload/3D%20Models/Logo/Placeholder%20RP-Logo.webp"
                   />
                 </div>
               </Html>
@@ -186,8 +146,7 @@ export default function Home() {
           >
             <Logo />
             {/* <Stats /> */}
-            <FrameLimiter limit={30} />
-            <AdaptiveDpr pixelated />
+            <FPSLimiter limit={30} />
             <Preload all />
           </Suspense>
         </Canvas>
