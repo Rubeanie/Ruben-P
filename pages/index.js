@@ -32,7 +32,7 @@ import { Material } from "three";
 import { opacity } from "@cloudinary/url-gen/actions/adjust";
 
 /* 
-TODO: Add transition animation, scroll animation, more performance increases, use react spring more, more optimization and remove unneeded packages and libraries
+TODO: scroll animation, more performance increases, use react spring more, more optimization and remove unneeded packages and libraries
 */
 
 function Logo() {
