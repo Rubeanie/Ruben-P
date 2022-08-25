@@ -14,12 +14,13 @@
     "@sanity/default-login",
     "@sanity/dashboard",
     "@sanity/desk-tool",
-    "vercel-deploy",
-    "dark-mode",
     "@sanity/production-preview",
     "asset-source-cloudinary",
     "minesweeper",
-    "note-field"
+    "note-field",
+    "dashboard-widget-vercel",
+    "dashboard-widget-notes",
+    "spotify-activity"
   ],
   "env": {
     "development": {
@@ -36,6 +37,10 @@
     {
       "implements": "part:@sanity/dashboard/config",
       "path": "./dashboardConfig.js"
+    },
+    {
+      "implements": "part:@sanity/base/brand-logo",
+      "path": "./branding/logo.js"
     },
     {
       "implements": "part:@sanity/production-preview/resolve-production-url",
