@@ -34,6 +34,10 @@
       "name": "part:@sanity/base/schema",
       "path": "./schemas/schema"
     },
+    { 
+      "implements": "part:@sanity/dashboard/config", 
+      "path": "./dashboardConfig.js" 
+    },
     {
       "implements": "part:@sanity/production-preview/resolve-production-url",
       "path": "./resolveProductionUrl.js"
