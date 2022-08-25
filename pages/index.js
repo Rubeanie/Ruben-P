@@ -1,46 +1,50 @@
-import React, { Suspense, useState, useEffect, useRef } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import React, {
+  Suspense,
+  useState,
+  useEffect,
+  useRef,
+  RefObject,
+} from "react";
+import {
+  Canvas,
+  useFrame,
+  useThree,
+  addEffect,
+  addAfterEffect,
+} from "@react-three/fiber";
 import { animated } from "@react-spring/three";
 import Head from "next/head";
-import { Instances, Model } from "../components/RP-Logo";
+import { Model } from "../components/RP-Logo";
 import { GetColor } from "../components/Style";
 import Image from "next/image";
-import { BlendFunction } from "postprocessing";
-import {
-  Noise,
-  EffectComposer,
-  SSAO,
-  Bloom,
-  Glitch,
-  ChromaticAberration,
-} from "@react-three/postprocessing";
-import { GlitchMode, Resizer } from "postprocessing";
-import * as THREE from "three";
 import {
   useProgress,
   Preload,
   OrbitControls,
   CameraShake,
   Environment,
+  AdaptiveDpr,
   Html,
 } from "@react-three/drei";
-import { a, useTransition, useSpring } from "@react-spring/three";
+import { a, useTransition, useSpring, config } from "@react-spring/three";
+import { Age, FPSLimiter, Stats } from "../components/HomeComponents"
 
 /* 
-TODO: Add transition animation, scroll animation, more performance increases, use react spring more, more optimization and remove unneeded packages and libraries
+TODO: scroll animation, more performance increases, use react spring more, more optimization and remove unneeded packages and libraries
 */
 
 function Logo() {
   const { active, progress } = useProgress();
   const myMesh = React.useRef();
 
-  /* const { position } = useSpring({
+  const { transparency } = useSpring({
+    config: { mass: 5, tension: 500, friction: 100 },
+
     to: {
-      position: 0,
+      transparency: 1,
     },
-    from: { position: -200 },
-    config: { mass: 5, tension: 500, friction: 150 },
-  }); */
+    from: { transparency: 0 },
+  });
 
   useFrame(({ clock }) => {
     const a = clock.getElapsedTime() / 3;
@@ -53,18 +57,10 @@ function Logo() {
   });
 
   return (
-    <animated.mesh ref={myMesh} /* position={position} opacity={opacity} */>
-      <Instances>
-        <Model scale={[1, 1, 1]} />
-      </Instances>
+    <animated.mesh ref={myMesh} >
+      <Model scale={[1, 1, 1]} />
     </animated.mesh>
   );
-}
-
-function Age() {
-  let { AgeFromDate } = require("age-calculator");
-
-  return new AgeFromDate(new Date("2004-07-26")).age;
 }
 
 export default function Home() {
@@ -88,20 +84,18 @@ export default function Home() {
         />
       </Head>
       <div
-        className="layer"
+        className="row layer"
         style={{ width: "100%", height: "100%", zIndex: 0 }}
       >
         <Canvas
-          shadows={true}
+          concurrent={"true"}
+          gl={{
+            powerPreference: "high-performance",
+            stencil: false,
+          }}
           camera={{ position: [0, 0, 3], fov: 60, near: 0.5, far: 6 }}
           dpr={[0, 1]}
-          style={{ width: "100%", height: "100%" }}
-          performance={{
-            min: 0.1,
-            max: 1,
-            debounce: 20,
-          }}
-          /* frameloop="demand" */
+          frameloop="demand"
         >
           <pointLight
             position={[-8, 1, 6]}
@@ -129,33 +123,25 @@ export default function Home() {
                     width: `calc(520px/(841 / ${height}))`,
                     maxWidth: `calc(86vw/(841 / ${height}))`,
                     transition: "opacity 0.5s",
+                    position: "relative",
                     opacity: progress < 70 ? 1 : 0,
                   }}
                 >
                   <Image
-                    src="/placeholders/Placeholder RP-Logo.webp"
+                    src="https://res.cloudinary.com/ruben-p/image/upload/3D%20Models/Logo/Placeholder%20RP-Logo.webp"
                     alt="RP-Logo 3D model placeholder"
                     layout="fill"
-                    priority
+                    priority={true}
                     placeholder="blur"
-                    blurDataURL="/placeholders/Placeholder RP-Logo Low Res.webp"
+                    blurDataURL="https://res.cloudinary.com/ruben-p/image/upload/3D%20Models/Logo/Placeholder%20RP-Logo.webp"
                   />
                 </div>
               </Html>
             }
           >
             <Logo />
-            <EffectComposer>
-              <Bloom
-                mipmapBlur
-                radius={0.75}
-                luminanceThreshold={0.8}
-                intensity={5}
-                width={Resizer.AUTO_SIZE / 50}
-                height={Resizer.AUTO_SIZE / 50}
-              />
-            </EffectComposer>
-            {/* <AdaptiveDpr pixelated /> */}
+            {/* <Stats /> */}
+            <FPSLimiter limit={30} />
             <Preload all />
           </Suspense>
         </Canvas>

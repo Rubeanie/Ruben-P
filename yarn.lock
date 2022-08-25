@@ -3353,11 +3353,6 @@ react-composer@^5.0.3:
   dependencies:
     prop-types "^15.6.0"
 
-react-customizable-progressbar@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/react-customizable-progressbar/-/react-customizable-progressbar-1.1.0.tgz#eb4c3ad8350a031a570827a1dece222c44c91ce2"
-  integrity sha512-VkHRAJjrNrknZqrpJTGJ2mXMuj1+91SpP/2YpEV+YLzAJEl6hK2DmUygbtTmo80tsY8eHIAXjQEKtxgML0EWBw==
-
 react-dom@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"

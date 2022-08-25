@@ -7,7 +7,7 @@
   h1 {
     text-align: var.$heading-alignment;
     line-height: 1em;
-    color: var.$color-body-font;
+    color: var.$color-foreground;
     font-family: var.$font-title;
     font-size: var.$heading-size;
     font-weight: var.$heading-weight;
@@ -17,11 +17,11 @@
 
   h1-image {
     @extend h1;
-    background: var.$text-image 0 0;
+    background: var.$text-image no-repeat center center;
+    background-size: cover;
     background-attachment: fixed;
     background-clip: text;
-    background-position: center;
-    background-size: cover;
+    -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.6));
   }
@@ -104,6 +104,7 @@
     h1-image {
       background-attachment: unset;
       background-size: auto;
+      filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.85));
     }
 
     h2 {
