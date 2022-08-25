@@ -14,7 +14,13 @@
     "@sanity/default-login",
     "@sanity/desk-tool",
     "dark-mode",
-    "@sanity/production-preview"
+    "@sanity/production-preview",
+    "@sanity/scheduled-publishing",
+    "asset-source-cloudinary",
+    "minesweeper",
+    "note-field",
+    "dashboard-widget-vercel",
+    "@sanity/dashboard"
   ],
   "env": {
     "development": {
