@@ -28,8 +28,6 @@ import {
 } from "@react-three/drei";
 import { a, useTransition, useSpring, config } from "@react-spring/three";
 import { Age, FPSLimiter, Stats } from "../components/HomeComponents"
-import { Material } from "three";
-import { opacity } from "@cloudinary/url-gen/actions/adjust";
 
 /* 
 TODO: scroll animation, more performance increases, use react spring more, more optimization and remove unneeded packages and libraries
@@ -64,9 +62,6 @@ function Logo() {
     </animated.mesh>
   );
 }
-
-        {/* <animated.material opacity={0.1}>
-        </animated.material> */}
 
 export default function Home() {
   const { active, progress } = useProgress();

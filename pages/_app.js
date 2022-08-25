@@ -4,7 +4,6 @@ import "../styles/globals.scss";
 import Script from "next/script";
 import Head from "next/head";
 import Signature from "../components/Signature";
-import { Loader } from "../components/Loader";
 import { useRouter } from "next/router";
 import * as gtag from "../components/Ga";
 import { GetColor, GetBackgroundColor } from "../components/Style";
@@ -93,7 +92,6 @@ function App({ Component, pageProps }) {
         <Layout>
           <Component {...pageProps} />
         </Layout>
-        {/* <Loader /> */}
       </div>
     );
 }
