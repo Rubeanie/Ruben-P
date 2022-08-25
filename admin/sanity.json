@@ -12,15 +12,14 @@
     "@sanity/base",
     "@sanity/default-layout",
     "@sanity/default-login",
+    "@sanity/dashboard",
     "@sanity/desk-tool",
+    "vercel-deploy",
     "dark-mode",
     "@sanity/production-preview",
-    "@sanity/scheduled-publishing",
     "asset-source-cloudinary",
     "minesweeper",
-    "note-field",
-    "dashboard-widget-vercel",
-    "@sanity/dashboard"
+    "note-field"
   ],
   "env": {
     "development": {
@@ -34,9 +33,9 @@
       "name": "part:@sanity/base/schema",
       "path": "./schemas/schema"
     },
-    { 
-      "implements": "part:@sanity/dashboard/config", 
-      "path": "./dashboardConfig.js" 
+    {
+      "implements": "part:@sanity/dashboard/config",
+      "path": "./dashboardConfig.js"
     },
     {
       "implements": "part:@sanity/production-preview/resolve-production-url",
