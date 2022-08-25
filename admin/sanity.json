@@ -21,6 +21,7 @@
     "dashboard-widget-vercel",
     "dashboard-widget-notes",
     "spotify-activity"
+    "sanity-plugin-dark-mode"
   ],
   "env": {
     "development": {
