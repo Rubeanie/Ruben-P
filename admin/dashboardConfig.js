@@ -3,7 +3,7 @@ export default {
     {
       name: "notes",
       layout: {
-        width: "auto",
+        width: "medium",
         height: "small",
       },
     },

@@ -20,8 +20,7 @@
     "note-field",
     "dashboard-widget-vercel",
     "dashboard-widget-notes",
-    "spotify-activity",
-    "touch-icon"
+    "spotify-activity"
   ],
   "env": {
     "development": {
