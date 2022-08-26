@@ -26,10 +26,10 @@ const Column = styled.div`
 function Spotify() {
 
   return (
-    <DashboardWidget header="Now Playing...">
+    <DashboardWidget header="Spotify">
       <Column>
         <Image
-          src="https://spotify-github-profile.vercel.app/api/view?uid=rubeanie&cover_image=true&theme=compact"
+          src="https://spotify-github-profile.vercel.app/api/view?uid=rubeanie&cover_image=true&theme=default&bar_color_cover=true"
           alt=""
         />
       </Column>
