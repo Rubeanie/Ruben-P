@@ -3,25 +3,29 @@ export default {
     {
       name: "notes",
       layout: {
-        width: "medium",
+        width: "auto",
+        height: "small",
       },
     },
     {
       name: "minesweeper",
       layout: {
         width: "small",
+        height: "small",
       },
     },
     {
       name: "spotify-activity",
       layout: {
         width: "small",
+        height: "auto",
       },
     },
     {
       name: "project-users",
       layout: {
-        width: "small",
+        width: "auto",
+        height: "small",
       },
     },
     {

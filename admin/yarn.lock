@@ -10105,10 +10105,10 @@ sanity-plugin-asset-source-cloudinary@^0.1.2:
     "@sanity/ui" "^0.36.12"
     styled-components "^5.2.0"
 
-sanity-plugin-dark-theme-blue@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/sanity-plugin-dark-theme-blue/-/sanity-plugin-dark-theme-blue-1.0.1.tgz#74804676323b49d05df383ec5c6d72458d3e8679"
-  integrity sha512-5J9HjLCVsiHDqms9aLBY3lDGlajaQ2mp/h/XPwTgmKvg+F8gCjFi1uOyFevRYx/gdy/98Y4hsuj1fmPX9uHNJw==
+sanity-plugin-dark-mode@^0.0.33:
+  version "0.0.33"
+  resolved "https://registry.npmjs.org/sanity-plugin-dark-mode/-/sanity-plugin-dark-mode-0.0.33.tgz#ab5b2a09ba5cf9fe300f7c58111b7c46bebef583"
+  integrity sha512-WGptmz++WvBJ9Tjl9701x6k+zR4ppuKlZ8yEVQHt4OoVrQepdryCNZo8z+xdiREYCLZaLQyEuPnIc1CPt2lHoQ==
 
 sanity-plugin-dashboard-widget-notes@^0.4.1:
   version "0.4.1"
