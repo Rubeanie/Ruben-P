@@ -1,0 +1,26 @@
+{
+  "name": "RP Admin",
+  "short_name": "Admin",
+  "icons": [
+    {
+      "src": "/admin/static/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/admin/static/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/admin/static/RP-Logo Sanity.svg",
+      "type": "image/svg",
+      "purpose": "maskable"
+    }
+  ],
+  "scope": "/",
+  "start_url": "/",
+  "theme_color": "#f03e2f",
+  "background_color": "#0f182d",
+  "display": "standalone"
+}

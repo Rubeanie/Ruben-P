@@ -6,9 +6,13 @@ export default {
   type: "document",
   fields: [
     {
-      title: "URL",
-      name: "url",
+      title: "Image",
+      name: "image",
       type: "string",
+      type: "cloudinary.asset",
+      options: {
+        hotspot: true,
+      },
     },
     {
       title: "Message",
@@ -18,9 +22,9 @@ export default {
   ],
   preview: {
     select: {
-      title: "url",
+      title: "image.url",
       message: "message",
-      url: "url",
+      url: "image.url",
     },
     prepare(selection) {
       const { title, message, url } = selection;

@@ -12,11 +12,25 @@
     "@sanity/base",
     "@sanity/default-layout",
     "@sanity/default-login",
+    "@sanity/dashboard",
     "@sanity/desk-tool",
-    "@sanity/production-preview"
+    "@sanity/production-preview",
+    "asset-source-cloudinary",
+    "minesweeper",
+    "note-field",
+    "dashboard-widget-vercel",
+    "dashboard-widget-notes",
+    "spotify-activity",
+    "asset-source-unsplash",
+    "icon-picker",
+    "media",
+    "cloudinary"
   ],
   "env": {
     "development": {
+      "api": {
+        "dataset": "development"
+      },
       "plugins": [
         "@sanity/vision"
       ]
@@ -26,6 +40,22 @@
     {
       "name": "part:@sanity/base/schema",
       "path": "./schemas/schema"
+    },
+    {
+      "implements": "part:@sanity/dashboard/config",
+      "path": "./dashboardConfig.js"
+    },
+    {
+      "implements": "part:@sanity/base/brand-logo",
+      "path": "./branding/logo.js"
+    },
+    {
+      "implements": "part:@sanity/form-builder/input/image/asset-sources",
+      "path": "./parts/assetSources.js"
+    },
+    {
+      "implements": "part:@sanity/form-builder/input/file/asset-sources",
+      "path": "./parts/assetSources.js"
     },
     {
       "implements": "part:@sanity/production-preview/resolve-production-url",
