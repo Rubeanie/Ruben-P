@@ -20,10 +20,17 @@
     "note-field",
     "dashboard-widget-vercel",
     "dashboard-widget-notes",
-    "spotify-activity"
+    "spotify-activity",
+    "asset-source-unsplash",
+    "icon-picker",
+    "media",
+    "cloudinary"
   ],
   "env": {
     "development": {
+      "api": {
+        "dataset": "development"
+      },
       "plugins": [
         "@sanity/vision"
       ]
@@ -41,6 +48,14 @@
     {
       "implements": "part:@sanity/base/brand-logo",
       "path": "./branding/logo.js"
+    },
+    {
+      "implements": "part:@sanity/form-builder/input/image/asset-sources",
+      "path": "./parts/assetSources.js"
+    },
+    {
+      "implements": "part:@sanity/form-builder/input/file/asset-sources",
+      "path": "./parts/assetSources.js"
     },
     {
       "implements": "part:@sanity/production-preview/resolve-production-url",

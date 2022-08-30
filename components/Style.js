@@ -127,16 +127,16 @@ async function StyleGenerator() {
   const query = `*[_type == "theme"]{
     _id, 
     assets,
-    "urls": assets[]->url,
+    "images": assets[]->image.url,
     "messages": assets[]->message,
     "prioritized": prioritize
   }`;
   await sanity.fetch(query).then((themes) => {
     themes.forEach((theme) => {
-      urls.push.apply(urls, theme.urls);
+      urls.push.apply(urls, theme.images);
       messages.push.apply(messages, theme.messages);
       if(theme.prioritized == true) {
-        prioritizedUrls.push.apply(prioritizedUrls, theme.urls);
+        prioritizedUrls.push.apply(prioritizedUrls, theme.images);
         prioritizedMessages.push.apply(prioritizedMessages, theme.messages);
       }
     });
