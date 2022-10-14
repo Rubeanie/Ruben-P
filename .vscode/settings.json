@@ -1,5 +1,9 @@
 {
   "files.exclude": {
   },
-  "cmake.configureOnOpen": false
+  "cmake.configureOnOpen": false,
+  "editor.tokenColorCustomizations": {
+    "comments": "",
+    "textMateRules": []
+  }
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { usePalette } from "react-palette";
-import sanity from "../lib/sanity";
+import { client } from "../lib/sanity";
 
 let url = null;
 const Color = require("color");
@@ -131,7 +131,7 @@ async function StyleGenerator() {
     "messages": assets[]->message,
     "prioritized": prioritize
   }`;
-  await sanity.fetch(query).then((themes) => {
+  await client.fetch(query).then((themes) => {
     themes.forEach((theme) => {
       urls.push.apply(urls, theme.images);
       messages.push.apply(messages, theme.messages);

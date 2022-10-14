@@ -9,6 +9,7 @@ import aboutPage from "./documents/pages/about";
 import cloudinaryImage from "./documents/cloudinaryImage";
 import themes from "./documents/theme";
 
+import skillList from "./objects/skillList";
 import blockContent from "./objects/blockContent";
 import embedHTML from "./objects/embedHTML";
 import hero from "./objects/hero";
@@ -16,6 +17,8 @@ import link from "./objects/link";
 import simplePortableText from "./objects/simplePortableText";
 
 import category from "./documents/category";
+import page from "./documents/page";
+import skill from "./documents/skill";
 import post from "./documents/post";
 import author from "./documents/author";
 
@@ -32,12 +35,15 @@ export default createSchema({
     cloudinaryImage,
     themes,
 
+    page,
+    skill,
     post,
     author,
     category,
 
     // When added to this list, object types can be used as
     // { type: 'typename' } in other document schemas
+    skillList,
     blockContent,
     embedHTML,
     hero,

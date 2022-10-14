@@ -24,7 +24,8 @@
     "asset-source-unsplash",
     "icon-picker",
     "media",
-    "cloudinary"
+    "cloudinary",
+    "@sanity/color-input"
   ],
   "env": {
     "development": {

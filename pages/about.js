@@ -25,19 +25,44 @@ import {
   RpUnity,
 } from "../components/Icons";
 import Skill from "../components/Skill";
+import { Module } from "../components/modules";
 
-import sanity from "../lib/sanity";
+import { client } from "../lib/sanity";
 import { PortableText } from "@portabletext/react";
 
-const query = `*[_type == "aboutPage"] | order(priority asc) {
+const query = `*[_type == "page" && title == "About"][0] {
   _id,
   title,
-  priority,
-  content,
+  modules[]{
+    _type == 'skills' => {
+      _type,
+      _key,
+      skills[]->{
+        name,
+        image,
+        textColor{
+          hex
+        },
+        baseColor{
+          hex
+        },
+        url
+      }
+    },
+    _type == 'html' => {
+      _type,
+      _key,
+      content[]
+    }
+  }
 }
 `;
 
-export default function About({ about }) {
+export default function About({ data }) {
+  const { modules = [] } = data
+  console.log(data);
+  console.log(modules);
+
   const cld = new Cloudinary({
     cloud: {
       cloudName: "ruben-p",
@@ -87,10 +112,8 @@ export default function About({ about }) {
       </hero>
       <heros>
         <div className="column">
-          {about.map((aboutPage) => (
-            <div key={aboutPage._id}>
-              <PortableText value={aboutPage.content} />
-            </div>
+          {modules.map((module) => (
+            <Module key={module._key} index={module._key} module={module} />
           ))}
           <div className="flex-box">
             <div className="item shadow">
@@ -253,8 +276,8 @@ export default function About({ about }) {
 }
 
 export const getStaticProps = async () => {
-  const about = await sanity.fetch(query);
+  const data = await client.fetch(query);
   return {
-    props: { about } // will be passed to the page component as props
+    props: { data } // will be passed to the page component as props
   };
 };
