@@ -1,21 +1,20 @@
-import Link from "next/link";
-import React from "react";
+import Link from 'next/link'
+import React from 'react'
 
 export default class Footer extends React.Component {
   render() {
     return (
       <div className="footer">
         <div className="column">
-          <foot-info>©2022 Ruben Panzich</foot-info>
-          <Link href="https://github.com/Rubeanie/Ruben-P">
-            <a>
-              <foot-github>
-                <url>Source code on GitHub</url>
-              </foot-github>
-            </a>
-          </Link>
+          <p>
+            ©2022 Ruben Panzich
+            <br />
+            <Link href="https://github.com/Rubeanie/Ruben-P">
+              Source code on GitHub
+            </Link>
+          </p>
         </div>
       </div>
-    );
+    )
   }
 }

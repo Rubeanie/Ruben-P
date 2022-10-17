@@ -958,7 +958,7 @@
     pirates "^4.0.5"
     source-map-support "^0.5.16"
 
-"@babel/runtime-corejs3@^7.10.2", "@babel/runtime-corejs3@^7.12.1":
+"@babel/runtime-corejs3@^7.10.2":
   version "7.18.9"
   resolved "https://registry.npmjs.org/@babel/runtime-corejs3/-/runtime-corejs3-7.18.9.tgz#7bacecd1cb2dd694eacd32a91fcf7021c20770ae"
   integrity sha512-qZEWeccZCrHA2Au4/X05QW5CMdm4VjUDCrGq5gf1ZDcM4hRqreKrtwAn7yci9zfgAS9apvnsFXiGBHBAxZdK9A==
@@ -1947,7 +1947,7 @@
   resolved "https://registry.npmjs.org/@sanity/icons/-/icons-1.0.5.tgz#e00fb474f48e57b90bd169e668c37422d6dae3b0"
   integrity sha512-Z6Q1H3TP0p7Bg/eVdTqx8Zz8SwUjwVS14kQPq/4yhXXWJZY0FHAmMuP2X54GqkzL6lEDjenwlV//vJ6b4RZtpQ==
 
-"@sanity/icons@^1.1.3", "@sanity/icons@^1.2.2", "@sanity/icons@^1.3.1", "@sanity/icons@^1.3.4":
+"@sanity/icons@^1.2.2", "@sanity/icons@^1.3.1", "@sanity/icons@^1.3.4":
   version "1.3.4"
   resolved "https://registry.npmjs.org/@sanity/icons/-/icons-1.3.4.tgz#145327737af84251be4a410f536f3267169a3b9a"
   integrity sha512-aRnqGrp30liSqV/etF4uSuQfCMxbrEztUNTgH1755MsrzQSowadK/d6yRiEHmamcqxiE0ovJK+SFNw1qltWXaQ==
@@ -2308,10 +2308,10 @@
     react-popper "^2.2.5"
     react-refractor "^2.1.5"
 
-"@sanity/ui@^0.37.2", "@sanity/ui@^0.37.5":
-  version "0.37.21"
-  resolved "https://registry.npmjs.org/@sanity/ui/-/ui-0.37.21.tgz#a07d08f5cfc080d14e64f5ed23352fbdbbfdb2c2"
-  integrity sha512-OVnAZnOqBn7FpoOQVChTISedpQvwTlU+fEDG9c49rob1DaAxkSNnsT2IM6OG6nV0an1Z6izDFC47VcrC+twFnw==
+"@sanity/ui@^0.37.22":
+  version "0.37.22"
+  resolved "https://registry.npmjs.org/@sanity/ui/-/ui-0.37.22.tgz#36bc54d689bc01f55103b01f6c8a571d6720df1a"
+  integrity sha512-NoPfK92aXGW0miFpwYjN7ksZqO1HcXEvamPLzWWkmGjvEARr9B3Im+ooAKBkDuC9Bmufs4Jy++d5ITbPqDupJA==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@popperjs/core" "^2.11.5"
@@ -2324,10 +2324,10 @@
     react-popper "^2.2.5"
     react-refractor "^2.1.7"
 
-"@sanity/ui@^0.37.22":
-  version "0.37.22"
-  resolved "https://registry.npmjs.org/@sanity/ui/-/ui-0.37.22.tgz#36bc54d689bc01f55103b01f6c8a571d6720df1a"
-  integrity sha512-NoPfK92aXGW0miFpwYjN7ksZqO1HcXEvamPLzWWkmGjvEARr9B3Im+ooAKBkDuC9Bmufs4Jy++d5ITbPqDupJA==
+"@sanity/ui@^0.37.5":
+  version "0.37.21"
+  resolved "https://registry.npmjs.org/@sanity/ui/-/ui-0.37.21.tgz#a07d08f5cfc080d14e64f5ed23352fbdbbfdb2c2"
+  integrity sha512-OVnAZnOqBn7FpoOQVChTISedpQvwTlU+fEDG9c49rob1DaAxkSNnsT2IM6OG6nV0an1Z6izDFC47VcrC+twFnw==
   dependencies:
     "@juggle/resize-observer" "^3.3.1"
     "@popperjs/core" "^2.11.5"
@@ -4927,13 +4927,6 @@ debug@^4.1.0, debug@^4.1.1, debug@^4.3.2, debug@^4.3.4:
   dependencies:
     ms "2.1.2"
 
-decamelize@3.2.0:
-  version "3.2.0"
-  resolved "https://registry.npmjs.org/decamelize/-/decamelize-3.2.0.tgz#84b8e8f4f8c579f938e35e2cc7024907e0090851"
-  integrity sha512-4TgkVUsmmu7oCSyGBm5FvfMoACuoh9EOidm7V5/J2X2djAwwt57qb3F2KMP2ITqODTCSwb+YRV+0Zqrv18k/hw==
-  dependencies:
-    xregexp "^4.2.4"
-
 decamelize@^1.0.0, decamelize@^1.1.1:
   version "1.2.0"
   resolved "https://registry.npmjs.org/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
@@ -6172,11 +6165,6 @@ framesync@^6.0.1:
   integrity sha512-jBTqhX6KaQVDyus8muwZbBeGGP0XgujBRbQ7gM7BRdS3CadCZIHiawyzYLnafYcvZIh5j8WE7cxZKFn7dXhu9g==
   dependencies:
     tslib "2.4.0"
-
-framework7-icons@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.npmjs.org/framework7-icons/-/framework7-icons-4.0.2.tgz#bd6ad936422efc12341e8fbe69975b7d557afc66"
-  integrity sha512-YxEe5RwH86P/5ysPOyG4e4tfFTwnkQUDdzRpoa/eyPVXPIlVWoSmet2NialmvpGlHXRb+oHP32k0Ka5K0Ex6oQ==
 
 fresh@0.5.2:
   version "0.5.2"
@@ -8022,15 +8010,15 @@ mem@^1.1.0:
   dependencies:
     mimic-fn "^1.0.0"
 
-"memoize-one@>=3.1.1 <6", memoize-one@^5.0.0:
-  version "5.2.1"
-  resolved "https://registry.npmjs.org/memoize-one/-/memoize-one-5.2.1.tgz#8337aa3c4335581839ec01c3d594090cebe8f00e"
-  integrity sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q==
-
 memoize-one@^3.1.1:
   version "3.1.1"
   resolved "https://registry.npmjs.org/memoize-one/-/memoize-one-3.1.1.tgz#ef609811e3bc28970eac2884eece64d167830d17"
   integrity sha512-YqVh744GsMlZu6xkhGslPSqSurOv6P+kLN2J3ysBZfagLcL5FdRK/0UpgLoL8hwjjEvvAVkjJZyFP+1T6p1vgA==
+
+memoize-one@^5.0.0:
+  version "5.2.1"
+  resolved "https://registry.npmjs.org/memoize-one/-/memoize-one-5.2.1.tgz#8337aa3c4335581839ec01c3d594090cebe8f00e"
+  integrity sha512-zYiwtZUcYyXKo/np96AGZAckk+FWWsUdJ3cHGGmld7+AhvcWmQyGCYUh1hc4Q/pkOhb65dQR/pqCyK0cOaHz4Q==
 
 memoize-resolver@~1.0.0:
   version "1.0.0"
@@ -10177,11 +10165,6 @@ react-icons@^3.7.0:
   dependencies:
     camelcase "^5.0.0"
 
-react-icons@^4.2.0:
-  version "4.4.0"
-  resolved "https://registry.npmjs.org/react-icons/-/react-icons-4.4.0.tgz#a13a8a20c254854e1ec9aecef28a95cdf24ef703"
-  integrity sha512-fSbvHeVYo/B5/L4VhB7sBA1i2tS8MkT0Hb9t2H1AVPkwGfVHLJCqyr2Py9dKMxsyM63Eng1GkdZfbWj+Fmv8Rg==
-
 react-infinite-scroll-component@^6.1.0:
   version "6.1.0"
   resolved "https://registry.npmjs.org/react-infinite-scroll-component/-/react-infinite-scroll-component-6.1.0.tgz#7e511e7aa0f728ac3e51f64a38a6079ac522407f"
@@ -10429,11 +10412,6 @@ react-virtual@^2.10.4:
   dependencies:
     "@reach/observe-rect" "^1.1.0"
 
-react-virtualized-auto-sizer@^1.0.5:
-  version "1.0.6"
-  resolved "https://registry.npmjs.org/react-virtualized-auto-sizer/-/react-virtualized-auto-sizer-1.0.6.tgz#66c5b1c9278064c5ef1699ed40a29c11518f97ca"
-  integrity sha512-7tQ0BmZqfVF6YYEWcIGuoR3OdYe8I/ZFbNclFlGOC3pMqunkYF/oL30NCjSGl9sMEb17AnzixDz98Kqc3N76HQ==
-
 react-virtuoso@^2.11.0:
   version "2.17.2"
   resolved "https://registry.npmjs.org/react-virtuoso/-/react-virtuoso-2.17.2.tgz#cc7323f300d5d80311bf828efcda95f6cc1edd51"
@@ -10441,14 +10419,6 @@ react-virtuoso@^2.11.0:
   dependencies:
     "@virtuoso.dev/react-urx" "^0.2.12"
     "@virtuoso.dev/urx" "^0.2.12"
-
-react-window@^1.8.6:
-  version "1.8.7"
-  resolved "https://registry.npmjs.org/react-window/-/react-window-1.8.7.tgz#5e9fd0d23f48f432d7022cdb327219353a15f0d4"
-  integrity sha512-JHEZbPXBpKMmoNO1bNhoXOOLg/ujhL/BU4IqVU9r8eQPcy5KQnGHIHDRkJ0ns9IM5+Aq5LNwt3j8t3tIrePQzA==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-    memoize-one ">=3.1.1 <6"
 
 react@16.14.0:
   version "16.14.0"
@@ -11032,19 +11002,6 @@ sanity-plugin-dashboard-widget-vercel@^1.1.1:
     use-deep-compare-effect "1.6.1"
     xstate "4.17.0"
     yup "0.32.9"
-
-sanity-plugin-icon-picker@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.npmjs.org/sanity-plugin-icon-picker/-/sanity-plugin-icon-picker-2.0.2.tgz#f0f2f4b78c0b61562665fe6b793068d5acf8f562"
-  integrity sha512-YQ14BuZ6I/mg1K226jJc8n0aFExu6Rf03C8t3vPurCndXnwt6sWADYjYfEnaSHBIm5j6i0I43WkWF4PWqBlNaw==
-  dependencies:
-    "@sanity/icons" "^1.1.3"
-    "@sanity/ui" "^0.37.2"
-    decamelize "3.2.0"
-    framework7-icons "^4.0.2"
-    react-icons "^4.2.0"
-    react-virtualized-auto-sizer "^1.0.5"
-    react-window "^1.8.6"
 
 sanity-plugin-media@^1.4.10:
   version "1.4.10"
@@ -12865,13 +12822,6 @@ xregexp@2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/xregexp/-/xregexp-2.0.0.tgz#52a63e56ca0b84a7f3a5f3d61872f126ad7a5943"
   integrity sha512-xl/50/Cf32VsGq/1R8jJE5ajH1yMCQkpmoS10QbFZWl2Oor4H0Me64Pu2yxvsRWK3m6soJbmGfzSR7BYmDcWAA==
-
-xregexp@^4.2.4:
-  version "4.4.1"
-  resolved "https://registry.npmjs.org/xregexp/-/xregexp-4.4.1.tgz#c84a88fa79e9ab18ca543959712094492185fe65"
-  integrity sha512-2u9HwfadaJaY9zHtRRnH6BY6CQVNQKkYm3oLtC9gJXXzfsbACg5X5e4EZZGVAH+YIfa+QA9lsFQTTe3HURF3ag==
-  dependencies:
-    "@babel/runtime-corejs3" "^7.12.1"
 
 xstate@4.17.0:
   version "4.17.0"

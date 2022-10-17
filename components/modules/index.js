@@ -16,7 +16,7 @@ export const Module = ({
   switch (type) {
     /* case 'hero':
       return <Hero index={index} data={module} /> */
-    case 'htmll':
+    case 'html':
       return <BlockContent index={index} data={module} />
     case 'skills':
       return <Skills index={index} data={module} />

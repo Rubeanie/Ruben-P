@@ -36,6 +36,7 @@
     "react-ga": "^3.3.1",
     "react-html-comment": "^2.0.14",
     "react-icons": "^4.4.0",
+    "react-inlinesvg": "^3.0.1",
     "react-is": "^18.2.0",
     "react-palette": "^1.0.2",
     "react-player": "^2.10.1",

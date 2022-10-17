@@ -35,7 +35,6 @@
     "sanity-plugin-dark-mode": "^0.0.33",
     "sanity-plugin-dashboard-widget-notes": "^0.4.1",
     "sanity-plugin-dashboard-widget-vercel": "^1.1.1",
-    "sanity-plugin-icon-picker": "^2.0.2",
     "sanity-plugin-media": "^1.4.10",
     "sanity-plugin-minesweeper": "^0.0.3",
     "sanity-plugin-note-field": "^1.1.4",

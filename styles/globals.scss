@@ -21,6 +21,16 @@ body {
   font-family: var.$font-body;
 }
 
+h1,
+h2,
+p {
+  a {
+    text-decoration: underline;
+    text-decoration-color: #4285F4;
+    color: #4285F4;
+  }
+}
+
 a {
   text-decoration: none;
   color: inherit;
@@ -29,12 +39,6 @@ a {
 * {
   box-sizing: border-box;
   z-index: inherit;
-}
-
-url {
-  text-decoration: underline;
-  text-decoration-color: #4285F4;
-  color: #4285F4;
 }
 
 .App {
