@@ -4,6 +4,14 @@ import createSchema from "part:@sanity/base/schema-creator";
 // Then import schema types from any plugins that might expose them
 import schemaTypes from "all:part:@sanity/base/schema-type";
 
+import generalSettings from './documents/settings-general'
+import cookieSettings from './documents/settings-cookie'
+import footerSettings from './documents/settings-footer'
+import seoSettings from './documents/settings-seo'
+import menu from './documents/menu'
+
+import seo from './objects/seo'
+
 // We import object and document schemas
 import aboutPage from "./documents/pages/about";
 import cloudinaryImage from "./documents/cloudinaryImage";
@@ -49,5 +57,13 @@ export default createSchema({
     hero,
     link,
     simplePortableText,
+
+    // Others
+    generalSettings,
+    cookieSettings,
+    footerSettings,
+    seoSettings,
+    menu,
+    seo,
   ]),
 });

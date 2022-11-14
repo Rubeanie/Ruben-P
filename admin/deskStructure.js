@@ -3,16 +3,18 @@ import S from '@sanity/desk-tool/structure-builder'
 import { settingsMenu } from './desk/settings'
 import { pagesMenu } from './desk/pages'
 import { shopMenu } from './desk/shop'
-import { menusMenu } from './desk/menus'
 
 const hiddenDocTypes = listItem =>
   ![
-    'author',
-    'category',
+    'page',
 
     'generalSettings',
+    'cookieSettings',
+    'headerSettings',
+    'footerSettings',
     'seoSettings',
 
+    'menu',
     'siteSettings',
     'media.tag' // for media plugin
   ].includes(listItem.getId())
@@ -24,8 +26,6 @@ export default () =>
       pagesMenu,
       S.divider(),
       shopMenu,
-      S.divider(),
-      menusMenu,
       S.divider(),
       settingsMenu,
 

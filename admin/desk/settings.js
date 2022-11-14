@@ -29,30 +29,6 @@ export const settingsMenu = S.listItem()
           .icon(Gear),
         S.divider(),
         S.listItem()
-          .title('Colors')
-          .child(S.documentTypeList('solidColor').title('Colors'))
-          .icon(PaintBucket),
-        S.divider(),
-        S.listItem()
-          .title('Shop')
-          .child(
-            S.editor()
-              .id('shopSettings')
-              .schemaType('shopSettings')
-              .documentId('shopSettings')
-          )
-          .icon(ShoppingCart),
-        S.divider(),
-        S.listItem()
-          .title('Header')
-          .child(
-            S.editor()
-              .id('headerSettings')
-              .schemaType('headerSettings')
-              .documentId('headerSettings')
-          )
-          .icon(NavigationArrow),
-        S.listItem()
           .title('Footer')
           .child(
             S.editor()
@@ -71,15 +47,6 @@ export const settingsMenu = S.listItem()
               .documentId('cookieSettings')
           )
           .icon(Cookie),
-        S.listItem()
-          .title('Promo Bar')
-          .child(
-            S.editor()
-              .id('promoSettings')
-              .schemaType('promoSettings')
-              .documentId('promoSettings')
-          )
-          .icon(FlagBanner),
         S.divider(),
         S.listItem()
           .title('Default SEO / Share')
@@ -90,10 +57,6 @@ export const settingsMenu = S.listItem()
               .documentId('seoSettings')
           )
           .icon(GlobeSimple),
-        S.listItem()
-          .title('Redirects')
-          .child(S.documentTypeList('redirect').title('Redirects'))
-          .icon(Shuffle)
       ])
   )
   .icon(Gear)

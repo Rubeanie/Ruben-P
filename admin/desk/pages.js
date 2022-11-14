@@ -64,33 +64,6 @@ const currentHomePage = S.listItem()
       .views(standardViews)
   })
 
-// Extract our shop page
-const currentShopPage = S.listItem()
-  .title('Shop All Page')
-  .icon(ShoppingCart)
-  .child(async () => {
-    const data = await sanityClient.fetch(`
-    *[_type == "generalSettings"][0]{
-      shop->{_id}
-    }
-  `)
-
-    if (!data?.shop)
-      return S.component(() => (
-        <EmptyNotice
-          title="Shop Page"
-          type="collection"
-          link="settings;general"
-          linkTitle="General Settings"
-        />
-      )).title('Shop All Page')
-
-    return S.document()
-      .id(data.shop._id)
-      .schemaType('collection')
-      .views(standardViews)
-  })
-
 // Extract our error page
 const currentErrorPage = S.listItem()
   .title('Error Page')
@@ -126,7 +99,6 @@ export const pagesMenu = S.listItem()
       .title('Pages')
       .items([
         currentHomePage,
-        currentShopPage,
         currentErrorPage,
         S.listItem()
           .title('Other Pages')
@@ -151,24 +123,6 @@ export const pagesMenu = S.listItem()
                   ['create', 'edit'].includes(intent) && type === 'page'
               )
           ),
-        S.divider(),
-        S.listItem()
-          .title('Reusable Sections')
-          .schemaType('section')
-          .child(
-            S.documentTypeList('section')
-              .title('Reusable Sections')
-              .child(documentId =>
-                S.document()
-                  .documentId(documentId)
-                  .schemaType('section')
-                  .views(standardViews)
-              )
-              .canHandleIntent(
-                (intent, { type }) =>
-                  ['create', 'edit'].includes(intent) && type === 'section'
-              )
-          )
       ])
   )
   .icon(Browser)
