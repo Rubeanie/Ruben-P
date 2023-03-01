@@ -96,7 +96,7 @@ export default function links() {
               color={"#e1e8ed"}
             />
           </a>
-          <Link href="/contact">
+          <Link href="/contact" legacyBehavior>
             <a>
               <Social
                 name={"Contact"}

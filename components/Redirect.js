@@ -38,7 +38,7 @@ export default function Redirect(props) {
         </h2>
         <p>
           Click{" "}
-          <Link href={props.url} passHref>
+          <Link href={props.url} passHref legacyBehavior>
             <a>
               <url>here</url>
             </a>
