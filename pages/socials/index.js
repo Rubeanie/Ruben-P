@@ -64,7 +64,7 @@ export default function links() {
             <Social
               name={"Instagram"}
               logo={<BsInstagram />}
-              username={"@rubeanie"}
+              username={"@rubenpanzich"}
               textColor={"#121212"}
               color={"#f09433"}
             />
