@@ -141,7 +141,7 @@ export default class Navbar extends React.Component {
             toggled={this.state.setOpen}
             toggle={this.changeDropdown}
             size={37.5}
-            duration={0.15}
+            duration={0.3}
             distance="sm"
             color="var(--color-foreground)"
             easing="ease-out"

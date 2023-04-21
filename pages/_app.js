@@ -7,6 +7,7 @@ import Signature from "../components/Signature";
 import { useRouter } from "next/router";
 import * as gtag from "../components/Ga";
 import { GetColor, GetBackgroundColor } from "../components/Style";
+import { Analytics } from '@vercel/analytics/react';
 
 function App({ Component, pageProps }) {
   const router = useRouter();
@@ -91,6 +92,7 @@ function App({ Component, pageProps }) {
         <div className="background-image"  />
         <Layout>
           <Component {...pageProps} />
+          <Analytics />
         </Layout>
       </div>
     );
