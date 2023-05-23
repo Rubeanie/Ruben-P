@@ -12,7 +12,7 @@ export default function InstagramLink() {
         <Redirect
           name={"Instagram"}
           logo={<BsInstagram />}
-          url={"https://www.instagram.com/rubenpanzich/"}
+          url={"https://www.instagram.com/ruben.panzich/"}
         />
       </hero>
     </div>

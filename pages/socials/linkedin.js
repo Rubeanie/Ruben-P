@@ -1,18 +1,18 @@
 import Head from "next/head";
 import Redirect from "../../components/Redirect";
-import { FaDiscord } from "react-icons/fa";
+import { BsLinkedin } from "react-icons/bs";
 
 export default function DiscordLink() {
   return (
     <div className="page">
       <Head>
-        <title>YouTube Channel</title>
+        <title>LinkedIn</title>
       </Head>
       <hero>
         <Redirect
-          name={"Discord"}
-          logo={<FaDiscord />}
-          url={"https://discord.gg/B98bJGU"}
+          name={"LinkedIn"}
+          logo={<BsLinkedin />}
+          url={"https://www.linkedin.com/in/ruben-p/"}
         />
       </hero>
     </div>

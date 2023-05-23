@@ -4,12 +4,13 @@ import Var from "../../styles/abstracts/_colors.module.scss";
 import {
   BsTwitch,
   BsYoutube,
+  BsLinkedin,
   BsSpotify,
   BsInstagram,
   BsTwitter,
   BsGithub
 } from "react-icons/bs";
-import { FaSteam, FaDiscord, FaWpforms } from "react-icons/fa";
+import { FaSteam, FaWpforms } from "react-icons/fa";
 import Link from "next/link";
 
 export default function links() {
@@ -24,6 +25,24 @@ export default function links() {
       <hero>
         <div className="column">
           <h2>Socials</h2>
+          <a href="/socials/linkedin" target="_blank">
+            <Social
+              name={"LinkedIn"}
+              logo={<BsLinkedin />}
+              username={"Ruben Panzich"}
+              textColor={"#121212"}
+              color={"#0d86ff"}
+            />
+          </a>
+          <a href="/socials/github" target="_blank">
+            <Social
+              name={"Github"}
+              logo={<BsGithub />}
+              username={"@Rubeanie"}
+              textColor={"#121212"}
+              color={"#e1e8ed"}
+            />
+          </a>
           <a href="/socials/youtube" target="_blank">
             <Social
               name={"YouTube"}
@@ -42,15 +61,6 @@ export default function links() {
               color={"#6441a5"}
             />
           </a>
-          <a href="/socials/discord" target="_blank">
-            <Social
-              name={"Discord"}
-              logo={<FaDiscord />}
-              username={"discord.gg/B98bJGU"}
-              textColor={"#121212"}
-              color={"#5865f2"}
-            />
-          </a>
           <a href="/socials/twitter" target="_blank">
             <Social
               name={"Twitter"}
@@ -64,7 +74,7 @@ export default function links() {
             <Social
               name={"Instagram"}
               logo={<BsInstagram />}
-              username={"@rubenpanzich"}
+              username={"@ruben.panzich"}
               textColor={"#121212"}
               color={"#f09433"}
             />
@@ -85,15 +95,6 @@ export default function links() {
               username={"@rubeanie"}
               textColor={"#121212"}
               color={"#66c0f4"}
-            />
-          </a>
-          <a href="/socials/github" target="_blank">
-            <Social
-              name={"Github"}
-              logo={<BsGithub />}
-              username={"@Rubeanie"}
-              textColor={"#121212"}
-              color={"#e1e8ed"}
             />
           </a>
           <Link href="/contact" legacyBehavior>
