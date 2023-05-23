@@ -1,21 +1,18 @@
 /* Font Faces */
 @font-face {
-  font-family: 'ailerons';
-  src: url('/fonts/ailerons-regular-webfont.woff2') format('woff2'),
-    url('/fonts/ailerons-regular-webfont.woff') format('woff');
-  font-weight: normal;
+  font-family: 'yapari';
+  src: url('/fonts/yapari-variable.ttf') format('truetype');
   font-style: normal;
   font-display: swap;
 }
 
-$font-title: ailerons,
+$font-title: yapari,
 serif;
 
 @font-face {
   font-family: 'kollektif';
   src: url('/fonts/kollektif-webfont.woff2') format('woff2'),
     url('/fonts/kollektif-webfont.woff') format('woff');
-  font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
@@ -25,11 +22,11 @@ serif;
 
 /* Heading Text */
 $heading-alignment: center;
-$heading-size: 15vw;
-$heading-weight: 700;
+$heading-size: 7vw;
+$heading-weight: 750;
 
 /* Title Text */
-$title-size: 47px;
+$title-size: 35px;
 
 /* Body Text */
 $body-alignment: center;

@@ -57,4 +57,8 @@
       height: var.$socials-overlay-height-mobile;
     }
   }
+
+  .socials:hover {
+    transform: unset;
+  }
 }
