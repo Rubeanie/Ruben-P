@@ -23,21 +23,11 @@ import {
   RpSubstanceSampler,
   RpSubstancePainter, 
   RpUnity,
-} from "../components/Icons";
+} from "../lib/icons";
 import Skill from "../components/Skill";
+import { AboutPageContent } from "../components/CMS"; 
 
-import sanity from "../lib/sanity";
-import { PortableText } from "@portabletext/react";
-
-const query = `*[_type == "aboutPage"] | order(priority asc) {
-  _id,
-  title,
-  priority,
-  content,
-}
-`;
-
-export default function About({ about }) {
+export default function About() {
   const cld = new Cloudinary({
     cloud: {
       cloudName: "ruben-p",
@@ -69,7 +59,6 @@ export default function About({ about }) {
                 plugins={[
                   lazyload(),
                   placeholder({ mode: "predominant-color" }),
-                  placeholder({ mode: "blur" }),
                 ]}
               />
               <h2>
@@ -80,18 +69,14 @@ export default function About({ about }) {
           </div>
           <div className="flex-padding" style={{ flex: "60%" }}>
             <div className="column">
-              <h1-image>ABOUT</h1-image>
+              <h1-img>ABOUT</h1-img>
             </div>
           </div>
         </div>
       </hero>
-      <heros>
+      <hero-content>
         <div className="column">
-          {about.map((aboutPage) => (
-            <div key={aboutPage._id}>
-              <PortableText value={aboutPage.content} />
-            </div>
-          ))}
+          <AboutPageContent />
           <div className="flex-box">
             <div className="item shadow">
               <Skill
@@ -247,14 +232,7 @@ export default function About({ about }) {
             </div>
           </div>
         </div>
-      </heros>
+      </hero-content>
     </div>
   );
 }
-
-export const getStaticProps = async () => {
-  const about = await sanity.fetch(query);
-  return {
-    props: { about } // will be passed to the page component as props
-  };
-};

@@ -13,7 +13,7 @@ export default function Contact() {
         <meta key="googlebot" name="googlebot" content="index,follow" />
       </Head>
       <hero>
-        <h1-image>CONTACT</h1-image>
+        <h1-img>CONTACT</h1-img>
         <p>Coming Soon...</p>
       </hero>
     </div>

@@ -1,13 +1,13 @@
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import ThemeSwitcher from "./ThemeSwitcher";
+import { Theme } from "../lib/themes";
 
 export default function Layout({ children }) {
   return (
     <div>
       <Navbar />
       {children}
-      <ThemeSwitcher />
+      <Theme />
       <Footer />
     </div>
   );

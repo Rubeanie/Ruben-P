@@ -14,7 +14,7 @@
     font-weight: var.$socials-text-weight;
   }
 
-  section {
+  .icon, .overlay {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -22,13 +22,11 @@
   }
 
   .icon {
-    @extend section;
     width: var.$socials-icon-width;
     vertical-align: middle;
   }
 
   .overlay {
-    @extend section;
     background: var.$socials-overlay-color;
     width: var.$socials-overlay-width;
   }

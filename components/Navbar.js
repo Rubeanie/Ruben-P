@@ -1,50 +1,50 @@
-import React from 'react'
-import Link from 'next/link'
-import { RubenP } from './Icons'
-import { Squeeze as Hamburger } from 'hamburger-react'
+import React from "react";
+import Link from "next/link";
+import { RubenP } from "../lib/icons";
+import { Squeeze as Hamburger } from "hamburger-react";
 
 const navbarData = {
   pages: [
     {
-      title: 'About',
-      url: '/about',
+      title: "About",
+      url: "/about",
     },
     {
-      title: 'Portfolio',
-      url: '/portfolio',
+      title: "Portfolio",
+      url: "/portfolio",
     },
     {
-      title: 'Socials',
-      url: '/socials',
+      title: "Socials",
+      url: "/socials",
     },
   ],
-}
+};
 
-export default class Navbar extends React.Component {
-  constructor(props) {
-    super(props)
-    this.navRef = React.createRef()
-    this.logoRef = React.createRef()
-    this.pagesRef = React.createRef()
+export default class navbar extends React.Component {
+  constructor() {
+    super();
+    this.navRef = React.createRef();
+    this.logoRef = React.createRef();
+    this.pagesRef = React.createRef();
     this.state = {
       setOpen: false,
       showDropdown: false,
       openDropdownInt: 0,
-    }
-    this.componentDidResize = this.componentDidResize.bind(this)
-    this.componentDidRotate = this.componentDidRotate.bind(this)
-    this.changeDropdown = this.changeDropdown.bind(this)
+    };
+    this.componentDidResize = this.componentDidResize.bind(this);
+    this.componentDidRotate = this.componentDidRotate.bind(this);
+    this.changeDropdown = this.changeDropdown.bind(this);
   }
   componentDidMount() {
-    this.componentDidRotate(this)
-    window.addEventListener('resize', this.componentDidResize)
-    window.addEventListener('orientationchange', this.componentDidRotate)
+    this.componentDidRotate();
+    window.addEventListener("resize", this.componentDidResize);
+    window.addEventListener("orientationchange", this.componentDidRotate);
   }
   componentWillUnmount() {
-    window.removeEventListener('resize', this.componentDidResize)
-    window.removeEventListener('orientationchange', this.componentDidRotate)
+    window.removeEventListener("resize", this.componentDidResize);
+    window.removeEventListener("orientationchange", this.componentDidRotate);
   }
-  componentDidResize(showDropdown) {
+  componentDidResize() {
     this.setState(
       {
         showDropdown: false,
@@ -53,24 +53,37 @@ export default class Navbar extends React.Component {
         this.setState({
           showDropdown:
             this.logoRef.current.offsetWidth +
-              this.pagesRef.current.offsetWidth +
-              68 >=
+            this.pagesRef.current.offsetWidth +
+            68 >=
             this.navRef.current.offsetWidth,
-        })
-      },
-    )
+        });
+      }
+    );
   }
-  componentDidRotate(showDropdown) {
+  componentDidRotate() {
     setTimeout(() => {
-      this.componentDidResize(this)
-    }, 10)
+      this.componentDidResize();
+    }, 10);
   }
   changeDropdown(x) {
     this.setState(() => ({
       setOpen: x,
       openDropdown: x,
       openDropdownInt: x ? 1 : 0,
-    }))
+    }));
+    if(x) {
+      document.documentElement.style.setProperty(
+        "--color-overlay-alpha",
+        0.6
+      );
+      document.body.classList.add("no-scroll");
+    } else {
+      document.documentElement.style.setProperty(
+        "--color-overlay-alpha",
+        0.325
+      );
+      document.body.classList.remove("no-scroll");
+    }
   }
   render() {
     return (
@@ -84,55 +97,44 @@ export default class Navbar extends React.Component {
         >
           <div
             className="column"
-            style={{ justifyContent: 'flex-start' }}
+            style={{ justifyContent: "flex-start" }}
             onClick={() => {
-              this.changeDropdown(false)
+              this.changeDropdown(false);
             }}
           >
-            <Link href="/" passHref legacyBehavior>
-              <a
-                className="button"
-                style={{
-                  transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
-                }}
-              >
-                Home
-              </a>
+            <Link href="/" className="button" passHref
+              style={{
+                transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
+              }}>
+              Home
             </Link>
             {navbarData.pages.map((page) => (
               <Link
                 key={`_${page.title}`}
+                className="button"
                 href={page.url}
                 passHref
-                legacyBehavior
+                style={{
+                  transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
+                }}
               >
-                <a
-                  className="button"
-                  style={{
-                    transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
-                  }}
-                >
-                  {page.title}
-                </a>
+                {page.title}
               </Link>
             ))}
           </div>
         </div>
         <div ref={this.logoRef}>
-          <Link href="/" passHref legacyBehavior>
-            <a
+          <Link href="/" passHref title="Home">
+            <RubenP className="logo"
               onClick={() => {
-                this.changeDropdown(false)
-              }}
-            >
-              <RubenP className="logo" />
-            </a>
+                this.changeDropdown(false);
+              }} />
           </Link>
         </div>
         <div ref={this.pagesRef} hidden={this.state.showDropdown}>
           {navbarData.pages.map((page) => (
-            <Link key={page.title} href={page.url} passHref legacyBehavior>
-              <a className="button">{page.title}</a>
+            <Link key={page.title} className="button" href={page.url} passHref>
+              {page.title}
             </Link>
           ))}
         </div>
@@ -149,6 +151,6 @@ export default class Navbar extends React.Component {
           />
         </div>
       </div>
-    )
+    );
   }
 }

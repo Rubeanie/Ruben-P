@@ -6,13 +6,9 @@ export default class Footer extends React.Component {
     return (
       <div className="footer">
         <div className="column">
-          <foot-info>©2022 Ruben Panzich</foot-info>
-          <Link href="https://github.com/Rubeanie/Ruben-P" legacyBehavior>
-            <a>
-              <foot-github>
-                <url>Source code on GitHub</url>
-              </foot-github>
-            </a>
+          ©2022 Ruben Panzich
+          <Link href="https://github.com/Rubeanie/Ruben-P">
+            Source code on GitHub
           </Link>
         </div>
       </div>

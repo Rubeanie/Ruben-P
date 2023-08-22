@@ -5,42 +5,12 @@ import Script from "next/script";
 import Head from "next/head";
 import Signature from "../components/Signature";
 import { useRouter } from "next/router";
-import * as gtag from "../components/Ga";
-import { GetColor, GetBackgroundColor } from "../components/Style";
+import { GetColor, GetBackgroundColor } from "../lib/themes";
 import { Analytics } from '@vercel/analytics/react';
 
 function App({ Component, pageProps }) {
-  const router = useRouter();
-  useEffect(() => {
-    const handleRouteChange = (url) => {
-      gtag.pageview(url);
-    };
-    router.events.on("routeChangeComplete", handleRouteChange);
-    return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
-    };
-  }, [router.events]);
     return (
       <div className="App">
-        {/* Global Site Tag (gtag.js) - Google Analytics */}
-        <Script
-          strategy="afterInteractive"
-          src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
-        />
-        <Script
-          id="gtag-init"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${gtag.GA_TRACKING_ID}', {
-              page_path: window.location.pathname,
-            });
-          `,
-          }}
-        />
         <Head>
           <link
             rel="icon"
@@ -78,7 +48,7 @@ function App({ Component, pageProps }) {
           <meta name="theme-color" content={GetBackgroundColor()} />
           <meta
             name="viewport"
-            content="width=device-width, initial-scale=1.0, viewport-fit=cover,maximum-scale=1"
+            content="width=device-width, initial-scale=1.0, viewport-fit=cover"
           />
           <meta name="darkreader-lock" />
           <meta

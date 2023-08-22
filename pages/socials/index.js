@@ -97,16 +97,14 @@ export default function links() {
               color={"#66c0f4"}
             />
           </a>
-          <Link href="/contact" legacyBehavior>
-            <a>
-              <Social
-                name={"Contact"}
-                logo={<FaWpforms />}
-                username={"Information"}
-                textColor={"#121212"}
-                color={Var.foreground_color}
-              />
-            </a>
+          <Link href="/contact" passHref>
+            <Social
+              name={"Contact"}
+              logo={<FaWpforms />}
+              username={"Information"}
+              textColor={"#121212"}
+              color={Var.foreground_color}
+            />
           </Link>
         </div>
       </hero>

@@ -12,7 +12,7 @@ export default function Error() {
       <hero>
         <div className="column">
           <h2>Error</h2>
-          <h1-image>404</h1-image>
+          <h1-img>404</h1-img>
           <p>This page could not be found.</p>
           <h2>Error</h2>
         </div>

@@ -2,49 +2,29 @@ import React, {
   Suspense,
   useState,
   useEffect,
-  useRef,
-  RefObject,
 } from "react";
 import {
   Canvas,
   useFrame,
-  useThree,
-  addEffect,
-  addAfterEffect,
 } from "@react-three/fiber";
 import { animated } from "@react-spring/three";
 import Head from "next/head";
-import { Model } from "../components/RP-Logo";
-import { GetColor } from "../components/Style";
+import { Model } from "../lib/rpLogo";
+import { GetColor } from "../lib/themes";
 import Image from "next/image";
 import {
   useProgress,
-  Preload,
   OrbitControls,
-  CameraShake,
-  Environment,
-  AdaptiveDpr,
   Html,
 } from "@react-three/drei";
-import { a, useTransition, useSpring, config } from "@react-spring/three";
-import { Age, FPSLimiter, Stats } from "../components/HomeComponents"
+import { Age, FPSLimiter, Stats } from "../lib/common";
 
 /* 
 TODO: scroll animation, more performance increases, use react spring more, more optimization and remove unneeded packages and libraries
 */
 
 function Logo() {
-  const { active, progress } = useProgress();
   const myMesh = React.useRef();
-
-  const { transparency } = useSpring({
-    config: { mass: 5, tension: 500, friction: 100 },
-
-    to: {
-      transparency: 1,
-    },
-    from: { transparency: 0 },
-  });
 
   useFrame(({ clock }) => {
     const a = clock.getElapsedTime() / 3;
@@ -88,29 +68,32 @@ export default function Home() {
         style={{ width: "100%", height: "100%", zIndex: 0 }}
       >
         <Canvas
-          concurrent={"true"}
           gl={{
             powerPreference: "high-performance",
             stencil: false,
           }}
           camera={{ position: [0, 0, 3], fov: 60, near: 0.5, far: 6 }}
           dpr={[0, 1]}
-          frameloop="demand"
+          /* frameloop="demand" */
+          
         >
           <pointLight
             position={[-8, 1, 6]}
             color={GetColor("--color-mid-ground")}
-            intensity={1.15}
-          />
+            intensity={100}
+            distance={50}
+          ></pointLight>
           <pointLight
             position={[0, 1, 8]}
             color={GetColor("--color-foreground")}
-            intensity={1}
+            intensity={60}
+            distance={70}
           />
           <pointLight
             position={[8, 1, 6]}
             color={GetColor("--color-mid-ground")}
-            intensity={1.15}
+            intensity={100}
+            distance={50}
           />
           <Suspense
             fallback={
@@ -130,10 +113,8 @@ export default function Home() {
                   <Image
                     src="https://res.cloudinary.com/ruben-p/image/upload/3D%20Models/Logo/Placeholder%20RP-Logo.webp"
                     alt="RP-Logo 3D model placeholder"
-                    layout="fill"
+                    fill={true}
                     priority={true}
-                    placeholder="blur"
-                    blurDataURL="https://res.cloudinary.com/ruben-p/image/upload/3D%20Models/Logo/Placeholder%20RP-Logo.webp"
                   />
                 </div>
               </Html>
@@ -141,8 +122,7 @@ export default function Home() {
           >
             <Logo />
             {/* <Stats /> */}
-            <FPSLimiter limit={30} />
-            <Preload all />
+            {/* <FPSLimiter limit={30} /> */}
           </Suspense>
         </Canvas>
       </div>
@@ -150,11 +130,11 @@ export default function Home() {
         <div className="column">
           <div className="layer">
             <div className="column">
-              <h1-image>
+              <h1-img>
                 Ruben
                 <br />
                 Panzich
-              </h1-image>
+              </h1-img>
               <p>
                 <Age />
                 -year-old student

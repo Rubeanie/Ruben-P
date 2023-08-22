@@ -10,7 +10,7 @@ export default function Portfolio() {
         <meta key="googlebot" name="googlebot" content="index,follow" />
       </Head>
       <hero>
-        <h1-image>Portfolio</h1-image>
+        <h1-img>Portfolio</h1-img>
         <p>Coming Soon...</p>
       </hero>
     </div>
