@@ -31,6 +31,15 @@ a {
   z-index: inherit;
 }
 
+.theme {
+  transition: color, background, background-image, background-color;
+  -webkit-transition: color, background, background-image, background-color;
+  transition-duration: 0.1s;
+  -webkit-transition-duration: 0.1s;
+  transition-timing-function: ease-in-out;
+  -webkit-transition-timing-function: ease-in-out;
+}
+
 url {
   text-decoration: underline;
   text-decoration-color: #4285F4;
@@ -84,6 +93,7 @@ h1-img,
 h2,
 p,
 .footer {
+  @extend .theme;
   a {
     text-decoration: underline;
     text-decoration-color: #4285F4;
@@ -116,6 +126,7 @@ p,
     background-size: cover;
     will-change: transform; // creates a new paint layer
     z-index: -1;
+    @extend .theme;
   }
 }
 
