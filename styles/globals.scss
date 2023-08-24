@@ -10,7 +10,7 @@
   --color-mid-ground: #33456d;
   --color-background: #0f182d;
   --color-body-font: #eaf6ff;
-  --text-image: url('https://res.cloudinary.com/ruben-p/image/upload/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq.webp');
+  --text-image: url('https://res.cloudinary.com/ruben-p/image/upload/f_avif,q_30/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq');
   --color-overlay: rgba(0, 0, 0, var(--color-overlay-alpha));
 }
 
@@ -29,15 +29,6 @@ a {
 * {
   box-sizing: border-box;
   z-index: inherit;
-}
-
-.theme {
-  transition: color, background, background-image, background-color;
-  -webkit-transition: color, background, background-image, background-color;
-  transition-duration: 0.35s;
-  -webkit-transition-duration: 0.35s;
-  transition-timing-function: ease-in-out;
-  -webkit-transition-timing-function: ease-in-out;
 }
 
 url {
@@ -93,7 +84,6 @@ h1-img,
 h2,
 p,
 .footer {
-  @extend .theme;
   a {
     text-decoration: underline;
     text-decoration-color: #4285F4;
@@ -126,7 +116,6 @@ p,
     background-size: cover;
     will-change: transform; // creates a new paint layer
     z-index: -1;
-    @extend .theme;
   }
 }
 

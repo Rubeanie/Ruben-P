@@ -80,20 +80,20 @@ export default function Home() {
           <pointLight
             position={[-8, 1, 6]}
             color={GetColor("--color-mid-ground")}
-            intensity={100}
-            distance={50}
+            intensity={110}
+            distance={70}
           ></pointLight>
           <pointLight
             position={[0, 1, 8]}
             color={GetColor("--color-foreground")}
-            intensity={60}
-            distance={70}
+            intensity={85}
+            distance={80}
           />
           <pointLight
             position={[8, 1, 6]}
             color={GetColor("--color-mid-ground")}
-            intensity={100}
-            distance={50}
+            intensity={110}
+            distance={70}
           />
           <Suspense
             fallback={

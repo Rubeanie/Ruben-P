@@ -20,6 +20,7 @@
     padding: var.$padding-safe;
     padding-top: var.$navbar-height;
     min-height: 100vh;
+    transition: min-height 0.35s ease;
   }
 
   hero-no-padding {

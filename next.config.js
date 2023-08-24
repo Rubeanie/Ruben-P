@@ -4,6 +4,17 @@ const withPWA = require("next-pwa")({
 });
 
 module.exports = withPWA({
+  swcMinify: true,
+  transpilePackages: ['@acme/ui', 'lodash-es'],
+  modularizeImports: {
+    'react-bootstrap': {
+      transform: 'react-bootstrap/{{member}}',
+    },
+    lodash: {
+      transform: 'lodash/{{member}}',
+      preventFullImport: true,
+    },
+  },
   async rewrites() {
     return [
       {
