@@ -74,7 +74,7 @@ export default function Home() {
           }}
           camera={{ position: [0, 0, 3], fov: 60, near: 0.5, far: 6 }}
           dpr={[0, 1]}
-          /* frameloop="demand" */
+          frameloop="demand"
           
         >
           <pointLight
@@ -122,7 +122,7 @@ export default function Home() {
           >
             <Logo />
             {/* <Stats /> */}
-            {/* <FPSLimiter limit={30} /> */}
+            <FPSLimiter limit={30} />
           </Suspense>
         </Canvas>
       </div>
