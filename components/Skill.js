@@ -1,9 +1,8 @@
-import Link from "next/link";
-import React from "react";
+import React from 'react'
 
 export default class Social extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
   }
   render() {
     return (
@@ -14,11 +13,11 @@ export default class Social extends React.Component {
               <div
                 style={{
                   color: this.props.textColor,
-                  width: "100%",
-                  height: "100%",
+                  width: '100%',
+                  height: '100%',
                 }}
               >
-                <div className="column" style={{ fontSize: "70px" }}>
+                <div className="column" style={{ fontSize: '70px' }}>
                   {this.props.logo}
                 </div>
               </div>
@@ -26,13 +25,13 @@ export default class Social extends React.Component {
           </div>
           <div className="overlay">
             <div className="column">
-              <p style={{ color: this.props.textColor, overflow: "visible" }}>
-                {this.props.name}
+              <p style={{ color: this.props.textColor, overflow: 'visible' }}>
+                <b>{this.props.name}</b>
               </p>
             </div>
           </div>
         </div>
       </div>
-    );
+    )
   }
 }

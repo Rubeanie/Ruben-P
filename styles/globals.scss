@@ -6,11 +6,11 @@
   /* Colors */
   --color-overlay-rgb: #000000;
   --color-overlay-alpha: 0.325;
-  --color-foreground: #ed5f68;
-  --color-mid-ground: #33456d;
+  --color-primary: #ed5f68;
+  --color-secondary: #33456d;
   --color-background: #0f182d;
-  --color-body-font: #eaf6ff;
-  --text-image: url('https://res.cloudinary.com/ruben-p/image/upload/f_avif,q_30/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq');
+  --color-text: #eaf6ff;
+  --image-background: url('https://res.cloudinary.com/ruben-p/image/upload/f_avif,q_30/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq');
   --color-overlay: rgba(0, 0, 0, var(--color-overlay-alpha));
 }
 
@@ -18,7 +18,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  font-family: var.$font-body;
+  font-family: var.$p-font;
 }
 
 a {
@@ -38,12 +38,10 @@ url {
 }
 
 h1 {
-  text-align: var.$heading-alignment;
-  line-height: 1em;
-  color: var.$color-foreground;
-  font-family: var.$font-title;
-  font-size: var.$heading-size;
-  font-weight: var.$heading-weight;
+  text-align: var.$h-alignment;
+  color: var.$color-primary;
+  font-family: var.$h-font;
+  font-size: var.$h1-size;
   font-stretch: semi-expanded;
   max-width: 100vw;
   transition: font-size 0.1s ease-in;
@@ -51,7 +49,7 @@ h1 {
 
 h1-img {
   @extend h1;
-  background: var.$text-image no-repeat center center;
+  background: var.$image-background no-repeat center center;
   background-size: cover;
   background-clip: text;
   -webkit-background-clip: text;
@@ -61,27 +59,36 @@ h1-img {
 }
 
 h2 {
-  text-align: var.$heading-alignment;
-  line-height: 1em;
-  color: var.$color-foreground;
-  font-family: var.$font-title;
-  font-size: var.$title-size;
-  font-weight: var.$heading-weight;
+  text-align: var.$h-alignment;
+  color: var.$color-primary;
+  font-family: var.$h-font;
+  font-size: var.$h2-size;
+  max-width: 100%;
+}
+
+h3 {
+  text-align: var.$p-alignment;
+  color: var.$color-text;
+  font-family: var.$h-font;
+  font-size: var.$p1-size;
   max-width: 100%;
 }
 
 p {
-  max-width: 70vw;
   overflow: auto;
-  text-align: var.$body-alignment;
-  line-height: 1.33em;
-  color: var.$color-body-font;
-  font-size: var.$body-size;
+  text-align: var.$p-alignment;
+  color: var.$color-text;
+  font-size: var.$p1-size;
+  max-width: 1000px;
+  margin: 0px 20px 0px 20px;
+  margin-block-start: 0.5em;
+  margin-block-end: 0.5em;
 }
 
 h1,
 h1-img,
 h2,
+h3,
 p,
 .footer {
   a {
@@ -112,7 +119,7 @@ p,
     top: 0;
     left: 0;
     background-color: white;
-    background: var.$text-image no-repeat center center;
+    background: var.$image-background no-repeat center center;
     background-size: cover;
     will-change: transform; // creates a new paint layer
     z-index: -1;
@@ -176,9 +183,9 @@ p,
 }
 
 /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 43.75rem) {
   h1 {
-    font-size: var.$heading-size*1.25;
+    font-size: var.$h1-size*1.25;
   }
 
   h1-img {
@@ -192,7 +199,7 @@ p,
   }
 
   h2 {
-    font-size: var.$title-size - 10;
+    font-size: var.$h2-size - 10;
   }
 
   .background-image {

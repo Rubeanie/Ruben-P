@@ -3,15 +3,7 @@
 .page {
   position: inherit;
   z-index: 1;
-
-  Canvas {
-    pointer-events: none;
-    user-select: none;
-    -ms-user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-  }
-
+  
   hero {
     display: flex;
     flex-direction: column;

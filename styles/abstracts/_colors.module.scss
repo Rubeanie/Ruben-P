@@ -1,20 +1,21 @@
 /* Colors */
 $color-overlay-rgb: var(--color-overlay-rgb);
 $color-overlay-alpha: var(--color-overlay-alpha);
-$color-foreground: var(--color-foreground);
-$color-mid-ground: var(--color-mid-ground);
+$color-primary: var(--color-primary);
+$color-secondary: var(--color-secondary);
 $color-background: var(--color-background);
-$color-body-font: var(--color-body-font);
-$text-image: var(--text-image);
+$color-text: var(--color-text);
+$image-background: var(--image-background);
 $color-overlay: var(--color-overlay);
 
 /* Color Exports */
 :export {
-  overlay_rgb_color: $color-overlay-rgb;
-  overlay_alpha_color: $color-overlay-alpha;
-  foreground_color: $color-foreground;
-  midground_color: $color-mid-ground;
-  background_color: $color-background;
-  overlay_color: $color-overlay;
-  text_color: $color-body-font;
+  color_overlay_rgb: $color-overlay-rgb;
+  color_overlay_alpha: $color-overlay-alpha;
+  color_primary: $color-primary;
+  color_secondary: $color-secondary;
+  color_background: $color-background;
+  color_text: $color-text;
+  image_background: $image-background;
+  color_overlay: $color-overlay;
 }

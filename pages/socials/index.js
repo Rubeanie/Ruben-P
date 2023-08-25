@@ -103,7 +103,7 @@ export default function links() {
               logo={<FaWpforms />}
               username={"Information"}
               textColor={"#121212"}
-              color={Var.foreground_color}
+              color={Var.color_primary}
             />
           </Link>
         </div>

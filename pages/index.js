@@ -1,59 +1,45 @@
-import React, {
-  Suspense,
-  useState,
-  useEffect,
-} from "react";
-import {
-  Canvas,
-  useFrame,
-} from "@react-three/fiber";
-import { animated } from "@react-spring/three";
-import Head from "next/head";
-import { Model } from "../lib/rpLogo";
-import { GetColor } from "../lib/themes";
-import Image from "next/image";
-import {
-  useProgress,
-  OrbitControls,
-  Html,
-} from "@react-three/drei";
-import { Age, FPSLimiter, Stats } from "../lib/common";
-
-/* 
-TODO: scroll animation, more performance increases, use react spring more, more optimization and remove unneeded packages and libraries
-*/
+import React, { Suspense, useState, useEffect } from 'react'
+import { Canvas, useFrame } from '@react-three/fiber'
+import { animated } from '@react-spring/three'
+import Head from 'next/head'
+import { Model } from '../lib/rpLogo'
+import { GetColor } from '../lib/themes'
+import Image from 'next/image'
+import { Html, AdaptiveEvents, PerformanceMonitor } from '@react-three/drei'
+import { Age /* Stats */ } from '../lib/common'
+import round from 'lodash/round'
 
 function Logo() {
-  const myMesh = React.useRef();
+  const myMesh = React.useRef()
 
   useFrame(({ clock }) => {
-    const a = clock.getElapsedTime() / 3;
-    myMesh.current.rotation.y = a;
-    let scale = window.screen.width / 600;
+    const a = clock.getElapsedTime() / 3
+    myMesh.current.rotation.y = a
+    let scale = window.screen.width / 600
     if (scale > 1) {
-      scale = 1;
+      scale = 1
     }
-    myMesh.current.scale.set(scale, scale, scale);
-  });
+    myMesh.current.scale.set(scale, scale, scale)
+  })
 
   return (
-    <animated.mesh ref={myMesh} >
+    <animated.mesh ref={myMesh}>
       <Model scale={[1, 1, 1]} />
     </animated.mesh>
-  );
+  )
 }
 
 export default function Home() {
-  const { active, progress } = useProgress();
-  const [height, setHeight] = useState(0);
+  const [dpr, setDpr] = useState(0.6)
+  const [height, setHeight] = useState(0)
   const updateDimensions = () => {
-    setHeight(window.innerHeight);
-  };
+    setHeight(window.innerHeight)
+  }
   useEffect(() => {
-    updateDimensions();
-    window.addEventListener("resize", updateDimensions);
-    return () => window.removeEventListener("resize", updateDimensions);
-  }, []);
+    updateDimensions()
+    window.addEventListener('resize', updateDimensions)
+    return () => window.removeEventListener('resize', updateDimensions)
+  }, [])
   return (
     <div className="page">
       <Head>
@@ -63,35 +49,31 @@ export default function Home() {
           content="I'm Ruben Panzich, I am a Freelance creative developer, with qualifications in game design and development."
         />
       </Head>
-      <div
-        className="row layer"
-        style={{ width: "100%", height: "100%", zIndex: 0 }}
-      >
+      <div className="row layer canvas">
         <Canvas
           gl={{
-            powerPreference: "high-performance",
-            stencil: false,
+            precision: 'lowp',
+            powerPreference: 'high-performance',
           }}
-          camera={{ position: [0, 0, 3], fov: 60, near: 0.5, far: 6 }}
-          dpr={[0, 1]}
-          frameloop="demand"
-          
+          camera={{ position: [0, 0, 3], fov: 60, near: 1.9, far: 3.9 }}
+          dpr={dpr}
+          resize={{ scroll: false, debounce: { scroll: 50, resize: 0 } }}
         >
           <pointLight
             position={[-8, 1, 6]}
-            color={GetColor("--color-mid-ground")}
+            color={GetColor('--color-secondary')}
             intensity={110}
             distance={70}
           ></pointLight>
           <pointLight
             position={[0, 1, 8]}
-            color={GetColor("--color-foreground")}
+            color={GetColor('--color-primary')}
             intensity={85}
             distance={80}
           />
           <pointLight
             position={[8, 1, 6]}
-            color={GetColor("--color-mid-ground")}
+            color={GetColor('--color-secondary')}
             intensity={110}
             distance={70}
           />
@@ -105,15 +87,15 @@ export default function Home() {
                     maxHeight: `calc(59.7347vw/(841 / ${height}))`,
                     width: `calc(520px/(841 / ${height}))`,
                     maxWidth: `calc(86vw/(841 / ${height}))`,
-                    transition: "opacity 0.5s",
-                    position: "relative",
-                    opacity: progress < 70 ? 1 : 0,
+                    transition: 'opacity 0.5s',
+                    position: 'relative',
                   }}
                 >
                   <Image
                     src="https://res.cloudinary.com/ruben-p/image/upload/3D%20Models/Logo/Placeholder%20RP-Logo.webp"
                     alt="RP-Logo 3D model placeholder"
                     fill={true}
+                    sizes="800px"
                     priority={true}
                   />
                 </div>
@@ -122,11 +104,18 @@ export default function Home() {
           >
             <Logo />
             {/* <Stats /> */}
-            <FPSLimiter limit={30} />
+            <PerformanceMonitor
+              ms={200}
+              iterations={7}
+              step={0.05}
+              factor={1}
+              onChange={({ factor }) => setDpr(round(0.2 + 0.7 * factor, 2))}
+            />
+            <AdaptiveEvents />
           </Suspense>
         </Canvas>
       </div>
-      <hero style={{ width: "100%", height: "100%", zIndex: 1 }}>
+      <hero style={{ width: '100%', height: '100%', zIndex: 1 }}>
         <div className="column">
           <div className="layer">
             <div className="column">
@@ -146,5 +135,5 @@ export default function Home() {
         </div>
       </hero>
     </div>
-  );
+  )
 }

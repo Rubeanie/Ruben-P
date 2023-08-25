@@ -4,9 +4,11 @@
   src: url('/fonts/yapari-variable.ttf') format('truetype');
   font-style: normal;
   font-display: swap;
+  font-weight: 750;
+  line-height: 1.1;
 }
 
-$font-title: yapari,
+$h-font: yapari,
 serif;
 
 @font-face {
@@ -14,19 +16,22 @@ serif;
   src: url('/fonts/kollektif-webfont.ttf') format('truetype');
   font-style: normal;
   font-display: swap;
+  line-height: 1.1;
 }
 
-$font-body: kollektif,
+$p-font: kollektif,
 serif;
 
-/* Heading Text */
-$heading-alignment: center;
-$heading-size: 7vw;
-$heading-weight: 750;
+/* Text Alignments */
+$h-alignment: center;
+$p-alignment: center;
 
-/* Title Text */
-$title-size: 35px;
+/* Heading Text Sizes */
+$h1-size: 7vw;
+$h2-size: 2.2rem;
 
-/* Body Text */
-$body-alignment: center;
-$body-size: 25px;
+/* Paragraph Text Sizes */
+$p1-size: 1.56rem;
+$p2-size: 1.375rem;
+$p3-size: 1.25rem;
+$p4-size: 1rem;

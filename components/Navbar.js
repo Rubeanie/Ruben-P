@@ -87,7 +87,7 @@ export default class navbar extends React.Component {
   }
   render() {
     return (
-      <div className="navbar" ref={this.navRef}>
+      <nav ref={this.navRef}>
         <div
           className="dropdown"
           style={{
@@ -102,30 +102,29 @@ export default class navbar extends React.Component {
               this.changeDropdown(false);
             }}
           >
-            <Link href="/" className="button" passHref
+            <Link href="/" passHref
               style={{
                 transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
               }}>
-              Home
+              <p>Home</p>
             </Link>
             {navbarData.pages.map((page) => (
               <Link
                 key={`_${page.title}`}
-                className="button"
                 href={page.url}
                 passHref
                 style={{
                   transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
                 }}
               >
-                {page.title}
+                <p>{page.title}</p>
               </Link>
             ))}
           </div>
         </div>
         <div ref={this.logoRef}>
           <Link href="/" passHref title="Home">
-            <RubenP className="logo"
+            <RubenP
               onClick={() => {
                 this.changeDropdown(false);
               }} />
@@ -133,8 +132,8 @@ export default class navbar extends React.Component {
         </div>
         <div ref={this.pagesRef} hidden={this.state.showDropdown}>
           {navbarData.pages.map((page) => (
-            <Link key={page.title} className="button" href={page.url} passHref>
-              {page.title}
+            <Link key={page.title} href={page.url} passHref>
+              <p>{page.title}</p>
             </Link>
           ))}
         </div>
@@ -145,12 +144,12 @@ export default class navbar extends React.Component {
             size={37.5}
             duration={0.3}
             distance="sm"
-            color="var(--color-foreground)"
+            color="var(--color-primary)"
             easing="ease-out"
             rounded={true}
           />
         </div>
-      </div>
+      </nav>
     );
   }
 }
