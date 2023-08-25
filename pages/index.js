@@ -115,7 +115,7 @@ export default function Home() {
           </Suspense>
         </Canvas>
       </div>
-      <hero style={{ width: '100%', height: '100%', zIndex: 1 }}>
+      <hero-no-padding style={{ width: '100%', height: '100%', zIndex: 1 }}>
         <div className="column">
           <div className="layer">
             <div className="column">
@@ -133,7 +133,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </hero>
+      </hero-no-padding>
     </div>
   )
 }
