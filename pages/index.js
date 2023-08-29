@@ -6,7 +6,7 @@ import { Model } from '../lib/rpLogo'
 import { GetColor } from '../lib/themes'
 import Image from 'next/image'
 import { Html, AdaptiveEvents, PerformanceMonitor } from '@react-three/drei'
-import { Age /* Stats */ } from '../lib/common'
+import { Age /* , Stats */ } from '../lib/common'
 import round from 'lodash/round'
 
 function Logo() {
