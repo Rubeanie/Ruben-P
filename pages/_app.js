@@ -34,13 +34,13 @@ function App({ Component, pageProps }) {
         <link
           rel="mask-icon"
           href="/favicon/safari-pinned-tab.svg"
-          color={GetColor("--color-foreground")}
+          color={GetColor("--color-primary")}
         ></link>
         <link rel="manifest" href="/site.webmanifest" ></link>
         <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" ></link>
         <meta
           name="msapplication-TileColor"
-          content={GetColor("--color-foreground")}
+          content={GetColor("--color-primary")}
         ></meta>
         <meta name="theme-color" content={GetBackgroundColor()} ></meta>
         <meta
