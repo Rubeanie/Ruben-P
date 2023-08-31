@@ -8,13 +8,13 @@ export default function SpotifyLink() {
       <Head>
         <title>Spotify Profile</title>
       </Head>
-      <hero>
+      <div className="hero">
         <Redirect
           name={"Spotify"}
           logo={<BsSpotify />}
           url={"https://open.spotify.com/user/rubeanie?si=87761d3bc88f4fcc"}
         />
-      </hero>
+      </div>
     </div>
   );
 }

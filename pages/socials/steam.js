@@ -8,13 +8,13 @@ export default function SteamLink() {
       <Head>
         <title>Steam Profile</title>
       </Head>
-      <hero>
+      <div className="hero">
         <Redirect
           name={"Steam"}
           logo={<FaSteam />}
           url={"https://steamcommunity.com/id/Rubeanie/"}
         />
-      </hero>
+      </div>
     </div>
   );
 }

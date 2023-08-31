@@ -1,65 +1,79 @@
 @use '../abstracts/index.module'as var;
 
 nav {
-  display: flex;
   position: var.$navbar-position;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
   z-index: 5;
   background-color: var.$color-overlay;
-  padding: var.$navbar-padding;
-  padding: var.$padding-safe;
   width: var.$navbar-width;
   height: var.$navbar-height;
   transition: background-color 0.25s;
 
-  a {
-    flex: 0 1 auto;
-    transition: transform 0.25s;
-
-    p {
-      padding: var.$navbar-item-padding;
-      font-size: var.$p2-size;
-    }
-
-    svg {
-      color: var.$color-primary;
-      margin: var.$navbar-item-padding;
-      width: var.$navbar-height * 0.80;
-      height: var.$navbar-height * 0.80;
-      size: var.$navbar-height * 0.80;
-    }
-  }
-
-  p {
-    display: unset;
-    font-weight: bold;
-    color: var.$color-primary;
-  }
-
-  .dropdown {
-    position: fixed;
-    z-index: 6;
-    background-color: var.$color-overlay;
-    margin: var.$inverted-padding-safe;
+  .container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: var.$navbar-width;
+    max-width: var.$viewport-max-width;
+    height: var.$navbar-height;
     padding: var.$navbar-padding;
     padding: var.$padding-safe;
-    width: var.$navbar-width;
-    height: calc(100vh - var.$navbar-height);
-    transform-origin: top;
-    transition: transform 0.25s, opacity 0.25s, background-color 0.25s;
+    margin: 0 auto;
 
     a {
-      margin: 25px 0px;
+      flex: 0 1 auto;
+      transition: transform 0.25s;
+      margin-right: var.$navbar-item-padding;
 
       p {
-        font-size: var.$p2-size * 1.75;
+        font-size: var.$p2-size;
+      }
+
+      svg {
+        display: block;
+        color: var.$color-primary;
+        margin-left: var.$navbar-item-padding;
+        width: var.$navbar-height * 0.80;
+        height: var.$navbar-height * 0.80;
+        size: var.$navbar-height * 0.80;
       }
     }
-  }
 
-  .hamburger-react {
-    margin: 0 10px 0 10px;
+    p {
+      font-weight: bold;
+      color: var.$color-primary;
+      margin-block-start: 0em;
+    }
+
+    .row-fixed {
+      width: unset;
+      height: unset;
+    }
+
+    .dropdown {
+      position: fixed;
+      z-index: 6;
+      background-color: var.$color-overlay;
+      margin: var.$inverted-padding-safe;
+      padding: var.$navbar-padding;
+      padding: var.$padding-safe;
+      width: var.$navbar-width;
+      height: calc(100vh - var.$navbar-height);
+      transform-origin: top;
+      transition: transform 0.25s, opacity 0.25s, background-color 0.25s;
+      overflow: auto;
+
+      a {
+        margin: 25px 0px;
+
+        p {
+          font-size: var.$p2-size * 1.75;
+        }
+      }
+    }
+
+    .hamburger-react {
+      margin: 0 10px 0 10px;
+    }
   }
 }

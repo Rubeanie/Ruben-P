@@ -13,50 +13,50 @@ function App({ Component, pageProps }) {
           rel="icon"
           type="image/png"
           href="/favicon/apple-touch-icon.png"
-        ></link>
+        />
         <link
           rel="icon"
           type="image/png"
           sizes="32x32"
           href="/favicon/favicon-32x32.png"
-        ></link>
+        />
         <link
           rel="icon"
           type="image/png"
           sizes="16x16"
           href="/favicon/favicon-16x16.png"
-        ></link>
+        />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
           href="/favicon/apple-touch-icon.png"
-        ></link>
+        />
         <link
           rel="mask-icon"
           href="/favicon/safari-pinned-tab.svg"
           color={GetColor("--color-primary")}
-        ></link>
-        <link rel="manifest" href="/site.webmanifest" ></link>
-        <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" ></link>
+        />
+        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
         <meta
           name="msapplication-TileColor"
           content={GetColor("--color-primary")}
-        ></meta>
-        <meta name="theme-color" content={GetBackgroundColor()} ></meta>
+        />
+        <meta name="theme-color" content={GetBackgroundColor()} />
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-        ></meta>
-        <meta name="darkreader-lock" ></meta>
+        />
+        <meta name="darkreader-lock" />
         <meta
           name="keywords"
           content="Ruben, Panzich, Rubeanie, Portfolio, About, Links, Contact, Artist, Developer"
-        ></meta>
-        <meta key="robots" name="robots" content="index,follow" ></meta>
-        <meta key="googlebot" name="googlebot" content="index,follow" ></meta>
-        <link rel="preconnect" href="https://api.sanity.com" ></link>
-        <link rel="preconnect" href="https://res.cloudinary.com" ></link>
-        <link rel="preconnect" href="https://www.gstatic.com" ></link>
+        />
+        <meta key="robots" name="robots" content="index,follow" />
+        <meta key="googlebot" name="googlebot" content="index,follow" />
+        <link rel="preconnect" href="https://api.sanity.com" />
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="preconnect" href="https://www.gstatic.com" />
       </Head>
       <Signature />
       <div className="background-image" />

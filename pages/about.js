@@ -49,7 +49,7 @@ export default function About() {
         <meta key="robots" name="robots" content="index,follow" />
         <meta key="googlebot" name="googlebot" content="index,follow" />
       </Head>
-      <hero className="about">
+      <div className="hero about">
         <div className="row">
           <div className="flex-padding" style={{ flex: "40%" }}>
             <div className="column">
@@ -73,8 +73,8 @@ export default function About() {
             </div>
           </div>
         </div>
-      </hero>
-      <hero-content>
+      </div>
+      <div className="hero-content">
         <div className="column">
           <AboutPageContent />
           <div className="flex-box">
@@ -232,7 +232,7 @@ export default function About() {
             </div>
           </div>
         </div>
-      </hero-content>
+      </div>
     </div>
   );
 }

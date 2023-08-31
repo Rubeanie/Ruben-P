@@ -22,7 +22,6 @@
     "@sanity/client": "^6.4.9",
     "@vercel/analytics": "^1.0.2",
     "age-calculator": "^1.0.0",
-    "babel-plugin-styled-components": "^2.1.4",
     "color": "^4.2.3",
     "hamburger-react": "^2.5.0",
     "next": "^13.4.19",
@@ -36,7 +35,6 @@
     "react-spring": "^9.7.2",
     "sass": "^1.66.1",
     "seedrandom": "^3.0.5",
-    "styled-components": "^6.0.7",
     "three": "^0.155.0"
   },
   "devDependencies": {

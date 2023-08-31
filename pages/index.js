@@ -59,24 +59,13 @@ export default function Home() {
           dpr={dpr}
           resize={{ scroll: false, debounce: { scroll: 50, resize: 0 } }}
         >
-          <pointLight
-            position={[-8, 1, 6]}
-            color={GetColor('--color-secondary')}
-            intensity={110}
-            distance={70}
-          ></pointLight>
-          <pointLight
-            position={[0, 1, 8]}
-            color={GetColor('--color-primary')}
-            intensity={85}
-            distance={80}
-          />
-          <pointLight
-            position={[8, 1, 6]}
-            color={GetColor('--color-secondary')}
-            intensity={110}
-            distance={70}
-          />
+          {[
+            { position: [-8, 1, 6], color: GetColor('--color-secondary'), intensity: 110, distance: 70 },
+            { position: [0, 1, 8], color: GetColor('--color-primary'), intensity: 85, distance: 80 },
+            { position: [8, 1, 6], color: GetColor('--color-secondary'), intensity: 110, distance: 70 },
+          ].map((lightProps, index) => (
+            <pointLight key={index} {...lightProps} />
+          ))}
           <Suspense
             fallback={
               <Html center className="placeholder">
@@ -115,7 +104,7 @@ export default function Home() {
           </Suspense>
         </Canvas>
       </div>
-      <hero-no-padding style={{ width: '100%', height: '100%', zIndex: 1 }}>
+      <div className="hero-no-padding" style={{ width: '100%', height: '100%', zIndex: 1 }}>
         <div className="column">
           <div className="layer">
             <div className="column">
@@ -133,7 +122,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </hero-no-padding>
+      </div>
     </div>
   )
 }

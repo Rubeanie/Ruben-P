@@ -8,13 +8,13 @@ export default function TwitterLink() {
       <Head>
         <title>YouTube Channel</title>
       </Head>
-      <hero>
+      <div className="hero">
         <Redirect
           name={"Twitter"}
           logo={<BsTwitter />}
           url={"https://twitter.com/TwitchRubeanie"}
         />
-      </hero>
+      </div>
     </div>
   );
 }

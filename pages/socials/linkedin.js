@@ -8,13 +8,13 @@ export default function DiscordLink() {
       <Head>
         <title>LinkedIn</title>
       </Head>
-      <hero>
+      <div className="hero">
         <Redirect
           name={"LinkedIn"}
           logo={<BsLinkedin />}
           url={"https://www.linkedin.com/in/ruben-p/"}
         />
-      </hero>
+      </div>
     </div>
   );
 }

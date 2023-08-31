@@ -22,7 +22,7 @@ export default function links() {
         <meta key="robots" name="robots" content="index,follow" />
         <meta key="googlebot" name="googlebot" content="index,follow" />
       </Head>
-      <hero>
+      <div className="hero">
         <div className="column">
           <h2>Socials</h2>
           <a href="/socials/linkedin" target="_blank">
@@ -107,7 +107,7 @@ export default function links() {
             />
           </Link>
         </div>
-      </hero>
+      </div>
     </div>
   );
 }

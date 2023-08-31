@@ -9,14 +9,14 @@ export default function Error() {
         <meta key="robots" name="robots" content="noindex,follow" />
         <meta key="googlebot" name="googlebot" content="noindex,follow" />
       </Head>
-      <hero>
+      <div className="hero">
         <div className="column">
           <h2>Error</h2>
           <h1-img>404</h1-img>
           <p>This page could not be found.</p>
           <h2>Error</h2>
         </div>
-      </hero>
+      </div>
     </div>
   );
 }

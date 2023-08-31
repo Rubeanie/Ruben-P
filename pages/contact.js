@@ -12,10 +12,10 @@ export default function Contact() {
         <meta key="robots" name="robots" content="index,follow" />
         <meta key="googlebot" name="googlebot" content="index,follow" />
       </Head>
-      <hero>
+      <div className="hero">
         <h1-img>CONTACT</h1-img>
         <p>Coming Soon...</p>
-      </hero>
+      </div>
     </div>
   );
 }

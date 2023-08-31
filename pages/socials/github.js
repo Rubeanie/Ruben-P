@@ -8,13 +8,13 @@ export default function DiscordLink() {
       <Head>
         <title>YouTube Channel</title>
       </Head>
-      <hero>
+      <div className="hero">
         <Redirect
           name={"Github"}
           logo={<BsGithub />}
           url={"https://github.com/Rubeanie"}
         />
-      </hero>
+      </div>
     </div>
   );
 }

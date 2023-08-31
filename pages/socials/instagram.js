@@ -8,13 +8,13 @@ export default function InstagramLink() {
       <Head>
         <title>Instagram Account</title>
       </Head>
-      <hero>
+      <div className="hero">
         <Redirect
           name={"Instagram"}
           logo={<BsInstagram />}
           url={"https://www.instagram.com/ruben.panzich/"}
         />
-      </hero>
+      </div>
     </div>
   );
 }

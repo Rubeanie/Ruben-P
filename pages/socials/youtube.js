@@ -8,13 +8,13 @@ export default function YoutubeLink() {
       <Head>
         <title>YouTube Channel</title>
       </Head>
-      <hero>
+      <div className="hero">
         <Redirect
           name={"YouTube"}
           logo={<BsYoutube />}
           url={"https://www.youtube.com/channel/UCV3-uGgDO32_MTii2006g-Q"}
         />
-      </hero>
+      </div>
     </div>
   );
 }

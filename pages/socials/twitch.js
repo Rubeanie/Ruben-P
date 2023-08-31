@@ -8,13 +8,13 @@ export default function TwitchLink() {
       <Head>
         <title>Twitch Channel</title>
       </Head>
-      <hero>
+      <div className="hero">
         <Redirect
           name={"Twitch"}
           logo={<BsTwitch />}
           url={"https://www.twitch.tv/Rubeanie"}
         />
-      </hero>
+      </div>
     </div>
   );
 }

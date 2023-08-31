@@ -54,7 +54,7 @@ export default class navbar extends React.Component {
           showDropdown:
             this.logoRef.current.offsetWidth +
             this.pagesRef.current.offsetWidth +
-            68 >=
+            136 >=
             this.navRef.current.offsetWidth,
         });
       }
@@ -71,7 +71,7 @@ export default class navbar extends React.Component {
       openDropdown: x,
       openDropdownInt: x ? 1 : 0,
     }));
-    if(x) {
+    if (x) {
       document.documentElement.style.setProperty(
         "--color-overlay-alpha",
         0.6
@@ -87,67 +87,67 @@ export default class navbar extends React.Component {
   }
   render() {
     return (
-      <nav ref={this.navRef}>
-        <div
-          className="dropdown"
-          style={{
-            transform: `translate(0, 50vh) scale(1, ${this.state.openDropdownInt})`,
-            opacity: this.state.openDropdownInt,
-          }}
-        >
+      <nav>
+        <div className="container" ref={this.navRef}>
           <div
-            className="column"
-            style={{ justifyContent: "flex-start" }}
-            onClick={() => {
-              this.changeDropdown(false);
+            className="dropdown"
+            style={{
+              transform: `translate(0, 50vh) scale(1, ${this.state.openDropdownInt})`,
+              opacity: this.state.openDropdownInt,
             }}
           >
-            <Link href="/" passHref
-              style={{
-                transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
-              }}>
-              <p>Home</p>
-            </Link>
-            {navbarData.pages.map((page) => (
-              <Link
-                key={`_${page.title}`}
-                href={page.url}
-                passHref
+            <div
+              className="column"
+              style={{ justifyContent: "flex-start" }}
+              onClick={() => {
+                this.changeDropdown(false);
+              }}
+            >
+              <Link href="/" passHref
                 style={{
                   transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
-                }}
-              >
-                <p>{page.title}</p>
+                }}>
+                <p>Home</p>
               </Link>
-            ))}
+              {navbarData.pages.map((page) => (
+                <Link
+                  key={`_${page.title}`}
+                  href={page.url}
+                  passHref
+                  style={{
+                    transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
+                  }}
+                >
+                  <p>{page.title}</p>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-        <div ref={this.logoRef}>
-          <Link href="/" passHref title="Home">
+          <Link href="/" passHref title="Home" ref={this.logoRef}>
             <RubenP
               onClick={() => {
                 this.changeDropdown(false);
               }} />
           </Link>
-        </div>
-        <div ref={this.pagesRef} hidden={this.state.showDropdown}>
-          {navbarData.pages.map((page) => (
-            <Link key={page.title} href={page.url} passHref>
-              <p>{page.title}</p>
-            </Link>
-          ))}
-        </div>
-        <div hidden={!this.state.showDropdown}>
-          <Hamburger
-            toggled={this.state.setOpen}
-            toggle={this.changeDropdown}
-            size={37.5}
-            duration={0.3}
-            distance="sm"
-            color="var(--color-primary)"
-            easing="ease-out"
-            rounded={true}
-          />
+          <div className="row-fixed" ref={this.pagesRef} hidden={this.state.showDropdown}>
+            {navbarData.pages.map((page) => (
+              <Link key={page.title} href={page.url} passHref>
+                <p>{page.title}</p>
+              </Link>
+            ))}
+          </div>
+          <div hidden={!this.state.showDropdown}>
+            <Hamburger
+              toggled={this.state.setOpen}
+              toggle={this.changeDropdown}
+              size={37.5}
+              duration={0.3}
+              distance="sm"
+              color="var(--color-primary)"
+              easing="ease-out"
+              rounded={true}
+            />
+          </div>
         </div>
       </nav>
     );
