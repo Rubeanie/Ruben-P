@@ -1,11 +1,11 @@
-const withPWA = require("next-pwa")({
-  dest: "public",
-  disable: process.env.NODE_ENV === "development",
+const withPWA = require('next-pwa')({
+  dest: 'public',
+  disable: process.env.NODE_ENV === 'development'
 });
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-})
+  enabled: process.env.ANALYZE === 'true'
+});
 
 module.exports = withBundleAnalyzer(
   withPWA({
@@ -13,31 +13,31 @@ module.exports = withBundleAnalyzer(
     transpilePackages: ['@acme/ui', 'lodash-es'],
     modularizeImports: {
       'react-bootstrap': {
-        transform: 'react-bootstrap/{{member}}',
+        transform: 'react-bootstrap/{{member}}'
       },
       lodash: {
         transform: 'lodash/{{member}}',
-        preventFullImport: true,
-      },
+        preventFullImport: true
+      }
     },
     async rewrites() {
       return [
         {
-          source: "/admin/:path*",
+          source: '/admin/:path*',
           destination:
-            process.env.NODE_ENV === "development"
-              ? "http://localhost:3333/admin/:path*"
-              : "/admin/index.html",
-        },
+            process.env.NODE_ENV === 'development'
+              ? 'http://localhost:3333/admin/:path*'
+              : '/admin/index.html'
+        }
       ];
     },
     i18n: {
-      locales: ["en"],
-      defaultLocale: "en",
+      locales: ['en'],
+      defaultLocale: 'en'
     },
     reactStrictMode: true,
     images: {
-      domains: ["res.cloudinary.com"],
-    },
+      domains: ['res.cloudinary.com']
+    }
   })
 );

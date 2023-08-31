@@ -1,4 +1,4 @@
-@use "../abstracts/index.module"as var;
+@use '../abstracts/index.module' as var;
 
 .socials {
   display: flex;
@@ -13,7 +13,8 @@
     font-size: var.$p3-size;
   }
 
-  .icon, .overlay {
+  .icon,
+  .overlay {
     display: flex;
     align-items: center;
     justify-content: center;

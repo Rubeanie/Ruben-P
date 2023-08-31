@@ -1,18 +1,18 @@
-import Head from "next/head";
-import Redirect from "../../components/Redirect";
-import { BsGithub } from "react-icons/bs";
+import Head from 'next/head';
+import Redirect from '../../components/Redirect';
+import { BsGithub } from 'react-icons/bs';
 
 export default function DiscordLink() {
   return (
-    <div className="page">
+    <div className='page'>
       <Head>
         <title>YouTube Channel</title>
       </Head>
-      <div className="hero">
+      <div className='hero'>
         <Redirect
-          name={"Github"}
+          name={'Github'}
           logo={<BsGithub />}
-          url={"https://github.com/Rubeanie"}
+          url={'https://github.com/Rubeanie'}
         />
       </div>
     </div>

@@ -1,23 +1,23 @@
-import React from "react";
-import Link from "next/link";
-import { RubenP } from "../lib/icons";
-import { Squeeze as Hamburger } from "hamburger-react";
+import React from 'react';
+import Link from 'next/link';
+import { RubenP } from '../lib/icons';
+import { Squeeze as Hamburger } from 'hamburger-react';
 
 const navbarData = {
   pages: [
     {
-      title: "About",
-      url: "/about",
+      title: 'About',
+      url: '/about'
     },
     {
-      title: "Portfolio",
-      url: "/portfolio",
+      title: 'Portfolio',
+      url: '/portfolio'
     },
     {
-      title: "Socials",
-      url: "/socials",
-    },
-  ],
+      title: 'Socials',
+      url: '/socials'
+    }
+  ]
 };
 
 export default class navbar extends React.Component {
@@ -29,7 +29,7 @@ export default class navbar extends React.Component {
     this.state = {
       setOpen: false,
       showDropdown: false,
-      openDropdownInt: 0,
+      openDropdownInt: 0
     };
     this.componentDidResize = this.componentDidResize.bind(this);
     this.componentDidRotate = this.componentDidRotate.bind(this);
@@ -37,25 +37,25 @@ export default class navbar extends React.Component {
   }
   componentDidMount() {
     this.componentDidRotate();
-    window.addEventListener("resize", this.componentDidResize);
-    window.addEventListener("orientationchange", this.componentDidRotate);
+    window.addEventListener('resize', this.componentDidResize);
+    window.addEventListener('orientationchange', this.componentDidRotate);
   }
   componentWillUnmount() {
-    window.removeEventListener("resize", this.componentDidResize);
-    window.removeEventListener("orientationchange", this.componentDidRotate);
+    window.removeEventListener('resize', this.componentDidResize);
+    window.removeEventListener('orientationchange', this.componentDidRotate);
   }
   componentDidResize() {
     this.setState(
       {
-        showDropdown: false,
+        showDropdown: false
       },
       function () {
         this.setState({
           showDropdown:
             this.logoRef.current.offsetWidth +
-            this.pagesRef.current.offsetWidth +
-            136 >=
-            this.navRef.current.offsetWidth,
+              this.pagesRef.current.offsetWidth +
+              136 >=
+            this.navRef.current.offsetWidth
         });
       }
     );
@@ -69,43 +69,40 @@ export default class navbar extends React.Component {
     this.setState(() => ({
       setOpen: x,
       openDropdown: x,
-      openDropdownInt: x ? 1 : 0,
+      openDropdownInt: x ? 1 : 0
     }));
     if (x) {
-      document.documentElement.style.setProperty(
-        "--color-overlay-alpha",
-        0.6
-      );
-      document.body.classList.add("no-scroll");
+      document.documentElement.style.setProperty('--color-overlay-alpha', 0.6);
+      document.body.classList.add('no-scroll');
     } else {
       document.documentElement.style.setProperty(
-        "--color-overlay-alpha",
+        '--color-overlay-alpha',
         0.325
       );
-      document.body.classList.remove("no-scroll");
+      document.body.classList.remove('no-scroll');
     }
   }
   render() {
     return (
       <nav>
-        <div className="container" ref={this.navRef}>
+        <div className='container' ref={this.navRef}>
           <div
-            className="dropdown"
+            className='dropdown'
             style={{
               transform: `translate(0, 50vh) scale(1, ${this.state.openDropdownInt})`,
-              opacity: this.state.openDropdownInt,
-            }}
-          >
+              opacity: this.state.openDropdownInt
+            }}>
             <div
-              className="column"
-              style={{ justifyContent: "flex-start" }}
+              className='column'
+              style={{ justifyContent: 'flex-start' }}
               onClick={() => {
                 this.changeDropdown(false);
-              }}
-            >
-              <Link href="/" passHref
+              }}>
+              <Link
+                href='/'
+                passHref
                 style={{
-                  transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
+                  transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`
                 }}>
                 <p>Home</p>
               </Link>
@@ -115,21 +112,24 @@ export default class navbar extends React.Component {
                   href={page.url}
                   passHref
                   style={{
-                    transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
-                  }}
-                >
+                    transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`
+                  }}>
                   <p>{page.title}</p>
                 </Link>
               ))}
             </div>
           </div>
-          <Link href="/" passHref title="Home" ref={this.logoRef}>
+          <Link href='/' passHref title='Home' ref={this.logoRef}>
             <RubenP
               onClick={() => {
                 this.changeDropdown(false);
-              }} />
+              }}
+            />
           </Link>
-          <div className="row-fixed" ref={this.pagesRef} hidden={this.state.showDropdown}>
+          <div
+            className='row-fixed'
+            ref={this.pagesRef}
+            hidden={this.state.showDropdown}>
             {navbarData.pages.map((page) => (
               <Link key={page.title} href={page.url} passHref>
                 <p>{page.title}</p>
@@ -142,9 +142,9 @@ export default class navbar extends React.Component {
               toggle={this.changeDropdown}
               size={37.5}
               duration={0.3}
-              distance="sm"
-              color="var(--color-primary)"
-              easing="ease-out"
+              distance='sm'
+              color='var(--color-primary)'
+              easing='ease-out'
               rounded={true}
             />
           </div>

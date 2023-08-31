@@ -1,6 +1,6 @@
-import Navbar from "./Navbar";
-import Footer from "./Footer";
-import { Theme } from "../lib/themes";
+import Navbar from './Navbar';
+import Footer from './Footer';
+import { Theme } from '../lib/themes';
 
 export default function Layout({ children }) {
   return (

@@ -1,4 +1,4 @@
-@use '../abstracts/index.module'as var;
+@use '../abstracts/index.module' as var;
 
 nav {
   position: var.$navbar-position;
@@ -33,9 +33,9 @@ nav {
         display: block;
         color: var.$color-primary;
         margin-left: var.$navbar-item-padding;
-        width: var.$navbar-height * 0.80;
-        height: var.$navbar-height * 0.80;
-        size: var.$navbar-height * 0.80;
+        width: var.$navbar-height * 0.8;
+        height: var.$navbar-height * 0.8;
+        size: var.$navbar-height * 0.8;
       }
     }
 
@@ -60,7 +60,10 @@ nav {
       width: var.$navbar-width;
       height: calc(100vh - var.$navbar-height);
       transform-origin: top;
-      transition: transform 0.25s, opacity 0.25s, background-color 0.25s;
+      transition:
+        transform 0.25s,
+        opacity 0.25s,
+        background-color 0.25s;
       overflow: auto;
 
       a {

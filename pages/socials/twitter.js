@@ -1,18 +1,18 @@
-import Head from "next/head";
-import Redirect from "../../components/Redirect";
-import { BsTwitter } from "react-icons/bs";
+import Head from 'next/head';
+import Redirect from '../../components/Redirect';
+import { BsTwitter } from 'react-icons/bs';
 
 export default function TwitterLink() {
   return (
-    <div className="page">
+    <div className='page'>
       <Head>
         <title>YouTube Channel</title>
       </Head>
-      <div className="hero">
+      <div className='hero'>
         <Redirect
-          name={"Twitter"}
+          name={'Twitter'}
           logo={<BsTwitter />}
-          url={"https://twitter.com/TwitchRubeanie"}
+          url={'https://twitter.com/TwitchRubeanie'}
         />
       </div>
     </div>

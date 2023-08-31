@@ -1,18 +1,18 @@
-import Head from "next/head";
-import Redirect from "../../components/Redirect";
-import { BsTwitch } from "react-icons/bs";
+import Head from 'next/head';
+import Redirect from '../../components/Redirect';
+import { BsTwitch } from 'react-icons/bs';
 
 export default function TwitchLink() {
   return (
-    <div className="page">
+    <div className='page'>
       <Head>
         <title>Twitch Channel</title>
       </Head>
-      <div className="hero">
+      <div className='hero'>
         <Redirect
-          name={"Twitch"}
+          name={'Twitch'}
           logo={<BsTwitch />}
-          url={"https://www.twitch.tv/Rubeanie"}
+          url={'https://www.twitch.tv/Rubeanie'}
         />
       </div>
     </div>
