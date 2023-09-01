@@ -63,7 +63,7 @@ export default function About() {
           </div>
           <div className='flex-padding' style={{ flex: '60%' }}>
             <div className='column'>
-              <h1 className='img-title'>ABOUT</h1>
+              <h1 className='img-heading'>ABOUT</h1>
             </div>
           </div>
         </div>

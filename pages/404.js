@@ -12,7 +12,7 @@ export default function Error() {
       <div className='hero'>
         <div className='column'>
           <h2>Error</h2>
-          <h1 className='img-title'>404</h1>
+          <h1 className='img-heading'>404</h1>
           <p>This page could not be found.</p>
           <h2>Error</h2>
         </div>

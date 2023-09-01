@@ -41,7 +41,7 @@ h1 {
   transition: font-size 0.1s ease-in;
 }
 
-h1.img-title {
+h1.img-heading {
   @extend h1;
   background: var.$image-background no-repeat center center;
   background-size: cover;

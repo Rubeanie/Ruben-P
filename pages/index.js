@@ -100,7 +100,7 @@ export default function Home() {
         <div className='column'>
           <div className='layer'>
             <div className='column'>
-              <h1 className='img-title'>
+              <h1 className='img-heading'>
                 Ruben
                 <br />
                 Panzich
