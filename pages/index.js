@@ -9,7 +9,7 @@ import { Age /* , Stats */ } from '../lib/common';
 import round from 'lodash/round';
 
 export default function Home() {
-  const [dpr, setDpr] = useState(0.8);
+  const [dpr, setDpr] = useState(0.95);
   const [height, setHeight] = useState(0);
   const updateDimensions = () => {
     setHeight(window.innerHeight);
