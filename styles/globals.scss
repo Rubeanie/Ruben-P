@@ -81,7 +81,6 @@ p {
 }
 
 h1,
-h1-img,
 h2,
 h3,
 p,
@@ -187,7 +186,7 @@ p,
     font-size: var.$h1-size * 1.25;
   }
 
-  h1-img {
+  h1.img-heading {
     background: unset;
     background-size: unset;
     background-attachment: unset;
