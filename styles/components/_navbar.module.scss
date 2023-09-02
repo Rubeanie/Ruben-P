@@ -1,4 +1,4 @@
-@use '../abstracts/index.module' as var;
+@use '../abstracts/index.module'as var;
 
 nav {
   position: var.$navbar-position;
@@ -48,6 +48,7 @@ nav {
     .row-fixed {
       width: unset;
       height: unset;
+      flex-wrap: nowrap;
     }
 
     .dropdown {
