@@ -59,7 +59,7 @@ nav {
       padding: var.$navbar-padding;
       padding: var.$padding-safe;
       width: var.$navbar-width;
-      height: calc(100vh - var.$navbar-height);
+      height: calc(100lvh - var.$navbar-height);
       transform-origin: top;
       transition:
         transform 0.25s,

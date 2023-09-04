@@ -1,4 +1,4 @@
-@use '../abstracts/index.module' as var;
+@use '../abstracts/index.module'as var;
 
 .about {
   .photo {
@@ -14,7 +14,7 @@
     .photo {
       width: unset;
       max-width: 100%;
-      max-height: 400px;
+      max-height: 40svh;
     }
   }
 }
