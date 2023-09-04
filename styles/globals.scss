@@ -115,15 +115,9 @@ p,
     top: 0;
     left: 0;
     background-color: white;
-
-    // Double background
-    background-image: var.$image-background, var.$image-background;
-    background-repeat: no-repeat, no-repeat;
-    background-position: center center, center center;
-    background-attachment: scroll, fixed; 
-    background-size: cover, cover;
-
-    transform: translateZ(0);
+    background: var.$image-background no-repeat center center;
+    background-size: cover;
+    transform: translateZ(0) !important;
     will-change: transform; // creates a new paint layer
     z-index: -1;
   }
