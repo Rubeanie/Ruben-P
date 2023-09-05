@@ -9,11 +9,7 @@
     "dataset": "production"
   },
   "plugins": [
-    "@sanity/base",
-    "@sanity/default-layout",
-    "@sanity/default-login",
     "@sanity/dashboard",
-    "@sanity/desk-tool",
     "@sanity/production-preview",
     "asset-source-cloudinary",
     "minesweeper",
