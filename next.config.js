@@ -35,7 +35,7 @@ module.exports = withBundleAnalyzer(
       locales: ['en'],
       defaultLocale: 'en'
     },
-    reactStrictMode: true,
+    reactStrictMode: false,
     images: {
       domains: ['res.cloudinary.com']
     }

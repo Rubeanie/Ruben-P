@@ -2,7 +2,7 @@ import Layout from '../components/Layout';
 import '../styles/globals.scss';
 import Head from 'next/head';
 import Signature from '../components/Signature';
-import { GetColor, GetBackgroundColor } from '../lib/themes';
+import { useColor, useBackgroundColor } from '../lib/themes';
 import { Analytics } from '@vercel/analytics/react';
 
 function App({ Component, pageProps }) {
@@ -34,15 +34,15 @@ function App({ Component, pageProps }) {
         <link
           rel='mask-icon'
           href='/favicon/safari-pinned-tab.svg'
-          color={GetColor('--color-primary')}
+          color={useColor('--color-primary')}
         />
         <link rel='manifest' href='/site.webmanifest' />
         <link rel='icon' type='image/svg+xml' href='/favicon/favicon.svg' />
         <meta
           name='msapplication-TileColor'
-          content={GetColor('--color-primary')}
+          content={useColor('--color-primary')}
         />
-        <meta name='theme-color' content={GetBackgroundColor()} />
+        <meta name='theme-color' content={useBackgroundColor()} />
         <meta
           name='viewport'
           content='height=device-height, width=device-width, initial-scale=1.0, viewport-fit=cover'
