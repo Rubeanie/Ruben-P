@@ -1,164 +1,155 @@
-import Link from "next/link";
-import { RubenP } from "./Icons";
-import React from "react";
-import UseAnimations from "react-useanimations";
-import menu4 from "react-useanimations/lib/menu4";
+import React from 'react';
+import Link from 'next/link';
+import { RubenP } from '../lib/icons';
+import { Squeeze as Hamburger } from 'hamburger-react';
 
-export default class Navbar extends React.Component {
-  constructor(props) {
-    super(props);
+const navbarData = {
+  pages: [
+    {
+      title: 'About',
+      url: '/about'
+    },
+    {
+      title: 'Portfolio',
+      url: '/portfolio'
+    },
+    {
+      title: 'Socials',
+      url: '/socials'
+    }
+  ]
+};
+
+export default class navbar extends React.Component {
+  constructor() {
+    super();
     this.navRef = React.createRef();
     this.logoRef = React.createRef();
     this.pagesRef = React.createRef();
-    this.dropdownRef = React.createRef();
     this.state = {
-      useDropdown: false,
-      openDropdown: false,
-      reverseIcon: false,
-      openDropdownInt: 0,
+      setOpen: false,
+      showDropdown: false,
+      openDropdownInt: 0
     };
     this.componentDidResize = this.componentDidResize.bind(this);
+    this.componentDidRotate = this.componentDidRotate.bind(this);
+    this.changeDropdown = this.changeDropdown.bind(this);
   }
   componentDidMount() {
-    window.addEventListener("resize", this.componentDidResize);
-    this.componentDidResize(this);
+    this.componentDidRotate();
+    window.addEventListener('resize', this.componentDidResize);
+    window.addEventListener('orientationchange', this.componentDidRotate);
   }
   componentWillUnmount() {
-    window.addEventListener("resize", null);
+    window.removeEventListener('resize', this.componentDidResize);
+    window.removeEventListener('orientationchange', this.componentDidRotate);
   }
-  componentDidResize(useDropdown) {
+  componentDidResize() {
     this.setState(
       {
-        useDropdown: false,
+        showDropdown: false
       },
       function () {
-        this.setState(
-          {
-            useDropdown:
-              this.logoRef.current.offsetWidth +
-                this.pagesRef.current.offsetWidth >=
-              this.navRef.current.offsetWidth / 1.4,
-          }
-        );
+        this.setState({
+          showDropdown:
+            this.logoRef.current.offsetWidth +
+              this.pagesRef.current.offsetWidth +
+              136 >=
+            this.navRef.current.offsetWidth
+        });
       }
     );
   }
-  changeDropdown() {
+  componentDidRotate() {
+    setTimeout(() => {
+      this.componentDidResize();
+    }, 10);
+  }
+  changeDropdown(x) {
     this.setState(() => ({
-      openDropdown: !this.state.openDropdown,
+      setOpen: x,
+      openDropdown: x,
+      openDropdownInt: x ? 1 : 0
     }));
-    this.setState(() => ({
-      openDropdownInt: !this.state.openDropdown ? 1 : 0,
-    }));
-    document.documentElement.style.setProperty(
-      "--color-overlay-alpha",
-      `${!this.state.openDropdown ? 0.7 : 0.325}`
-    );
+    if (x) {
+      document.documentElement.style.setProperty('--color-overlay-alpha', 0.6);
+      document.body.classList.add('no-scroll');
+    } else {
+      document.documentElement.style.setProperty(
+        '--color-overlay-alpha',
+        0.325
+      );
+      document.body.classList.remove('no-scroll');
+    }
   }
   render() {
     return (
-      <div>
-        <div className="navbar" ref={this.navRef}>
+      <nav>
+        <div className='container' ref={this.navRef}>
           <div
-            className="dropdown"
+            className='dropdown'
             style={{
               transform: `translate(0, 50vh) scale(1, ${this.state.openDropdownInt})`,
-              opacity: this.state.openDropdownInt,
-            }}
-          >
+              opacity: this.state.openDropdownInt
+            }}>
             <div
-              className="column"
-              style={{ justifyContent: "flex-start" }}
+              className='column'
+              style={{ justifyContent: 'flex-start' }}
               onClick={() => {
-                this.changeDropdown();
-                this.setState(() => ({ reverseIcon: !this.state.reverseIcon }));
-              }}
-            >
-              <Link href="/" passHref>
-                <a
-                  className="button"
-                  style={{
-                    transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
-                  }}
-                >
-                  Home
-                </a>
+                this.changeDropdown(false);
+              }}>
+              <Link
+                href='/'
+                passHref
+                style={{
+                  transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`
+                }}>
+                <p>Home</p>
               </Link>
-              <Link href="/about" passHref>
-                <a
-                  className="button"
+              {navbarData.pages.map((page) => (
+                <Link
+                  key={`_${page.title}`}
+                  href={page.url}
+                  passHref
                   style={{
-                    transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
-                  }}
-                >
-                  About
-                </a>
-              </Link>
-              <Link href="/portfolio" passHref>
-                <a
-                  className="button"
-                  style={{
-                    transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
-                  }}
-                >
-                  Portfolio
-                </a>
-              </Link>
-              <Link href="/socials" passHref>
-                <a
-                  className="button"
-                  style={{
-                    transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`,
-                  }}
-                >
-                  Socials
-                </a>
-              </Link>
+                    transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`
+                  }}>
+                  <p>{page.title}</p>
+                </Link>
+              ))}
             </div>
           </div>
-          <div ref={this.logoRef}>
-            <Link href="/" passHref>
-              <a
-                onClick={() => {
-                  if (this.state.useDropdown && this.state.openDropdown) {
-                    this.changeDropdown();
-                    this.setState(() => ({
-                      reverseIcon: !this.state.reverseIcon,
-                    }));
-                  }
-                }}
-              >
-                <RubenP className="logo" />
-              </a>
-            </Link>
+          <Link href='/' passHref title='Home' ref={this.logoRef}>
+            <RubenP
+              onClick={() => {
+                this.changeDropdown(false);
+              }}
+            />
+          </Link>
+          <div
+            className='row-fixed'
+            ref={this.pagesRef}
+            hidden={this.state.showDropdown}>
+            {navbarData.pages.map((page) => (
+              <Link key={page.title} href={page.url} passHref>
+                <p>{page.title}</p>
+              </Link>
+            ))}
           </div>
-          <div ref={this.pagesRef} hidden={this.state.useDropdown}>
-            <Link href="/about" passHref>
-              <a className="button">About</a>
-            </Link>
-            <Link href="/portfolio" passHref>
-              <a className="button">Portfolio</a>
-            </Link>
-            <Link href="/socials" passHref>
-              <a className="button">Socials</a>
-            </Link>
-          </div>
-          <div ref={this.dropdownRef} hidden={!this.state.useDropdown}>
-            <a className="button">
-              <UseAnimations
-                speed={-3}
-                reverse={`${this.state.reverseIcon}`}
-                size={65}
-                strokeColor={"var(--color-foreground)"}
-                onClick={() => {
-                  this.changeDropdown();
-                }}
-                animation={menu4}
-              />
-            </a>
+          <div hidden={!this.state.showDropdown}>
+            <Hamburger
+              toggled={this.state.setOpen}
+              toggle={this.changeDropdown}
+              size={37.5}
+              duration={0.3}
+              distance='sm'
+              color='var(--color-primary)'
+              easing='ease-out'
+              rounded={true}
+            />
           </div>
         </div>
-      </div>
+      </nav>
     );
   }
 }

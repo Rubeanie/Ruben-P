@@ -1,4 +1,4 @@
-@use "../abstracts/index.module"as var;
+@use '../abstracts/index.module' as var;
 
 .skills {
   display: flex;
@@ -11,8 +11,7 @@
   height: var.$skills-height;
 
   p {
-    font-size: var.$skills-text-size;
-    font-weight: var.$skills-text-weight;
+    font-size: var.$p3-size;
     margin: 0px 10px 0px 10px;
   }
 

@@ -1,9 +1,9 @@
-import Head from "next/head";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import Head from 'next/head';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
 
 export default function Redirect(props) {
-  const [count, setCount] = React.useState(5);
+  const [count, setCount] = React.useState(3);
   const [counting, setCounting] = React.useState(true);
   useEffect(() => {
     if (counting) {
@@ -24,25 +24,20 @@ export default function Redirect(props) {
     <div>
       <Head>
         <title>{`${props.name} redirect`}</title>
-        <meta
-          name="description"
-          content={`${props.name} redirect page.`}
-        />
-        <meta key="robots" name="robots" content="index,follow" />
-        <meta key="googlebot" name="googlebot" content="index,follow" />
+        <meta name='description' content={`${props.name} redirect page.`} />
+        <meta key='robots' name='robots' content='index,follow' />
+        <meta key='googlebot' name='googlebot' content='index,follow' />
       </Head>
-      <div className="column">
+      <div className='column'>
         <h2>
           <icon>{props.logo}</icon>
           {` Redirecting in ${count} seconds...`}
         </h2>
         <p>
-          Click{" "}
+          Click{' '}
           <Link href={props.url} passHref>
-            <a>
-              <url>here</url>
-            </a>
-          </Link>{" "}
+            here
+          </Link>{' '}
           if the {props.name} redirect doesn’t work.
         </p>
       </div>

@@ -199,3 +199,24 @@ amplifytools.xcconfig
 /public/sw.js.map
 /public/workbox-*.js
 /public/workbox-*.js.map
+
+#sanity admin files
+/admin
+
+#yarn files
+package.json
+yarn.lock
+
+#vscode files
+/.vscode
+
+#github files
+/.github
+
+#prettierr files
+.prettierrc
+.prettierrc.json
+.prettierignore
+
+#eslint files
+.eslintrc.json

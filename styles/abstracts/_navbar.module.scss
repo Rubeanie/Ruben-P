@@ -1,16 +1,6 @@
 /* Navbar */
 $navbar-position: Fixed;
-$navbar-flex-direction: row;
-$navbar-justify-content: space-between;
 $navbar-padding: 0rem 4px;
 $navbar-width: 100%;
 $navbar-height: 80px;
-
-/* Buttons */
-$navbar-button-padding: 0rem 2vw;
-$navbar-button-line-height: 100%;
-$navbar-font-size: 22px;
-$navbar-font-weight: 700;
-
-/* SVG */
-$navbar-icon-padding: 0rem 0.5rem;
+$navbar-item-padding: 2vw;

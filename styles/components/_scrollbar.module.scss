@@ -1,4 +1,4 @@
-@use '../abstracts/index.module'as var;
+@use '../abstracts/index.module' as var;
 
 html::-webkit-scrollbar {
   width: 7.5px;
@@ -6,7 +6,7 @@ html::-webkit-scrollbar {
 
 html::-webkit-scrollbar-thumb {
   border-radius: 20px;
-  background: var(--color-foreground);
+  background: var(--color-primary);
 }
 
 html::-webkit-scrollbar-track {

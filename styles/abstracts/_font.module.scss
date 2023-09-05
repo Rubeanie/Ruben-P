@@ -1,36 +1,39 @@
 /* Font Faces */
 @font-face {
-  font-family: 'ailerons';
-  src: url('/fonts/ailerons-regular-webfont.woff2') format('woff2'),
-    url('/fonts/ailerons-regular-webfont.woff') format('woff');
-  font-weight: normal;
+  font-family: 'yapari';
+  src: url('/fonts/yapari-variable.ttf') format('truetype');
   font-style: normal;
   font-display: swap;
+  font-weight: 750;
+  line-height: 1.1;
 }
 
-$font-title: ailerons,
-serif;
+$h-font: yapari, serif;
 
 @font-face {
   font-family: 'kollektif';
-  src: url('/fonts/kollektif-webfont.woff2') format('woff2'),
-    url('/fonts/kollektif-webfont.woff') format('woff');
-  font-weight: normal;
+  src: url('/fonts/kollektif-webfont.ttf') format('truetype');
   font-style: normal;
   font-display: swap;
+  line-height: 1.1;
 }
 
-$font-body: kollektif,
-serif;
+$p-font: kollektif, serif;
 
-/* Heading Text */
-$heading-alignment: center;
-$heading-size: 15vw;
-$heading-weight: 700;
+/* Text Alignments */
+$h-alignment: center;
+$p-alignment: center;
 
-/* Title Text */
-$title-size: 47px;
+/* Heading Text Sizes */
+$h1-size: clamp(
+  0.1rem,
+  calc(2.15rem + ((1vw - 0.25875rem) * 6.4914)),
+  8.375rem
+);
+$h2-size: 2.2rem;
 
-/* Body Text */
-$body-alignment: center;
-$body-size: 25px;
+/* Paragraph Text Sizes */
+$p1-size: 1.56rem;
+$p2-size: 1.375rem;
+$p3-size: 1.25rem;
+$p4-size: 1rem;

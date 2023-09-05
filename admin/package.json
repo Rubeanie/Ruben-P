@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "package.json",
-  "author": "Ruben <Ruben.Panzich@gmail.com>",
+  "author": "Ruben",
   "license": "UNLICENSED",
   "scripts": {
     "start": "sanity start",

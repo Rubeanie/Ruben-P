@@ -1,54 +1,83 @@
 @use '../abstracts/index.module'as var;
 
-.navbar {
-  display: flex;
+nav {
   position: var.$navbar-position;
-  flex-direction: var.$navbar-flex-direction;
-  align-items: center;
-  justify-content: var.$navbar-justify-content;
   z-index: 5;
   background-color: var.$color-overlay;
-  padding: var.$navbar-padding;
-  padding: var.$padding-safe;
   width: var.$navbar-width;
   height: var.$navbar-height;
-  color: var.$color-body-font;
   transition: background-color 0.25s;
 
-  .button {
-    flex: 0 1 auto;
-    padding: var.$navbar-button-padding;
-    line-height: var.$navbar-button-line-height;
-    color: var.$color-foreground;
-    font-size: var.$navbar-font-size;
-    font-weight: var.$navbar-font-weight;
-    transition: transform 0.25s;
-  }
-
-  .logo {
-    padding: var.$navbar-icon-padding;
-    width: var.$navbar-height;
+  .container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: var.$navbar-width;
+    max-width: var.$viewport-max-width;
     height: var.$navbar-height;
-    color: var.$color-foreground;
-    size: var.$navbar-height;
-  }
-
-  .dropdown {
-    position: fixed;
-    z-index: 6;
-    background-color: var.$color-overlay;
-    margin: var.$inverted-padding-safe;
     padding: var.$navbar-padding;
     padding: var.$padding-safe;
-    width: var.$navbar-width;
-    height: calc(100vh - var.$navbar-height);
-    color: var.$color-body-font;
-    transform-origin: top;
-    transition: transform 0.25s, opacity 0.25s, background-color 0.25s;
+    margin: 0 auto;
 
-    .button {
-      margin: 25px 0px;
-      font-size: var.$navbar-font-size * 1.75;
+    a {
+      flex: 0 1 auto;
+      transition: transform 0.25s;
+      margin-right: var.$navbar-item-padding;
+
+      p {
+        font-size: var.$p2-size;
+      }
+
+      svg {
+        display: block;
+        color: var.$color-primary;
+        margin-left: var.$navbar-item-padding;
+        width: var.$navbar-height * 0.8;
+        height: var.$navbar-height * 0.8;
+        size: var.$navbar-height * 0.8;
+      }
+    }
+
+    p {
+      font-weight: bold;
+      color: var.$color-primary;
+      margin-block-start: 0em;
+    }
+
+    .row-fixed {
+      width: unset;
+      height: unset;
+      flex-wrap: nowrap;
+    }
+
+    .dropdown {
+      position: fixed;
+      z-index: 6;
+      background-color: var.$color-overlay;
+      margin: var.$inverted-padding-safe;
+      padding: var.$navbar-padding;
+      padding: var.$padding-safe;
+      width: var.$navbar-width;
+      height: calc(100lvh - var.$navbar-height);
+      transform-origin: top;
+      transition:
+        transform 0.25s,
+        opacity 0.25s,
+        background-color 0.25s;
+      overflow: auto;
+
+      a {
+        margin: 25px 0px;
+
+        p {
+          font-size: var.$p2-size * 1.75;
+        }
+      }
+    }
+
+    .hamburger-react {
+      margin: 0 10px 0 10px;
     }
   }
 }

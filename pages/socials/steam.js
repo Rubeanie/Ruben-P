@@ -1,20 +1,20 @@
-import Head from "next/head";
-import Redirect from "../../components/Redirect";
-import { FaSteam } from "react-icons/fa";
+import Head from 'next/head';
+import Redirect from '../../components/Redirect';
+import { FaSteam } from 'react-icons/fa';
 
 export default function SteamLink() {
   return (
-    <div className="page">
+    <div className='page'>
       <Head>
         <title>Steam Profile</title>
       </Head>
-      <hero>
+      <div className='hero'>
         <Redirect
-          name={"Steam"}
+          name={'Steam'}
           logo={<FaSteam />}
-          url={"https://steamcommunity.com/id/Rubeanie/"}
+          url={'https://steamcommunity.com/id/Rubeanie/'}
         />
-      </hero>
+      </div>
     </div>
   );
 }

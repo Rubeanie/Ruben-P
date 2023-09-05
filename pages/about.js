@@ -1,6 +1,6 @@
-import Head from "next/head";
-import { AdvancedImage, lazyload, placeholder } from "@cloudinary/react";
-import { Cloudinary } from "@cloudinary/url-gen";
+import Head from 'next/head';
+import { AdvancedImage, lazyload, placeholder } from '@cloudinary/react';
+import { Cloudinary } from '@cloudinary/url-gen';
 import {
   SiCplusplus,
   SiCsharp,
@@ -17,59 +17,42 @@ import {
   SiAdobeaudition,
   SiAdobephotoshop,
   SiAdobeillustrator,
-  SiBlender,
-} from "react-icons/si";
-import { 
-  RpSubstanceSampler,
-  RpSubstancePainter, 
-  RpUnity,
-} from "../components/Icons";
-import Skill from "../components/Skill";
+  SiBlender
+} from 'react-icons/si';
+import { RpSubstanceSampler, RpSubstancePainter, RpUnity } from '../lib/icons';
+import Skill from '../components/Skill';
+import { AboutPageContent } from '../components/CMS';
 
-import sanity from "../lib/sanity";
-import { PortableText } from "@portabletext/react";
-
-const query = `*[_type == "aboutPage"] | order(priority asc) {
-  _id,
-  title,
-  priority,
-  content,
-}
-`;
-
-export default function About({ about }) {
+export default function About() {
   const cld = new Cloudinary({
     cloud: {
-      cloudName: "ruben-p",
-    },
+      cloudName: 'ruben-p'
+    }
   });
 
-  const personalPhoto = cld.image(
-    "Images/About/Personal-Photo.webp"
-  );
+  const personalPhoto = cld.image('Images/About/Personal-Photo.webp');
 
   return (
-    <div className="page">
+    <div className='page'>
       <Head>
         <title>About | Ruben Panzich</title>
         <meta
-          name="description"
-          content="More information about Ruben Panzich."
+          name='description'
+          content='More information about Ruben Panzich.'
         />
-        <meta key="robots" name="robots" content="index,follow" />
-        <meta key="googlebot" name="googlebot" content="index,follow" />
+        <meta key='robots' name='robots' content='index,follow' />
+        <meta key='googlebot' name='googlebot' content='index,follow' />
       </Head>
-      <hero className="about">
-        <div className="row">
-          <div className="flex-padding" style={{ flex: "40%" }}>
-            <div className="column">
+      <div className='hero about'>
+        <div className='row'>
+          <div className='flex-padding' style={{ flex: '40%' }}>
+            <div className='column'>
               <AdvancedImage
                 cldImg={personalPhoto}
-                className="photo"
+                className='photo'
                 plugins={[
                   lazyload(),
-                  placeholder({ mode: "predominant-color" }),
-                  placeholder({ mode: "blur" }),
+                  placeholder({ mode: 'predominant-color' })
                 ]}
               />
               <h2>
@@ -78,183 +61,172 @@ export default function About({ about }) {
               </h2>
             </div>
           </div>
-          <div className="flex-padding" style={{ flex: "60%" }}>
-            <div className="column">
-              <h1-image>ABOUT</h1-image>
+          <div className='flex-padding' style={{ flex: '60%' }}>
+            <div className='column'>
+              <h1 className='img-heading'>ABOUT</h1>
             </div>
           </div>
         </div>
-      </hero>
-      <heros>
-        <div className="column">
-          {about.map((aboutPage) => (
-            <div key={aboutPage._id}>
-              <PortableText value={aboutPage.content} />
-            </div>
-          ))}
-          <div className="flex-box">
-            <div className="item shadow">
+      </div>
+      <div className='hero-content'>
+        <div className='column'>
+          <AboutPageContent />
+          <div className='flex-box'>
+            <div className='item shadow'>
               <Skill
-                name={"C++"}
+                name={'C++'}
                 logo={<SiCplusplus />}
-                textColor={"#121212"}
-                color={"#3b95cd"}
+                textColor={'#121212'}
+                color={'#3b95cd'}
               />
             </div>
-            <div className="item shadow">
+            <div className='item shadow'>
               <Skill
-                name={"C#"}
+                name={'C#'}
                 logo={<SiCsharp />}
-                textColor={"#121212"}
-                color={"#53BC50"}
+                textColor={'#121212'}
+                color={'#53BC50'}
               />
             </div>
-            <div className="item shadow">
+            <div className='item shadow'>
               <Skill
-                name={"HTML5"}
+                name={'HTML5'}
                 logo={<SiHtml5 />}
-                textColor={"#121212"}
-                color={"#E35D38"}
+                textColor={'#121212'}
+                color={'#E35D38'}
               />
             </div>
-            <div className="item shadow">
+            <div className='item shadow'>
               <Skill
-                name={"React"}
+                name={'React'}
                 logo={<SiReact />}
-                textColor={"#121212"}
-                color={"#61DAFB"}
+                textColor={'#121212'}
+                color={'#61DAFB'}
               />
             </div>
-            <div className="item shadow">
+            <div className='item shadow'>
               <Skill
-                name={"CSS3"}
+                name={'CSS3'}
                 logo={<SiCss3 />}
-                textColor={"#121212"}
-                color={"#3880B6"}
+                textColor={'#121212'}
+                color={'#3880B6'}
               />
             </div>
-            <div className="item shadow">
+            <div className='item shadow'>
               <Skill
-                name={"SASS"}
+                name={'SASS'}
                 logo={<SiSass />}
-                textColor={"#121212"}
-                color={"#cc6699"}
+                textColor={'#121212'}
+                color={'#cc6699'}
               />
             </div>
-            <div className="item shadow">
+            <div className='item shadow'>
               <Skill
-                name={"Javascript"}
+                name={'Javascript'}
                 logo={<SiJavascript />}
-                textColor={"#121212"}
-                color={"#F7E454"}
+                textColor={'#121212'}
+                color={'#F7E454'}
               />
             </div>
-            <div className="item shadow">
+            <div className='item shadow'>
               <Skill
-                name={"Next.js"}
+                name={'Next.js'}
                 logo={<SiNextdotjs />}
-                textColor={"#121212"}
-                color={"#FFFFFF"}
+                textColor={'#121212'}
+                color={'#FFFFFF'}
               />
             </div>
-            <div className="item shadow">
+            <div className='item shadow'>
               <Skill
-                name={"Typescript"}
+                name={'Typescript'}
                 logo={<SiTypescript />}
-                textColor={"#121212"}
-                color={"#2C8BCC"}
+                textColor={'#121212'}
+                color={'#2C8BCC'}
               />
             </div>
-            <div className="item shadow">
+            <div className='item shadow'>
               <Skill
-                name={"Node.js"}
+                name={'Node.js'}
                 logo={<SiNodedotjs />}
-                textColor={"#121212"}
-                color={"#4D994D"}
+                textColor={'#121212'}
+                color={'#4D994D'}
               />
             </div>
-            <div className="item shadow">
+            <div className='item shadow'>
               <Skill
-                name={"After Effects"}
+                name={'After Effects'}
                 logo={<SiAdobeaftereffects />}
-                textColor={"#121212"}
-                color={"#9999FF"}
+                textColor={'#121212'}
+                color={'#9999FF'}
               />
             </div>
-            <div className="item shadow">
+            <div className='item shadow'>
               <Skill
-                name={"Premiere Pro"}
+                name={'Premiere Pro'}
                 logo={<SiAdobepremierepro />}
-                textColor={"#121212"}
-                color={"#9999FF"}
+                textColor={'#121212'}
+                color={'#9999FF'}
               />
             </div>
-            <div className="item shadow">
+            <div className='item shadow'>
               <Skill
-                name={"Audition"}
+                name={'Audition'}
                 logo={<SiAdobeaudition />}
-                textColor={"#121212"}
-                color={"#9999FF"}
+                textColor={'#121212'}
+                color={'#9999FF'}
               />
             </div>
-            <div className="item shadow">
+            <div className='item shadow'>
               <Skill
-                name={"Photoshop"}
+                name={'Photoshop'}
                 logo={<SiAdobephotoshop />}
-                textColor={"#121212"}
-                color={"#31a8ff"}
+                textColor={'#121212'}
+                color={'#31a8ff'}
               />
             </div>
-            <div className="item shadow">
+            <div className='item shadow'>
               <Skill
-                name={"Illustrator"}
+                name={'Illustrator'}
                 logo={<SiAdobeillustrator />}
-                textColor={"#121212"}
-                color={"#ff9a00"}
+                textColor={'#121212'}
+                color={'#ff9a00'}
               />
             </div>
-            <div className="item shadow">
+            <div className='item shadow'>
               <Skill
-                name={"Substance Painter"}
+                name={'Substance Painter'}
                 logo={<RpSubstanceSampler />}
-                textColor={"#121212"}
-                color={"#8ad137"}
+                textColor={'#121212'}
+                color={'#8ad137'}
               />
             </div>
-            <div className="item shadow">
+            <div className='item shadow'>
               <Skill
-                name={"Substance Sampler"}
+                name={'Substance Sampler'}
                 logo={<RpSubstancePainter />}
-                textColor={"#121212"}
-                color={"#8ad137"}
+                textColor={'#121212'}
+                color={'#8ad137'}
               />
             </div>
-            <div className="item shadow">
+            <div className='item shadow'>
               <Skill
-                name={"Blender"}
+                name={'Blender'}
                 logo={<SiBlender />}
-                textColor={"#121212"}
-                color={"#DC872D"}
+                textColor={'#121212'}
+                color={'#DC872D'}
               />
             </div>
-            <div className="item shadow">
+            <div className='item shadow'>
               <Skill
-                name={"Unity"}
+                name={'Unity'}
                 logo={<RpUnity />}
-                textColor={"#121212"}
-                color={"#2d7b97"}
+                textColor={'#121212'}
+                color={'#2d7b97'}
               />
             </div>
           </div>
         </div>
-      </heros>
+      </div>
     </div>
   );
 }
-
-export const getStaticProps = async () => {
-  const about = await sanity.fetch(query);
-  return {
-    props: { about } // will be passed to the page component as props
-  };
-};

@@ -1,18 +1,18 @@
 import Head from 'next/head';
 import Redirect from '../../components/Redirect';
-import { BsGithub } from 'react-icons/bs';
+import { BsLinkedin } from 'react-icons/bs';
 
 export default function DiscordLink() {
   return (
     <div className='page'>
       <Head>
-        <title>YouTube Channel</title>
+        <title>LinkedIn</title>
       </Head>
       <div className='hero'>
         <Redirect
-          name={'Github'}
-          logo={<BsGithub />}
-          url={'https://github.com/Rubeanie'}
+          name={'LinkedIn'}
+          logo={<BsLinkedin />}
+          url={'https://www.linkedin.com/in/ruben-p/'}
         />
       </div>
     </div>
