@@ -1,3 +1,5 @@
+'use client'
+
 import { Suspense, useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { extend, createRoot } from '@react-three/fiber';
@@ -12,55 +14,35 @@ extend({ PointLight, Group, Mesh });
 
 
 export default function CustomCanvas() {
-  let root;
-  const [dpr, setDpr] = useState(0.95);
+  const [dpr, setDpr] = useState(0.3);
   const [containerRef, { width, height }] = useMeasure();
   const canvasRef = useRef(null);
-  const color = useColor('--color-secondary');
+  const root = useRef(null);
 
   useEffect(() => {
     const canvasNode = canvasRef.current;
 
-    if (!canvasNode) return;
-
     // Create a react root targeting the canvas
-    root = createRoot(canvasNode);
+    if (!root.current) {
+      root.current = createRoot(canvasNode)
+    }
+
+    console.log(`${width}, ${height}`)
+    console.log(root.current)
 
     // Configure the root, set camera, etc
-    root.configure({
-      camera: { position: [0, 0, 3], fov: 60, near: 1.9, far: 3.9 },
+    root.current.configure({
       gl: {
         precision: 'lowp',
         powerPreference: 'high-performance'
       },
+      size: { width: Math.min(width, height * 0.66), height: height },
       dpr: { dpr },
-      size: { width: width, height: height }
+      camera: { position: [0, 0, 3], fov: 60, near: 1.9, far: 3.9 }
     });
 
-    root.render(
+    root.current.render(
       <>
-        {[
-          {
-            position: [-8, 1, 6],
-            color: color,
-            intensity: 110,
-            distance: 70
-          },
-          /*           {
-                      position: [0, 1, 8],
-                      color: useColor('--color-primary'),
-                      intensity: 85,
-                      distance: 80
-                    }, */
-          {
-            position: [8, 1, 6],
-            color: color,
-            intensity: 110,
-            distance: 70
-          }
-        ].map((lightProps, index) => (
-          <pointLight key={index} {...lightProps} />
-        ))}
         <Suspense
           fallback={
             <Html center className='placeholder'>
@@ -84,6 +66,28 @@ export default function CustomCanvas() {
               </div>
             </Html>
           }>
+          {[
+            {
+              position: [-8, 1, 6],
+              color: "#FFFFFF",
+              intensity: 110,
+              distance: 70
+            },
+            /*           {
+                        position: [0, 1, 8],
+                        color: useColor('--color-primary'),
+                        intensity: 85,
+                        distance: 80
+                      }, */
+            {
+              position: [8, 1, 6],
+              color: "#FFFFFF",
+              intensity: 110,
+              distance: 70
+            }
+          ].map((lightProps, index) => (
+            <pointLight key={index} {...lightProps} />
+          ))}
           <RpLogo />
           {/* <PerformanceMonitor
             ms={200}
@@ -91,21 +95,19 @@ export default function CustomCanvas() {
             step={0.05}
             factor={1}
             onChange={({ factor }) => setDpr(round(0.2 + 0.7 * factor, 2))}
-          />
-          <AdaptiveEvents /> */}
+          /> */}
+          {/* <AdaptiveEvents /> */}
         </Suspense>
       </>
     );
 
-
     // Cleanup
     return () => {
-      root.unmount();
     };
-  }, [width, height]);
+  }, [dpr, width, height]);
 
   return (
-    <div ref={containerRef} className='row layer threeJS'>
+    <div ref={containerRef} className='threeJS'>
       <canvas ref={canvasRef} />
     </div>
   );
