@@ -1,4 +1,10 @@
-.canvas {
+.threeJS {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
   width: 100%;
   max-width: 66lvh;
   height: 100%;
