@@ -3,13 +3,13 @@
 import { Suspense, useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { extend, createRoot } from '@react-three/fiber';
-import { ColorManagement, Group, Mesh, PointLight } from 'three';
+import { ColorManagement as _ColorManagement, Group as _Group, Mesh as _Mesh, PointLight as _PointLight } from 'three';
 import { Html, PerformanceMonitor } from '@react-three/drei';
 import useMeasure from 'react-use-measure';
 import round from 'lodash/round';
 import { RpLogo } from '../components/RpLogo';
 
-extend({ ColorManagement, Group, Mesh, PointLight });
+extend({ ColorManagement: _ColorManagement, Group: _Group, Mesh: _Mesh, PointLight: _PointLight });
 
 export const CustomCanvas = ({ children }) => {
   const [dpr, setDpr] = useState(0.9);
