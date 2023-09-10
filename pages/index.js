@@ -1,7 +1,7 @@
 import React from 'react';
 import Head from 'next/head';
 import { Age /* , Stats */ } from '../lib/common';
-import CustomCanvas from '../components/CustomCanvas';
+import { CustomCanvas } from '../components/CustomCanvas';
 
 export default function Home() {
   return (

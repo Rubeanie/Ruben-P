@@ -7,6 +7,7 @@ import React from 'react';
 import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { a, useSpring } from '@react-spring/three';
+import { useColor } from '../lib/themes';
 
 export function RpLogo(props) {
   const { nodes, materials } = useGLTF(
@@ -34,16 +35,31 @@ export function RpLogo(props) {
     myMesh.current.scale.set(scale, scale, scale);
   });
   return (
-    <group {...props} dispose={null}>
-      <a.mesh
-        geometry={nodes['RP_-_Logo001'].geometry}
-        material={materials.Abstract}
-        material-transparent
-        material-opacity={transparency}
-        ref={myMesh}
-        scale={[1, 1, 1]}
-      />
+    <group>
+      <pointLight position={[-6, 1, 7]}
+        color={useColor('--color-secondary')}
+        intensity={110}
+        distance={70} />
+      <pointLight position={[0, 1, 8]}
+        color={useColor('--color-primary')}
+        intensity={85}
+        distance={80} />
+      <pointLight position={[6, 1, 7]}
+        color={useColor('--color-secondary')}
+        intensity={110}
+        distance={70} />
+      <group {...props} dispose={null}>
+        <a.mesh
+          geometry={nodes['RP_-_Logo001'].geometry}
+          material={materials.Abstract}
+          material-transparent
+          material-opacity={transparency}
+          ref={myMesh}
+          scale={[1, 1, 1]}
+        />
+      </group>
     </group>
+
   );
 }
 

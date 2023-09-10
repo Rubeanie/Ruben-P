@@ -1,48 +1,40 @@
-'use client'
-
 import { Suspense, useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { extend, createRoot } from '@react-three/fiber';
-import { PointLight, Group, Mesh } from 'three';
-import { Html, AdaptiveEvents, PerformanceMonitor } from '@react-three/drei';
+import { Group, Mesh, PointLight } from 'three';
+import { Html, PerformanceMonitor } from '@react-three/drei';
 import useMeasure from 'react-use-measure';
 import round from 'lodash/round';
 import { RpLogo } from './RpLogo';
-import { useColor } from '../lib/themes';
 
-extend({ PointLight, Group, Mesh });
+extend({ Group, Mesh, PointLight });
 
-
-export default function CustomCanvas() {
-  const [dpr, setDpr] = useState(0.3);
+export const CustomCanvas = ({ children }) => {
+  const [dpr, setDpr] = useState(0.9);
   const [containerRef, { width, height }] = useMeasure();
   const canvasRef = useRef(null);
-  const root = useRef(null);
+  const [root, setRoot] = useState(null);
 
   useEffect(() => {
-    const canvasNode = canvasRef.current;
-
-    // Create a react root targeting the canvas
-    if (!root.current) {
-      root.current = createRoot(canvasNode)
+    if (canvasRef.current && !root) {
+      const newRoot = createRoot(canvasRef.current);
+      setRoot(newRoot);
     }
+  }, [canvasRef, root]);
 
-    console.log(`${width}, ${height}`)
-    console.log(root.current)
+  useEffect(() => {
+    if (root && width > 0 && height > 0) {
+      root.configure({
+        gl: {
+          precision: 'lowp',
+          powerPreference: 'high-performance',
+        },
+        size: { width: Math.min(width, height * 0.66), height: height },
+        dpr: dpr,
+        camera: { position: [0, 0, 3], fov: 60, near: 1.9, far: 3.9 }
+      });
 
-    // Configure the root, set camera, etc
-    root.current.configure({
-      gl: {
-        precision: 'lowp',
-        powerPreference: 'high-performance'
-      },
-      size: { width: Math.min(width, height * 0.66), height: height },
-      dpr: { dpr },
-      camera: { position: [0, 0, 3], fov: 60, near: 1.9, far: 3.9 }
-    });
-
-    root.current.render(
-      <>
+      root.render(<>
         <Suspense
           fallback={
             <Html center className='placeholder'>
@@ -66,49 +58,31 @@ export default function CustomCanvas() {
               </div>
             </Html>
           }>
-          {[
-            {
-              position: [-8, 1, 6],
-              color: "#FFFFFF",
-              intensity: 110,
-              distance: 70
-            },
-            /*           {
-                        position: [0, 1, 8],
-                        color: useColor('--color-primary'),
-                        intensity: 85,
-                        distance: 80
-                      }, */
-            {
-              position: [8, 1, 6],
-              color: "#FFFFFF",
-              intensity: 110,
-              distance: 70
-            }
-          ].map((lightProps, index) => (
-            <pointLight key={index} {...lightProps} />
-          ))}
           <RpLogo />
-          {/* <PerformanceMonitor
+          {children}
+          <PerformanceMonitor
             ms={200}
             iterations={7}
             step={0.05}
             factor={1}
             onChange={({ factor }) => setDpr(round(0.2 + 0.7 * factor, 2))}
-          /> */}
-          {/* <AdaptiveEvents /> */}
+          />
         </Suspense>
-      </>
-    );
+      </>);
+    }
+  }, [children, dpr, height, root, width]);
 
-    // Cleanup
+  useEffect(() => {
     return () => {
+      if (root) {
+        root.unmount();
+      }
     };
-  }, [dpr, width, height]);
+  }, [root]);
 
   return (
     <div ref={containerRef} className='threeJS'>
       <canvas ref={canvasRef} />
     </div>
   );
-}
+};
