@@ -1,13 +1,15 @@
+'use client';
+
 import { Suspense, useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { extend, createRoot } from '@react-three/fiber';
-import { Group, Mesh, PointLight } from 'three';
+import { ColorManagement, Group, Mesh, PointLight } from 'three';
 import { Html, PerformanceMonitor } from '@react-three/drei';
 import useMeasure from 'react-use-measure';
 import round from 'lodash/round';
-import { RpLogo } from './RpLogo';
+import { RpLogo } from '../components/RpLogo';
 
-extend({ Group, Mesh, PointLight });
+extend({ ColorManagement, Group, Mesh, PointLight });
 
 export const CustomCanvas = ({ children }) => {
   const [dpr, setDpr] = useState(0.9);
@@ -27,48 +29,50 @@ export const CustomCanvas = ({ children }) => {
       root.configure({
         gl: {
           precision: 'lowp',
-          powerPreference: 'high-performance',
+          powerPreference: 'high-performance'
         },
         size: { width: Math.min(width, height * 0.66), height: height },
         dpr: dpr,
         camera: { position: [0, 0, 3], fov: 60, near: 1.9, far: 3.9 }
       });
 
-      root.render(<>
-        <Suspense
-          fallback={
-            <Html center className='placeholder'>
-              <div
-                className='column'
-                style={{
-                  height: `calc(361.1867px/(841 / ${height}))`,
-                  maxHeight: `calc(59.7347vw/(841 / ${height}))`,
-                  width: `calc(520px/(841 / ${height}))`,
-                  maxWidth: `calc(86vw/(841 / ${height}))`,
-                  transition: 'opacity 0.5s',
-                  position: 'relative'
-                }}>
-                <Image
-                  src='https://res.cloudinary.com/ruben-p/image/upload/3D%20Models/Logo/Placeholder%20RP-Logo.webp'
-                  alt='RP-Logo 3D model placeholder'
-                  fill={true}
-                  sizes='800px'
-                  priority={true}
-                />
-              </div>
-            </Html>
-          }>
-          <RpLogo />
-          {children}
-          <PerformanceMonitor
-            ms={200}
-            iterations={7}
-            step={0.05}
-            factor={1}
-            onChange={({ factor }) => setDpr(round(0.2 + 0.7 * factor, 2))}
-          />
-        </Suspense>
-      </>);
+      root.render(
+        <>
+          <Suspense
+            fallback={
+              <Html center className='placeholder'>
+                <div
+                  className='column'
+                  style={{
+                    height: `calc(361.1867px/(841 / ${height}))`,
+                    maxHeight: `calc(59.7347vw/(841 / ${height}))`,
+                    width: `calc(520px/(841 / ${height}))`,
+                    maxWidth: `calc(86vw/(841 / ${height}))`,
+                    transition: 'opacity 0.5s',
+                    position: 'relative'
+                  }}>
+                  <Image
+                    src='https://res.cloudinary.com/ruben-p/image/upload/3D%20Models/Logo/Placeholder%20RP-Logo.webp'
+                    alt='RP-Logo 3D model placeholder'
+                    fill={true}
+                    sizes='800px'
+                    priority={true}
+                  />
+                </div>
+              </Html>
+            }>
+            <RpLogo />
+            {children}
+            <PerformanceMonitor
+              ms={200}
+              iterations={7}
+              step={0.05}
+              factor={1}
+              onChange={({ factor }) => setDpr(round(0.2 + 0.7 * factor, 2))}
+            />
+          </Suspense>
+        </>
+      );
     }
   }, [children, dpr, height, root, width]);
 

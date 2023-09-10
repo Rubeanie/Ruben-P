@@ -1,7 +1,15 @@
 import React from 'react';
 import Head from 'next/head';
-import { Age /* , Stats */ } from '../lib/common';
-import { CustomCanvas } from '../components/CustomCanvas';
+import dynamic from 'next/dynamic';
+import { Age } from '../lib/common';
+
+const CustomCanvas = dynamic(
+  async () => {
+    const component = await import('../components/CustomCanvas');
+    return component.CustomCanvas;
+  },
+  { ssr: false }
+);
 
 export default function Home() {
   return (

@@ -4,7 +4,8 @@ const withPWA = require('next-pwa')({
 });
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true'
+  enabled:
+    process.env.ANALYZE === 'true' && process.env.NODE_ENV === 'production'
 });
 
 module.exports = withBundleAnalyzer(
