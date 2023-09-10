@@ -22,9 +22,6 @@ export const CustomCanvas = ({ children }) => {
       const newRoot = createRoot(canvasRef.current);
       setRoot(newRoot);
     }
-  }, [canvasRef, root]);
-
-  useEffect(() => {
     if (root && width > 0 && height > 0) {
       root.configure({
         gl: {
