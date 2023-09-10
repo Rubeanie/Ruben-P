@@ -65,7 +65,7 @@ export const CustomCanvas = ({ children }) => {
               iterations={7}
               step={0.05}
               factor={1}
-              onChange={({ factor }) => setDpr(round(0.2 + 0.7 * factor, 2))}
+              onChange={({ factor }) => setDpr(round(0.6 + 0.3 * factor, 2))}
             />
           </Suspense>
         </>
