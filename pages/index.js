@@ -23,7 +23,7 @@ export default function Home() {
       </Head>
       <CustomCanvas />
       <div
-        className='hero-no-padding'
+        className='hero-no-padding mobile'
         style={{ width: '100%', height: '100%', zIndex: 1 }}>
         <div className='column'>
           <div className='layer'>

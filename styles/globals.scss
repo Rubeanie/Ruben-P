@@ -40,8 +40,8 @@ h1 {
   font-stretch: semi-expanded;
   max-width: 100vw;
   transition: font-size 0.1s ease-in;
-  margin-block-start: 0.3em;
-  margin-block-end: 0.3em;
+  margin-block-start: var.$h-margin-block;
+  margin-block-end: var.$h-margin-block;
 }
 
 h1.img-heading {

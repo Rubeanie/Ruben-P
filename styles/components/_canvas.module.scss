@@ -1,3 +1,5 @@
+@use '../abstracts/index.module'as var;
+
 .threeJS {
   display: flex;
   flex-direction: row;
@@ -18,5 +20,12 @@
     -ms-user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
+  }
+
+  /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+  @media screen and (max-width: 43.75rem) {
+    max-width: calc(66lvh - var.$navbar-height);
+    height: calc(100% - var.$navbar-height);
+    margin-top: var.$navbar-height;
   }
 }

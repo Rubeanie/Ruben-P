@@ -8,6 +8,7 @@ import { Html, PerformanceMonitor } from '@react-three/drei';
 import useMeasure from 'react-use-measure';
 import round from 'lodash/round';
 import { RpLogo } from '../components/RpLogo';
+import { Perf } from 'r3f-perf'
 
 extend({ ColorManagement: _ColorManagement, Group: _Group, Mesh: _Mesh, PointLight: _PointLight });
 
@@ -16,9 +17,15 @@ export const CustomCanvas = ({ children }) => {
   const [containerRef, { width, height }] = useMeasure();
   const canvasRef = useRef(null);
   const [root, setRoot] = useState(null);
+  const [perf, setPerf] = useState(null);
 
   useEffect(() => {
+    function performanceMonitor(enable) {
+      setPerf(enable === true)
+      return `Performance Monitor: ${enable}`
+    }
     if (canvasRef.current && !root) {
+      window.performanceMonitor = performanceMonitor;
       const newRoot = createRoot(canvasRef.current);
       setRoot(newRoot);
     }
@@ -58,6 +65,7 @@ export const CustomCanvas = ({ children }) => {
                 </div>
               </Html>
             }>
+            {perf ? <Perf /> : null}
             <RpLogo />
             {children}
             <PerformanceMonitor
@@ -65,13 +73,13 @@ export const CustomCanvas = ({ children }) => {
               iterations={7}
               step={0.05}
               factor={1}
-              onChange={({ factor }) => setDpr(round(0.6 + 0.3 * factor, 2))}
+              onChange={({ factor }) => setDpr(round(0.4 + 0.5 * factor, 2))}
             />
           </Suspense>
         </>
       );
     }
-  }, [children, dpr, height, root, width]);
+  }, [children, dpr, height, perf, root, width]);
 
   useEffect(() => {
     return () => {

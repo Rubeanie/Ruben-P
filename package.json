@@ -5,9 +5,12 @@
   "private": false,
   "author": "Ruben",
   "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "dev": "next dev",
-    "prebuild": "echo 'Building Sanity to public/admin' && cd admin && yarn && npx @sanity/cli build ../public/admin -y && echo 'Done'",
+    "_prebuild": "echo 'Building Sanity to public/admin' && cd admin && yarn && npx @sanity/cli build ../public/admin -y && echo 'Done'",
     "build": "next build",
     "postbuild": "next-sitemap --config next-sitemap.config.js",
     "start": "next start",
@@ -39,7 +42,8 @@
     "react-use-measure": "^2.1.1",
     "sass": "^1.66.1",
     "seedrandom": "^3.0.5",
-    "three": "^0.156.1"
+    "three": "^0.156.1",
+    "three-stdlib": "^2.25.1"
   },
   "devDependencies": {
     "@babel/core": "^7.22.17",
@@ -47,6 +51,7 @@
     "eslint-config-next": "^13.4.19",
     "eslint-config-prettier": "^9.0.0",
     "prettier": "^3.0.3",
+    "r3f-perf": "^7.1.2",
     "webpack": "^5.88.2"
   }
 }
