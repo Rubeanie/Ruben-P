@@ -1,7 +1,6 @@
-import Link from 'next/link';
-import React from 'react';
+import { Component } from 'react';
 
-export default class Social extends React.Component {
+export default class Social extends Component {
   constructor(props) {
     super(props);
   }

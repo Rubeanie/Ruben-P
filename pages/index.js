@@ -1,7 +1,8 @@
-import React from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { Age } from '../lib/common';
+
+//TODO: Implement placeholder transition - Stop model rotation before load - use model as a child - look at example website
 
 const CustomCanvas = dynamic(
   async () => {
@@ -19,6 +20,11 @@ export default function Home() {
         <meta
           name='description'
           content="I'm Ruben Panzich, I am a Freelance creative developer, with qualifications in game design and development."
+        />
+        <link
+          rel='prefetch'
+          crossOrigin='anonymous'
+          href='https://res.cloudinary.com/ruben-p/image/upload/3D%20Models/Logo/Placeholder%20RP-Logo.webp'
         />
       </Head>
       <CustomCanvas />

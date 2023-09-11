@@ -1,7 +1,7 @@
+import { Component } from 'react';
 import Link from 'next/link';
-import React from 'react';
 
-export default class Footer extends React.Component {
+export default class Footer extends Component {
   render() {
     return (
       <footer>

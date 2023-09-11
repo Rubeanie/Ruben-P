@@ -1,5 +1,5 @@
+import { Component } from 'react';
 import HTMLComment from 'react-html-comment';
-import React from 'react';
 
 const str =
   '-\n\
@@ -21,7 +21,7 @@ const str =
                                                .:..: -:               \n\
 -';
 
-export default class Signature extends React.Component {
+export default class Signature extends Component {
   render() {
     return <HTMLComment text={str} />;
   }

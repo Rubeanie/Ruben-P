@@ -19,6 +19,32 @@ export const CustomCanvas = ({ children }) => {
   const [root, setRoot] = useState(null);
   const [perf, setPerf] = useState(null);
 
+  function Placeholder() {
+    return (
+      <Html center className='placeholder'>
+        <div
+          className='column'
+          style={{
+            height: `calc(361.1867px/(841 / ${height}))`,
+            maxHeight: `calc(59.7347vw/(841 / ${height}))`,
+            width: `calc(520px/(841 / ${height}))`,
+            maxWidth: `calc(86vw/(841 / ${height}))`,
+            /* transition: 'opacity 0.5s',
+            position: 'relative',
+            opacity: opacity */
+          }}>
+          <Image
+            src='https://res.cloudinary.com/ruben-p/image/upload/3D%20Models/Logo/Placeholder%20RP-Logo.webp'
+            alt='RP-Logo 3D model placeholder'
+            fill={true}
+            sizes='800px'
+            priority={true}
+          />
+        </div>
+      </Html>
+    );
+  }
+
   useEffect(() => {
     function performanceMonitor(enable) {
       setPerf(enable === true)
@@ -42,39 +68,20 @@ export const CustomCanvas = ({ children }) => {
 
       root.render(
         <>
+          {perf ? <Perf /> : null}
+          <PerformanceMonitor
+            ms={200}
+            iterations={7}
+            step={0.05}
+            factor={1}
+            onChange={({ factor }) => setDpr(round(0.4 + 0.5 * factor, 2))}
+          />
           <Suspense
             fallback={
-              <Html center className='placeholder'>
-                <div
-                  className='column'
-                  style={{
-                    height: `calc(361.1867px/(841 / ${height}))`,
-                    maxHeight: `calc(59.7347vw/(841 / ${height}))`,
-                    width: `calc(520px/(841 / ${height}))`,
-                    maxWidth: `calc(86vw/(841 / ${height}))`,
-                    transition: 'opacity 0.5s',
-                    position: 'relative'
-                  }}>
-                  <Image
-                    src='https://res.cloudinary.com/ruben-p/image/upload/3D%20Models/Logo/Placeholder%20RP-Logo.webp'
-                    alt='RP-Logo 3D model placeholder'
-                    fill={true}
-                    sizes='800px'
-                    priority={true}
-                  />
-                </div>
-              </Html>
+              <Placeholder />
             }>
-            {perf ? <Perf /> : null}
             <RpLogo />
             {children}
-            <PerformanceMonitor
-              ms={200}
-              iterations={7}
-              step={0.05}
-              factor={1}
-              onChange={({ factor }) => setDpr(round(0.4 + 0.5 * factor, 2))}
-            />
           </Suspense>
         </>
       );

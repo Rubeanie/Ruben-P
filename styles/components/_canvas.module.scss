@@ -14,6 +14,15 @@
   transform: translateX(-50%);
   z-index: 0;
 
+  .placeholder {
+    margin: auto;
+
+    .column {
+      transition: opacity 0.5s;
+      position: relative;
+    }
+  }
+
   Canvas {
     pointer-events: none;
     user-select: none;

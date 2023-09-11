@@ -6,11 +6,11 @@
   "author": "Ruben",
   "license": "MIT",
   "engines": {
-    "node": ">=18"
+    "node": ">=18.17.1"
   },
   "scripts": {
     "dev": "next dev",
-    "_prebuild": "echo 'Building Sanity to public/admin' && cd admin && yarn && npx @sanity/cli build ../public/admin -y && echo 'Done'",
+    "prebuild": "echo 'Building Sanity to public/admin' && cd admin && yarn && npx @sanity/cli build ../public/admin -y && echo 'Done'",
     "build": "next build",
     "postbuild": "next-sitemap --config next-sitemap.config.js",
     "start": "next start",

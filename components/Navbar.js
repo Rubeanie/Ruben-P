@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component, createRef } from 'react';
 import Link from 'next/link';
 import { RubenP } from '../lib/icons';
 import { Squeeze as Hamburger } from 'hamburger-react';
@@ -20,12 +20,12 @@ const navbarData = {
   ]
 };
 
-export default class navbar extends React.Component {
+export default class navbar extends Component {
   constructor() {
     super();
-    this.navRef = React.createRef();
-    this.logoRef = React.createRef();
-    this.pagesRef = React.createRef();
+    this.navRef = createRef();
+    this.logoRef = createRef();
+    this.pagesRef = createRef();
     this.state = {
       setOpen: false,
       showDropdown: false,

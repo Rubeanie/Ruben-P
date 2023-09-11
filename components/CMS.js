@@ -1,8 +1,8 @@
-import React from 'react';
+import { Component } from 'react';
 import { GetAboutPageData } from '../lib/sanity';
 import { PortableText } from '@portabletext/react';
 
-class AboutPageContent extends React.Component {
+class AboutPageContent extends Component {
   constructor() {
     super();
     this.state = {

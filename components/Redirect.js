@@ -1,10 +1,10 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Redirect(props) {
-  const [count, setCount] = React.useState(3);
-  const [counting, setCounting] = React.useState(true);
+  const [count, setCount] = useState(3);
+  const [counting, setCounting] = useState(true);
   useEffect(() => {
     if (counting) {
       if (count > 0) {
