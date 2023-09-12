@@ -50,7 +50,7 @@ export const CustomCanvas = ({ children }) => {
             iterations={7}
             step={0.05}
             factor={1}
-            onChange={({ factor }) => setDpr(round(0.3 + 0.4 * factor, 2))}
+            onChange={({ factor }) => setDpr(round(0.4 + 0.5 * factor, 2))}
           />
           <Suspense
             fallback={
