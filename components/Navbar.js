@@ -31,9 +31,6 @@ export default class navbar extends Component {
       showDropdown: false,
       openDropdownInt: 0
     };
-    this.componentDidResize = this.componentDidResize.bind(this);
-    this.componentDidRotate = this.componentDidRotate.bind(this);
-    this.changeDropdown = this.changeDropdown.bind(this);
   }
   componentDidMount() {
     this.componentDidRotate();
@@ -44,7 +41,7 @@ export default class navbar extends Component {
     window.removeEventListener('resize', this.componentDidResize);
     window.removeEventListener('orientationchange', this.componentDidRotate);
   }
-  componentDidResize() {
+  componentDidResize = () => {
     this.setState(
       {
         showDropdown: false
@@ -60,18 +57,18 @@ export default class navbar extends Component {
       }
     );
   }
-  componentDidRotate() {
+  componentDidRotate = () => {
     setTimeout(() => {
       this.componentDidResize();
     }, 10);
   }
-  changeDropdown(x) {
+  changeDropdown = (state) => {
     this.setState(() => ({
-      setOpen: x,
-      openDropdown: x,
-      openDropdownInt: x ? 1 : 0
+      setOpen: state,
+      openDropdown: state,
+      openDropdownInt: state ? 1 : 0
     }));
-    if (x) {
+    if (state) {
       document.documentElement.style.setProperty('--color-overlay-alpha', 0.6);
       document.body.classList.add('no-scroll');
     } else {
