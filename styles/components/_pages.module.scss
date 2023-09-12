@@ -13,7 +13,7 @@
     justify-content: center;
     padding: var.$padding-safe;
     padding-top: var.$navbar-height;
-    min-height: 100svh;
+    min-height: 100lvh;
     transition: min-height 0.35s ease;
   }
 
@@ -36,12 +36,5 @@
   .item {
     flex: 0 1 auto;
     margin: 20px;
-  }
-
-  /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
-  @media screen and (max-width: 43.75rem) {
-    .hero-no-padding.mobile {
-      padding-top: var.$navbar-height;
-    }
   }
 }
