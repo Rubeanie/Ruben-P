@@ -35,7 +35,7 @@ const nextConfig = {
       locales: ['en'],
       defaultLocale: 'en'
     },
-    reactStrictMode: false,
+    reactStrictMode: true,
     images: {
       domains: ['res.cloudinary.com']
     }

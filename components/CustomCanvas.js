@@ -2,7 +2,7 @@
 
 import { Suspense, useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { extend, createRoot } from '@react-three/fiber';
+import { extend, createRoot, unmountComponentAtNode } from '@react-three/fiber';
 import { ColorManagement as _ColorManagement, Group as _Group, Mesh as _Mesh, PointLight as _PointLight } from 'three';
 import { Html, PerformanceMonitor } from '@react-three/drei';
 import useMeasure from 'react-use-measure';
@@ -18,6 +18,65 @@ export const CustomCanvas = ({ children }) => {
   const canvasRef = useRef(null);
   const [root, setRoot] = useState(null);
   const [perf, setPerf] = useState(null);
+  const [render, setRender] = useState(false);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (canvas && width > 0 && height > 0) {
+      const newRoot = root || createRoot(canvas);
+      if (!root) setRoot(newRoot);
+
+      newRoot.configure({
+        gl: {
+          precision: 'lowp',
+          powerPreference: 'high-performance'
+        },
+        size: { width: Math.min(width, height * 0.66), height: height },
+        dpr: dpr,
+        camera: { position: [0, 0, 3], fov: 60, near: 1.9, far: 3.9 }
+      });
+
+      setRender(true);
+    }
+  }, [dpr, height, width]);
+
+  useEffect(() => {
+    if (render && width > 0 && height > 0) {
+      root.render(
+        <>
+          {perf ? <Perf /> : null}
+          <PerformanceMonitor
+            ms={200}
+            iterations={7}
+            step={0.05}
+            factor={1}
+            onChange={({ factor }) => setDpr(round(0.4 + 0.5 * factor, 2))}
+          />
+          <Suspense
+            fallback={
+              <Placeholder />
+            }>
+            <RpLogo />
+            {children}
+          </Suspense>
+        </>
+      );
+    }
+  }, [children, perf, render]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    function performanceMonitor(enable) {
+      setPerf(enable === true)
+      return `Performance Monitor: ${enable}`
+    }
+    window.performanceMonitor = performanceMonitor;
+    return () => {
+      if (canvas) {
+        unmountComponentAtNode(canvas)
+      }
+    };
+  }, []);
 
   function Placeholder() {
     return (
@@ -44,57 +103,6 @@ export const CustomCanvas = ({ children }) => {
       </Html>
     );
   }
-
-  useEffect(() => {
-    function performanceMonitor(enable) {
-      setPerf(enable === true)
-      return `Performance Monitor: ${enable}`
-    }
-    if (canvasRef.current && !root) {
-      window.performanceMonitor = performanceMonitor;
-      const newRoot = createRoot(canvasRef.current);
-      setRoot(newRoot);
-    }
-    if (root && width > 0 && height > 0) {
-      root.configure({
-        gl: {
-          precision: 'lowp',
-          powerPreference: 'high-performance'
-        },
-        size: { width: Math.min(width, height * 0.66), height: height },
-        dpr: dpr,
-        camera: { position: [0, 0, 3], fov: 60, near: 1.9, far: 3.9 }
-      });
-
-      root.render(
-        <>
-          {perf ? <Perf /> : null}
-          <PerformanceMonitor
-            ms={200}
-            iterations={7}
-            step={0.05}
-            factor={1}
-            onChange={({ factor }) => setDpr(round(0.4 + 0.5 * factor, 2))}
-          />
-          <Suspense
-            fallback={
-              <Placeholder />
-            }>
-            <RpLogo />
-            {children}
-          </Suspense>
-        </>
-      );
-    }
-  }, [children, dpr, height, perf, root, width]);
-
-  useEffect(() => {
-    return () => {
-      if (root) {
-        root.unmount();
-      }
-    };
-  }, [root]);
 
   return (
     <div ref={containerRef} className='threeJS'>
