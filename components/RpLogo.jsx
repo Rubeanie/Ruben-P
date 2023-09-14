@@ -11,14 +11,13 @@ import { a, useSpring } from '@react-spring/three';
 import { useColor } from '../lib/themes';
 
 export function RpLogo(props) {
-  const [scale, setScale] = useState(1);
+  const [scale, setScale] = useState(Math.min(1, window.screen.width / 600));
   const { nodes, materials } = useGLTF(
     'https://res.cloudinary.com/ruben-p/image/upload/v1692730013/3D%20Models/Logo/RP-Logo.glb'
   );
 
   const { transparency } = useSpring({
-    config: { mass: 5, tension: 500, friction: 100 },
-
+    config: { mass: 10, tension: 150, friction: 50 },
     to: {
       transparency: 1
     },
@@ -26,10 +25,10 @@ export function RpLogo(props) {
   });
 
   const { y } = useSpring({
+    config: { duration: 20000 },
     loop: true,
     from: { y: 0 },
-    to: { y: Math.PI * 2 },
-    config: { duration: 20000 }
+    to: { y: Math.PI * 2 }
   });
 
   useEffect(() => {

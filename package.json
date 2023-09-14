@@ -23,9 +23,9 @@
     "@next/bundle-analyzer": "^13.4.19",
     "@portabletext/react": "^3.0.7",
     "@react-spring/three": "^9.7.3",
-    "@react-three/drei": "^9.83.8",
+    "@react-three/drei": "^9.83.9",
     "@react-three/fiber": "^8.14.1",
-    "@sanity/client": "^6.4.11",
+    "@sanity/client": "^6.4.12",
     "@vercel/analytics": "^1.0.2",
     "age-calculator": "^1.0.0",
     "color": "^4.2.3",
@@ -40,10 +40,10 @@
     "react-palette": "^1.0.2",
     "react-spring": "^9.7.2",
     "react-use-measure": "^2.1.1",
-    "sass": "^1.66.1",
+    "sass": "^1.67.0",
     "seedrandom": "^3.0.5",
     "three": "^0.156.1",
-    "three-stdlib": "^2.25.1"
+    "three-stdlib": "^2.26.0"
   },
   "devDependencies": {
     "@babel/core": "^7.22.17",

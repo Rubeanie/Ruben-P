@@ -121,6 +121,8 @@ svg {
     will-change: transform; // creates a new paint layer
     z-index: -1;
     transition: background var.$theme-transition;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
   }
 }
 
