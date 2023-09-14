@@ -1,4 +1,4 @@
-@use '../abstracts/index.module' as var;
+@use '../abstracts/index.module'as var;
 
 nav {
   position: var.$navbar-position;
@@ -6,7 +6,7 @@ nav {
   background-color: var.$color-overlay;
   width: var.$navbar-width;
   height: var.$navbar-height;
-  transition: background-color 0.25s;
+  transition: background-color var.$dropdown-transition;
 
   .container {
     display: flex;
@@ -22,7 +22,7 @@ nav {
 
     a {
       flex: 0 1 auto;
-      transition: transform 0.25s;
+      transition: transform var.$dropdown-transition;
       margin-right: var.$navbar-item-padding;
 
       p {
@@ -45,6 +45,10 @@ nav {
       margin-block-start: 0em;
     }
 
+    .column {
+      justify-content: flex-start;
+    }
+
     .row-fixed {
       width: unset;
       height: unset;
@@ -62,9 +66,9 @@ nav {
       height: calc(100lvh - var.$navbar-height);
       transform-origin: top;
       transition:
-        transform 0.25s,
-        opacity 0.25s,
-        background-color 0.25s;
+        transform var.$dropdown-transition,
+        opacity var.$dropdown-transition,
+        background-color var.$dropdown-transition;
       overflow: auto;
 
       a {

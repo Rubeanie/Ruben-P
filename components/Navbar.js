@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { RubenP } from '../lib/icons';
 import { Squeeze as Hamburger } from 'hamburger-react';
 
+//TODO: Implement body html data
+
 const navbarData = {
   pages: [
     {
@@ -91,7 +93,6 @@ export default class navbar extends Component {
             }}>
             <div
               className='column'
-              style={{ justifyContent: 'flex-start' }}
               onClick={() => {
                 this.changeDropdown(false);
               }}>
