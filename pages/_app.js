@@ -5,7 +5,7 @@ import Signature from '../components/Signature';
 import { useColor, useBackgroundColor } from '../lib/themes';
 import { Analytics } from '@vercel/analytics/react';
 
-function App({ Component, pageProps }) {
+export default function App({ Component, pageProps }) {
   return (
     <div className='App'>
       <Head>
@@ -78,5 +78,3 @@ function App({ Component, pageProps }) {
     </div>
   );
 }
-
-export default App;
