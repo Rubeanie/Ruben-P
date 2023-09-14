@@ -3,8 +3,6 @@ import Link from 'next/link';
 import { RubenP } from '../lib/icons';
 import { Squeeze as Hamburger } from 'hamburger-react';
 
-//TODO: Implement body html data
-
 const navbarData = {
   pages: [
     {
@@ -22,75 +20,47 @@ const navbarData = {
   ]
 };
 
-export default class navbar extends Component {
+export default class Navbar extends Component {
   constructor() {
     super();
     this.navRef = createRef();
     this.logoRef = createRef();
     this.pagesRef = createRef();
     this.state = {
-      setOpen: false,
       showDropdown: false,
-      openDropdownInt: 0
+      openDropdown: false
     };
   }
   componentDidMount() {
-    this.componentDidRotate();
-    window.addEventListener('resize', this.componentDidResize);
-    window.addEventListener('orientationchange', this.componentDidRotate);
+    this.updateNav();
+    window.addEventListener('resize', this.updateNav);
+    window.addEventListener('orientationchange', this.updateNav);
   }
   componentWillUnmount() {
-    window.removeEventListener('resize', this.componentDidResize);
-    window.removeEventListener('orientationchange', this.componentDidRotate);
+    window.removeEventListener('resize', this.updateNav);
+    window.removeEventListener('orientationchange', this.updateNav);
   }
-  componentDidResize = () => {
-    this.setState(
-      {
-        showDropdown: false
-      },
-      function () {
-        this.setState({
-          showDropdown:
-            this.logoRef.current.offsetWidth +
-              this.pagesRef.current.offsetWidth +
-              136 >=
-            this.navRef.current.offsetWidth
-        });
+  updateNav = () => {
+    setTimeout(() => {
+      this.setState({ showDropdown: false }, () => {
+        const state = this.logoRef.current.offsetWidth + this.pagesRef.current.offsetWidth + 136 >= this.navRef.current.offsetWidth;
+        this.setState({ showDropdown: state });
       }
     );
-  }
-  componentDidRotate = () => {
-    setTimeout(() => {
-      this.componentDidResize();
     }, 10);
   }
   changeDropdown = (state) => {
-    this.setState(() => ({
-      setOpen: state,
-      openDropdown: state,
-      openDropdownInt: state ? 1 : 0
-    }));
-    if (state) {
-      document.documentElement.style.setProperty('--color-overlay-alpha', 0.6);
-      document.body.classList.add('no-scroll');
-    } else {
-      document.documentElement.style.setProperty(
-        '--color-overlay-alpha',
-        0.325
-      );
-      document.body.classList.remove('no-scroll');
-    }
+    this.setState({ openDropdown: state }, () => {
+      document.documentElement.setAttribute("data-nav-dropdown", state);
+    });
   }
   render() {
+    const { showDropdown, openDropdown } = this.state;
+
     return (
       <nav>
         <div className='container' ref={this.navRef}>
-          <div
-            className='dropdown'
-            style={{
-              transform: `translate(0, 50vh) scale(1, ${this.state.openDropdownInt})`,
-              opacity: this.state.openDropdownInt
-            }}>
+          <div className='dropdown'>
             <div
               className='column'
               onClick={() => {
@@ -98,20 +68,14 @@ export default class navbar extends Component {
               }}>
               <Link
                 href='/'
-                passHref
-                style={{
-                  transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`
-                }}>
+                passHref>
                 <p>Home</p>
               </Link>
               {navbarData.pages.map((page) => (
                 <Link
                   key={`_${page.title}`}
                   href={page.url}
-                  passHref
-                  style={{
-                    transform: `scale(${this.state.openDropdownInt}, ${this.state.openDropdownInt})`
-                  }}>
+                  passHref>
                   <p>{page.title}</p>
                 </Link>
               ))}
@@ -127,16 +91,16 @@ export default class navbar extends Component {
           <div
             className='row-fixed'
             ref={this.pagesRef}
-            hidden={this.state.showDropdown}>
+            hidden={showDropdown}>
             {navbarData.pages.map((page) => (
               <Link key={page.title} href={page.url} passHref>
                 <p>{page.title}</p>
               </Link>
             ))}
           </div>
-          <div hidden={!this.state.showDropdown}>
+          <div hidden={!showDropdown}>
             <Hamburger
-              toggled={this.state.setOpen}
+              toggled={openDropdown}
               toggle={this.changeDropdown}
               size={37.5}
               duration={0.3}

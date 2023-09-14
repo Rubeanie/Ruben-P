@@ -176,10 +176,6 @@ svg {
   }
 }
 
-.no-scroll {
-  overflow: hidden;
-}
-
 [hidden] {
   display: none !important;
 }
@@ -194,6 +190,7 @@ svg {
     -webkit-background-clip: unset;
     -webkit-text-fill-color: unset;
     filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.85));
+    transition: color var.$theme-transition !important;
   }
 
   h2 {
