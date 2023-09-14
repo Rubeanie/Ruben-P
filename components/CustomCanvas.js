@@ -45,7 +45,7 @@ export const CustomCanvas = ({ children }) => {
     if (render && width > 0 && height > 0) {
       root.render(
         <>
-          {perf ? <Perf /> : null}
+          {perf ? <Perf position={'bottom-right'} /> : null}
           <PerformanceMonitor
             ms={200}
             iterations={7}

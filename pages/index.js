@@ -2,7 +2,7 @@ import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { Age } from '../lib/common';
 
-//TODO: Implement placeholder transition - Stop model rotation before load - use model as a child - look at example website
+//TODO: Implement placeholder transition - use model as a child (look at example website)
 
 const CustomCanvas = dynamic(
   async () => {
