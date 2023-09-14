@@ -10,9 +10,9 @@
   },
   "scripts": {
     "dev": "next dev",
-    "_prebuild": "echo 'Building Sanity to public/admin' && cd admin && yarn && npx @sanity/cli build ../public/admin -y && echo 'Done'",
+    "prebuild": "echo 'Building Sanity to public/admin' && cd admin && yarn && npx @sanity/cli build ../public/admin -y && echo 'Done'",
     "build": "next build",
-    "_postbuild": "next-sitemap --config next-sitemap.config.js",
+    "postbuild": "next-sitemap --config next-sitemap.config.js",
     "start": "next start",
     "sanity": "cd admin && sanity start",
     "lint": "next lint"
