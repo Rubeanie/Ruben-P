@@ -1,22 +1,25 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { GetAboutPageData } from '../lib/sanity';
 import { PortableText } from '@portabletext/react';
 
-class AboutPageContent extends Component {
-  constructor() {
-    super();
-    this.state = {
-      data: []
+function AboutPageContent() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await GetAboutPageData();
+      setData(result);
     };
-  }
-  async componentDidMount() {
-    this.setState({ data: await GetAboutPageData() });
-  }
-  render() {
-    return this.state.data.map((data) => (
-      <PortableText key={data._id} value={data.content} />
-    ));
-  }
+    fetchData();
+  }, []);
+
+  return (
+    <>
+      {data.map((item) => (
+        <PortableText key={item._id} value={item.content} />
+      ))}
+    </>
+  );
 }
 
 export { AboutPageContent };

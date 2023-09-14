@@ -54,7 +54,8 @@ function App({ Component, pageProps }) {
         />
         <meta key='robots' name='robots' content='index,follow' />
         <meta key='googlebot' name='googlebot' content='index,follow' />
-        <link rel='preconnect' href='https://api.sanity.com' />
+        <link rel='preconnect' href='https://api.sanity.com' crossorigin='' />
+        <link rel='preconnect' href='https://cdn.sanity.io' crossorigin='' />
         <link rel='preconnect' href='https://res.cloudinary.com' />
         <link rel='preconnect' href='https://www.gstatic.com' />
         <link
