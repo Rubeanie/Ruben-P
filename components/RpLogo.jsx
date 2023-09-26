@@ -27,8 +27,8 @@ export function RpLogo(props) {
   const { y } = useSpring({
     config: { duration: 20000 },
     loop: true,
-    from: { y: -0.130 },
-    to: { y: (Math.PI * 2) - 0.130 }
+    from: { y: -0.065 },
+    to: { y: (Math.PI * 2) - 0.065 }
   });
 
   useEffect(() => {
