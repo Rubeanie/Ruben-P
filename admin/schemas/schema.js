@@ -6,7 +6,6 @@ import schemaTypes from "all:part:@sanity/base/schema-type";
 
 // We import object and document schemas
 import aboutPage from "./documents/pages/about";
-import cloudinaryImage from "./documents/cloudinaryImage";
 import themes from "./documents/theme";
 
 import blockContent from "./objects/blockContent";
@@ -29,7 +28,6 @@ export default createSchema({
     // The following are document types which will appear
     // in the studio.
     aboutPage,
-    cloudinaryImage,
     themes,
 
     post,
