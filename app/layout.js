@@ -6,7 +6,7 @@ import { yapari, kollektif } from './fonts';
 import Signature from '../components/Signature';
 import { useColor, useBackgroundColor, UpdateMetadata } from './_themes/client';
 import { Analytics } from '@vercel/analytics/react';
-import Client from './client';
+import DynamicMetadata from './client';
 
 export const metadata = {
   keywords: ['Ruben', 'Panzich', 'Rubeanie', 'Portfolio', 'About', 'Links', 'Contact', 'Artist', 'Developer'],
@@ -48,7 +48,7 @@ export default function RootLayout({
         {children}
         <Theme />
         <Footer />
-        <Client />
+        <DynamicMetadata />
         <Analytics />
       </body>
     </html>
