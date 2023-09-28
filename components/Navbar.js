@@ -1,3 +1,5 @@
+'use client';
+
 import { Component, createRef } from 'react';
 import Link from 'next/link';
 import { RubenP } from '../lib/icons';
@@ -43,17 +45,20 @@ export default class Navbar extends Component {
   updateNav = () => {
     setTimeout(() => {
       this.setState({ showDropdown: false }, () => {
-        const state = this.logoRef.current.offsetWidth + this.pagesRef.current.offsetWidth + 136 >= this.navRef.current.offsetWidth;
+        const state =
+          this.logoRef.current.offsetWidth +
+            this.pagesRef.current.offsetWidth +
+            136 >=
+          this.navRef.current.offsetWidth;
         this.setState({ showDropdown: state });
-      }
-    );
+      });
     }, 10);
-  }
+  };
   changeDropdown = (state) => {
     this.setState({ openDropdown: state }, () => {
-      document.documentElement.setAttribute("data-nav-dropdown", state);
+      document.documentElement.setAttribute('data-nav-dropdown', state);
     });
-  }
+  };
   render() {
     const { showDropdown, openDropdown } = this.state;
 
@@ -66,16 +71,11 @@ export default class Navbar extends Component {
               onClick={() => {
                 this.changeDropdown(false);
               }}>
-              <Link
-                href='/'
-                passHref>
+              <Link href='/' passHref>
                 <p>Home</p>
               </Link>
               {navbarData.pages.map((page) => (
-                <Link
-                  key={`_${page.title}`}
-                  href={page.url}
-                  passHref>
+                <Link key={`_${page.title}`} href={page.url} passHref>
                   <p>{page.title}</p>
                 </Link>
               ))}
@@ -88,10 +88,7 @@ export default class Navbar extends Component {
               }}
             />
           </Link>
-          <div
-            className='row-fixed'
-            ref={this.pagesRef}
-            hidden={showDropdown}>
+          <div className='row-fixed' ref={this.pagesRef} hidden={showDropdown}>
             {navbarData.pages.map((page) => (
               <Link key={page.title} href={page.url} passHref>
                 <p>{page.title}</p>

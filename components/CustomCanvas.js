@@ -4,14 +4,24 @@
 import { Suspense, useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { extend, createRoot, unmountComponentAtNode } from '@react-three/fiber';
-import { ColorManagement as _ColorManagement, Group as _Group, Mesh as _Mesh, PointLight as _PointLight } from 'three';
+import {
+  ColorManagement as _ColorManagement,
+  Group as _Group,
+  Mesh as _Mesh,
+  PointLight as _PointLight
+} from 'three';
 import { Html, PerformanceMonitor } from '@react-three/drei';
 import useMeasure from 'react-use-measure';
 import round from 'lodash/round';
 import { RpLogo } from '../components/RpLogo';
-import { Perf } from 'r3f-perf'
+import { Perf } from 'r3f-perf';
 
-extend({ ColorManagement: _ColorManagement, Group: _Group, Mesh: _Mesh, PointLight: _PointLight });
+extend({
+  ColorManagement: _ColorManagement,
+  Group: _Group,
+  Mesh: _Mesh,
+  PointLight: _PointLight
+});
 
 export const CustomCanvas = ({ children }) => {
   const [dpr, setDpr] = useState(0.9);
@@ -53,10 +63,7 @@ export const CustomCanvas = ({ children }) => {
             factor={1}
             onChange={({ factor }) => setDpr(round(0.5 + 0.5 * factor, 2))}
           />
-          <Suspense
-            fallback={
-              <Placeholder />
-            }>
+          <Suspense fallback={<Placeholder />}>
             <RpLogo />
             {children}
           </Suspense>
@@ -66,15 +73,15 @@ export const CustomCanvas = ({ children }) => {
   }, [children, perf, render]);
 
   useEffect(() => {
-    const canvas = canvasRef.current
+    const canvas = canvasRef.current;
     function performanceMonitor(enable) {
-      setPerf(enable === true)
-      return `Performance Monitor: ${enable}`
+      setPerf(enable === true);
+      return `Performance Monitor: ${enable}`;
     }
     window.performanceMonitor = performanceMonitor;
     return () => {
       if (canvas) {
-        unmountComponentAtNode(canvas)
+        unmountComponentAtNode(canvas);
       }
     };
   }, []);
@@ -88,7 +95,7 @@ export const CustomCanvas = ({ children }) => {
             height: `calc(361.1867px/(841 / ${height}))`,
             maxHeight: `calc(59.7347vw/(841 / ${height}))`,
             width: `calc(520px/(841 / ${height}))`,
-            maxWidth: `calc(86vw/(841 / ${height}))`,
+            maxWidth: `calc(86vw/(841 / ${height}))`
             /* transition: 'opacity 0.5s',
             position: 'relative',
             opacity: opacity */

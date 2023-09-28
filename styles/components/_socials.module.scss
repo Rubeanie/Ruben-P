@@ -2,6 +2,7 @@
 
 .socials {
   display: flex;
+  color: var.$color-primary;
   align-items: center;
   transition: transform var.$socials-transition-time;
   margin: var.$socials-margin;

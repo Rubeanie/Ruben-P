@@ -1,24 +1,6 @@
 /* Font Faces */
-@font-face {
-  font-family: 'yapari';
-  src: url('/fonts/yapari-variable.ttf') format('truetype');
-  font-style: normal;
-  font-display: swap;
-  font-weight: 750;
-  line-height: 0.9;
-}
-
-$h-font: yapari, serif;
-
-@font-face {
-  font-family: 'kollektif';
-  src: url('/fonts/kollektif-webfont.ttf') format('truetype');
-  font-style: normal;
-  font-display: swap;
-  line-height: 1.1;
-}
-
-$p-font: kollektif, serif;
+$h-font: var(--font-yapari), serif;
+$p-font: var(--font-kollektif), serif;
 
 /* Text Alignments */
 $h-alignment: center;
@@ -38,8 +20,4 @@ $p2-size: 1.375rem;
 $p3-size: 1.25rem;
 $p4-size: 1rem;
 
-$h-margin-block: clamp(
-  2px,
-  0.3em,
-  10px
-);
+$h-margin-block: clamp(2px, 0.3em, 10px);

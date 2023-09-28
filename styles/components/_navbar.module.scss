@@ -1,6 +1,7 @@
-@use '../abstracts/index.module'as var;
+@use '../abstracts/index.module' as var;
 
 nav {
+  overflow: hidden;
   position: var.$navbar-position;
   z-index: 5;
   background-color: var.$color-overlay;
@@ -89,7 +90,7 @@ nav {
   }
 }
 
-html[data-nav-dropdown="true"] {
+html[data-nav-dropdown='true'] {
   --color-overlay-alpha: 0.6 !important;
 
   body {
