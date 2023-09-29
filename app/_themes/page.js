@@ -1,4 +1,4 @@
-import { getThemeUrl } from '../../lib/sanity';
+import { getThemeUrl } from '../sanity';
 import { Theme } from './client';
 
 export default async function page() {
