@@ -23,7 +23,7 @@ extend({
   PointLight: _PointLight
 });
 
-export const CustomCanvas = ({ children }) => {
+export default function CustomCanvas({ children }){
   const [dpr, setDpr] = useState(0.9);
   const [containerRef, { width, height }] = useMeasure();
   const canvasRef = useRef(null);
