@@ -44,7 +44,12 @@ const getThemeUrl = async () => {
     },
     prioritize
   }`;
-  const themes = await server.fetch(query);
+  const themes = await server.fetch(query, {
+    cache: 'force-cache',
+    next: {
+      revalidate: 30, // for simple, time-based revalidation
+    },
+  });
   for (const theme of themes) {
     if (!theme.prioritize) {
       data.urls.push(...theme.urls);

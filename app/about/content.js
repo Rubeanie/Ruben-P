@@ -1,4 +1,4 @@
-import { GetAboutPageData } from '../sanity';
+import { GetAboutPageData } from '../sanity/client';
 import { PortableText } from '@portabletext/react';
 
 export async function AboutPageContent() {
