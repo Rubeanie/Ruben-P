@@ -6,7 +6,7 @@ Command: npx gltfjsx@6.2.10 C:\Users\Ruben\Downloads\RP-Logo.glb -T --shadows
 import { useState, useEffect } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { a, useSpring } from '@react-spring/three';
-import { useColor } from '../app/_themes/client';
+import { useColor } from '../app/_themes/themes';
 
 export function RpLogo(props) {
   const [scale, setScale] = useState(Math.min(1, window.screen.width / 600));

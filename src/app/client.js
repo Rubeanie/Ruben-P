@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from "react";
-import { useBackgroundColor, useColor } from "./_themes/client";
+import { useBackgroundColor, useColor } from "./_themes/themes";
 
 export default function Client() {
   let color = useColor('--color-primary');

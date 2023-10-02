@@ -4,7 +4,7 @@ import Footer from '../components/Footer';
 import Theme from './_themes/page';
 import { yapari, kollektif } from './fonts';
 import Signature from '../components/Signature';
-import { useColor, useBackgroundColor, UpdateMetadata } from './_themes/client';
+import { useColor, useBackgroundColor, UpdateMetadata } from './_themes/themes';
 import { Analytics } from '@vercel/analytics/react';
 import DynamicMetadata from './client';
 
@@ -40,7 +40,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en' className={`${yapari.variable} ${kollektif.variable}`}>
-      {/* signature */}
       <body>
         <div className='background-image' />
         <Signature />

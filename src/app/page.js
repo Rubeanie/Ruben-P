@@ -1,11 +1,12 @@
-import { Age } from '../lib/common';
-import { CustomCanvas } from '../components/CustomCanvas';
+'use client';
 
-export const metadata = {
-  title: 'Home | Ruben Panzich',
-  description:
-    "I'm Ruben Panzich, I am a Freelance creative developer, with qualifications in game design and development."
-};
+import { Age } from '../lib/common';
+import dynamic from 'next/dynamic'
+
+const CustomCanvas = dynamic(() =>
+  import('../components/CustomCanvas').then((mod) => mod.CustomCanvas), 
+  { ssr: false }
+);
 
 export default function page() {
   return (
