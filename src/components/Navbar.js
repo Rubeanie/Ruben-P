@@ -34,7 +34,17 @@ export default class Navbar extends Component {
       openDropdown: false
     };
     this.api = SpringRef();
-    this.animations = new Controller({ WebkitBackdropFilter: "blur(0px)", backdropFilter: "blur(0px)", ref: this.api });
+    this.animations = new Controller({
+      WebkitBackdropFilter: "blur(1px)",
+      backdropFilter: "blur(1px)",
+      ref: this.api,
+      config: {
+        mass: 15,
+        tension: 290,
+        friction: 39,
+        clamp: true
+      }
+    });
   }
   componentDidMount() {
     this.updateNav();
@@ -66,10 +76,12 @@ export default class Navbar extends Component {
     });
   };
   handleScroll = () => {
-    if (window.scrollY > 80 || this.state.openDropdown) {
+    if (this.state.openDropdown) {
       this.animations.start({ WebkitBackdropFilter: "blur(7px)", backdropFilter: "blur(7px)" });
+    } else if (window.scrollY > 80) {
+      this.animations.start({ WebkitBackdropFilter: "blur(4px)", backdropFilter: "blur(4px)" });
     } else {
-      this.animations.start({ WebkitBackdropFilter: "blur(0px)", backdropFilter: "blur(0px)" });
+      this.animations.start({ WebkitBackdropFilter: "blur(1px)", backdropFilter: "blur(1px)" });
     }
   };
   render() {

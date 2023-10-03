@@ -16,7 +16,7 @@ export default function Social(props) {
             </div>
           </div>
         </div>
-        <div className='overlay'>
+        <div className='text'>
           <div className='column'>
             <p style={{ color: props.textColor, overflow: 'visible' }}>
               <b>

@@ -1,4 +1,4 @@
-@use '../abstracts/index.module' as var;
+@use '../abstracts/index.module'as var;
 
 .skills {
   display: flex;
@@ -9,11 +9,9 @@
   width: var.$skills-width;
   max-width: var.$skills-max-width;
   height: var.$skills-height;
-
-  p {
-    font-size: var.$p3-size;
-    margin: 0px 10px 0px 10px;
-  }
+  border-radius: var.$skills-border-radius;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.3);
 
   section {
     display: flex;
@@ -29,10 +27,23 @@
     vertical-align: middle;
   }
 
-  .overlay {
+  .text {
     @extend section;
     background: var.$skills-overlay-color;
     width: var.$skills-overlay-width;
-    height: var.$skills-overlay-height;
+    height: auto;
+    min-height: var.$skills-overlay-height;
+
+    p {
+      font-size: var.$p3-size;
+      margin: 5px;
+    }
+  }
+}
+
+/* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 43.75rem) {
+  .skills {
+    max-width: var.$skills-max-width-mobile;
   }
 }

@@ -1,10 +1,12 @@
 /* Social Buttons */
 $skills-transition-time: 0.25s;
-$skills-margin: 10px;
+$skills-margin: 8px;
 $skills-min-width: 115px;
 $skills-width: fit-content;
 $skills-max-width: 385px;
+$skills-max-width-mobile: 140px;
 $skills-height: fit-content;
+$skills-border-radius: 1rem;
 /* Hover */
 $skills-transform-hover: scale(1.1) perspective(1px);
 

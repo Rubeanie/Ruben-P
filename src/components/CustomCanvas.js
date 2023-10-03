@@ -4,7 +4,7 @@
 import { Suspense, useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { useIsomorphicLayoutEffect } from 'react-spring';
-import { extend, createRoot, unmountComponentAtNode } from '@react-three/fiber';
+import { extend, createRoot } from '@react-three/fiber';
 import {
   ColorManagement as _ColorManagement,
   Group as _Group,
@@ -81,8 +81,9 @@ export default function CustomCanvas({ children }){
     }
     window.performanceMonitor = performanceMonitor;
     return () => {
-      if (canvas) {
-        unmountComponentAtNode(canvas);
+      if (canvas && root) {
+        console.log("unmount")
+        root.unmount();
       }
     };
   }, []);

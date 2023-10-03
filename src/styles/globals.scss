@@ -10,7 +10,7 @@
   --color-secondary: #33456d;
   --color-background: #0f182d;
   --color-text: #eaf6ff;
-  --image-background: url('https://res.cloudinary.com/ruben-p/image/upload/f_avif,q_30/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq');
+  --image-background: url('https://res.cloudinary.com/ruben-p/image/upload/f_avif,q_30,c_limit,w_800/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq.webp');
   --color-overlay: rgba(0, 0, 0, var(--color-overlay-alpha));
 }
 
@@ -43,8 +43,7 @@ h1 {
   font-stretch: semi-expanded;
   max-width: 100vw;
   transition: font-size 0.1s ease-in;
-  margin-block-start: var.$h-margin-block;
-  margin-block-end: var.$h-margin-block;
+  margin-block: var.$h-margin-block;
 
   &.img-heading {
     @extend h1;

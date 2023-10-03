@@ -3,19 +3,19 @@
 .socials {
   display: flex;
   color: var.$color-primary;
+  position: relative;
   align-items: center;
-  transition: transform var.$socials-transition-time;
+  transition: transform var.$socials-transition;
   margin: var.$socials-margin;
   width: var.$socials-width;
   max-width: var.$socials-max-width;
   height: var.$socials-height;
-
-  p {
-    font-size: var.$p3-size;
-  }
+  border-radius: var.$socials-border-radius;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.3);
 
   .icon,
-  .overlay {
+  .text {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -27,13 +27,43 @@
     vertical-align: middle;
   }
 
-  .overlay {
+  .text {
     background: var.$socials-overlay-color;
     width: var.$socials-overlay-width;
+
+    p {
+      font-size: var.$p3-size;
+    }
   }
 
   &:hover {
     transform: var.$socials-transform-hover;
+  }
+
+  &:after {
+    content: "";
+    height: 55px;
+    width: 1px;
+    position: absolute;
+    left: 0px;
+    top: 50%;
+    transition: top var.$socials-transition, opacity var.$socials-transition;
+    transition-duration: 0.6s;
+    background: linear-gradient(transparent,
+        var.$color-text,
+        transparent);
+    opacity: 0;
+  }
+
+  &:after {
+    top: 65%;
+    opacity: 0;
+  }
+
+
+  &:hover:after {
+    top: 10%;
+    opacity: 1;
   }
 }
 
@@ -43,17 +73,14 @@
     width: var.$socials-width-mobile;
     height: var.$socials-height-mobile;
 
-    section {
-      height: var.$socials-section-height-mobile;
-    }
-
     .icon {
-      width: var.$socials-icon-width-mobile;
+      margin-block: 7.5px;
+      width: var.$socials-section-width-mobile;
     }
 
-    .overlay {
-      width: var.$socials-overlay-width-mobile;
-      height: var.$socials-overlay-height-mobile;
+    .text {
+      width: var.$socials-section-width-mobile;
+      height: var.$socials-section-height-mobile;
     }
 
     &:hover {
