@@ -11,8 +11,6 @@ footer {
   width: var.$footer-width;
   height: var.$footer-height;
   transition: background-color var.$dropdown-transition;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
 
   p {
     display: unset;
