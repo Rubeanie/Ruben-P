@@ -7,6 +7,8 @@ nav {
   width: var.$navbar-width;
   height: var.$navbar-height;
   transition: background-color var.$dropdown-transition;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 
   .container {
     display: flex;
