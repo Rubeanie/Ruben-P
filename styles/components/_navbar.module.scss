@@ -6,9 +6,9 @@ nav {
   background-color: var.$color-overlay;
   width: var.$navbar-width;
   height: var.$navbar-height;
-  transition: background-color var.$dropdown-transition;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  transition: background-color var.$dropdown-transition, -webkit-backdrop-filter var.$dropdown-transition, backdrop-filter var.$dropdown-transition;
+  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(0px);
 
   .container {
     display: flex;
@@ -97,12 +97,17 @@ html[data-nav-dropdown="true"] {
   body {
     overflow: hidden;
 
-    nav .container .dropdown {
-      transform: translate(0, 50vh) scale(1, 1);
-      opacity: 1;
+    nav {
+      -webkit-backdrop-filter: blur(5px);
+      backdrop-filter: blur(5px);
 
-      a {
-        transform: scale(1, 1);
+      .container .dropdown {
+        transform: translate(0, 50vh) scale(1, 1);
+        opacity: 1;
+
+        a {
+          transform: scale(1, 1);
+        }
       }
     }
   }
