@@ -2,7 +2,7 @@
 
 import { Component, useEffect, useState, createRef } from 'react';
 import { usePalette } from 'react-palette';
-import { getThemeUrl } from '../../lib/sanity';
+import { getThemeUrl } from './sanity';
 
 let url = '';
 const Color = require('color');

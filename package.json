@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "prebuild": "echo 'Building Sanity to public/admin' && cd admin && yarn && npx @sanity/cli build ../public/admin -y && echo 'Done'",
+    "_prebuild": "echo 'Building Sanity to public/admin' && cd admin && yarn && npx @sanity/cli build ../public/admin -y && echo 'Done'",
     "build": "next build",
     "start": "next start",
     "sanity": "cd admin && sanity start",
@@ -19,11 +19,11 @@
   "dependencies": {
     "@cloudinary/react": "^1.11.2",
     "@cloudinary/url-gen": "^1.11.2",
-    "@next/bundle-analyzer": "^13.5.3",
-    "@portabletext/react": "^3.0.7",
+    "@next/bundle-analyzer": "^13.5.4",
+    "@portabletext/react": "^3.0.9",
     "@react-spring/three": "^9.7.3",
-    "@react-three/drei": "^9.86.0",
-    "@react-three/fiber": "^8.14.3",
+    "@react-three/drei": "^9.86.3",
+    "@react-three/fiber": "^8.14.4",
     "@sanity/client": "^6.4.12",
     "@sanity/image-url": "^1.0.2",
     "@vercel/analytics": "^1.0.2",
@@ -31,7 +31,7 @@
     "color": "^4.2.3",
     "groq": "^3.16.7",
     "hamburger-react": "^2.5.0",
-    "next": "^13.5.3",
+    "next": "^13.5.4",
     "next-pwa": "^5.6.0",
     "next-sanity": "^5.5.4",
     "react": "^18.2.0",
@@ -43,12 +43,12 @@
     "sass": "^1.68.0",
     "seedrandom": "^3.0.5",
     "three": "^0.157.0",
-    "three-stdlib": "^2.26.9"
+    "three-stdlib": "^2.26.11"
   },
   "devDependencies": {
     "@babel/core": "^7.23.0",
     "eslint": "^8.50.0",
-    "eslint-config-next": "^13.5.3",
+    "eslint-config-next": "^13.5.4",
     "eslint-config-prettier": "^9.0.0",
     "prettier": "^3.0.3",
     "r3f-perf": "^7.1.2",

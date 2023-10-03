@@ -1,10 +1,10 @@
 import '../styles/globals.scss';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import Theme from './_themes/page';
+import { Theme } from '../lib/themes';
+import { getThemeUrl } from '../lib/sanity';
 import { yapari, kollektif } from './fonts';
 import Signature from '../components/Signature';
-import { useColor, useBackgroundColor, UpdateMetadata } from './_themes/themes';
 import { Analytics } from '@vercel/analytics/react';
 import DynamicMetadata from './client';
 
@@ -33,11 +33,12 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   // Layouts must accept a children prop.
   // This will be populated with nested layouts or pages
   children
 }) {
+  const data = await getThemeUrl();
   return (
     <html lang='en' className={`${yapari.variable} ${kollektif.variable}`}>
       <body>
@@ -45,7 +46,7 @@ export default function RootLayout({
         <Signature />
         <Navbar />
         {children}
-        <Theme />
+        <Theme url={data} />
         <Footer />
         <DynamicMetadata />
         <Analytics />

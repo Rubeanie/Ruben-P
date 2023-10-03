@@ -1,4 +1,4 @@
-import Redirect from '../Redirect';
+import Redirect from '../redirect';
 import { BsTwitter } from 'react-icons/bs';
 
 export const metadata = {

@@ -6,12 +6,9 @@ nav {
   background-color: var.$color-overlay;
   width: var.$navbar-width;
   height: var.$navbar-height;
-  transition: 
-    background-color var.$dropdown-transition, 
-    -webkit-backdrop-filter var.$dropdown-transition, 
-    backdrop-filter var.$dropdown-transition;
-  -webkit-backdrop-filter: blur(0px);
-  backdrop-filter: blur(0px);
+  transition:
+    background-color var.$dropdown-transition,
+    height var.$dropdown-transition;
 
   .container {
     display: flex;
@@ -61,9 +58,8 @@ nav {
     }
 
     .dropdown {
-      position: fixed;
+      position: var.$navbar-position;
       z-index: 6;
-      background-color: var.$color-overlay;
       margin: var.$inverted-padding-safe;
       padding: var.$navbar-padding;
       padding: var.$padding-safe;
@@ -73,14 +69,10 @@ nav {
       transition:
         transform var.$dropdown-transition,
         opacity var.$dropdown-transition,
-        background-color var.$dropdown-transition, 
-        -webkit-backdrop-filter var.$dropdown-transition, 
-        backdrop-filter var.$dropdown-transition;
+        background-color var.$dropdown-transition;
       overflow: auto;
       transform: translate(0, 50vh) scale(1, 0);
       opacity: 0;
-      -webkit-backdrop-filter: blur(0px);
-      backdrop-filter: blur(0px);
 
       a {
         margin: 25px 0px;
@@ -105,12 +97,9 @@ html[data-nav-dropdown="true"] {
     overflow: hidden;
 
     nav {
-      -webkit-backdrop-filter: blur(5px);
-      backdrop-filter: blur(5px);
+      height: 100lvh;
 
       .container .dropdown {
-        -webkit-backdrop-filter: blur(5px);
-        backdrop-filter: blur(5px);
         transform: translate(0, 50vh) scale(1, 1);
         opacity: 1;
 

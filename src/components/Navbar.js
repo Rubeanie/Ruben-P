@@ -3,6 +3,7 @@
 import { Component, createRef } from 'react';
 import Link from 'next/link';
 import { RubenP } from '../lib/icons';
+import { Controller, animated, SpringRef } from '@react-spring/web';
 import { Squeeze as Hamburger } from 'hamburger-react';
 
 const navbarData = {
@@ -32,15 +33,19 @@ export default class Navbar extends Component {
       showDropdown: false,
       openDropdown: false
     };
+    this.api = SpringRef();
+    this.animations = new Controller({ WebkitBackdropFilter: "blur(0px)", backdropFilter: "blur(0px)", ref: this.api });
   }
   componentDidMount() {
     this.updateNav();
     window.addEventListener('resize', this.updateNav);
     window.addEventListener('orientationchange', this.updateNav);
+    window.addEventListener('scroll', this.handleScroll);
   }
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateNav);
     window.removeEventListener('orientationchange', this.updateNav);
+    window.removeEventListener('scroll', this.handleScroll);
   }
   updateNav = () => {
     setTimeout(() => {
@@ -57,13 +62,21 @@ export default class Navbar extends Component {
   changeDropdown = (state) => {
     this.setState({ openDropdown: state }, () => {
       document.documentElement.setAttribute('data-nav-dropdown', state);
+      this.handleScroll();
     });
+  };
+  handleScroll = () => {
+    if (window.scrollY > 80 || this.state.openDropdown) {
+      this.animations.start({ WebkitBackdropFilter: "blur(7px)", backdropFilter: "blur(7px)" });
+    } else {
+      this.animations.start({ WebkitBackdropFilter: "blur(0px)", backdropFilter: "blur(0px)" });
+    }
   };
   render() {
     const { showDropdown, openDropdown } = this.state;
 
     return (
-      <nav>
+      <animated.nav style={ this.animations.springs }>
         <div className='container' ref={this.navRef}>
           <div className='dropdown'>
             <div
@@ -108,7 +121,7 @@ export default class Navbar extends Component {
             />
           </div>
         </div>
-      </nav>
+      </animated.nav>
     );
   }
 }

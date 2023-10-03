@@ -1,4 +1,4 @@
-import Redirect from '../Redirect';
+import Redirect from '../redirect';
 import { FaSteam } from 'react-icons/fa';
 
 export const metadata = {

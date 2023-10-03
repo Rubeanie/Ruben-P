@@ -1,4 +1,4 @@
-import Redirect from '../Redirect';
+import Redirect from '../redirect';
 import { BsTwitch } from 'react-icons/bs';
 
 export const metadata = {

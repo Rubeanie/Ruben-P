@@ -3,6 +3,7 @@
 
 import { Suspense, useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { useIsomorphicLayoutEffect } from 'react-spring';
 import { extend, createRoot, unmountComponentAtNode } from '@react-three/fiber';
 import {
   ColorManagement as _ColorManagement,
@@ -31,7 +32,7 @@ export default function CustomCanvas({ children }){
   const [perf, setPerf] = useState(null);
   const [render, setRender] = useState(false);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const canvas = canvasRef.current;
     if (canvas && width > 0 && height > 0) {
       const newRoot = root || createRoot(canvas);
@@ -51,7 +52,7 @@ export default function CustomCanvas({ children }){
     }
   }, [dpr, height, width]);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (render && width > 0 && height > 0) {
       root.render(
         <>

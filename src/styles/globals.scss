@@ -1,6 +1,6 @@
-@use './abstracts/index.module' as var;
-@use './components/index.module' as com;
-@use './pages/index.module' as pag;
+@use './abstracts/index.module'as var;
+@use './components/index.module'as com;
+@use './pages/index.module'as pag;
 
 :root {
   /* Colors */
@@ -45,19 +45,18 @@ h1 {
   transition: font-size 0.1s ease-in;
   margin-block-start: var.$h-margin-block;
   margin-block-end: var.$h-margin-block;
-}
 
-h1.img-heading {
-  @extend h1;
-  background: var.$image-background no-repeat center center;
-  background-size: cover;
-  background-clip: text;
-  -webkit-background-clip: text;
-  background-attachment: fixed;
-  -webkit-text-fill-color: transparent;
-  filter: brightness(115%) contrast(43%)
-    drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.6)) saturate(1.5);
-  transition: background var.$theme-transition !important;
+  &.img-heading {
+    @extend h1;
+    background: var.$image-background no-repeat center center;
+    background-size: cover;
+    background-clip: text;
+    -webkit-background-clip: text;
+    background-attachment: fixed;
+    -webkit-text-fill-color: transparent;
+    filter: brightness(115%) contrast(43%) drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.6)) saturate(1.5);
+    transition: background var.$theme-transition !important;
+  }
 }
 
 h2 {
