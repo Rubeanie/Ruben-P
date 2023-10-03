@@ -1,4 +1,4 @@
-import Redirect from '../redirect';
+import Redirect from '../Redirect';
 import { BsYoutube } from 'react-icons/bs';
 
 export const metadata = {

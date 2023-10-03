@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "_prebuild": "echo 'Building Sanity to public/admin' && cd admin && yarn && npx @sanity/cli build ../public/admin -y && echo 'Done'",
+    "prebuild": "echo 'Building Sanity to public/admin' && cd admin && yarn && npx @sanity/cli build ../public/admin -y && echo 'Done'",
     "build": "next build",
     "start": "next start",
     "sanity": "cd admin && sanity start",
