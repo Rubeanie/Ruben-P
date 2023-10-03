@@ -1,7 +1,11 @@
 import { getThemeUrl } from '../../lib/sanity';
 import { Theme } from './themes';
 
-export default async function page() {
+async function getData() {
   const data = await getThemeUrl();
-  return <Theme url={data} />;
+  return data;
+}
+
+export default async function page() {
+  return <Theme url={await getData()} />;
 }
