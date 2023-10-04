@@ -1,6 +1,6 @@
 import { Age } from '../lib/common';
 import dynamic from 'next/dynamic'
-import Canvas from '../components/RpLogo';
+//import Canvas from '../components/RpLogo';
 
 //const Canvas = dynamic(() => import('../components/RpLogo'), { ssr: false })
 
@@ -13,7 +13,7 @@ export const metadata = {
 export default function page() {
   return (
     <div className='page'>
-      <Canvas />
+      {/* <Canvas /> */}
       <div
         className='hero-no-padding'
         style={{ width: '100%', height: '100%', zIndex: 1 }}>
