@@ -85,8 +85,9 @@ export const Canvas = forwardRef((props, ref) => {
     }
     window.performanceMonitor = performanceMonitor; */
     return () => {
-      if (canvas) {
-        unmountComponentAtNode(canvas);
+      if (canvas && root) {
+        root.unmount();
+        //unmountComponentAtNode(canvas);
       }
     };
   }, []);
