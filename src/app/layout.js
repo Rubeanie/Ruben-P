@@ -1,6 +1,7 @@
 import '../styles/globals.scss';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { Suspense } from 'react';
 //import { Theme } from '../lib/themes';
 //import { getThemeUrl } from '../lib/sanity';
 import { yapari, kollektif } from '../styles/fonts';
@@ -8,7 +9,12 @@ import { yapari, kollektif } from '../styles/fonts';
 import { Analytics } from '@vercel/analytics/react';
 /* import DynamicMetadata from './metadata'; */
 
+const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
+  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  : 'http://localhost:3000';
+
 export const metadata = {
+  metadataBase: new URL(baseUrl),
   keywords: ['Ruben', 'Panzich', 'Rubeanie', 'Portfolio', 'About', 'Links', 'Contact', 'Artist', 'Developer'],
   authors: [{ name: 'Ruben Panzich', url: 'https://www.ruben-p.com' }],
   colorScheme: 'dark',
@@ -36,7 +42,9 @@ export default async function RootLayout({
         <div className='background-image' />
         {/* <Signature /> */}
         <Navbar />
-        {children}
+        <Suspense>
+          <main>{children}</main>
+        </Suspense>
         {/* <Theme url={data} /> */}
         <Footer />
         {/* <DynamicMetadata /> */}
