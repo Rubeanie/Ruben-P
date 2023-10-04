@@ -1,5 +1,3 @@
-const path = require("path");
-
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled:
     process.env.ANALYZE === 'true' && process.env.NODE_ENV === 'production'
@@ -7,27 +5,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 const withPWA = require('next-pwa')({
   dest: 'public',
-  disable: process.env.NODE_ENV === 'development',
-  scope: '/src/app',
-  buildExcludes: ["app-build-manifest.json"]
+  disable: process.env.NODE_ENV === 'development'
 });
-
-const generateAppDirEntry = (entry) => {
-  const packagePath = require.resolve('next-pwa');
-  const packageDirectory = path.dirname(packagePath);
-  const registerJs = path.join(packageDirectory, "register.js");
-
-  return entry().then((entries) => {
-    if (entries["main-app"] && !entries["main-app"].includes(registerJs)) {
-      if (Array.isArray(entries["main-app"])) {
-        entries["main-app"].unshift(registerJs);
-      } else if (typeof entries["main-app"] === "string") {
-        entries["main-app"] = [registerJs, entries["main-app"]];
-      }
-    }
-    return entries;
-  });
-};
 
 const nextConfig = {
   swcMinify: true,
@@ -59,13 +38,7 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: ['res.cloudinary.com']
-  },
-  webpack: (config) => {
-    const entry = generateAppDirEntry(config.entry);
-    config.entry = () => entry;
-
-    return config;
-  },
+  }
 };
 
 const KEYS_TO_OMIT = [
