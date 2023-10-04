@@ -4,9 +4,9 @@ import Footer from '../components/Footer';
 import { Theme } from '../lib/themes';
 import { getThemeUrl } from '../lib/sanity';
 import { yapari, kollektif } from '../styles/fonts';
-import Signature from '../components/Signature';
+/* import Signature from '../components/Signature'; */
 import { Analytics } from '@vercel/analytics/react';
-import DynamicMetadata from './metadata';
+/* import DynamicMetadata from './metadata'; */
 
 export const metadata = {
   keywords: ['Ruben', 'Panzich', 'Rubeanie', 'Portfolio', 'About', 'Links', 'Contact', 'Artist', 'Developer'],
@@ -34,12 +34,12 @@ export default async function RootLayout({
     <html lang='en' className={`${yapari.variable} ${kollektif.variable}`}>
       <body>
         <div className='background-image' />
-        <Signature />
+        {/* <Signature /> */}
         <Navbar />
         {children}
         <Theme url={data} />
         <Footer />
-        <DynamicMetadata />
+        {/* <DynamicMetadata /> */}
         <Analytics />
       </body>
     </html>
