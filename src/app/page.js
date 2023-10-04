@@ -1,6 +1,6 @@
 import { Age } from '../lib/common';
 import dynamic from 'next/dynamic'
-import { Canvas } from '../components/RpLogo';
+import Canvas from '../components/RpLogo';
 
 //const Canvas = dynamic(() => import('../components/RpLogo'), { ssr: false })
 
