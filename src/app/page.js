@@ -1,7 +1,7 @@
 import { Age } from '../lib/common';
 import dynamic from 'next/dynamic'
 
-const CustomCanvas = dynamic(() => import('../components/CustomCanvas'), { ssr: false })
+const Canvas = dynamic(() => import('../components/RpLogo'), { ssr: false })
 
 export const metadata = {
   title: 'Home | Ruben Panzich',
@@ -12,7 +12,7 @@ export const metadata = {
 export default function page() {
   return (
     <div className='page'>
-      <CustomCanvas />
+      <Canvas />
       <div
         className='hero-no-padding'
         style={{ width: '100%', height: '100%', zIndex: 1 }}>

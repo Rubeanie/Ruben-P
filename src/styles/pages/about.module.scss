@@ -1,9 +1,10 @@
-@use '../abstracts/index.module' as var;
+@use '../abstracts/index.module'as var;
 
 .about {
   img {
     width: 100%;
     max-width: 500px;
+    border-radius: var.$common-border-radius;
   }
 
   @media screen and (max-width: 43.75rem) {

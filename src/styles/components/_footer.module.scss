@@ -5,6 +5,7 @@ footer {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  position: relative;
   z-index: 5;
   background-color: var.$color-overlay;
   padding: var.$footer-padding;

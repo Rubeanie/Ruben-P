@@ -10,7 +10,7 @@
   width: var.$socials-width;
   max-width: var.$socials-max-width;
   height: var.$socials-height;
-  border-radius: var.$socials-border-radius;
+  border-radius: var.$common-border-radius;
   overflow: hidden;
   box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.3);
 
@@ -85,6 +85,10 @@
 
     &:hover {
       transform: unset;
+    }
+
+    &:after {
+      content: unset;
     }
   }
 }

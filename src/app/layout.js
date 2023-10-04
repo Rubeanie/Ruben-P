@@ -3,25 +3,16 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Theme } from '../lib/themes';
 import { getThemeUrl } from '../lib/sanity';
-import { yapari, kollektif } from './fonts';
+import { yapari, kollektif } from '../styles/fonts';
 import Signature from '../components/Signature';
 import { Analytics } from '@vercel/analytics/react';
-import DynamicMetadata from './client';
+import DynamicMetadata from './metadata';
 
 export const metadata = {
   keywords: ['Ruben', 'Panzich', 'Rubeanie', 'Portfolio', 'About', 'Links', 'Contact', 'Artist', 'Developer'],
   authors: [{ name: 'Ruben Panzich', url: 'https://www.ruben-p.com' }],
   colorScheme: 'dark',
   themeColor: '#0f182d',
-  icons: {
-    other: [
-      {
-        rel: 'mask-icon',
-        url: '/favicon/safari-pinned-tab.svg',
-        color: '#ed5f68',
-      },
-    ],
-  },
   viewport: {
     width: 'device-width',
     initialScale: 1,

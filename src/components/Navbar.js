@@ -39,10 +39,11 @@ export default class Navbar extends Component {
       backdropFilter: "blur(1px)",
       ref: this.api,
       config: {
-        mass: 15,
-        tension: 290,
-        friction: 39,
-        clamp: true
+        mass: 9,
+        tension: 265,
+        friction: 90,
+        precision: 0.02,
+        clamp: true,
       }
     });
   }
@@ -76,12 +77,15 @@ export default class Navbar extends Component {
     });
   };
   handleScroll = () => {
+    console.log(this.animations)
     if (this.state.openDropdown) {
       this.animations.start({ WebkitBackdropFilter: "blur(7px)", backdropFilter: "blur(7px)" });
     } else if (window.scrollY > 80) {
       this.animations.start({ WebkitBackdropFilter: "blur(4px)", backdropFilter: "blur(4px)" });
+        document.documentElement.setAttribute('data-nav-scrolled', "true");
     } else {
       this.animations.start({ WebkitBackdropFilter: "blur(1px)", backdropFilter: "blur(1px)" });
+        document.documentElement.setAttribute('data-nav-scrolled', "false");
     }
   };
   render() {
