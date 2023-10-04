@@ -10,7 +10,7 @@ export const metadata = {
     "I'm Ruben Panzich, I am a Freelance creative developer, with qualifications in game design and development."
 };
 
-export default function page() {
+export default function Home() {
   return (
     <div className='page'>
       {/* <Canvas /> */}

@@ -1,8 +1,8 @@
 import '../styles/globals.scss';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { Theme } from '../lib/themes';
-import { getThemeUrl } from '../lib/sanity';
+//import { Theme } from '../lib/themes';
+//import { getThemeUrl } from '../lib/sanity';
 import { yapari, kollektif } from '../styles/fonts';
 /* import Signature from '../components/Signature'; */
 import { Analytics } from '@vercel/analytics/react';
@@ -29,7 +29,7 @@ export default async function RootLayout({
   // This will be populated with nested layouts or pages
   children
 }) {
-  const data = await getThemeUrl();
+//  const data = await getThemeUrl();
   return (
     <html lang='en' className={`${yapari.variable} ${kollektif.variable}`}>
       <body>
@@ -37,7 +37,7 @@ export default async function RootLayout({
         {/* <Signature /> */}
         <Navbar />
         {children}
-        <Theme url={data} />
+        {/* <Theme url={data} /> */}
         <Footer />
         {/* <DynamicMetadata /> */}
         <Analytics />
