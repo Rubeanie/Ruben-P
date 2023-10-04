@@ -1,4 +1,6 @@
-const withPWA = require('next-pwa')({
+/** @type {import('next').NextConfig} */
+
+/* const withPWA = require('next-pwa')({
   dest: 'public',
   disable: process.env.NODE_ENV === 'development'
 });
@@ -6,10 +8,10 @@ const withPWA = require('next-pwa')({
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled:
     process.env.ANALYZE === 'true' && process.env.NODE_ENV === 'production'
-});
+}); */
 
-module.exports = withBundleAnalyzer(
-  withPWA({
+module.exports = /* withBundleAnalyzer(
+  withPWA( */{
     async rewrites() {
       return [
         {
@@ -28,5 +30,5 @@ module.exports = withBundleAnalyzer(
     images: {
       domains: ['res.cloudinary.com']
     }
-  })
-);
+  }/* )
+) */;
