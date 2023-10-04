@@ -3,10 +3,10 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
     process.env.ANALYZE === 'true' && process.env.NODE_ENV === 'production'
 });
 
-const withPWA = require('next-pwa')({
+/* const withPWA = require('next-pwa')({
   dest: 'public',
   disable: process.env.NODE_ENV === 'development'
-});
+}); */
 
 const nextConfig = {
   swcMinify: true,
@@ -52,7 +52,7 @@ const KEYS_TO_OMIT = [
 ];
 
 module.exports = (_phase, { defaultConfig }) => {
-  const plugins = [[withPWA], [withBundleAnalyzer, {}]];
+  const plugins = [/* [withPWA], */ [withBundleAnalyzer, {}]];
 
   const wConfig = plugins.reduce(
     (acc, [plugin, config]) => plugin({ ...acc, ...config }),
