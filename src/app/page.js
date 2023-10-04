@@ -1,5 +1,5 @@
-import { Age } from '../lib/common';
-import dynamic from 'next/dynamic'
+//import { Age } from '../lib/common';
+//import dynamic from 'next/dynamic'
 //import Canvas from '../components/RpLogo';
 
 //const Canvas = dynamic(() => import('../components/RpLogo'), { ssr: false })
@@ -26,7 +26,7 @@ export default function page() {
                 Panzich
               </h1>
               <p>
-                <Age />
+                {/* <Age /> */}
                 -year-old student
                 <br />
                 freelance creative artist/developer
