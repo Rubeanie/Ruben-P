@@ -36,7 +36,7 @@ export const metadata = {
 export default function page() {
   return (
     <div className='page'>
-      <div className='hero-no-padding about'>
+      <div className='hero'>
         <div className='row'>
           <div className='flex-padding' style={{ flex: '40%' }}>
             <div className='column'>
