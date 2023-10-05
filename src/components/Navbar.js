@@ -77,7 +77,6 @@ export default class Navbar extends Component {
     });
   };
   handleScroll = () => {
-    console.log(this.animations)
     if (this.state.openDropdown) {
       this.animations.start({ WebkitBackdropFilter: "blur(7px)", backdropFilter: "blur(7px)" });
     } else if (window.scrollY > 80) {
