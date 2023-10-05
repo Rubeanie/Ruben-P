@@ -8,6 +8,7 @@ import { yapari, kollektif } from '../styles/fonts';
 import Signature from '../components/Signature';
 import { Analytics } from '@vercel/analytics/react';
 import DynamicMetadata from './metadata';
+import { Preload } from './preload';
 
 const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
@@ -41,6 +42,7 @@ export default async function RootLayout({
     <html lang='en' className={`${yapari.variable} ${kollektif.variable}`}>
       <body>
         <div className='background-image' />
+        <Preload />
         <Signature />
         <Navbar />
         <Suspense>
