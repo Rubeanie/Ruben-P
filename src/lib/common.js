@@ -1,3 +1,5 @@
+'use client';
+
 import { AgeFromDate } from 'age-calculator';
 
 function Age() {

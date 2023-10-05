@@ -2,12 +2,12 @@ import '../styles/globals.scss';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Suspense } from 'react';
-//import { Theme } from '../lib/themes';
-//import { getThemeUrl } from '../lib/sanity';
+import { Theme } from '../lib/themes';
+import { getThemeUrl } from '../lib/sanity';
 import { yapari, kollektif } from '../styles/fonts';
-/* import Signature from '../components/Signature'; */
+import Signature from '../components/Signature';
 import { Analytics } from '@vercel/analytics/react';
-/* import DynamicMetadata from './metadata'; */
+import DynamicMetadata from './metadata';
 
 const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
@@ -35,19 +35,19 @@ export default async function RootLayout({
   // This will be populated with nested layouts or pages
   children
 }) {
-//  const data = await getThemeUrl();
+  const data = await getThemeUrl();
   return (
     <html lang='en' className={`${yapari.variable} ${kollektif.variable}`}>
       <body>
         <div className='background-image' />
-        {/* <Signature /> */}
+        <Signature />
         <Navbar />
         <Suspense>
           <main>{children}</main>
         </Suspense>
-        {/* <Theme url={data} /> */}
+        <Theme url={data} />
         <Footer />
-        {/* <DynamicMetadata /> */}
+        <DynamicMetadata />
         <Analytics />
       </body>
     </html>

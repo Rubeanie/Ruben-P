@@ -19,10 +19,6 @@ const navbarData = {
     {
       title: 'Socials',
       url: '/socials'
-    },
-    {
-      title: 'Contact',
-      url: '/contact'
     }
   ]
 };
@@ -104,7 +100,7 @@ export default class Navbar extends Component {
               onClick={() => {
                 this.changeDropdown(false);
               }}>
-              <Link key='_Home' href='/' passHref>
+              <Link href='/' passHref>
                 <p>Home</p>
               </Link>
               {navbarData.pages.map((page) => (
@@ -114,7 +110,7 @@ export default class Navbar extends Component {
               ))}
             </div>
           </div>
-          <Link key='Home' href='/' passHref title='Home' ref={this.logoRef}>
+          <Link href='/' passHref title='Home' ref={this.logoRef}>
             <RubenP
               onClick={() => {
                 this.changeDropdown(false);

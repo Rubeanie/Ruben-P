@@ -1,8 +1,8 @@
-//import { Age } from '../lib/common';
-//import dynamic from 'next/dynamic'
+import { Age } from '../lib/common';
+import dynamic from 'next/dynamic'
 //import Canvas from '../components/RpLogo';
 
-//const Canvas = dynamic(() => import('../components/RpLogo'), { ssr: false })
+const Canvas = dynamic(() => import('../components/RpLogo'), { ssr: false })
 
 export const metadata = {
   title: 'Home | Ruben Panzich',
@@ -13,7 +13,7 @@ export const metadata = {
 export default function Home() {
   return (
     <div className='page'>
-      {/* <Canvas /> */}
+      <Canvas />
       <div
         className='hero-no-padding'
         style={{ width: '100%', height: '100%', zIndex: 1 }}>
@@ -26,7 +26,7 @@ export default function Home() {
                 Panzich
               </h1>
               <p>
-                {/* <Age /> */}
+                <Age />
                 -year-old student
                 <br />
                 freelance creative artist/developer

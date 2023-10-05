@@ -11,7 +11,7 @@ import {
 } from 'three';
 import { PerformanceMonitor } from '@react-three/drei';
 import round from 'lodash/round';
-//import { Perf } from 'r3f-perf';
+import { Perf } from 'r3f-perf';
 
 extend({
   ColorManagement: _ColorManagement,
@@ -39,7 +39,7 @@ export const Canvas = forwardRef((props, ref) => {
   const [dpr, setDpr] = useState(0.9);
   const canvasRef = useRef(null);
   const [root, setRoot] = useState(null);
-//  const [perf, setPerf] = useState(null);
+  const [perf, setPerf] = useState(null);
   const [render, setRender] = useState(false);
 
   useIsomorphicLayoutEffect(() => {
@@ -63,7 +63,7 @@ export const Canvas = forwardRef((props, ref) => {
     if (render && size.width > 0 && size.height > 0) {
       root.render(
         <>
-          {/* {perf ? <Perf position={'bottom-right'} /> : null} */}
+          {perf ? <Perf position={'bottom-right'} /> : null}
           <PerformanceMonitor
             ms={200}
             iterations={7}
@@ -75,19 +75,18 @@ export const Canvas = forwardRef((props, ref) => {
         </>
       );
     }
-  }, [children, /* perf, */ render]);
+  }, [children, perf, render]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    /* function performanceMonitor(enable) {
+    function performanceMonitor(enable) {
       setPerf(enable === true);
       return `Performance Monitor: ${enable}`;
     }
-    window.performanceMonitor = performanceMonitor; */
+    window.performanceMonitor = performanceMonitor;
     return () => {
       if (canvas && root) {
-        root.unmount();
-        //unmountComponentAtNode(canvas);
+        unmountComponentAtNode(canvas);
       }
     };
   }, []);
