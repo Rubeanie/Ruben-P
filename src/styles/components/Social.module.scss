@@ -1,43 +1,58 @@
 @use '../abstracts/index.module'as var;
 
-.socials {
+/* Social Buttons */
+$width: 385px;
+$height: 100px;
+$width-mobile: 230px;
+$svg-wrapper-width: 30%;
+$text-wrapper-height-mobile: 75px;
+$svg-size: 70px;
+$transition: 0.4s ease-in-out;
+
+.social {
   display: flex;
   color: var.$color-primary;
   position: relative;
   align-items: center;
-  transition: transform var.$socials-transition;
-  margin: var.$socials-margin;
-  width: var.$socials-width;
-  max-width: var.$socials-max-width;
-  height: var.$socials-height;
+  transition: transform $transition;
+  margin: 10px;
+  width: $width;
+  max-width: 100vw;
+  height: $height;
   border-radius: var.$common-border-radius;
   overflow: hidden;
   box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.3);
 
-  .icon,
-  .text {
+  .svgWrapper,
+  .textWrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: var.$socials-section-height;
+    height: 100%;
   }
 
-  .icon {
-    width: var.$socials-icon-width;
+  .svgWrapper {
+    width: $svg-wrapper-width;
     vertical-align: middle;
+
+    svg {
+      width: $svg-size;
+      height: $svg-size;
+    }
   }
 
-  .text {
-    background: var.$socials-overlay-color;
-    width: var.$socials-overlay-width;
+  .textWrapper {
+    background: rgba(0, 0, 0, 0.212);
+    width: 100% - $svg-wrapper-width;
 
     p {
       font-size: var.$p3-size;
+      overflow: visible;
     }
   }
 
   &:hover {
-    transform: var.$socials-transform-hover;
+    transform: scale(1.05) perspective(1px);
   }
 
   &:after {
@@ -47,7 +62,7 @@
     position: absolute;
     left: 0px;
     top: 50%;
-    transition: top var.$socials-transition, opacity var.$socials-transition;
+    transition: top $transition, opacity $transition;
     transition-duration: 0.6s;
     background: linear-gradient(transparent,
         var.$color-text,
@@ -68,19 +83,19 @@
 }
 
 /* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 43.75rem) {
-  .socials {
-    width: var.$socials-width-mobile;
-    height: var.$socials-height-mobile;
+@media screen and (max-width: var.$media-mobile-width) {
+  .social {
+    width: $width-mobile;
+    height: fit-content;
 
-    .icon {
+    .svgWrapper {
       margin-block: 7.5px;
-      width: var.$socials-section-width-mobile;
+      width: 100%;
     }
 
-    .text {
-      width: var.$socials-section-width-mobile;
-      height: var.$socials-section-height-mobile;
+    .textWrapper {
+      width: 100%;
+      height: $text-wrapper-height-mobile;
     }
 
     &:hover {
@@ -91,4 +106,9 @@
       content: unset;
     }
   }
+}
+
+/* Exports */
+:export {
+  colorPrimary: var.$color-primary;
 }

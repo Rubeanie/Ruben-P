@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
-    "prebuild": "echo 'Building Sanity to public/admin' && cd admin && yarn && npx @sanity/cli build ../public/admin -y && echo 'Done'",
+    "_prebuild": "echo 'Building Sanity to public/admin' && cd admin && yarn && npx @sanity/cli build ../public/admin -y && echo 'Done'",
     "build": "next build",
     "start": "next start",
     "sanity": "cd admin && sanity start",
@@ -25,7 +25,7 @@
     "@sanity/image-url": "^1.0.2",
     "@vercel/analytics": "^1.0.2",
     "age-calculator": "^1.0.0",
-    "color": "^4.2.3",
+    "color": "^*4.2.3",
     "groq": "^3.17.0",
     "hamburger-react": "^2.5.0",
     "next": "^13.5.4",

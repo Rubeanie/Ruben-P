@@ -1,0 +1,64 @@
+/* Sass Colors */
+$color-overlay-rgb: var(--color-overlay-rgb);
+$color-overlay-alpha: var(--color-overlay-alpha);
+$color-primary: var(--color-primary);
+$color-secondary: var(--color-secondary);
+$color-background: var(--color-background);
+$color-text: var(--color-text);
+$image-background: var(--image-background);
+$color-overlay: var(--color-overlay);
+
+/* Common Border Radius */
+$common-border-radius: 1rem;
+
+/* Navbar Height */
+$navbar-height: 80px;
+
+/* Maximum Width of Viewport Content */
+$viewport-max-width: 120rem;
+
+/* Mobile Display Width */
+$media-mobile-width: 43.75rem;
+
+/* Transitions */
+$theme-transition: 0.15s ease-out;
+$dropdown-transition: 0.325s ease;
+
+/* Safe Padding */
+$padding-safe: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
+$inverted-padding-safe: 0 calc(-1 * env(safe-area-inset-right)) 0 calc(-1 * env(safe-area-inset-left));
+
+/* Font Faces */
+$h-font: var(--font-yapari), serif;
+$p-font: var(--font-kollektif), serif;
+
+/* Text Alignments */
+$h-alignment: center;
+$p-alignment: center;
+
+/* Heading Text Sizes */
+$h1-size: clamp(0.1rem,
+  calc(2.15rem + ((1vw - 0.25875rem) * 6.4914)),
+  8.375rem);
+$h2-size: 2.2rem;
+
+/* Paragraph Text Sizes */
+$p1-size: 1.56rem;
+$p2-size: 1.375rem;
+$p3-size: 1.25rem;
+$p4-size: 1rem;
+
+/* Heading Margins */
+$h-margin-block: clamp(2px, 0.3em, 10px);
+
+/* Color Exports */
+:export {
+  colorOverlayRgb: $color-overlay-rgb;
+  colorOverlayAlpha: $color-overlay-alpha;
+  colorPrimary: $color-primary;
+  colorSecondary: $color-secondary;
+  colorBackground: $color-background;
+  colorText: $color-text;
+  imageBackground: $image-background;
+  colorOverlay: $color-overlay;
+}

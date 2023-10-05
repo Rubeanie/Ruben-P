@@ -1,11 +1,11 @@
 import '../styles/globals.scss';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import { Suspense } from 'react';
-import { Theme } from '../lib/themes';
-import { getThemeUrl } from '../lib/sanity';
-import { yapari, kollektif } from '../styles/fonts';
 import Signature from '../components/Signature';
+import { Suspense } from 'react';
+import { Theme } from '../utils/themes';
+import { getThemeUrl } from '../utils/sanity';
+import { yapari, kollektif } from '../styles/fonts';
 import { Analytics } from '@vercel/analytics/react';
 import DynamicMetadata from './metadata';
 import { Preload } from './preload';

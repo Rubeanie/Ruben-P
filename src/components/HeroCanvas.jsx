@@ -1,11 +1,12 @@
 'use client';
 
+import styles from '../styles/components/HeroCanvas.module.scss';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { Canvas } from './Canvas.js';
+import { canvas as Canvas } from '../utils/canvas.js';
 import { Html, useGLTF } from '@react-three/drei';
 import { a, useSpring } from '@react-spring/three';
-import { useColor } from '../lib/themes';
+import { useColor } from '../utils/themes.js';
 import useMeasure from 'react-use-measure';
 
 export default function Viewport() {
@@ -17,6 +18,7 @@ export default function Viewport() {
       size={{ width: Math.min(width, height * 0.66), height: height }}
       camera={{ fov: 60, near: 1.9, far: 3.9, position: [0, 0, 3] }}
       fallback={<Placeholder height={height} />}
+      styles={styles.heroCanvas}
     >
       <Model />
     </Canvas>

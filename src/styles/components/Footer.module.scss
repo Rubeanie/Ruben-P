@@ -1,4 +1,7 @@
-@use '../abstracts/index.module' as var;
+@use '../abstracts/index.module'as var;
+
+/* Footer */
+$height: 60px;
 
 footer {
   display: flex;
@@ -8,9 +11,8 @@ footer {
   position: relative;
   z-index: 5;
   background-color: var.$color-overlay;
-  padding: var.$footer-padding;
-  width: var.$footer-width;
-  height: var.$footer-height;
+  width: 100%;
+  height: $height;
   transition: background-color var.$dropdown-transition;
 
   p {

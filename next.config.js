@@ -10,6 +10,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
     process.env.ANALYZE === 'true' && process.env.NODE_ENV === 'production'
 });
 
+const path = require('path')
+
 module.exports = withBundleAnalyzer(
   withPWA({
     async rewrites() {
@@ -25,6 +27,9 @@ module.exports = withBundleAnalyzer(
     },
     images: {
       domains: ['res.cloudinary.com']
-    }
+    },
+    sassOptions: {
+      includePaths: [path.join(__dirname, 'styles')],
+    },
   })
 );

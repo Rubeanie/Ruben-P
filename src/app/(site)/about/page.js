@@ -1,3 +1,4 @@
+import styles from '../../../styles/pages/about.module.scss';
 import {
   SiCplusplus,
   SiCsharp,
@@ -23,7 +24,7 @@ import {
   RpSubstanceSampler,
   RpSubstancePainter,
   RpUnity
-} from '../../../lib/icons';
+} from '../../../utils/icons';
 import Skill from '../../../components/Skill';
 import { AboutPageContent } from './content';
 import { PersonalPhoto } from './client';
@@ -36,7 +37,7 @@ export const metadata = {
 export default function page() {
   return (
     <div className='page'>
-      <div className='hero about'>
+      <div className={`hero ${styles.about}`}>
         <div className='row'>
           <div className='flex-padding' style={{ flex: '40%' }}>
             <div className='column'>
@@ -61,153 +62,134 @@ export default function page() {
           <div className='flex-box'>
             <div className='item shadow'>
               <Skill
-                name={'C++'}
+                heading={'C++'}
                 logo={<SiCplusplus />}
-                textColor={'#121212'}
                 color={'#3b95cd'}
               />
             </div>
             <div className='item shadow'>
               <Skill
-                name={'C#'}
+                heading={'C#'}
                 logo={<SiCsharp />}
-                textColor={'#121212'}
                 color={'#53BC50'}
               />
             </div>
             <div className='item shadow'>
               <Skill
-                name={'HTML5'}
+                heading={'HTML5'}
                 logo={<SiHtml5 />}
-                textColor={'#121212'}
                 color={'#E35D38'}
               />
             </div>
             <div className='item shadow'>
               <Skill
-                name={'React'}
+                heading={'React'}
                 logo={<SiReact />}
-                textColor={'#121212'}
                 color={'#61DAFB'}
               />
             </div>
             <div className='item shadow'>
               <Skill
-                name={'CSS3'}
+                heading={'CSS3'}
                 logo={<SiCss3 />}
-                textColor={'#121212'}
                 color={'#3880B6'}
               />
             </div>
             <div className='item shadow'>
               <Skill
-                name={'SASS'}
+                heading={'SASS'}
                 logo={<SiSass />}
-                textColor={'#121212'}
                 color={'#cc6699'}
               />
             </div>
             <div className='item shadow'>
               <Skill
-                name={'Javascript'}
+                heading={'Javascript'}
                 logo={<SiJavascript />}
-                textColor={'#121212'}
                 color={'#F7E454'}
               />
             </div>
             <div className='item shadow'>
               <Skill
-                name={'Next.js'}
+                heading={'Next.js'}
                 logo={<SiNextdotjs />}
-                textColor={'#121212'}
                 color={'#FFFFFF'}
               />
             </div>
             <div className='item shadow'>
               <Skill
-                name={'Typescript'}
+                heading={'Typescript'}
                 logo={<SiTypescript />}
-                textColor={'#121212'}
                 color={'#2C8BCC'}
               />
             </div>
             <div className='item shadow'>
               <Skill
-                name={'Node.js'}
+                heading={'Node.js'}
                 logo={<SiNodedotjs />}
-                textColor={'#121212'}
                 color={'#4D994D'}
               />
             </div>
             <div className='item shadow'>
               <Skill
-                name={'After Effects'}
+                heading={'After Effects'}
                 logo={<SiAdobeaftereffects />}
-                textColor={'#121212'}
                 color={'#9999FF'}
               />
             </div>
             <div className='item shadow'>
               <Skill
-                name={'Premiere Pro'}
+                heading={'Premiere Pro'}
                 logo={<SiAdobepremierepro />}
-                textColor={'#121212'}
                 color={'#9999FF'}
               />
             </div>
             <div className='item shadow'>
               <Skill
-                name={'Audition'}
+                heading={'Audition'}
                 logo={<SiAdobeaudition />}
-                textColor={'#121212'}
                 color={'#9999FF'}
               />
             </div>
             <div className='item shadow'>
               <Skill
-                name={'Photoshop'}
+                heading={'Photoshop'}
                 logo={<SiAdobephotoshop />}
-                textColor={'#121212'}
                 color={'#31a8ff'}
               />
             </div>
             <div className='item shadow'>
               <Skill
-                name={'Illustrator'}
+                heading={'Illustrator'}
                 logo={<SiAdobeillustrator />}
-                textColor={'#121212'}
                 color={'#ff9a00'}
               />
             </div>
             <div className='item shadow'>
               <Skill
-                name={'Substance Painter'}
+                heading={'Substance Painter'}
                 logo={<RpSubstanceSampler />}
-                textColor={'#121212'}
                 color={'#8ad137'}
               />
             </div>
             <div className='item shadow'>
               <Skill
-                name={'Substance Sampler'}
+                heading={'Substance Sampler'}
                 logo={<RpSubstancePainter />}
-                textColor={'#121212'}
                 color={'#8ad137'}
               />
             </div>
             <div className='item shadow'>
               <Skill
-                name={'Blender'}
+                heading={'Blender'}
                 logo={<SiBlender />}
-                textColor={'#121212'}
                 color={'#DC872D'}
               />
             </div>
             <div className='item shadow'>
               <Skill
-                name={'Unity'}
+                heading={'Unity'}
                 logo={<RpUnity />}
-                textColor={'#121212'}
                 color={'#2d7b97'}
               />
             </div>

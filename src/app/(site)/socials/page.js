@@ -1,5 +1,4 @@
 import Social from '../../../components/Social';
-import Var from '../../../styles/abstracts/_colors.module.scss';
 import {
   BsTwitch,
   BsYoutube,
@@ -17,7 +16,7 @@ export const metadata = {
   description: "Ruben Panzich's other social links."
 };
 
-export default function page() {
+export default function Socials() {
   return (
     <div className='page'>
       <div className='hero'>
@@ -25,83 +24,73 @@ export default function page() {
           <h2>Socials</h2>
           <a href='/socials/linkedin' target='_blank'>
             <Social
-              name={'LinkedIn'}
+              heading={'LinkedIn'}
+              subheading={'Ruben Panzich'}
               logo={<BsLinkedin />}
-              username={'Ruben Panzich'}
-              textColor={'#121212'}
               color={'#0d86ff'}
             />
           </a>
           <a href='/socials/github' target='_blank'>
             <Social
-              name={'Github'}
+              heading={'Github'}
+              subheading={'@Rubeanie'}
               logo={<BsGithub />}
-              username={'@Rubeanie'}
-              textColor={'#121212'}
               color={'#e1e8ed'}
             />
           </a>
           <a href='/socials/youtube' target='_blank'>
             <Social
-              name={'YouTube'}
+              heading={'YouTube'}
+              subheading={'@Rubeanie'}
               logo={<BsYoutube />}
-              username={'@Rubeanie'}
-              textColor={'#121212'}
               color={'#c4302b'}
             />
           </a>
           <a href='/socials/twitch' target='_blank'>
             <Social
-              name={'Twitch'}
+              heading={'Twitch'}
+              subheading={'@Rubeanie'}
               logo={<BsTwitch />}
-              username={'@Rubeanie'}
-              textColor={'#121212'}
               color={'#6441a5'}
             />
           </a>
           <a href='/socials/twitter' target='_blank'>
             <Social
-              name={'Twitter'}
+              heading={'Twitter'}
+              subheading={'@TwitchRubeanie'}
               logo={<BsTwitter />}
-              username={'@TwitchRubeanie'}
-              textColor={'#121212'}
               color={'#1da1f2'}
             />
           </a>
           <a href='/socials/instagram' target='_blank'>
             <Social
-              name={'Instagram'}
+              heading={'Instagram'}
+              subheading={'@ruben.panzich'}
               logo={<BsInstagram />}
-              username={'@ruben.panzich'}
-              textColor={'#121212'}
               color={'#f09433'}
             />
           </a>
           <a href='/socials/spotify' target='_blank'>
             <Social
-              name={'Spotify'}
+              heading={'Spotify'}
+              subheading={'@ruben'}
               logo={<BsSpotify />}
-              username={'@ruben'}
-              textColor={'#121212'}
               color={'#1DB954'}
             />
           </a>
           <a href='/socials/steam' target='_blank'>
             <Social
-              name={'Steam'}
+              heading={'Steam'}
+              subheading={'@rubeanie'}
               logo={<FaSteam />}
-              username={'@rubeanie'}
-              textColor={'#121212'}
               color={'#66c0f4'}
             />
           </a>
           <Link href='/contact' passHref>
             <Social
-              name={'Contact'}
+              heading={'Contact'}
+              subheading={'Information'}
               logo={<FaWpforms />}
-              username={'Information'}
-              textColor={'#121212'}
-              color={Var.color_primary}
             />
           </Link>
         </div>

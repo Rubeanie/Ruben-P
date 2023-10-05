@@ -1,10 +1,13 @@
 @use '../abstracts/index.module'as var;
 
+/* Navbar */
+$item-padding: 2vw;
+
 nav {
-  position: var.$navbar-position;
+  position: fixed;
   z-index: 6;
   background-color: var.$color-overlay;
-  width: var.$navbar-width;
+  width: 100%;
   height: var.$navbar-height;
   transition:
     background-color var.$dropdown-transition,
@@ -15,36 +18,36 @@ nav {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    width: var.$navbar-width;
+    width: 100%;
     max-width: var.$viewport-max-width;
     height: var.$navbar-height;
-    padding: var.$navbar-padding;
     padding: var.$padding-safe;
     margin: 0 auto;
-
-    a {
-      flex: 0 1 auto;
-      transition: transform var.$dropdown-transition;
-      margin-right: var.$navbar-item-padding;
-
-      p {
-        font-size: var.$p2-size;
-      }
-
-      svg {
-        display: block;
-        color: var.$color-primary;
-        margin-left: var.$navbar-item-padding;
-        width: var.$navbar-height * 0.8;
-        height: var.$navbar-height * 0.8;
-        size: var.$navbar-height * 0.8;
-      }
-    }
 
     p {
       font-weight: bold;
       color: var.$color-primary;
       margin-block-start: 0em;
+    }
+
+    a {
+      flex: 0 1 auto;
+      transition: transform var.$dropdown-transition;
+      margin-right: $item-padding;
+
+      p {
+        font-size: var.$p2-size;
+        margin-block: 18px;
+      }
+
+      svg {
+        display: block;
+        color: var.$color-primary;
+        margin-left: $item-padding;
+        width: var.$navbar-height * 0.8;
+        height: var.$navbar-height * 0.8;
+        size: var.$navbar-height * 0.8;
+      }
     }
 
     .column {
@@ -58,12 +61,11 @@ nav {
     }
 
     .dropdown {
-      position: var.$navbar-position;
+      position: fixed;
       z-index: 7;
       margin: var.$inverted-padding-safe;
-      padding: var.$navbar-padding;
       padding: var.$padding-safe;
-      width: var.$navbar-width;
+      width: 100%;
       height: calc(100lvh - var.$navbar-height);
       transform-origin: top;
       transition:
@@ -97,9 +99,11 @@ html[data-nav-scrolled="true"]:not([data-nav-dropdown="true"]) {
 html[data-nav-dropdown="true"] {
   --color-overlay-alpha: 0.6 !important;
   overflow: hidden;
+  width: 100%;
 
   body {
     overflow: hidden;
+    width: 100%;
 
     nav {
       height: 100lvh;

@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
+import styles from '../styles/utils/canvas.module.scss';
 import { forwardRef, Suspense, useState, useEffect, useRef } from 'react';
 import { useIsomorphicLayoutEffect } from 'react-spring';
 import { extend, createRoot, unmountComponentAtNode } from '@react-three/fiber';
@@ -33,8 +34,8 @@ const defaultProps = {
   fallback: null
 }
 
-export const Canvas = forwardRef((props, ref) => {
-  const { gl, size, camera, fallback, children } = { ...defaultProps, ...props };
+export const canvas = forwardRef((props, ref) => {
+  const { gl, size, camera, fallback, styles, children } = { ...defaultProps, ...props };
 
   const [dpr, setDpr] = useState(0.9);
   const canvasRef = useRef(null);
@@ -92,10 +93,10 @@ export const Canvas = forwardRef((props, ref) => {
   }, []);
 
   return (
-    <div ref={ref} className='threeJS'>
-      <canvas ref={canvasRef} />
+    <div ref={ref} className={styles}>
+      <canvas ref={canvasRef} className={styles} />
     </div>
   );
 });
 
-Canvas.displayName = 'Canvas';
+canvas.displayName = 'Canvas';

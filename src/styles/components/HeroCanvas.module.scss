@@ -1,6 +1,4 @@
-@use '../abstracts/index.module' as var;
-
-.threeJS {
+.heroCanvas {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -13,14 +11,4 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 0;
-
-  Canvas {
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    user-select: none;
-    -ms-user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-  }
 }
