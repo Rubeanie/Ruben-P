@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 
-/* const withPWA = require('next-pwa')({
+const withPWA = require('next-pwa')({
   dest: 'public',
   disable: process.env.NODE_ENV === 'development'
 });
@@ -8,10 +8,10 @@
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled:
     process.env.ANALYZE === 'true' && process.env.NODE_ENV === 'production'
-}); */
+});
 
-module.exports = /* withBundleAnalyzer(
-  withPWA( */{
+module.exports = withBundleAnalyzer(
+  withPWA({
     async rewrites() {
       return [
         {
@@ -23,12 +23,8 @@ module.exports = /* withBundleAnalyzer(
         }
       ];
     },
-    i18n: {
-      locales: ['en'],
-      defaultLocale: 'en'
-    },
     images: {
       domains: ['res.cloudinary.com']
     }
-  }/* )
-) */;
+  })
+);
