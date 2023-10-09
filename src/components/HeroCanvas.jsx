@@ -5,7 +5,7 @@ import { Suspense } from 'react'
 import styles from '@/styles/components/Canvas.module.scss'
 
 const Logo = dynamic(() => import('@/components/canvas/Models').then((mod) => mod.Logo), { ssr: false })
-const View = dynamic(() => import('@/components/canvas/View').then((mod) => mod.View), {
+const Canvas = dynamic(() => import('@/components/canvas/Canvas').then((mod) => mod.Canvas), {
   ssr: false,
   loading: () => (
     <div className={styles.loading}>
@@ -19,16 +19,16 @@ const View = dynamic(() => import('@/components/canvas/View').then((mod) => mod.
     </div>
   ),
 })
-const Common = dynamic(() => import('@/components/canvas/View').then((mod) => mod.Common), { ssr: false })
+const Common = dynamic(() => import('@/components/canvas/Canvas').then((mod) => mod.Common), { ssr: false })
 
 export default function HeroCanvas() {
 
   return (
-    <View className={styles.heroCanvas}>
+    <Canvas className={styles.heroCanvas}>
       <Suspense fallback={null}>
         <Logo />
         <Common />
       </Suspense>
-    </View>
+    </Canvas>
   );
 }

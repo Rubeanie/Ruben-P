@@ -17,7 +17,7 @@ export const Logo = ({ ...props }) => {
   });
 
   const { y } = useSpring({
-    config: { duration: 20000, precision: 0.0001 },
+    config: { duration: 20000 },
     loop: true,
     from: { y: -0.065 },
     to: { y: Math.PI * 2 - 0.065 }

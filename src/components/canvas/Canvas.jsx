@@ -1,7 +1,7 @@
 'use client'
 
-import { forwardRef, Suspense, useImperativeHandle, useRef, useState, useEffect } from 'react'
-import { OrbitControls, PerspectiveCamera, View as ViewImpl } from '@react-three/drei'
+import { forwardRef, Suspense, useRef, useState, useEffect } from 'react'
+import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
 import { Three } from '@/helpers/components/Three'
 import { useColor } from '@/utils/themes.js';
 import { Perf } from 'r3f-perf';
@@ -32,13 +32,13 @@ export const Common = ({ color }) => (
     ].map((lightProps, index) => (
       <pointLight key={index} {...lightProps} />
     ))}
-    <PerspectiveCamera makeDefault fov={60} near={1.9} far={3.9} position={[0, 0, 3]} />
+    <PerspectiveCamera makeDefault fov={60} position={[0, 0, 3]} />
   </Suspense>
 )
 
-const View = forwardRef(({ children, orbit, ...props }, ref) => {
-  const localRef = useRef(null)
-  useImperativeHandle(ref, () => localRef.current)
+/* Not using view in React Three Drei, as it has tracking issues on mobile */
+
+const Canvas = ({ orbit, children }) => {
   const [perf, setPerf] = useState(null);
   useEffect(() => {
     function performanceMonitor(enable) {
@@ -50,17 +50,14 @@ const View = forwardRef(({ children, orbit, ...props }, ref) => {
 
   return (
     <>
-      <div ref={localRef} {...props} />
       <Three>
-        <ViewImpl track={localRef}>
-          {children}
-          {orbit && <OrbitControls />}
-          {perf ? <Perf position={'bottom-right'} /> : null}
-        </ViewImpl>
+        {children}
+        {orbit && <OrbitControls />}
+        {perf ? <Perf position={'bottom-right'} /> : null}
       </Three>
     </>
   )
-})
-View.displayName = 'View'
+}
+Canvas.displayName = 'Canvas'
 
-export { View }
+export { Canvas }
