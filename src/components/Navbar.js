@@ -68,7 +68,7 @@ export default class Navbar extends Component {
           this.navRef.current.offsetWidth;
         this.setState({ showDropdown: state });
       });
-    }, 10);
+    }, 50);
   };
   changeDropdown = (state) => {
     this.setState({ openDropdown: state }, () => {
