@@ -51,6 +51,7 @@ $loading-size: min(300px, 40lvh, 100vw);
   width: 100%;
   max-width: 66lvh;
   height: 100lvh;
+  transition: height 0.2s ease;
   left: 50%;
   transform: translateX(-50%);
   z-index: 0;
