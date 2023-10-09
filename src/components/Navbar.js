@@ -133,6 +133,7 @@ export default class Navbar extends Component {
               color='var(--color-primary)'
               easing='ease-out'
               rounded={true}
+              label='Show menu'
             />
           </div>
         </div>
