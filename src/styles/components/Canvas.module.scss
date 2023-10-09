@@ -1,6 +1,6 @@
 @use '../abstracts/index.module'as var;
 
-$loading-size: min(300px, 40lvh, 100vw);
+$loading-size: min(300px, 40lvh, 60vw);
 
 .loading {
   display: flex;
