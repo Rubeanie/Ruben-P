@@ -1,4 +1,4 @@
-import styles from '../styles/components/Social.module.scss';
+import styles from '@/styles/components/Social.module.scss';
 
 export default function Social({ heading = "heading", subheading = "subheading", logo, color = styles.colorPrimary, textColor = "#121212" }) {
   return (

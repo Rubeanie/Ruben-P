@@ -2,7 +2,7 @@
 
 import { Component, createRef } from 'react';
 import Link from 'next/link';
-import { RubenP } from '../utils/icons';
+import { RubenP } from '@/utils/icons';
 import { Controller, animated, SpringRef } from '@react-spring/web';
 import { Squeeze as Hamburger } from 'hamburger-react';
 

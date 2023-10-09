@@ -5,7 +5,7 @@ $item-padding: 2vw;
 
 nav {
   position: fixed;
-  z-index: 6;
+  z-index: 10;
   background-color: var.$color-overlay;
   width: 100%;
   height: var.$navbar-height;
@@ -62,7 +62,6 @@ nav {
 
     .dropdown {
       position: fixed;
-      z-index: 7;
       margin: var.$inverted-padding-safe;
       padding: var.$padding-safe;
       width: 100%;

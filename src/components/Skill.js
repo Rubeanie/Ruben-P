@@ -1,4 +1,4 @@
-import styles from '../styles/components/Skill.module.scss';
+import styles from '@/styles/components/Skill.module.scss';
 
 export default function Skill({ heading = "heading", logo, color = styles.colorPrimary, textColor = "#121212" }) {
   return (

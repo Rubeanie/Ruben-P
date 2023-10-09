@@ -1,4 +1,4 @@
-import styles from '../../../styles/pages/about.module.scss';
+import styles from '@/styles/pages/about.module.scss';
 import {
   SiCplusplus,
   SiCsharp,
@@ -24,8 +24,8 @@ import {
   RpSubstanceSampler,
   RpSubstancePainter,
   RpUnity
-} from '../../../utils/icons';
-import Skill from '../../../components/Skill';
+} from '@/utils/icons';
+import Skill from '@/components/Skill';
 import { AboutPageContent } from './content';
 import { PersonalPhoto } from './client';
 

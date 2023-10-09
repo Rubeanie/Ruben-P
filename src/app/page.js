@@ -1,4 +1,4 @@
-import { Age } from '../utils/common';
+import { Age } from '@/utils/common';
 import dynamic from 'next/dynamic';
 
 const Canvas = dynamic(() => import('../components/HeroCanvas'), { ssr: false })
@@ -14,8 +14,7 @@ export default function Home() {
     <div className='page'>
       <Canvas />
       <div
-        className='hero-no-padding'
-        style={{ width: '100%', height: '100%', zIndex: 1 }}>
+        className='hero-no-padding'>
         <div className='column'>
           <div className='layer'>
             <div className='column'>

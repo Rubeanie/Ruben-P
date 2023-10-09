@@ -1,12 +1,12 @@
 'use client';
 
-import styles from '../styles/components/HeroCanvas.module.scss';
+import styles from '@/styles/components/HeroCanvas.module.scss';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { canvas as Canvas } from '../utils/canvas.js';
+import { canvas as Canvas } from '@/utils/canvas.js';
 import { Html, useGLTF } from '@react-three/drei';
 import { a, useSpring } from '@react-spring/three';
-import { useColor } from '../utils/themes.js';
+import { useColor } from '@/utils/themes.js';
 import useMeasure from 'react-use-measure';
 
 export default function Viewport() {
@@ -40,7 +40,7 @@ function Placeholder({ height = 0 }) {
           opacity: opacity */
         }}>
         <Image
-          src='https://res.cloudinary.com/ruben-p/image/upload/3D%20Models/Logo/Placeholder%20RP-Logo.webp'
+          src='/models/rp-logo/placeholder.webp'
           alt='RP-Logo 3D model placeholder'
           fill={true}
           sizes='800px'
@@ -54,7 +54,7 @@ function Placeholder({ height = 0 }) {
 function Model() {
   const [scale, setScale] = useState(Math.min(1, window.screen.width / 600));
   const { nodes, materials } = useGLTF(
-    'https://res.cloudinary.com/ruben-p/image/upload/v1692730013/3D%20Models/Logo/RP-Logo.glb'
+    '/models/rp-logo/model.glb'
   );
 
   const { transparency } = useSpring({
@@ -122,7 +122,3 @@ function Model() {
     </group>
   );
 }
-
-useGLTF.preload(
-  'https://res.cloudinary.com/ruben-p/image/upload/v1692730013/3D%20Models/Logo/RP-Logo.glb'
-);
