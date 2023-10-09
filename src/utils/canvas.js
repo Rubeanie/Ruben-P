@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+'use client';
 
-import styles from '../styles/utils/canvas.module.scss';
+import canvasStyles from '@/styles/utils/canvas.module.scss';
 import { forwardRef, Suspense, useState, useEffect, useRef } from 'react';
 import { useIsomorphicLayoutEffect } from 'react-spring';
 import { extend, createRoot, unmountComponentAtNode } from '@react-three/fiber';
@@ -10,7 +11,7 @@ import {
   Mesh as _Mesh,
   PointLight as _PointLight
 } from 'three';
-import { PerformanceMonitor } from '@react-three/drei';
+import { Preload, PerformanceMonitor } from '@react-three/drei';
 import round from 'lodash/round';
 import { Perf } from 'r3f-perf';
 
@@ -73,6 +74,7 @@ export const canvas = forwardRef((props, ref) => {
             onChange={({ factor }) => setDpr(round(0.5 + 0.5 * factor, 2))}
           />
           <Suspense fallback={fallback}>{children}</Suspense>
+          <Preload all />
         </>
       );
     }
@@ -94,7 +96,7 @@ export const canvas = forwardRef((props, ref) => {
 
   return (
     <div ref={ref} className={styles}>
-      <canvas ref={canvasRef} className={styles} />
+      <canvas ref={canvasRef} className={canvasStyles.canvas} />
     </div>
   );
 });
