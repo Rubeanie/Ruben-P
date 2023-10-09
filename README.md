@@ -5,7 +5,7 @@
 
 ## Important
 
-This version of the website was made in a rush to make a school deadline. The web pages, components and scss for the most part will be re-written/modified or replaced before a proper release ~2022.
+This version of the website was made in a rush to make a school deadline. The web pages, components and scss for the most part will be re-written/modified or replaced before a proper release ~202X.
 
 ## Why?
 

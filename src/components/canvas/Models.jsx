@@ -51,3 +51,5 @@ export const Logo = ({ ...props }) => {
     </group>
   );
 }
+
+useGLTF.preload('/models/rp-logo.glb');

@@ -7,7 +7,7 @@ export default function Footer() {
     <footer>
       <div className='row'>
         <p>
-          ©2022 Ruben Panzich
+          ©2023 Ruben Panzich
           <br />
           <Link href='https://github.com/Rubeanie/Ruben-P'>
             Source code on GitHub
