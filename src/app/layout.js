@@ -9,6 +9,7 @@ import { yapari, kollektif } from '@/styles/fonts';
 import { Analytics } from '@vercel/analytics/react';
 import DynamicMetadata from './metadata';
 import { Preload } from './preload';
+import { Layout } from '@/components/dom/Layout';
 
 const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
@@ -46,7 +47,11 @@ export default async function RootLayout({
         <Signature />
         <Navbar />
         <Suspense>
-          <main>{children}</main>
+          <main>
+            <Layout>
+              {children}
+            </Layout>
+          </main>
         </Suspense>
         <Theme url={data} />
         <Footer />

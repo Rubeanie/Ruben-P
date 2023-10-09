@@ -1,7 +1,5 @@
 import { Age } from '@/utils/common';
-import dynamic from 'next/dynamic';
-
-const Canvas = dynamic(() => import('../components/HeroCanvas'), { ssr: false })
+import HeroCanvas from '@/components/HeroCanvas';
 
 export const metadata = {
   title: 'Home | Ruben Panzich',
@@ -12,7 +10,7 @@ export const metadata = {
 export default function Home() {
   return (
     <div className='page'>
-      <Canvas />
+      <HeroCanvas />
       <div
         className='hero-no-padding'>
         <div className='column'>
