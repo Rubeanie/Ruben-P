@@ -3,6 +3,7 @@
 import { Component, useEffect, useState, createRef } from 'react';
 import { usePalette } from 'react-palette';
 import { getThemeUrl } from './sanity';
+import seedrandom from 'seedrandom';
 
 let url = '';
 const Color = require('color');
@@ -121,16 +122,28 @@ function ApplyTheme() {
   }, [data, loading]);
 }
 
+function randomTheme(data) {
+  const rng = seedrandom.xor4096();
+  const index = Math.floor(rng() * data.length);
+  console.log(`Url: ${data[index].image} | Index: ${index}`);
+  if (data[index].message !== null) {
+    console.log(data[index].message);
+  }
+  return data[index].image;
+}
+
 function overrideTheme(theme) {
   if (theme) {
-    console.log(`Url: ${theme} | These: OVERRIDE`);
+    console.log(`Url: ${theme} | Index: OVERRIDE`);
     url = theme;
   }
   window.dispatchEvent(new Event(fetchThemeEvent));
 }
 
 async function restartTheme() {
-  url = await getThemeUrl();
+  const data = await getThemeUrl();
+  url = randomTheme(data);
+
   window.dispatchEvent(new Event(fetchThemeEvent));
 }
 
@@ -141,7 +154,7 @@ class Theme extends Component {
     this.preloadRef = createRef();
   }
   componentDidMount() {
-    url = this.props.url;
+    url = randomTheme(this.props.url);
 
     if (this.preloadRef.current) {
       this.preloadRef.current.style.backgroundImage = `url('${url}')`;

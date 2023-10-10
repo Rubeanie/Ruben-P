@@ -1,5 +1,4 @@
 import { createClient } from 'next-sanity';
-import seedrandom from 'seedrandom';
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
@@ -31,7 +30,6 @@ const server = createClient({
 });
 
 const getThemeUrl = async () => {
-  const rng = seedrandom.xor4096();
   let data = {
     urls: [],
     prioritized: []
@@ -44,7 +42,11 @@ const getThemeUrl = async () => {
     },
     prioritize
   }`;
-  const themes = await server.fetch(query);
+  const themes = await server.fetch(query,
+    {next: {
+      revalidate: 120
+    }}
+  );
   for (const theme of themes) {
     if (!theme.prioritize) {
       data.urls.push(...theme.urls);
@@ -57,12 +59,7 @@ const getThemeUrl = async () => {
   } else {
     data = data.prioritized;
   }
-  const index = Math.floor(rng() * data.length);
-  console.log(`Url: ${data[index].image} | Index: ${index}`);
-  if (data[index].message !== null) {
-    console.log(data[index].message);
-  }
-  return data[index].image;
+  return data;
 };
 
 const GetAboutPageData = async () => {
