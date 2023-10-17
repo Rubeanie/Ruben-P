@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { PerformanceMonitor, Preload } from '@react-three/drei'
+import round from 'lodash/round';
 import { r3f } from '@/helpers/global'
 
 export default function Scene({ ...props }) {
