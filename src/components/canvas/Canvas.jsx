@@ -1,6 +1,6 @@
 'use client'
 
-import { forwardRef, Suspense, useRef, useState, useEffect } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
 import { Three } from '@/helpers/components/Three'
 import { useColor } from '@/utils/themes.js';
@@ -53,7 +53,7 @@ const Canvas = ({ orbit, children }) => {
       <Three>
         {children}
         {orbit && <OrbitControls />}
-        {perf ? <Perf position={'bottom-right'} /> : null}
+        {perf && <Perf position={'bottom-right'} />}
       </Three>
     </>
   )
