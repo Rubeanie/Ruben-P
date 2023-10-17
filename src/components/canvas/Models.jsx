@@ -39,7 +39,7 @@ export const Logo = ({ ...props }) => {
   }, []);
 
   return (
-    <group dispose={null} {...props}>
+    <group {...props}>
       <a.mesh
         geometry={nodes['RP_-_Logo001'].geometry}
         rotation-y={y}

@@ -44,7 +44,7 @@ const getThemeUrl = async () => {
   }`;
   const themes = await server.fetch(query,
     {next: {
-      revalidate: 120
+      revalidate: 1800
     }}
   );
   for (const theme of themes) {
