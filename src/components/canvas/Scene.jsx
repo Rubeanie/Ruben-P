@@ -28,11 +28,11 @@ export default function Scene({ ...props }) {
         iterations={7}
         step={0.05}
         factor={1}
-        onChange={({ factor }) => setDpr(round(0.6 + 0.9 * factor, 2))}
+        onChange={({ factor }) => setDpr(round(0.5 + 0.75 * factor, 2))}
       />
       <Suspense fallback={null}>
         <EffectComposer multisampling={0}>
-          <Bloom intensity={0.8} luminanceThreshold={0.085} luminanceSmoothing={0.9} height={450} />
+          <Bloom intensity={0.8} luminanceThreshold={0.085} luminanceSmoothing={0.9} height={410} />
         </EffectComposer>
       </Suspense>
     </Canvas>
