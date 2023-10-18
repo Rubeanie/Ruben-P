@@ -12,7 +12,6 @@ export default function Scene({ ...props }) {
 
   return (
     <Canvas
-      colorManagement
       gl={{
         powerPreference: "high-performance",
         stencil: false,
@@ -31,8 +30,8 @@ export default function Scene({ ...props }) {
         onChange={({ factor }) => setDpr(round(0.5 + 0.75 * factor, 2))}
       />
       <Suspense fallback={null}>
-        <EffectComposer multisampling={0}>
-          <Bloom intensity={0.8} luminanceThreshold={0.085} luminanceSmoothing={0.9} height={410} />
+        <EffectComposer>
+          <Bloom intensity={0.8} luminanceThreshold={0.06} luminanceSmoothing={0.65} />
         </EffectComposer>
       </Suspense>
     </Canvas>
