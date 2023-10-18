@@ -30,7 +30,7 @@ export default function Scene({ ...props }) {
       />
       <Suspense fallback={null}>
         <EffectComposer>
-          <Bloom intensity={0.8} luminanceThreshold={0.06} luminanceSmoothing={0.65} />
+          <Bloom intensity={0.8} luminanceThreshold={0.06} luminanceSmoothing={0.65} height={410} />
         </EffectComposer>
       </Suspense>
     </Canvas>
