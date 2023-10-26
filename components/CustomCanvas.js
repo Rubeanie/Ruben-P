@@ -94,7 +94,7 @@ export const CustomCanvas = ({ children }) => {
             opacity: opacity */
           }}>
           <Image
-            src='https://res.cloudinary.com/ruben-p/image/upload/3D%20Models/Logo/Placeholder%20RP-Logo.webp'
+            src='https://res.cloudinary.com/ruben-p/image/upload/v1698346447/3D%20Models/Logo/Placeholder%20RP-Logo.webp'
             alt='RP-Logo 3D model placeholder'
             fill={true}
             sizes='800px'
