@@ -13,7 +13,7 @@ import { useColor } from '../lib/themes';
 export function RpLogo(props) {
   const [scale, setScale] = useState(Math.min(1, window.screen.width / 600));
   const { nodes, materials } = useGLTF(
-    'https://res.cloudinary.com/ruben-p/image/upload/v1692730013/3D%20Models/Logo/RP-Logo.glb'
+    'https://res.cloudinary.com/ruben-p/image/upload/v1698346458/3D%20Models/Logo/RP-Logo.glb'
   );
 
   const { transparency } = useSpring({
@@ -83,5 +83,5 @@ export function RpLogo(props) {
 }
 
 useGLTF.preload(
-  'https://res.cloudinary.com/ruben-p/image/upload/v1692730013/3D%20Models/Logo/RP-Logo.glb'
+  'https://res.cloudinary.com/ruben-p/image/upload/v1698346458/3D%20Models/Logo/RP-Logo.glb'
 );
