@@ -6,6 +6,7 @@
   "author": "Ruben",
   "license": "MIT",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
     "prebuild": "echo 'Building Sanity to public/admin' && cd admin && yarn && npx @sanity/cli build ../public/admin -y && echo 'Done'",
     "build": "next build",
