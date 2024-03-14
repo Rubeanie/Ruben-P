@@ -3,7 +3,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Signature from '@/components/Signature';
 import { Suspense } from 'react';
-import { Theme } from '@/utils/themes';
+import { useBackgroundColor, Theme } from '@/utils/themes';
 import { getThemeUrl } from '@/utils/sanity';
 import { yapari, kollektif } from '@/styles/fonts';
 import { Analytics } from '@vercel/analytics/react';
