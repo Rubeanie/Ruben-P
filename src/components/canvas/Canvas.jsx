@@ -15,19 +15,22 @@ export const Common = ({ color }) => (
         position: [-6, 1, 7],
         color: useColor('--color-secondary'),
         intensity: 110,
-        distance: 70
+        distance: 70,
+        decay: 2
       },
       {
         position: [0, 1, 8],
         color: useColor('--color-primary'),
         intensity: 85,
-        distance: 80
+        distance: 80,
+        decay: 2
       },
       {
         position: [6, 1, 7],
         color: useColor('--color-secondary'),
         intensity: 110,
-        distance: 70
+        distance: 70,
+        decay: 2
       }
     ].map((lightProps, index) => (
       <pointLight key={index} {...lightProps} />

@@ -5,6 +5,7 @@ import { Canvas } from '@react-three/fiber'
 import { PerformanceMonitor, Preload } from '@react-three/drei'
 import round from 'lodash/round';
 import { r3f } from '@/helpers/global'
+import * as THREE from 'three'
 
 export default function Scene({ ...props }) {
   const [dpr, setDpr] = useState(0.9)
@@ -16,7 +17,8 @@ export default function Scene({ ...props }) {
         powerPreference: "high-performance"
       }}
       dpr={dpr}
-      {...props}>
+      {...props}
+      onCreated={(state) => (state.gl.toneMapping = THREE.AgXToneMapping)}>
       {/* @ts-ignore */}
       <r3f.Out />
       <Preload all />
