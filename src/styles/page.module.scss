@@ -1,4 +1,4 @@
-@use './abstracts/index.module' as var;
+@use './abstracts/index' as var;
 
 .page {
   max-width: var.$viewport-max-width;

@@ -30,30 +30,6 @@ function useColor(key) {
   return Color(value).hex();
 }
 
-function useBackgroundColor() {
-  const [background, setBackground] = useState(null);
-  const [overlayRgb, setOverlayRgb] = useState(null);
-  const [overlayAlpha, setOverlayAlpha] = useState(null);
-  useEffect(() => {
-    if (typeof window === 'undefined' || !document) return;
-    const updateBackgroundColor = () => {
-      const styles = window.getComputedStyle(document.documentElement);
-      setBackground(styles.getPropertyValue('--color-background')?.trim());
-      setOverlayRgb(styles.getPropertyValue('--color-overlay-rgb')?.trim());
-      setOverlayAlpha(styles.getPropertyValue('--color-overlay-alpha')?.trim());
-    };
-    updateBackgroundColor();
-    window.addEventListener(updateThemeEvent, updateBackgroundColor);
-    return () => {
-      window.removeEventListener(updateThemeEvent, updateBackgroundColor);
-    };
-  }, []);
-  if (!background || !overlayRgb || overlayAlpha === null) return null;
-  return Color(background)
-    .mix(Color(overlayRgb), parseFloat(overlayAlpha))
-    .hex();
-}
-
 function useValue(key) {
   const [value, setValue] = useState(null);
   useEffect(() => {
@@ -183,4 +159,4 @@ class Theme extends Component {
   }
 }
 
-export { useColor, useBackgroundColor, useValue, Theme };
+export { useColor, useValue, Theme };

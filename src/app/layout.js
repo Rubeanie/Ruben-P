@@ -3,11 +3,10 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Signature from '@/components/Signature';
 import { Suspense } from 'react';
-import { useBackgroundColor, Theme } from '@/utils/themes';
+import { Theme } from '@/utils/themes';
 import { getThemeUrl } from '@/utils/sanity';
 import { yapari, kollektif } from '@/styles/fonts';
 import { Analytics } from '@vercel/analytics/react';
-import DynamicMetadata from './metadata';
 import { Preload } from './preload';
 import { Layout } from '@/components/dom/Layout';
 
@@ -19,19 +18,20 @@ export const metadata = {
   metadataBase: new URL(baseUrl),
   keywords: ['Ruben', 'Panzich', 'Rubeanie', 'Portfolio', 'About', 'Links', 'Contact', 'Artist', 'Developer'],
   authors: [{ name: 'Ruben Panzich', url: 'https://www.ruben-p.com' }],
-  colorScheme: 'dark',
-  themeColor: '#0f182d',
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-    viewportFit: 'cover',
-    interactiveWidget: 'overlays-content'
-  },
   other: {
     "darkreader-lock": true,
   },
 };
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#121212',
+  colorScheme: 'dark',
+  viewportFit: 'cover',
+  interactiveWidget: 'overlays-content'
+}
 
 export default async function RootLayout({
   // Layouts must accept a children prop.
@@ -55,7 +55,6 @@ export default async function RootLayout({
         </Suspense>
         <Theme url={data} />
         <Footer />
-        <DynamicMetadata />
         <Analytics />
       </body>
     </html>
