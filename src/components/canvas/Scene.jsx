@@ -1,26 +1,36 @@
 'use client'
 
-import { useState } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { PerformanceMonitor, Preload } from '@react-three/drei'
+import { useEffect, useState } from 'react';
+import { Canvas, addEffect } from '@react-three/fiber';
+import { PerformanceMonitor, Preload, View } from '@react-three/drei';
 import round from 'lodash/round';
-import { r3f } from '@/helpers/global'
-import * as THREE from 'three'
+import Lenis from '@studio-freight/lenis';
 
-export default function Scene({ ...props }) {
-  const [dpr, setDpr] = useState(0.9)
+export default function Scene(props) {
+  const [dpr, setDpr] = useState(0.9);
+
+  // Use lenis to control scrolling
+  useEffect(() => {
+    const lenis = new Lenis({ smoothWheel: true, syncTouch: true });
+    const removeEffect = addEffect((time) => lenis.raf(time * 1));
+    return () => {
+      lenis.destroy();
+      removeEffect();
+    };
+  }, []);
 
   return (
     <Canvas
+      shadows
       gl={{
         precision: 'lowp',
-        powerPreference: "high-performance"
+        powerPreference: 'high-performance'
       }}
       dpr={dpr}
-      {...props}
-      onCreated={(state) => (state.gl.toneMapping = THREE.AgXToneMapping)}>
-      {/* @ts-ignore */}
-      <r3f.Out />
+      eventSource={document.body}
+      eventPrefix='client'
+      {...props}>
+      <View.Port />
       <Preload all />
       <PerformanceMonitor
         ms={200}
@@ -30,5 +40,5 @@ export default function Scene({ ...props }) {
         onChange={({ factor }) => setDpr(round(0.5 + 0.6 * factor, 2))}
       />
     </Canvas>
-  )
+  );
 }

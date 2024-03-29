@@ -23,6 +23,7 @@
     "@react-three/fiber": "^8.15.19",
     "@sanity/client": "^6.15.4",
     "@sanity/image-url": "^1.0.2",
+    "@studio-freight/lenis": "^1.0.42",
     "@vercel/analytics": "^1.2.2",
     "age-calculator": "^1.0.0",
     "color": "^4.2.3",
@@ -41,8 +42,7 @@
     "seedrandom": "^3.0.5",
     "sharp": "^0.33.2",
     "three": "^0.162.0",
-    "three-stdlib": "^2.29.5",
-    "tunnel-rat": "^0.1.2"
+    "three-stdlib": "^2.29.5"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",

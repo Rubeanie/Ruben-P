@@ -1,4 +1,5 @@
 import '@/styles/globals.scss';
+import dynamic from 'next/dynamic';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Signature from '@/components/Signature';
@@ -8,7 +9,8 @@ import { getThemeUrl } from '@/utils/sanity';
 import { yapari, kollektif } from '@/styles/fonts';
 import { Analytics } from '@vercel/analytics/react';
 import { Preload } from './preload';
-import { Layout } from '@/components/dom/Layout';
+
+const Scene = dynamic(() => import('@/components/canvas/Scene'), { ssr: false });
 
 const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
@@ -48,9 +50,17 @@ export default async function RootLayout({
         <Navbar />
         <Suspense>
           <main>
-            <Layout>
-              {children}
-            </Layout>
+            {children}
+            <Scene
+              style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100vw',
+                height: '100vh',
+                pointerEvents: 'none',
+              }}
+            />
           </main>
         </Suspense>
         <Theme url={data} />
