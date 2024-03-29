@@ -33,7 +33,7 @@ export default function Logo({ ...props }) {
         <a.mesh
           geometry={nodes['RP_-_Logo001'].geometry}
           rotation-y={y}
-          scale={size.width / 530}
+          scale={Math.min(1, size.width / 530)}
           material={materials.Abstract}
           material-transparent
           material-opacity={transparency}
