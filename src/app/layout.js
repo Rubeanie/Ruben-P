@@ -8,6 +8,7 @@ import { Theme } from '@/utils/themes';
 import { getThemeUrl } from '@/utils/sanity';
 import { yapari, kollektif } from '@/styles/fonts';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Preload } from './preload';
 
 const Scene = dynamic(() => import('@/components/canvas/Scene'), { ssr: false });
@@ -58,7 +59,7 @@ export default async function RootLayout({
                 left: 0,
                 width: '100vw',
                 height: '100vh',
-                pointerEvents: 'none',
+                pointerEvents: 'none'
               }}
             />
           </main>
@@ -66,6 +67,7 @@ export default async function RootLayout({
         <Theme url={data} />
         <Footer />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
