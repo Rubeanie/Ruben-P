@@ -30,7 +30,7 @@ export default function About() {
     }
   });
 
-  const personalPhoto = cld.image('Images/About/Personal-Photo.webp');
+  const personalPhoto = cld.image('v1718092032/Images/About/Personal-Photo.webp');
 
   return (
     <div className='page'>
