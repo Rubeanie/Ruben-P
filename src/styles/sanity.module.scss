@@ -1,0 +1,9 @@
+@use './abstracts/index'as var;
+
+#sanity {
+  background-color: var(--card-code-bg-color);
+  max-height: 100vh;
+  width: 100vw;
+  position: fixed;
+  z-index: 11;
+}

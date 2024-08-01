@@ -14,23 +14,15 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 const nextConfig = {
-  images: {
+  /* images: {
     domains: ['res.cloudinary.com']
-  },
+  }, */
   sassOptions: {
-    includePaths: [path.join(__dirname, 'styles')],
+    includePaths: [path.join(__dirname, 'styles')]
   },
-  async rewrites() {
-    return [
-      {
-        source: '/admin/:path*',
-        destination:
-          process.env.NODE_ENV === 'development'
-            ? 'http://localhost:3333/admin/:path*'
-            : '/admin/index.html'
-      }
-    ];
-  },
+  experimental: {
+    urlImports: ['https://themer.sanity.build/', 'https://res.cloudinary.com/']
+  }
 };
 
 module.exports = withBundleAnalyzer(withPWA(nextConfig))
