@@ -7,7 +7,6 @@
 import {visionTool} from '@sanity/vision'
 import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
-import { theme } from 'https://themer.sanity.build/api/hues?preset=dew';
 
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
 import {apiVersion, dataset, projectId} from './src/sanity/env'
@@ -23,7 +22,6 @@ export default defineConfig({
   dataset,
   // Add and edit the content schema in the './sanity/schema' folder
   schema,
-  theme,
   plugins: [
     dashboardTool({
       widgets: [vercelWidget()]
