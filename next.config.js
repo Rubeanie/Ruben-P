@@ -14,14 +14,11 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 const nextConfig = {
-  /* images: {
+  images: {
     domains: ['res.cloudinary.com']
-  }, */
+  },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')]
-  },
-  experimental: {
-    urlImports: ['https://themer.sanity.build/', 'https://res.cloudinary.com/']
   }
 };
 
