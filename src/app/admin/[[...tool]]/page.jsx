@@ -17,7 +17,7 @@ export { metadata, viewport } from 'next-sanity/studio'
 export default function StudioPage() {
   return (
     <div className='page'>
-      <div className="content">
+      <div className='content studio'>
         <NextStudio config={config} />
       </div>
     </div>
