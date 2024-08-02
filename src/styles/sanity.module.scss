@@ -10,7 +10,7 @@
     transform: translateY(var.$navbar-height);
 
     background-color: var(--card-code-bg-color);
-    height: calc(100vh - var.$navbar-height);
+    height: calc(100vh - var.$navbar-height) !important;
     width: 100vw;
     position: fixed;
 

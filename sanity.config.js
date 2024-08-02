@@ -6,6 +6,7 @@
 
 import {visionTool} from '@sanity/vision'
 import {defineConfig} from 'sanity'
+import { structureTool } from 'sanity/structure';
 
 /* TODO:
   * 1. implement presenter
@@ -14,13 +15,14 @@ import {defineConfig} from 'sanity'
 
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
 import { apiVersion, dataset, projectId } from './src/sanity/env';
-import {schema} from './src/sanity/schema'
+import { schema } from './src/sanity/schemas'
 
 import { media } from 'sanity-plugin-media';
+import { seoMetaFields } from 'sanity-plugin-seo';
 import { codeInput } from '@sanity/code-input';
 import { dashboardTool } from '@sanity/dashboard';
 import { vercelWidget } from 'sanity-plugin-dashboard-widget-vercel';
-import { cloudinaryAssetSourcePlugin } from 'sanity-plugin-cloudinary'
+import { cloudinarySchemaPlugin, cloudinaryAssetSourcePlugin } from 'sanity-plugin-cloudinary';
 
 export default defineConfig({
   title: 'Backend',
@@ -33,11 +35,14 @@ export default defineConfig({
     dashboardTool({
       widgets: [vercelWidget()]
     }),
+    structureTool(),
     // Vision is a tool that lets you query your content with GROQ in the studio
     // https://www.sanity.io/docs/the-vision-plugin
     visionTool({ defaultApiVersion: apiVersion }),
-    cloudinaryAssetSourcePlugin(),
     media(),
-    codeInput(),
+    cloudinarySchemaPlugin(),
+    cloudinaryAssetSourcePlugin(),
+    seoMetaFields(),
+    codeInput()
   ]
 });
