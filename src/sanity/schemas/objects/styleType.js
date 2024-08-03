@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 export const style = {
   name: 'styleType',
   type: 'object',
@@ -19,18 +20,23 @@ export const style = {
   preview: {
     select: {
       title: 'title',
-      message: 'message',
+      subtitle: 'message',
       url: 'image.secure_url'
     },
-    prepare(selection) {
-      const { title, message, url } = selection;
+    prepare({ title, subtitle, url }) {
       return {
-        title: title,
-        subtitle: message,
+        title,
+        subtitle,
 
         // `media` takes a function, string or React element
         // Remember to import React from 'react' if you are rendering React components like below
-        media: <img src={url} />
+        media: (
+          <img
+            src={url}
+            alt='Style Preview Image'
+            style={{ height: '100%', width: 'auto', display: 'block' }}
+          />
+        )
       };
     }
   }

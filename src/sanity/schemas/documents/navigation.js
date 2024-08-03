@@ -1,9 +1,8 @@
-import { CgWebsite } from 'react-icons/cg';
+import { VscSymbolClass } from 'react-icons/vsc';
 
-export const site = {
-  name: 'site',
+export const navigation = {
+  name: 'navigation',
   type: 'document',
-  icon: CgWebsite,
   groups: [
     { name: 'general', title: 'General', default: true },
     { name: 'navigation', title: 'Navigation' },
@@ -22,7 +21,7 @@ export const site = {
       group: 'general',
       of: [{ name: 'theme', type: 'reference', to: [{ type: 'theme' }] }]
     },
-    /*    {
+    {
       name: 'headerMenu',
       type: 'reference',
       to: [{ type: 'navigation' }], //TODO: create navigation
@@ -34,12 +33,12 @@ export const site = {
       to: [{ type: 'navigation' }],
       group: 'navigation'
     },
-    {
+    /* {
       name: 'social',
       type: 'reference',
       to: [{ type: 'social' }], //TODO: create social
       group: 'navigation'
-    } */
+    }, */
     {
       name: 'seo',
       title: 'Default SEO',
