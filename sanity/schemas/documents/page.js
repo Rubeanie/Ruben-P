@@ -34,6 +34,16 @@ export const page = {
           views: [{ name: 'list' }, { name: 'grid' }]
         }
       }
+    } /* TODO: create metadata object */,
+    {
+      name: 'slug',
+      type: 'slug',
+      description: 'URL path / permalink. Use "index" for the homepage.',
+      group: 'seo',
+      options: {
+        source: (doc) => doc.metadata.title || doc.name || doc.title
+      },
+      validation: (Rule) => Rule.required()
     },
     {
       name: 'metadata',
@@ -44,7 +54,7 @@ export const page = {
   preview: {
     select: {
       title: 'title',
-      slug: 'metadata.slug.current',
+      slug: 'slug.current',
       media: 'metadata.seo.openGraph.image',
       index: 'metadata'
     },
