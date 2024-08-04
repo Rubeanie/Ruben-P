@@ -14,6 +14,9 @@ $common-border-radius: 1rem;
 /* Navbar Height */
 $navbar-height: 80px;
 
+/* Footer Height */
+$footer-height: 60px;
+
 /* Maximum Width of Viewport Content */
 $viewport-max-width: 120rem;
 
@@ -29,8 +32,10 @@ $padding-safe: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
 $inverted-padding-safe: 0 calc(-1 * env(safe-area-inset-right)) 0 calc(-1 * env(safe-area-inset-left));
 
 /* Font Faces */
-$h-font: var(--font-yapari), serif;
-$p-font: var(--font-kollektif), serif;
+$h-font: var(--font-yapari),
+serif;
+$p-font: var(--font-kollektif),
+serif;
 
 /* Text Alignments */
 $h-alignment: center;

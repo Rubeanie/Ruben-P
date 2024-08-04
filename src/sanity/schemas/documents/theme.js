@@ -14,8 +14,7 @@ export const theme = {
       name: 'styles',
       type: 'array',
       of: [{ type: 'styleType' }],
-      /* min value 1 using min(minLength) */
-      validation: (Rule) => Rule.required().min(5)
+      validation: (Rule) => Rule.required().min(1)
     }
   ],
   preview: {
@@ -27,15 +26,15 @@ export const theme = {
     prepare(selection) {
       const { title, styles, url } = selection;
       return {
-        title: title,
-        subtitle: `${styles.length} styles`,
-        media: (
+        title: title || 'Untitled Theme',
+        subtitle: `${styles !== undefined ? styles.length : "0"} styles`,
+        media: url !== undefined ? (
           <img
             src={url}
             alt='Style Preview Image'
             style={{ height: '100%', width: 'auto', display: 'block' }}
           />
-        )
+        ) : null
       };
     }
   }

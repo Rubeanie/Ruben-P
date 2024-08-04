@@ -1,7 +1,7 @@
 @use './abstracts/index'as var;
 
 .studio {
-  height: var.$navbar-height;
+  height: calc(100dvh - var.$footer-height);
 
   #sanity {
     box-sizing: border-box;
@@ -13,6 +13,16 @@
     height: calc(100dvh - var.$navbar-height) !important;
     width: 100vw;
     position: fixed;
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p {
+      overflow: unset;
+    }
 
     [data-ui="Navbar"]::before {
       content: "";
