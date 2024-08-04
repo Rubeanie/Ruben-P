@@ -1,4 +1,5 @@
 import { VscSymbolClass } from 'react-icons/vsc';
+import { count } from '../../src/utils';
 
 export const navigation = {
   name: 'navigation',
@@ -11,39 +12,19 @@ export const navigation = {
       validation: (Rule) => Rule.required()
     },
     {
-      name: 'themes',
+      name: 'items',
       type: 'array',
-      group: 'general',
-      of: [{ name: 'theme', type: 'reference', to: [{ type: 'theme' }] }]
-    },
-    {
-      name: 'headerMenu',
-      type: 'reference',
-      to: [{ type: 'navigation' }], //TODO: create navigation
-      group: 'navigation'
-    },
-    {
-      name: 'footerMenu',
-      type: 'reference',
-      to: [{ type: 'navigation' }],
-      group: 'navigation'
-    },
-    /* {
-      name: 'social',
-      type: 'reference',
-      to: [{ type: 'social' }], //TODO: create social
-      group: 'navigation'
-    }, */
-    {
-      name: 'seo',
-      title: 'Default SEO',
-      type: 'seoMetaFields',
-      group: 'seo'
+      of: [{ type: 'link' }]
     }
   ],
   preview: {
-    prepare: () => ({
-      title: 'Site'
+    select: {
+      title: 'title',
+      items: 'items'
+    },
+    prepare: ({ title, items }) => ({
+      title,
+      subtitle: count(items, "link")
     })
   }
 };

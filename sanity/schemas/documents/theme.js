@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { MdStyle } from 'react-icons/md';
+import { count } from '../../src/utils';
 
 export const theme = {
   name: 'theme',
@@ -26,15 +27,16 @@ export const theme = {
     prepare(selection) {
       const { title, styles, url } = selection;
       return {
-        title: title || 'Untitled Theme',
-        subtitle: `${styles !== undefined ? styles.length : "0"} styles`,
-        media: url !== undefined ? (
-          <img
-            src={url}
-            alt='Style Preview Image'
-            style={{ height: '100%', width: 'auto', display: 'block' }}
-          />
-        ) : null
+        title,
+        subtitle: count(styles, 'style'),
+        media:
+          url !== undefined ? (
+            <img
+              src={url}
+              alt='Style Preview Image'
+              style={{ height: '100%', width: 'auto', display: 'block' }}
+            />
+          ) : null
       };
     }
   }

@@ -5,9 +5,9 @@ export const site = {
   type: 'document',
   icon: CgWebsite,
   groups: [
-    { name: 'general', title: 'General', default: true },
-    { name: 'navigation', title: 'Navigation' },
-    { name: 'seo', title: 'SEO' }
+    { name: 'general', default: true },
+    { name: 'navigation' },
+    { name: 'seo' }
   ],
   fields: [
     {
@@ -22,10 +22,10 @@ export const site = {
       group: 'general',
       of: [{ name: 'theme', type: 'reference', to: [{ type: 'theme' }] }]
     },
-    /*    {
+    {
       name: 'headerMenu',
       type: 'reference',
-      to: [{ type: 'navigation' }], //TODO: create navigation
+      to: [{ type: 'navigation' }],
       group: 'navigation'
     },
     {
@@ -34,14 +34,14 @@ export const site = {
       to: [{ type: 'navigation' }],
       group: 'navigation'
     },
-    {
+    /* {
       name: 'social',
       type: 'reference',
       to: [{ type: 'social' }], //TODO: create social
       group: 'navigation'
     } */
     {
-      name: 'seo',
+      name: 'metadata',
       title: 'Default SEO',
       type: 'seoMetaFields',
       group: 'seo'
