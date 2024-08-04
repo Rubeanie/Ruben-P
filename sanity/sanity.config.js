@@ -14,8 +14,8 @@ import { structureTool } from 'sanity/structure';
  */
 
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
-import { apiVersion, dataset, projectId } from './src/sanity/env';
-import { schema } from './src/sanity/schemas'
+import { apiVersion, dataset, projectId } from './env';
+import { schema } from './schemas'
 
 import { media } from 'sanity-plugin-media';
 import { seoMetaFields } from 'sanity-plugin-seo';

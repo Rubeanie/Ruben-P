@@ -9,7 +9,7 @@ import { getThemeUrl } from '@/utils/sanity';
 import { yapari, kollektif } from '@/styles/fonts';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
-import { Preload } from './preload';
+import { Preload } from '../preload';
 
 const Scene = dynamic(() => import('@/components/canvas/Scene'), { ssr: false });
 

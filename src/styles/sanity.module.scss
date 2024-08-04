@@ -1,38 +1,17 @@
 @use './abstracts/index'as var;
 
-.studio {
-  height: calc(100dvh - var.$footer-height);
+#sanity {
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
 
-  #sanity {
-    box-sizing: border-box;
-    overflow: visible !important;
-    left: 0;
-    transform: translateY(var.$navbar-height);
-
-    background-color: var(--card-code-bg-color);
-    height: calc(100dvh - var.$navbar-height) !important;
-    width: 100vw;
-    position: fixed;
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6,
-    p {
-      overflow: unset;
-    }
-
-    [data-ui="Navbar"]::before {
-      content: "";
-      position: absolute;
-      top: - var.$navbar-height;
-      left: 0;
-      z-index: -1;
-      height: var.$navbar-height;
-      width: 100vw;
-      background-color: var(--card-bg-color);
-    }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    overflow: unset;
   }
 }

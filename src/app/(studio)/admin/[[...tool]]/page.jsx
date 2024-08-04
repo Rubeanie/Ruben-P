@@ -8,7 +8,7 @@
  */
 
 import { NextStudio } from 'next-sanity/studio'
-import config from '../../../../sanity.config'
+import config from '../../../../../sanity/sanity.config'
 
 export const dynamic = 'force-static'
 
@@ -17,7 +17,7 @@ export { metadata, viewport } from 'next-sanity/studio'
 export default function StudioPage() {
   return (
     <div className='page'>
-      <div className='content studio'>
+      <div className='content'>
         <NextStudio config={config} />
       </div>
     </div>

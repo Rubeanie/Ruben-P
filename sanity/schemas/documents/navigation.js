@@ -3,16 +3,11 @@ import { VscSymbolClass } from 'react-icons/vsc';
 export const navigation = {
   name: 'navigation',
   type: 'document',
-  groups: [
-    { name: 'general', title: 'General', default: true },
-    { name: 'navigation', title: 'Navigation' },
-    { name: 'seo', title: 'SEO' }
-  ],
+  icon: VscSymbolClass,
   fields: [
     {
       name: 'title',
       type: 'string',
-      group: 'general',
       validation: (Rule) => Rule.required()
     },
     {
