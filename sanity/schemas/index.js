@@ -7,6 +7,7 @@ import { theme } from './documents/theme';
 
 // objects
 import { link } from './objects/link';
+import { metadata } from './objects/metadata';
 import { style } from './objects/styleType';
 
 // modules
@@ -22,6 +23,7 @@ export const schema = {
 
     // objects
     link,
+    metadata,
     style,
 
     // modules

@@ -1,7 +1,6 @@
 import '@/styles/globals.scss';
 import Signature from '@/components/Signature';
 import { Suspense } from 'react';
-import { Theme } from '@/utils/themes';
 import { getThemeUrl } from '@/utils/sanity';
 import { yapari, kollektif } from '@/styles/fonts';
 import { Preload } from './preload';
@@ -45,7 +44,6 @@ export default async function RootLayout({
             {children}
           </main>
         </Suspense>
-        <Theme url={data} />
       </body>
     </html>
   );

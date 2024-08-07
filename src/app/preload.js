@@ -1,4 +1,4 @@
-import { prefetchDNS, preconnect } from 'react-dom'
+import { prefetchDNS, preconnect, preload } from 'react-dom'
 
 export function Preload() {
   prefetchDNS('https://www.gstatic.com/draco/versioned/decoders/1.5.5/draco_wasm_wrapper.js');
@@ -7,6 +7,4 @@ export function Preload() {
   preconnect('https://cdn.sanity.io', { crossOrigin: 'anonymous' });
   preconnect('https://res.cloudinary.com', { crossOrigin: 'anonymous' });
   preconnect('https://www.gstatic.com', { crossOrigin: 'anonymous' });
-
-  return null;
 }

@@ -14,6 +14,7 @@
   "dependencies": {
     "@cloudinary/react": "^1.13.0",
     "@cloudinary/url-gen": "^1.19.0",
+    "@focus-reactive/sanity-plugin-inline-svg-input": "^1.1.0",
     "@next/bundle-analyzer": "^14.1.4",
     "@portabletext/react": "^3.0.15",
     "@react-spring/three": "^9.7.3",

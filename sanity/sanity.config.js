@@ -9,8 +9,11 @@ import {defineConfig} from 'sanity'
 import { structureTool } from 'sanity/structure';
 
 /* TODO:
-  * 1. implement presenter
-  * 2. implement structure
+  * 1. finish schemas
+  * 2. implement presenter
+  * 3. implement structure
+  * 4. implement dashboard
+  * 5. unify icons
  */
 
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
@@ -19,6 +22,7 @@ import { schema } from './schemas'
 
 import { media } from 'sanity-plugin-media';
 import { seoMetaFields } from 'sanity-plugin-seo';
+import { inlineSvgInput } from '@focus-reactive/sanity-plugin-inline-svg-input';
 import { codeInput } from '@sanity/code-input';
 import { dashboardTool } from '@sanity/dashboard';
 import { vercelWidget } from 'sanity-plugin-dashboard-widget-vercel';
@@ -42,6 +46,7 @@ export default defineConfig({
     media(),
     cloudinarySchemaPlugin(),
     cloudinaryAssetSourcePlugin(),
+    inlineSvgInput(),
     seoMetaFields(),
     codeInput()
   ]

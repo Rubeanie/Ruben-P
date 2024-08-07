@@ -17,6 +17,11 @@ export const site = {
       validation: (Rule) => Rule.required()
     },
     {
+      name: 'logo',
+      type: 'inlineSvg',
+      group: 'general'
+    },
+    {
       name: 'themes',
       type: 'array',
       group: 'general',

@@ -34,37 +34,28 @@ export const page = {
           views: [{ name: 'list' }, { name: 'grid' }]
         }
       }
-    } /* TODO: create metadata object */,
-    {
-      name: 'slug',
-      type: 'slug',
-      description: 'URL path / permalink. Use "index" for the homepage.',
-      group: 'seo',
-      options: {
-        source: (doc) => doc.metadata.title || doc.name || doc.title
-      },
-      validation: (Rule) => Rule.required()
     },
     {
       name: 'metadata',
-      type: 'seoMetaFields',
+      type: 'metadata',
       group: 'seo'
     }
   ],
   preview: {
     select: {
       title: 'title',
-      slug: 'slug.current',
+      slug: 'metadata.slug.current',
       media: 'metadata.seo.openGraph.image',
-      index: 'metadata'
+      noindex: 'metadata.seo.nofollowAttributes'
     },
-    prepare: () => ({
+    prepare: ({ title, slug, media, noindex }) => ({
       title,
       subtitle: slug && (slug === 'index' ? '/' : `/${slug}`),
       media:
         media ||
         (slug === 'index' && VscHome) ||
-        (slug === '404' && VscQuestion) /* TODO: noindex check */
+        (slug === '404' && VscQuestion) ||
+        (noindex && VscEyeClosed)
     })
   }
 };

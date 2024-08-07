@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { Theme } from '@/utils/themes';
 import { getThemeUrl } from '@/utils/sanity';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -51,6 +52,7 @@ export default async function RootLayout({
           pointerEvents: 'none'
         }}
       />
+      <Theme url={data} />
       <Analytics />
       <SpeedInsights />
       <Footer />
