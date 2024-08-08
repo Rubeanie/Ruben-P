@@ -12,9 +12,9 @@ export default function Scene(props) {
   // Use lenis to control scrolling
   useEffect(() => {
     const lenis = new Lenis({
-      smoothWheel: true,
+      smoothWheel: false,
       syncTouch: true,
-      duration: 0.6
+      duration: 0.3
     });
     const removeEffect = addEffect((time) => lenis.raf(time));
     return () => {
