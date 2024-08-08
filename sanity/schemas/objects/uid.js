@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from 'react';
 import { Box, Button, Flex, Text, TextInput } from '@sanity/ui';
-import { VscCheck, VscCopy } from 'react-icons/vsc';
+import { MdCheck, MdContentCopy } from 'react-icons/md';
 
 export const uid = {
   name: 'uid',
@@ -29,7 +29,7 @@ export const uid = {
           <Button
             title='Click to copy'
             mode='ghost'
-            icon={checked ? VscCheck : VscCopy}
+            icon={checked ? MdCheck : MdContentCopy}
             onClick={() => {
               navigator.clipboard.writeText(
                 '#' + (elementProps.value || moduleKey)

@@ -1,9 +1,9 @@
-import { PiFlowArrow } from 'react-icons/pi';
+import { MdOutlineCallSplit } from 'react-icons/md';
 
 export const redirect = {
   name: 'redirect',
   type: 'document',
-  icon: PiFlowArrow,
+  icon: MdOutlineCallSplit,
   fields: [
     {
       name: 'source',

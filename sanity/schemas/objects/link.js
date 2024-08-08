@@ -1,9 +1,9 @@
-import { VscLink } from 'react-icons/vsc';
+import { IoMdLink } from 'react-icons/io';
 
 export const link = {
   name: 'link',
   type: 'object',
-  icon: VscLink,
+  icon: IoMdLink,
   options: {
     columns: 2
   },

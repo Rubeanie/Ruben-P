@@ -1,9 +1,9 @@
-import { CgWebsite } from 'react-icons/cg';
+import { MdWeb } from 'react-icons/md';
 
 export const site = {
   name: 'site',
   type: 'document',
-  icon: CgWebsite,
+  icon: MdWeb,
   groups: [
     { name: 'general', default: true },
     { name: 'navigation' },

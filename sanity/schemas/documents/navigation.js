@@ -1,10 +1,10 @@
-import { VscSymbolClass } from 'react-icons/vsc';
+import { MdAccountTree } from 'react-icons/md';
 import { count } from '@sanity/src/utils';
 
 export const navigation = {
   name: 'navigation',
   type: 'document',
-  icon: VscSymbolClass,
+  icon: MdAccountTree,
   fields: [
     {
       name: 'title',

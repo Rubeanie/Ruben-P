@@ -1,14 +1,10 @@
-import {
-  VscBrowser,
-  VscHome,
-  VscEyeClosed,
-  VscQuestion
-} from 'react-icons/vsc';
+import { IoMdBrowsers, IoMdEyeOff} from 'react-icons/io';
+import { MdHomeFilled, MdQuestionMark } from 'react-icons/md';
 
 export const page = {
   name: 'page',
   type: 'document',
-  icon: VscBrowser,
+  icon: IoMdBrowsers,
   groups: [
     { name: 'content', default: true },
     { name: 'seo', title: 'SEO' }
@@ -53,9 +49,9 @@ export const page = {
       subtitle: slug && (slug === 'index' ? '/' : `/${slug}`),
       media:
         media ||
-        (slug === 'index' && VscHome) ||
-        (slug === '404' && VscQuestion) ||
-        (noindex && VscEyeClosed)
+        (slug === 'index' && MdHomeFilled) ||
+        (slug === '404' && MdQuestionMark) ||
+        (noindex && IoMdEyeOff)
     })
   }
 };

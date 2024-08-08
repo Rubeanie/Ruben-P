@@ -1,10 +1,10 @@
-import { IoColorPalette } from 'react-icons/io5';
+import { IoMdColorFill } from 'react-icons/io';
 
 /* eslint-disable @next/next/no-img-element */
 export const style = {
   name: 'styleType',
   type: 'object',
-  icon: IoColorPalette,
+  icon: IoMdColorFill,
   fields: [
     {
       name: 'title',
@@ -28,16 +28,17 @@ export const style = {
     },
     prepare({ title, subtitle, url }) {
       return {
-        title : title || 'Untitled Style',
+        title: title || 'Untitled Style',
         subtitle,
 
-        media: url !== undefined ? (
-          <img
-            src={url}
-            alt='Style Preview Image'
-            style={{ height: '100%', width: 'auto', display: 'block' }}
-          />
-        ) : null
+        media:
+          url !== undefined ? (
+            <img
+              src={url}
+              alt='Style Preview Image'
+              style={{ height: '100%', width: 'auto', display: 'block' }}
+            />
+          ) : null
       };
     }
   }
