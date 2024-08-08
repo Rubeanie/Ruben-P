@@ -9,7 +9,7 @@ import {defineConfig} from 'sanity'
 import { structureTool } from 'sanity/structure';
 
 /* TODO:
-  * 1. finish schemas
+  * 1. add modules
   * 2. implement presenter
   * 3. implement structure
   * 4. implement dashboard
@@ -17,7 +17,7 @@ import { structureTool } from 'sanity/structure';
  */
 
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
-import { apiVersion, dataset, projectId } from './env';
+import { apiVersion, dataset, projectId } from './src/env';
 import { schema } from './schemas'
 
 import { media } from 'sanity-plugin-media';

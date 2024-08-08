@@ -1,5 +1,5 @@
 import { VscSymbolClass } from 'react-icons/vsc';
-import { count } from '../../src/utils';
+import { count } from '@sanity/src/utils';
 
 export const navigation = {
   name: 'navigation',

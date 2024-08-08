@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { MdStyle } from 'react-icons/md';
-import { count } from '../../src/utils';
+import { count } from '@sanity/src/utils';
 
 export const theme = {
   name: 'theme',
