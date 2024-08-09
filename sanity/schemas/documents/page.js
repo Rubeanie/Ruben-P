@@ -22,7 +22,7 @@ export const page = {
       type: 'array',
       group: 'content',
       of: [
-        { type: 'theme' }
+        { type: 'custom-html' }
         /*  { type: 'theme' } */ /* TODO:add more types */
       ],
       options: {
