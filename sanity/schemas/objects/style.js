@@ -2,7 +2,7 @@ import { IoMdColorFill } from 'react-icons/io';
 
 /* eslint-disable @next/next/no-img-element */
 export const style = {
-  name: 'styleType',
+  name: 'style',
   type: 'object',
   icon: IoMdColorFill,
   fields: [

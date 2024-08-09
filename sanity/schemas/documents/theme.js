@@ -14,7 +14,7 @@ export const theme = {
     {
       name: 'styles',
       type: 'array',
-      of: [{ type: 'styleType' }],
+      of: [{ type: 'style' }],
       validation: (Rule) => Rule.required().min(1)
     }
   ],
