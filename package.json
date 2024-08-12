@@ -8,7 +8,7 @@
   "scripts": {
     "prettier:check": "prettier --check --ignore-path .gitignore .",
     "prettier:apply": "prettier --write --ignore-path .gitignore .",
-    "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
+    "dev": "cross-env NODE_OPTIONS='--inspect' next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -75,6 +75,7 @@
     "eslint-config-prettier": "^9.1.0",
     "prettier": "^3.2.5",
     "r3f-perf": "^7.1.2",
+    "turbo": "^2.0.12",
     "webpack": "^5.91.0"
   }
 }
