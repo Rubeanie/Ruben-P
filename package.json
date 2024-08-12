@@ -6,6 +6,8 @@
   "author": "Ruben",
   "license": "MIT",
   "scripts": {
+    "prettier:check": "prettier --check --ignore-path .gitignore .",
+    "prettier:apply": "prettier --write --ignore-path .gitignore .",
     "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
