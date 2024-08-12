@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Canvas, addEffect } from '@react-three/fiber';
 import { PerformanceMonitor, Preload, View } from '@react-three/drei';
 import round from 'lodash/round';
-import Lenis from '@studio-freight/lenis';
+import Lenis from 'lenis';
 
 export default function Scene(props) {
   const [dpr, setDpr] = useState(0.9);

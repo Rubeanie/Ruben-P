@@ -14,6 +14,6 @@ export const kollektif = localFont({
   variable: '--font-kollektif',
   display: 'swap',
   style: 'normal',
-  weight: 'normal',
+  weight: '400',
   preload: true
 });

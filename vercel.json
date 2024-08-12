@@ -3,7 +3,7 @@
   "cleanUrls": true,
   "devCommand": "turbo dev",
   "framework": "nextjs",
-  "installCommand": "yarn install",
+  "installCommand": "pnpm install",
   "outputDirectory": ".next",
   "public": false
 }

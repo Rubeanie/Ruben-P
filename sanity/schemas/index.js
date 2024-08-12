@@ -1,5 +1,4 @@
 // documents
-import { blockContentType } from './documents/blockContentType';
 import { navigation } from './documents/navigation';
 import { page } from './documents/page';
 import { redirect } from './documents/redirect';
@@ -17,7 +16,6 @@ import { uid } from './objects/uid';
 
 export const schemaTypes = [
   // documents
-  blockContentType,
   navigation,
   page,
   redirect,
