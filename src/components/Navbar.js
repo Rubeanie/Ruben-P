@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { RubenP } from '@/utils/icons';
 import { useSpring, animated } from '@react-spring/web';
 import { Squeeze as Hamburger } from 'hamburger-react';
+import { addEffect } from '@react-three/fiber';
+import Lenis from 'lenis';
 
 const navbarData = {
   navigation: [
@@ -93,6 +95,25 @@ const Navbar = () => {
       toggleDropdown(false);
     }
   }, [showDropdown, openDropdown, toggleDropdown]);
+
+  // Use lenis to control scrolling
+  useEffect(() => {
+    const lenis = new Lenis({
+      smoothWheel: false,
+      syncTouch: true,
+      syncTouch: true
+    });
+    const updateLenis = (time) => {
+      if (!openDropdown) {
+        lenis.raf(time);
+      }
+    };
+    const removeEffect = addEffect(updateLenis);
+    return () => {
+      lenis.destroy();
+      removeEffect();
+    };
+  }, [openDropdown]);
 
   return (
     <animated.nav style={springs}>

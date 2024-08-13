@@ -11,7 +11,7 @@ $transition: 0.4s ease-in-out;
 
 .social {
   display: flex;
-  color: var.$color-primary;
+  background: var.$color-primary;
   position: relative;
   align-items: center;
   transition: transform $transition;
