@@ -127,7 +127,7 @@ importers:
         version: 2.3.2(@sanity/ui@2.8.8(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.3(@babel/core@7.25.2))(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)(sanity@3.53.0(@types/node@22.2.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.3(@babel/core@7.25.2))(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)(sass@1.77.8)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.5))(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       sanity-plugin-seo:
         specifier: 1.2.4-beta
-        version: 1.2.4-beta(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0)(typescript@4.9.5))(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0))(eslint@9.9.0)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(sanity@3.53.0(@types/node@22.2.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.3(@babel/core@7.25.2))(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)(sass@1.77.8)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.5))(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@4.9.5)
+        version: 1.2.4-beta(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0)(typescript@4.9.5))(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-import-resolver-typescript@3.6.1)(eslint@9.9.0))(eslint@9.9.0)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(sanity@3.53.0(@types/node@22.2.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.3(@babel/core@7.25.2))(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)(sass@1.77.8)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.5))(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@4.9.5)
       sass:
         specifier: ^1.77.8
         version: 1.77.8
@@ -195,9 +195,6 @@ importers:
       r3f-perf:
         specifier: ^7.2.1
         version: 7.2.1(@react-three/fiber@8.17.5(react-dom@18.3.1(react@18.3.1))(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.3(@babel/core@7.25.2))(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)(three@0.167.1))(@types/react@18.3.3)(@types/three@0.163.0)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.167.1)
-      turbo:
-        specifier: ^2.0.12
-        version: 2.0.12
       webpack:
         specifier: ^5.93.0
         version: 5.93.0(esbuild@0.21.5)
@@ -7258,40 +7255,6 @@ packages:
   tunnel-rat@0.1.2:
     resolution: {integrity: sha512-lR5VHmkPhzdhrM092lI2nACsLO4QubF0/yoOhzX7c+wIpbN1GjHNzCc91QlpxBi+cnx8vVJ+Ur6vL5cEoQPFpQ==}
 
-  turbo-darwin-64@2.0.12:
-    resolution: {integrity: sha512-NAgfgbXxX/JScWQmmQnGbPuFZq7LIswHfcMk5JwyBXQM/xmklNOxxac7MnGGIOf19Z2f6S3qHy17VIj0SeGfnA==}
-    cpu: [x64]
-    os: [darwin]
-
-  turbo-darwin-arm64@2.0.12:
-    resolution: {integrity: sha512-cP02uer5KSJ+fXL+OfRRk5hnVjV0c60hxDgNcJxrZpfhun7HHoKDDR7w2xhQntiA45aC6ZZEXRqMKpj6GAmKbg==}
-    cpu: [arm64]
-    os: [darwin]
-
-  turbo-linux-64@2.0.12:
-    resolution: {integrity: sha512-+mQgGfg1eq5qF+wenK/FKJaNMNAo5DQLC4htQy+8osW+fx6U+8+6UlPQPaycAWDEqwOI7NwuqkeHfkEQLQUTyQ==}
-    cpu: [x64]
-    os: [linux]
-
-  turbo-linux-arm64@2.0.12:
-    resolution: {integrity: sha512-KFyEZDXfPU1DK4zimxdCcqAcK7IIttX4mfsgB7NsSEOmH0dhHOih/YFYiyEDC1lTRx0C2RlzQ0Kjjdz48AN5Eg==}
-    cpu: [arm64]
-    os: [linux]
-
-  turbo-windows-64@2.0.12:
-    resolution: {integrity: sha512-kJj4KCkZTkDTDCqsSw1m1dbO4WeoQq1mYUm/thXOH0OkeqYbSMt0EyoTcJOgKUDsrMnzZD2gPfYrlYHtV69lVA==}
-    cpu: [x64]
-    os: [win32]
-
-  turbo-windows-arm64@2.0.12:
-    resolution: {integrity: sha512-TY3ROxguDilN2olCwcZMaePdW01Xhma0pZU7bNhsQEqca9RGAmsZBuzfGnTMcWPmv4tpnb/PlX1hrt1Hod/44Q==}
-    cpu: [arm64]
-    os: [win32]
-
-  turbo@2.0.12:
-    resolution: {integrity: sha512-8s2KwqjwQj7z8Z53SUZSKVkQOZ2/Sl4D2F440oaBY/k2lGju60dW6srEpnn8/RIDeICZmQn3pQHF79Jfnc5Skw==}
-    hasBin: true
-
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
@@ -12645,7 +12608,7 @@ snapshots:
 
   escape-string-regexp@4.0.0: {}
 
-  eslint-config-airbnb-base@15.0.0(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0))(eslint@9.9.0):
+  eslint-config-airbnb-base@15.0.0(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-import-resolver-typescript@3.6.1)(eslint@9.9.0))(eslint@9.9.0):
     dependencies:
       confusing-browser-globals: 1.0.11
       eslint: 9.9.0
@@ -12654,12 +12617,12 @@ snapshots:
       object.entries: 1.1.8
       semver: 6.3.1
 
-  eslint-config-airbnb-typescript@17.1.0(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0)(typescript@4.9.5))(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0))(eslint@9.9.0):
+  eslint-config-airbnb-typescript@17.1.0(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0)(typescript@4.9.5))(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-import-resolver-typescript@3.6.1)(eslint@9.9.0))(eslint@9.9.0):
     dependencies:
       '@typescript-eslint/eslint-plugin': 6.21.0(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0)(typescript@4.9.5)
       '@typescript-eslint/parser': 7.2.0(eslint@9.9.0)(typescript@4.9.5)
       eslint: 9.9.0
-      eslint-config-airbnb-base: 15.0.0(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0))(eslint@9.9.0)
+      eslint-config-airbnb-base: 15.0.0(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-import-resolver-typescript@3.6.1)(eslint@9.9.0))(eslint@9.9.0)
       eslint-plugin-import: 2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-import-resolver-typescript@3.6.1)(eslint@9.9.0)
 
   eslint-config-next@14.2.5(eslint@9.9.0)(typescript@4.9.5):
@@ -15734,11 +15697,11 @@ snapshots:
       - react-native
       - supports-color
 
-  sanity-plugin-seo@1.2.4-beta(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0)(typescript@4.9.5))(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0))(eslint@9.9.0)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(sanity@3.53.0(@types/node@22.2.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.3(@babel/core@7.25.2))(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)(sass@1.77.8)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.5))(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@4.9.5):
+  sanity-plugin-seo@1.2.4-beta(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0)(typescript@4.9.5))(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-import-resolver-typescript@3.6.1)(eslint@9.9.0))(eslint@9.9.0)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(sanity@3.53.0(@types/node@22.2.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.3(@babel/core@7.25.2))(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)(sass@1.77.8)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.5))(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@4.9.5):
     dependencies:
       '@sanity/incompatible-plugin': 1.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@sanity/ui': 2.8.8(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      eslint-config-airbnb-typescript: 17.1.0(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0)(typescript@4.9.5))(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0))(eslint@9.9.0)
+      eslint-config-airbnb-typescript: 17.1.0(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0)(typescript@4.9.5))(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-import-resolver-typescript@3.6.1)(eslint@9.9.0))(eslint@9.9.0)
       react: 18.3.1
       react-helmet: 6.1.0(react@18.3.1)
       react-schemaorg: 2.0.0(react@18.3.1)(schema-dts@1.1.2(typescript@4.9.5))(typescript@4.9.5)
@@ -16573,33 +16536,6 @@ snapshots:
       - '@types/react'
       - immer
       - react
-
-  turbo-darwin-64@2.0.12:
-    optional: true
-
-  turbo-darwin-arm64@2.0.12:
-    optional: true
-
-  turbo-linux-64@2.0.12:
-    optional: true
-
-  turbo-linux-arm64@2.0.12:
-    optional: true
-
-  turbo-windows-64@2.0.12:
-    optional: true
-
-  turbo-windows-arm64@2.0.12:
-    optional: true
-
-  turbo@2.0.12:
-    optionalDependencies:
-      turbo-darwin-64: 2.0.12
-      turbo-darwin-arm64: 2.0.12
-      turbo-linux-64: 2.0.12
-      turbo-linux-arm64: 2.0.12
-      turbo-windows-64: 2.0.12
-      turbo-windows-arm64: 2.0.12
 
   type-check@0.4.0:
     dependencies:
