@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
 import { useState } from 'react';
 import { useThree } from '@react-three/fiber';
-import { OrbitControls, PerspectiveCamera, useGLTF } from '@react-three/drei';
+import { useGLTF } from '@react-three/drei';
 import { a, useSpring } from '@react-spring/three';
-import { useColor } from '@/utils/themes.js';
+import { useCSSVariable } from '@/utils/themes.js';
 
 export default function Logo({ ...props }) {
   const [scale, setScale] = useState(Math.min(1, window.screen.width / 600));
@@ -43,21 +43,21 @@ export default function Logo({ ...props }) {
       {[
         {
           position: [-6, 1, 7],
-          color: useColor('--color-secondary'),
+          color: useCSSVariable('--color-secondary'),
           intensity: 110,
           distance: 70,
           decay: 2
         },
         {
           position: [0, 1, 8],
-          color: useColor('--color-primary'),
+          color: useCSSVariable('--color-primary'),
           intensity: 85,
           distance: 80,
           decay: 2
         },
         {
           position: [6, 1, 7],
-          color: useColor('--color-secondary'),
+          color: useCSSVariable('--color-secondary'),
           intensity: 110,
           distance: 70,
           decay: 2

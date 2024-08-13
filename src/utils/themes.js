@@ -4,40 +4,19 @@ import { Component, useEffect, useState, createRef } from 'react';
 import { usePalette } from 'react-palette';
 import { getThemeUrl } from './sanity';
 import seedrandom from 'seedrandom';
+import Color from 'color';
 
 let url = '';
-const Color = require('color');
 const fetchThemeEvent = 'fetchThemeEvent';
 const updateThemeEvent = 'updateThemeEvent';
 
-function useColor(key) {
+function useCSSVariable(key) {
   const [value, setValue] = useState(null);
   useEffect(() => {
-    if (typeof window === 'undefined' || !document) return;
-    const updateColor = () => {
-      const newColor = window
-        .getComputedStyle(document.documentElement)
-        .getPropertyValue(key);
-      setValue(newColor ? newColor.trim() : null);
-    };
-    updateColor();
-    window.addEventListener(updateThemeEvent, updateColor);
-    return () => {
-      window.removeEventListener(updateThemeEvent, updateColor);
-    };
-  }, [key]);
-  if (!value) return null;
-  return Color(value).hex();
-}
-
-function useValue(key) {
-  const [value, setValue] = useState(null);
-  useEffect(() => {
-    if (typeof window === 'undefined' || !document) return;
     const updateValue = () => {
-      const newValue = window
-        .getComputedStyle(document.documentElement)
-        .getPropertyValue(key);
+      const newValue = getComputedStyle(
+        document.documentElement
+      ).getPropertyValue(key);
       setValue(newValue ? newValue.trim() : null);
     };
     updateValue();
@@ -46,15 +25,15 @@ function useValue(key) {
       window.removeEventListener(updateThemeEvent, updateValue);
     };
   }, [key]);
-  if (value === null) return null;
+
   return value;
 }
 
 /* Generator */
 function ApplyTheme() {
-  const { data, loading, error } = usePalette(url);
+  const { data, loading } = usePalette(url);
   useEffect(() => {
-    if (loading !== true) {
+    if (!loading && data) {
       // Preload background image
       const preloadImage = new Image();
       preloadImage.src = url;
@@ -102,7 +81,7 @@ function randomTheme(data) {
   const rng = seedrandom.xor4096();
   const index = Math.floor(rng() * data.length);
   console.log(`Url: ${data[index].image} | Index: ${index}`);
-  if (data[index].message !== null) {
+  if (data[index].message) {
     console.log(data[index].message);
   }
   return data[index].image;
@@ -152,11 +131,14 @@ class Theme extends Component {
   }
   render() {
     return (
-      <div ref={this.preloadRef} style={{ visibility: 'hidden' }}>
-        {this.state.renderTheme ? <ApplyTheme /> : null}
-      </div>
+      <>
+        <div className='background-image' />
+        <div ref={this.preloadRef} style={{ visibility: 'hidden' }}>
+          {this.state.renderTheme && <ApplyTheme />}
+        </div>
+      </>
     );
   }
 }
 
-export { useColor, useValue, Theme };
+export { useCSSVariable, Theme };

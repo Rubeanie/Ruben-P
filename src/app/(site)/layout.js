@@ -6,7 +6,9 @@ import { getThemeUrl } from '@/utils/sanity';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
-const Scene = dynamic(() => import('@/components/canvas/Scene'), { ssr: false });
+const Scene = dynamic(() => import('@/components/canvas/Scene'), {
+  ssr: false
+});
 
 const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
@@ -14,11 +16,21 @@ const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(baseUrl),
-  keywords: ['Ruben', 'Panzich', 'Rubeanie', 'Portfolio', 'About', 'Links', 'Contact', 'Artist', 'Developer'],
+  keywords: [
+    'Ruben',
+    'Panzich',
+    'Rubeanie',
+    'Portfolio',
+    'About',
+    'Links',
+    'Contact',
+    'Artist',
+    'Developer'
+  ],
   authors: [{ name: 'Ruben Panzich', url: 'https://www.ruben-p.com' }],
   other: {
-    "darkreader-lock": true,
-  },
+    'darkreader-lock': true
+  }
 };
 
 export const viewport = {
@@ -29,7 +41,7 @@ export const viewport = {
   colorScheme: 'dark',
   viewportFit: 'cover',
   interactiveWidget: 'overlays-content'
-}
+};
 
 export default async function RootLayout({
   // Layouts must accept a children prop.
@@ -39,7 +51,7 @@ export default async function RootLayout({
   const data = await getThemeUrl();
   return (
     <>
-      <div className='background-image' />
+      <Theme url={data} />
       <Navbar />
       {children}
       <Scene
@@ -52,7 +64,6 @@ export default async function RootLayout({
           pointerEvents: 'none'
         }}
       />
-      <Theme url={data} />
       <Analytics />
       <SpeedInsights />
       <Footer />
