@@ -1,7 +1,7 @@
 {
-  "buildCommand": "turbo build lint",
+  "buildCommand": "next build",
   "cleanUrls": true,
-  "devCommand": "turbo dev",
+  "devCommand": "next dev --turbo",
   "framework": "nextjs",
   "installCommand": "pnpm install",
   "outputDirectory": ".next",
