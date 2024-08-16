@@ -29,7 +29,8 @@ export const page = {
         { type: 'hero' },
         { type: 'hero.saas' },
         { type: 'hero.split' },
-        { type: 'richtext-module' }
+        { type: 'richtext-module' },
+        { type: 'stat-list' }
       ],
       options: {
         insertMenu: {

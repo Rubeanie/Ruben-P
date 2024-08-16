@@ -15,6 +15,7 @@ import { hero } from './modules/hero';
 import { heroSaas } from './modules/hero.saas';
 import { heroSplit } from './modules/hero.split';
 import { richtextModule } from './modules/richtext-module';
+import { statList } from './modules/stat-list';
 
 // objects
 import { cta } from './objects/cta';
@@ -41,6 +42,7 @@ export const schemaTypes = [
   heroSaas,
   heroSplit,
   richtextModule,
+  statList,
 
   // objects
   cta,
