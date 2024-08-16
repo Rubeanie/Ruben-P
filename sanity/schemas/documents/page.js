@@ -23,6 +23,7 @@ export const page = {
       group: 'content',
       of: [
         { type: 'accordion-list' },
+        { type: 'breadcrumbs' },
         { type: 'custom-html' },
         { type: 'hero' },
         { type: 'richtext-module' }

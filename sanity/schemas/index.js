@@ -8,6 +8,7 @@ import { theme } from './documents/theme';
 
 // modules
 import { accordionList } from './modules/accordion-list';
+import { breadcrumbs } from './modules/breadcrumbs';
 import { customHtml } from './modules/custom-html';
 import { hero } from './modules/hero';
 import { richtextModule } from './modules/richtext-module';
@@ -30,6 +31,7 @@ export const schemaTypes = [
 
   // modules
   accordionList,
+  breadcrumbs,
   customHtml,
   hero,
   richtextModule,
