@@ -27,12 +27,16 @@ export const page = {
         { type: 'callout' },
         { type: 'custom-html' },
         { type: 'hero' },
+        { type: 'hero.saas' },
+        { type: 'hero.split' },
         { type: 'richtext-module' }
-        /*  { type: 'theme' } */ /* TODO:add more types */
       ],
       options: {
         insertMenu: {
-          views: [{ name: 'list' }, { name: 'grid' }]
+          views: [{ name: 'list' }, { name: 'grid' }],
+          groups: [
+            { name: 'hero', of: ['hero', 'hero.saas', 'hero.split'] }
+          ]
         }
       }
     },

@@ -12,6 +12,8 @@ import { breadcrumbs } from './modules/breadcrumbs';
 import { callout } from './modules/callout';
 import { customHtml } from './modules/custom-html';
 import { hero } from './modules/hero';
+import { heroSaas } from './modules/hero.saas';
+import { heroSplit } from './modules/hero.split';
 import { richtextModule } from './modules/richtext-module';
 
 // objects
@@ -36,6 +38,8 @@ export const schemaTypes = [
   callout,
   customHtml,
   hero,
+  heroSaas,
+  heroSplit,
   richtextModule,
 
   // objects

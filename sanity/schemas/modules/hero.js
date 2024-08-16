@@ -70,11 +70,13 @@ export const hero = {
     },
     {
       ...textAlign,
-      fieldset: 'alignment'
+      fieldset: 'alignment',
+      group: 'options'
     },
     {
       ...alignItems,
-      fieldset: 'alignment'
+      fieldset: 'alignment',
+      group: 'options'
     }
   ],
   preview: {
