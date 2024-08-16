@@ -5,6 +5,7 @@ import {
   alignItems,
   alignmentFieldset
 } from '../fragments/fields/alignment';
+import { textBlock } from '../fragments/text-block';
 
 export const hero = {
   name: 'hero',
@@ -24,8 +25,7 @@ export const hero = {
     },
     {
       name: 'content',
-      type: 'array',
-      of: [{ type: 'block' }],
+      ...textBlock,
       group: 'content'
     },
     {
