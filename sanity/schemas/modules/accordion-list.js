@@ -1,5 +1,6 @@
 import { getBlockText } from "@sanity/src/utils";
 import { MdQuestionMark } from "react-icons/md";
+import { textBlock } from "../fragments/text-block";
 
 export const accordionList = {
   name: 'accordion-list',
@@ -12,8 +13,7 @@ export const accordionList = {
   fields: [
     {
       name: 'intro',
-      type: 'array',
-      of: [{ type: 'block' }],
+      ...textBlock,
       group: 'content'
     },
     {
