@@ -7,6 +7,7 @@ import { site } from './documents/site';
 import { theme } from './documents/theme';
 
 // modules
+import { accordionList } from './modules/accordion-list';
 import { customHtml } from './modules/custom-html';
 import { hero } from './modules/hero';
 import { richtextModule } from './modules/richtext-module';
@@ -28,6 +29,7 @@ export const schemaTypes = [
   theme,
 
   // modules
+  accordionList,
   customHtml,
   hero,
   richtextModule,

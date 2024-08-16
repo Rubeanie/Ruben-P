@@ -22,6 +22,7 @@ export const page = {
       type: 'array',
       group: 'content',
       of: [
+        { type: 'accordion-list' },
         { type: 'custom-html' },
         { type: 'hero' },
         { type: 'richtext-module' }
