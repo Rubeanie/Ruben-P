@@ -36,7 +36,12 @@ export const style = {
             <img
               src={url}
               alt='Style Preview Image'
-              style={{ height: '100%', width: 'auto', display: 'block' }}
+              style={{
+                height: '100%',
+                width: 'auto',
+                display: 'block',
+                left: 'unset'
+              }}
             />
           ) : null
       };

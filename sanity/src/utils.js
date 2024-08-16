@@ -13,6 +13,21 @@ export const singleton = ( S, id, title ) =>
 export const group = (S ,title , items) =>
 	S.listItem().title(title).child(S.list().title(title).items(items))
 
+/**
+ * Return the text of a block type as a single string. Use in schema previews.
+ */
+export function getBlockText(
+	block,
+	lineBreakChar = '↵ ',
+) {
+	return (
+		block?.reduce((a, c, i) => {
+			const text = c.children?.flatMap((c) => c.text).join('') || ''
+			return a + text + (i !== block.length - 1 ? lineBreakChar : '')
+		}, '') || ''
+	)
+}
+
 export function count(
 	arr,
 	singular = 'item',

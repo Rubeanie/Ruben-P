@@ -7,8 +7,11 @@ import { theme } from './documents/theme';
 
 // modules
 import { customHtml } from './modules/custom-html';
+import { hero } from './modules/hero';
+import { richtextModule } from './modules/richtext-module';
 
 // objects
+import { cta } from './objects/cta';
 import { link } from './objects/link';
 import { metadata } from './objects/metadata';
 import { style } from './objects/style';
@@ -24,8 +27,11 @@ export const schemaTypes = [
 
   // modules
   customHtml,
+  hero,
+  richtextModule,
 
   // objects
+  cta,
   link,
   metadata,
   style,

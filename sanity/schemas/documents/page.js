@@ -22,7 +22,9 @@ export const page = {
       type: 'array',
       group: 'content',
       of: [
-        { type: 'custom-html' }
+        { type: 'custom-html' },
+        { type: 'hero' },
+        { type: 'richtext-module' }
         /*  { type: 'theme' } */ /* TODO:add more types */
       ],
       options: {

@@ -10,7 +10,7 @@ export const textAlign = {
     layout: 'radio',
     list: [ 'left', 'center', 'right' ]
   },
-  initalValue: 'center',
+  initialValue: 'center',
   group: 'options'
 }
 
@@ -26,6 +26,6 @@ export const alignItems = {
       { title: 'Bottom', value: 'end' }
     ]
   },
-  initalValue: 'center',
+  initialValue: 'center',
   group: 'options'
 }
