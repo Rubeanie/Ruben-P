@@ -24,6 +24,7 @@ export const page = {
       of: [
         { type: 'accordion-list' },
         { type: 'breadcrumbs' },
+        { type: 'callout' },
         { type: 'custom-html' },
         { type: 'hero' },
         { type: 'richtext-module' }
