@@ -19,7 +19,11 @@
 
   /* TODO:
   * 1. add modules
+  * 1.1. Portfolio posts
+  * 1.2. Socials
+  * 1.3. Anything else?
   * 2. implement dashboard
+  * 3. frontend - finial push
   */
 
   const singletonTypes = ['site'];

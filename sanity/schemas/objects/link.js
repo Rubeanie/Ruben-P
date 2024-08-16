@@ -28,8 +28,9 @@ export const link = {
       to: [
         {
           type: 'page'
-          /* type: 'blog.post' */
-        } /* add other types in the future such as projects/blogs */
+          /* type: 'portfolio.post' TODO: */
+          /* type: 'social' */
+        }
       ],
       hidden: ({ parent }) => parent?.type !== 'internal'
     },
@@ -65,7 +66,7 @@ export const link = {
       return {
         title: label || title,
         subtitle: [
-          /* _type === 'blog.post' ? '/blog' : null, */
+          /* _type === 'portfolio.post' ? '/portfolio' : null, */
           external || (slug && (slug === 'index' ? '/' : `/${slug}`)),
           params
         ]
