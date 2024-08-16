@@ -13,6 +13,7 @@ const structure = (S, context) =>
       S.divider(),
       S.documentTypeListItem('page').title('Pages').icon(MdAutoAwesomeMotion),
       S.divider(),
+      S.documentTypeListItem('announcement').title('Announcements'),
       S.documentTypeListItem('navigation').title('Navigation'),
       S.documentTypeListItem('redirect').title('Redirects'),
       S.divider(),

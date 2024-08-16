@@ -23,6 +23,13 @@ export const site = {
       of: [{ name: 'theme', type: 'reference', to: [{ type: 'theme' }] }]
     },
     {
+      name: 'announcements',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'announcement' }] }],
+      group: 'general',
+      description: 'One announcement shown at a time. Top items have higher precedence.'
+    },
+    {
       name: 'headerMenu',
       type: 'reference',
       to: [{ type: 'navigation' }],
