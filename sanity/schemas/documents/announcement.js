@@ -35,7 +35,7 @@ export const announcement = {
       start: 'start',
       end: 'end'
     },
-    perpare({ content, cta, start, end }) {
+    prepare({ content, cta, start, end }) {
       return {
         title: getBlockText(content),
         subtitle: cta,

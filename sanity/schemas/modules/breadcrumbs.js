@@ -5,7 +5,7 @@ export const breadcrumbs = {
   name: 'breadcrumbs',
   icon: MdLinearScale,
   type: 'object',
-  field: [
+  fields: [
     {
       name: 'crumbs',
       type: 'array',

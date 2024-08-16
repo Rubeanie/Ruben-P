@@ -31,7 +31,7 @@ export const link = {
           /* type: 'blog.post' */
         } /* add other types in the future such as projects/blogs */
       ],
-      hidden: ({ parent }) => parent.type !== 'internal'
+      hidden: ({ parent }) => parent?.type !== 'internal'
     },
     {
       name: 'external',
@@ -42,14 +42,14 @@ export const link = {
           scheme: ['http', 'https', 'mailto', 'tel'],
           allowRelative: true
         }),
-      hidden: ({ parent }) => parent.type !== 'external'
+      hidden: ({ parent }) => parent?.type !== 'external'
     },
     {
       name: 'params',
       title: 'URL parameters',
       placeholder: 'e.g. #jump-link or ?foo=bar',
       type: 'string',
-      hidden: ({ parent }) => parent.type !== 'internal'
+      hidden: ({ parent }) => parent?.type !== 'internal'
     }
   ],
   preview: {

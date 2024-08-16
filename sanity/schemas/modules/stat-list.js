@@ -1,12 +1,13 @@
 import { IoMdStats } from "react-icons/io";
 import { textAlign } from "../fragments/fields/alignment";
 import { count, getBlockText } from "@sanity/src/utils";
+import { textBlock } from "../fragments/text-block";
 
 export const statList = {
   name: 'stat-list',
   title: 'Stat list',
   icon: IoMdStats,
-  type: 'Object',
+  type: 'object',
   groups: [{ name: 'content', default: true }, { name: 'options' }],
   fields: [
     {
@@ -16,7 +17,7 @@ export const statList = {
     },
     {
       name: 'stats',
-      array: 'array',
+      type: 'array',
       of: [
         {
           type: 'object',

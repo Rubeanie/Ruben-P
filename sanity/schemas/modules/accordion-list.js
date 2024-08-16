@@ -6,7 +6,7 @@ export const accordionList = {
   name: 'accordion-list',
   type: 'object',
   icon: MdQuestionMark,
-  group: [
+  groups: [
     { name: 'content', default: true },
     { name: 'options' }
   ],
