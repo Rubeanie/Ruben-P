@@ -5,14 +5,14 @@ export const locations = (params, context) => {
     const doc$ = context.documentStore.listenQuery(
       `*[_id == $id][0]{title,metadata}`,
       params,
-      { perspective: 'previewDraft' },
+      { perspective: 'previewDrafts' },
     );
 
     return doc$.pipe(
       map((doc) => {
         if (!doc || !doc.metadata || !doc.metadata.slug || !doc.metadata.slug.current) return null;
 
-        /* const directory = params.type === 'post' ? '/portfolio' : '' */
+        const directory = params.type === 'post' ? '/portfolio' : ''
         const slug = doc.metadata.slug.current;
         const path = slug === 'index' ? '' : `/${slug}`;
 
@@ -20,7 +20,7 @@ export const locations = (params, context) => {
           locations: [
             {
               title: doc.title || doc.metadata.title || 'untitled',
-              href: [directory, path].filter(boolean).join(''),
+              href: [directory, path].filter(Boolean).join(''),
             }
           ]
         }
