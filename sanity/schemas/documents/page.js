@@ -20,6 +20,7 @@ export const page = {
     {
       name: 'modules',
       description: 'Page content',
+      group: 'content',
       ...pageBlock
     },
     {

@@ -1,6 +1,5 @@
 export const pageBlock = {
   type: 'array',
-  group: 'content',
   of: [
     { type: 'accordion-list' },
     { type: 'breadcrumbs' },
@@ -9,13 +8,16 @@ export const pageBlock = {
     { type: 'hero' },
     { type: 'hero.saas' },
     { type: 'hero.split' },
+    { type: 'portfolio-list' },
     { type: 'richtext-module' },
     { type: 'stat-list' }
   ],
   options: {
     insertMenu: {
       views: [{ name: 'list' }, { name: 'grid' }],
-      groups: [{ name: 'hero', of: ['hero', 'hero.saas', 'hero.split'] }]
+      groups: [
+        { name: 'hero', of: ['hero', 'hero.saas', 'hero.split'] }
+      ]
     }
   }
 };

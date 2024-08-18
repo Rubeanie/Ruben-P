@@ -28,8 +28,10 @@ export const link = {
       to: [
         {
           type: 'page'
-          /* type: 'portfolio.post' TODO: */
-          /* type: 'social' */
+          /* type: 'social' TODO: */
+        },
+        {
+          type: 'page.portfolio'
         }
       ],
       hidden: ({ parent }) => parent?.type !== 'internal'

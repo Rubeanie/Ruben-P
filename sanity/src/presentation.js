@@ -1,7 +1,7 @@
 import { map } from 'rxjs';
 
 export const locations = (params, context) => {
-  if (['page' /* TODO: , portfolio.post */].includes(params.type)) {
+  if (['page', 'post.portfolio'].includes(params.type)) {
     const doc$ = context.documentStore.listenQuery(
       `*[_id == $id][0]{title,metadata}`,
       params,
@@ -18,7 +18,7 @@ export const locations = (params, context) => {
         )
           return null;
 
-        const directory = params.type === 'post' ? '/portfolio' : '';
+        const directory = params.type === 'portfolio.post' ? '/portfolio' : '';
         const slug = doc.metadata.slug.current;
         const path = slug === 'index' ? '' : `/${slug}`;
 

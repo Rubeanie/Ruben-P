@@ -2,6 +2,8 @@
 import { announcement } from './documents/announcement';
 import { navigation } from './documents/navigation';
 import { page } from './documents/page';
+import { portfolioCategory } from './documents/portfolio.category';
+import { pagePortfolio } from './documents/page.portfolio';
 import { redirect } from './documents/redirect';
 import { site } from './documents/site';
 import { theme } from './documents/theme';
@@ -14,6 +16,7 @@ import { customHtml } from './modules/custom-html';
 import { hero } from './modules/hero';
 import { heroSaas } from './modules/hero.saas';
 import { heroSplit } from './modules/hero.split';
+import { portfolioList } from './modules/portfolio-list';
 import { richtextModule } from './modules/richtext-module';
 import { statList } from './modules/stat-list';
 
@@ -29,6 +32,8 @@ export const schemaTypes = [
   announcement,
   navigation,
   page,
+  portfolioCategory,
+  pagePortfolio,
   redirect,
   site,
   theme,
@@ -41,6 +46,7 @@ export const schemaTypes = [
   hero,
   heroSaas,
   heroSplit,
+  portfolioList,
   richtextModule,
   statList,
 
