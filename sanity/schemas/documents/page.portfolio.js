@@ -55,7 +55,7 @@ export const pagePortfolio = {
   preview: {
     select: {
       featured: 'featured',
-      title: 'metadata.seo.metaTitle',
+      title: 'title',
       subtitle: 'publishDate',
       media: 'metadata.seo.openGraph.image'
     },
@@ -75,7 +75,7 @@ export const pagePortfolio = {
     },
     {
       title: 'Title',
-      name: 'metadata.seo.metaTitle',
+      name: 'title',
       by: [{ field: 'title', direction: 'asc' }]
     }
   ]
