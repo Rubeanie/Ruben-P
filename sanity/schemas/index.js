@@ -12,6 +12,7 @@ import { theme } from './documents/theme';
 import { accordionList } from './modules/accordion-list';
 import { breadcrumbs } from './modules/breadcrumbs';
 import { callout } from './modules/callout';
+import { creativeModule } from './modules/creative';
 import { customHtml } from './modules/custom-html';
 import { hero } from './modules/hero';
 import { heroSaas } from './modules/hero.saas';
@@ -42,6 +43,7 @@ export const schemaTypes = [
   accordionList,
   breadcrumbs,
   callout,
+  creativeModule,
   customHtml,
   hero,
   heroSaas,

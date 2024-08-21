@@ -19,9 +19,8 @@
 
   /* TODO:
   * 1. add modules
-  * 1.1. Creative
-  * 1.2. Socials
-  * 1.3. Anything else?
+  * 1.1. Socials
+  * 1.2. Anything else? (3D, maybe age)
   * 2. implement dashboard
   * 3. frontend - finial push
   */

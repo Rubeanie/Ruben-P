@@ -4,6 +4,7 @@ export const pageBlock = {
     { type: 'accordion-list' },
     { type: 'breadcrumbs' },
     { type: 'callout' },
+    { type: 'creative-module' },
     { type: 'custom-html' },
     { type: 'hero' },
     { type: 'hero.saas' },
