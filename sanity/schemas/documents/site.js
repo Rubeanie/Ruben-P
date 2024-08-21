@@ -41,12 +41,6 @@ export const site = {
       to: [{ type: 'navigation' }],
       group: 'navigation'
     },
-    /* {
-      name: 'social',
-      type: 'reference',
-      to: [{ type: 'social' }], //TODO: create social
-      group: 'navigation'
-    } */
     {
       name: 'metadata',
       title: 'Default SEO',

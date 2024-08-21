@@ -13,13 +13,16 @@ const structure = (S, context) =>
       S.divider(),
       S.documentTypeListItem('page').title('Pages').icon(MdAutoAwesomeMotion),
       S.documentTypeListItem('page.portfolio').title('Portfolio posts'),
-      S.documentTypeListItem('portfolio.category').title('Portfolio categories'),
+      S.documentTypeListItem('portfolio.category').title(
+        'Portfolio categories'
+      ),
       S.divider(),
       S.documentTypeListItem('announcement').title('Announcements'),
       S.documentTypeListItem('navigation').title('Navigation'),
       S.documentTypeListItem('redirect').title('Redirects'),
       S.divider(),
       group(S, 'Miscellaneous', [
+        S.documentTypeListItem('social').title('Socials'),
         S.documentTypeListItem('theme').title('Themes')
       ]).icon(MdMiscellaneousServices)
     ]);

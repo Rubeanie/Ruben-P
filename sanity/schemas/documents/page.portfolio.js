@@ -38,6 +38,9 @@ export const pagePortfolio = {
       name: 'publishDate',
       type: 'date',
       validation: (Rule) => Rule.required(),
+      options: {
+        dateFormat: 'DD-MM-YYYY'
+      },
       group: 'content'
     },
     {
@@ -56,13 +59,14 @@ export const pagePortfolio = {
     select: {
       featured: 'featured',
       title: 'title',
-      subtitle: 'publishDate',
+      date: 'publishDate',
+      slug: 'metadata.slug.current',
       media: 'metadata.seo.openGraph.image'
     },
-    prepare({ featured, title, subtitle, media }) {
+    prepare({ featured, title, date, slug, media }) {
       return {
         title: [featured && '⭐', title].filter(Boolean).join(' '),
-        subtitle,
+        subtitle: slug && `/portfolio/${slug}`,
         media
       };
     }

@@ -2,10 +2,11 @@
 import { announcement } from './documents/announcement';
 import { navigation } from './documents/navigation';
 import { page } from './documents/page';
-import { portfolioCategory } from './documents/portfolio.category';
 import { pagePortfolio } from './documents/page.portfolio';
+import { portfolioCategory } from './documents/portfolio.category';
 import { redirect } from './documents/redirect';
 import { site } from './documents/site';
+import { social } from './documents/social';
 import { theme } from './documents/theme';
 
 // modules
@@ -19,6 +20,7 @@ import { heroSaas } from './modules/hero.saas';
 import { heroSplit } from './modules/hero.split';
 import { portfolioList } from './modules/portfolio-list';
 import { richtextModule } from './modules/richtext-module';
+import { socialList } from './modules/social-list';
 import { statList } from './modules/stat-list';
 
 // objects
@@ -33,10 +35,11 @@ export const schemaTypes = [
   announcement,
   navigation,
   page,
-  portfolioCategory,
   pagePortfolio,
+  portfolioCategory,
   redirect,
   site,
+  social,
   theme,
 
   // modules
@@ -50,6 +53,7 @@ export const schemaTypes = [
   heroSplit,
   portfolioList,
   richtextModule,
+  socialList,
   statList,
 
   // objects

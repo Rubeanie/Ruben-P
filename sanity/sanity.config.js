@@ -11,6 +11,7 @@
   import { seoMetaFields } from 'sanity-plugin-seo';
   import { inlineSvgInput } from '@focus-reactive/sanity-plugin-inline-svg-input';
   import { codeInput } from '@sanity/code-input';
+  import { colorInput } from '@sanity/color-input';
   import { schemaTypes } from './schemas';
   import {
     cloudinarySchemaPlugin,
@@ -19,8 +20,8 @@
 
   /* TODO:
   * 1. add modules
-  * 1.1. Socials
-  * 1.2. Anything else? (3D, maybe age)
+  * 1.1. Skills
+  * 1.2. Anything else? (3D, YouTube Video, maybe age)
   * 2. implement dashboard
   * 3. frontend - finial push
   */
@@ -69,7 +70,8 @@
       cloudinaryAssetSourcePlugin(),
       inlineSvgInput(),
       seoMetaFields(),
-      codeInput()
+      codeInput(),
+      colorInput()
     ],
 
     tasks: { enabled: false },

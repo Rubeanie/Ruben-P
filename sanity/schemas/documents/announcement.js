@@ -20,11 +20,17 @@ export const announcement = {
     {
       name: 'start',
       type: 'datetime',
+      options: {
+        dateFormat: 'DD-MM-YYYY'
+      },
       fieldset: 'schedule'
     },
     {
       name: 'end',
       type: 'datetime',
+      options: {
+        dateFormat: 'DD-MM-YYYY'
+      },
       fieldset: 'schedule'
     }
   ],
@@ -40,7 +46,7 @@ export const announcement = {
         title: getBlockText(content),
         subtitle: cta,
         media: (start || end) && IoMdCalendar
-      }
+      };
     }
   }
-}
+};

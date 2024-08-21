@@ -11,6 +11,7 @@ export const pageBlock = {
     { type: 'hero.split' },
     { type: 'portfolio-list' },
     { type: 'richtext-module' },
+    { type: 'social-list' },
     { type: 'stat-list' }
   ],
   options: {
