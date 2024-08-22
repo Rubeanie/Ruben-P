@@ -130,7 +130,7 @@ importers:
         version: 2.3.2(@sanity/ui@2.8.8(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1)))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.3(@babel/core@7.25.2))(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)(sanity@3.53.0(@types/node@22.2.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.3(@babel/core@7.25.2))(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)(sass@1.77.8)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.5))(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       sanity-plugin-seo:
         specifier: 1.2.4-beta
-        version: 1.2.4-beta(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0)(typescript@4.9.5))(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-import-resolver-typescript@3.6.1)(eslint@9.9.0))(eslint@9.9.0)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(sanity@3.53.0(@types/node@22.2.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.3(@babel/core@7.25.2))(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)(sass@1.77.8)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.5))(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@4.9.5)
+        version: 1.2.4-beta(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0)(typescript@4.9.5))(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0))(eslint@9.9.0)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(sanity@3.53.0(@types/node@22.2.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.3(@babel/core@7.25.2))(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)(sass@1.77.8)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.5))(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@4.9.5)
       sass:
         specifier: ^1.77.8
         version: 1.77.8
@@ -9742,7 +9742,7 @@ snapshots:
       '@portabletext/patches': 1.1.0
       '@sanity/block-tools': 3.53.0(debug@4.3.6)
       '@sanity/schema': 3.53.0(debug@4.3.6)
-      '@sanity/types': 3.53.0
+      '@sanity/types': 3.53.0(debug@4.3.6)
       '@sanity/util': 3.53.0(debug@4.3.6)
       debug: 4.3.6
       is-hotkey-esm: 1.0.0
@@ -10307,7 +10307,7 @@ snapshots:
 
   '@sanity/block-tools@3.53.0(debug@4.3.6)':
     dependencies:
-      '@sanity/types': 3.53.0
+      '@sanity/types': 3.53.0(debug@4.3.6)
       '@types/react': 18.3.3
       get-random-values-esm: 1.0.2
       lodash: 4.17.21
@@ -10548,7 +10548,7 @@ snapshots:
   '@sanity/insert-menu@1.0.7(@sanity/types@3.53.0(debug@4.3.6))(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
     dependencies:
       '@sanity/icons': 3.3.1(react@18.3.1)
-      '@sanity/types': 3.53.0
+      '@sanity/types': 3.53.0(debug@4.3.6)
       '@sanity/ui': 2.8.8(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       lodash.startcase: 4.4.0
       react: 18.3.1
@@ -10667,7 +10667,7 @@ snapshots:
   '@sanity/schema@3.53.0(debug@4.3.6)':
     dependencies:
       '@sanity/generate-help-url': 3.0.0
-      '@sanity/types': 3.53.0
+      '@sanity/types': 3.53.0(debug@4.3.6)
       arrify: 1.0.1
       groq-js: 1.12.0
       humanize-list: 1.0.1
@@ -10727,16 +10727,9 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@sanity/types@3.53.0':
-    dependencies:
-      '@sanity/client': 6.21.2
-      '@types/react': 18.3.3
-    transitivePeerDependencies:
-      - debug
-
   '@sanity/types@3.53.0(debug@4.3.6)':
     dependencies:
-      '@sanity/client': 6.21.2(debug@4.3.6)
+      '@sanity/client': 6.21.2
       '@types/react': 18.3.3
     transitivePeerDependencies:
       - debug
@@ -10793,7 +10786,7 @@ snapshots:
   '@sanity/util@3.53.0(debug@4.3.6)':
     dependencies:
       '@sanity/client': 6.21.2
-      '@sanity/types': 3.53.0
+      '@sanity/types': 3.53.0(debug@4.3.6)
       get-random-values-esm: 1.0.2
       moment: 2.30.1
       rxjs: 7.8.1
@@ -12655,7 +12648,7 @@ snapshots:
 
   escape-string-regexp@4.0.0: {}
 
-  eslint-config-airbnb-base@15.0.0(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-import-resolver-typescript@3.6.1)(eslint@9.9.0))(eslint@9.9.0):
+  eslint-config-airbnb-base@15.0.0(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0))(eslint@9.9.0):
     dependencies:
       confusing-browser-globals: 1.0.11
       eslint: 9.9.0
@@ -12664,12 +12657,12 @@ snapshots:
       object.entries: 1.1.8
       semver: 6.3.1
 
-  eslint-config-airbnb-typescript@17.1.0(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0)(typescript@4.9.5))(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-import-resolver-typescript@3.6.1)(eslint@9.9.0))(eslint@9.9.0):
+  eslint-config-airbnb-typescript@17.1.0(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0)(typescript@4.9.5))(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0))(eslint@9.9.0):
     dependencies:
       '@typescript-eslint/eslint-plugin': 6.21.0(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0)(typescript@4.9.5)
       '@typescript-eslint/parser': 7.2.0(eslint@9.9.0)(typescript@4.9.5)
       eslint: 9.9.0
-      eslint-config-airbnb-base: 15.0.0(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-import-resolver-typescript@3.6.1)(eslint@9.9.0))(eslint@9.9.0)
+      eslint-config-airbnb-base: 15.0.0(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0))(eslint@9.9.0)
       eslint-plugin-import: 2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-import-resolver-typescript@3.6.1)(eslint@9.9.0)
 
   eslint-config-next@14.2.5(eslint@9.9.0)(typescript@4.9.5):
@@ -14519,7 +14512,7 @@ snapshots:
       '@sanity/client': 6.21.2
       '@sanity/icons': 3.3.1(react@18.3.1)
       '@sanity/preview-kit': 5.1.0(@sanity/client@6.21.2)(react@18.3.1)
-      '@sanity/types': 3.53.0
+      '@sanity/types': 3.53.0(debug@4.3.6)
       '@sanity/ui': 2.8.8(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@sanity/visual-editing': 2.1.8(@sanity/client@6.21.2)(next@14.2.5(@babel/core@7.25.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(sass@1.77.8))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       groq: 3.53.0
@@ -15762,11 +15755,11 @@ snapshots:
       - react-native
       - supports-color
 
-  sanity-plugin-seo@1.2.4-beta(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0)(typescript@4.9.5))(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-import-resolver-typescript@3.6.1)(eslint@9.9.0))(eslint@9.9.0)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(sanity@3.53.0(@types/node@22.2.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.3(@babel/core@7.25.2))(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)(sass@1.77.8)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.5))(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@4.9.5):
+  sanity-plugin-seo@1.2.4-beta(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0)(typescript@4.9.5))(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0))(eslint@9.9.0)(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(sanity@3.53.0(@types/node@22.2.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.5(@babel/core@7.25.2)(@babel/preset-env@7.25.3(@babel/core@7.25.2))(@types/react@18.3.3)(react@18.3.1))(react@18.3.1)(sass@1.77.8)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(terser@5.31.5))(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(typescript@4.9.5):
     dependencies:
       '@sanity/incompatible-plugin': 1.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@sanity/ui': 2.8.8(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
-      eslint-config-airbnb-typescript: 17.1.0(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0)(typescript@4.9.5))(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-import-resolver-typescript@3.6.1)(eslint@9.9.0))(eslint@9.9.0)
+      eslint-config-airbnb-typescript: 17.1.0(@typescript-eslint/eslint-plugin@6.21.0(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0)(typescript@4.9.5))(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.2.0(eslint@9.9.0)(typescript@4.9.5))(eslint@9.9.0))(eslint@9.9.0)
       react: 18.3.1
       react-helmet: 6.1.0(react@18.3.1)
       react-schemaorg: 2.0.0(react@18.3.1)(schema-dts@1.1.2(typescript@4.9.5))(typescript@4.9.5)
@@ -15812,7 +15805,7 @@ snapshots:
       '@sanity/presentation': 1.16.3(@sanity/client@6.21.2(debug@4.3.6))(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@sanity/schema': 3.53.0(debug@4.3.6)
       '@sanity/telemetry': 0.7.9(react@18.3.1)
-      '@sanity/types': 3.53.0
+      '@sanity/types': 3.53.0(debug@4.3.6)
       '@sanity/ui': 2.8.8(react-dom@18.3.1(react@18.3.1))(react-is@18.3.1)(react@18.3.1)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@sanity/util': 3.53.0(debug@4.3.6)
       '@sanity/uuid': 3.0.2

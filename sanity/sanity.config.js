@@ -20,8 +20,8 @@
 
   /* TODO:
   * 1. add modules
-  * 1.1. Skills
-  * 1.2. Anything else? (3D, YouTube Video, maybe age)
+  * 1.1. 3D
+  * 1.2. Anything else? (3D, maybe age)
   * 2. implement dashboard
   * 3. frontend - finial push
   */

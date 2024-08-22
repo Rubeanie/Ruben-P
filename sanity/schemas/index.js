@@ -24,6 +24,7 @@ import { richtextModule } from './modules/richtext-module';
 import { skillList } from './modules/skill-list';
 import { socialList } from './modules/social-list';
 import { statList } from './modules/stat-list';
+import { videoYouTube } from './modules/video.youtube';
 
 // objects
 import { cta } from './objects/cta';
@@ -58,6 +59,7 @@ export const schemaTypes = [
   skillList,
   socialList,
   statList,
+  videoYouTube,
 
   // objects
   cta,

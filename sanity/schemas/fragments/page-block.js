@@ -13,7 +13,8 @@ export const pageBlock = {
     { type: 'richtext-module' },
     { type: 'skill-list' },
     { type: 'social-list' },
-    { type: 'stat-list' }
+    { type: 'stat-list' },
+    { type: 'video.youtube' }
   ],
   options: {
     insertMenu: {
