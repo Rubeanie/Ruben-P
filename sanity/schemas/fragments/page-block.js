@@ -14,6 +14,7 @@ export const pageBlock = {
     { type: 'skill-list' },
     { type: 'social-list' },
     { type: 'stat-list' },
+    { type: 'three.js' },
     { type: 'video.youtube' }
   ],
   options: {
