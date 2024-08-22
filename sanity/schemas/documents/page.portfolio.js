@@ -1,5 +1,6 @@
 import { MdEdit } from 'react-icons/md';
 import { pageBlock } from '../fragments/page-block';
+import { metadata } from '../fragments/metadata';
 
 export const pagePortfolio = {
   name: 'page.portfolio',
@@ -50,8 +51,7 @@ export const pagePortfolio = {
       initialValue: false
     },
     {
-      name: 'metadata',
-      type: 'metadata',
+      ...metadata('portfolio/'),
       group: 'seo'
     }
   ],
@@ -60,13 +60,12 @@ export const pagePortfolio = {
       featured: 'featured',
       title: 'title',
       date: 'publishDate',
-      slug: 'metadata.slug.current',
       media: 'metadata.seo.openGraph.image'
     },
-    prepare({ featured, title, date, slug, media }) {
+    prepare({ featured, title, date, media }) {
       return {
         title: [featured && '⭐', title].filter(Boolean).join(' '),
-        subtitle: slug && `/portfolio/${slug}`,
+        subtitle: date,
         media
       };
     }

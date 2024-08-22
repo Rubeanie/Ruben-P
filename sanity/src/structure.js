@@ -22,6 +22,7 @@ const structure = (S, context) =>
       S.documentTypeListItem('redirect').title('Redirects'),
       S.divider(),
       group(S, 'Miscellaneous', [
+        S.documentTypeListItem('skill').title('Skills'),
         S.documentTypeListItem('social').title('Socials'),
         S.documentTypeListItem('theme').title('Themes')
       ]).icon(MdMiscellaneousServices)

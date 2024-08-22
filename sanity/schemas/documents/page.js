@@ -1,6 +1,7 @@
 import { IoMdBrowsers, IoMdEyeOff} from 'react-icons/io';
 import { MdHomeFilled, MdQuestionMark } from 'react-icons/md';
 import { pageBlock } from '../fragments/page-block';
+import { metadata } from '../fragments/metadata';
 
 export const page = {
   name: 'page',
@@ -24,8 +25,7 @@ export const page = {
       ...pageBlock
     },
     {
-      name: 'metadata',
-      type: 'metadata',
+      ...metadata(),
       group: 'seo'
     }
   ],

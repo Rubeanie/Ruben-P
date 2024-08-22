@@ -6,6 +6,7 @@ import { pagePortfolio } from './documents/page.portfolio';
 import { portfolioCategory } from './documents/portfolio.category';
 import { redirect } from './documents/redirect';
 import { site } from './documents/site';
+import { skill } from './documents/skill';
 import { social } from './documents/social';
 import { theme } from './documents/theme';
 
@@ -20,13 +21,13 @@ import { heroSaas } from './modules/hero.saas';
 import { heroSplit } from './modules/hero.split';
 import { portfolioList } from './modules/portfolio-list';
 import { richtextModule } from './modules/richtext-module';
+import { skillList } from './modules/skill-list';
 import { socialList } from './modules/social-list';
 import { statList } from './modules/stat-list';
 
 // objects
 import { cta } from './objects/cta';
 import { link } from './objects/link';
-import { metadata } from './objects/metadata';
 import { style } from './objects/style';
 import { uid } from './objects/uid';
 
@@ -38,6 +39,7 @@ export const schemaTypes = [
   pagePortfolio,
   portfolioCategory,
   redirect,
+  skill,
   site,
   social,
   theme,
@@ -53,13 +55,13 @@ export const schemaTypes = [
   heroSplit,
   portfolioList,
   richtextModule,
+  skillList,
   socialList,
   statList,
 
   // objects
   cta,
   link,
-  metadata,
   style,
   uid
 ];

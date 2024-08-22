@@ -1,8 +1,11 @@
-import { MdAccountCircle } from 'react-icons/md';
+import { IoMdHammer } from 'react-icons/io';
 import { InlineSvgPreviewComponent } from '@focus-reactive/sanity-plugin-inline-svg-input';
-import { slug } from '../fragments/slug';
 
-export const PreviewComponent = ({ logo, foregroundColor, backgroundColor }) => {
+export const PreviewComponent = ({
+  logo,
+  foregroundColor,
+  backgroundColor
+}) => {
   return (
     <InlineSvgPreviewComponent
       value={logo}
@@ -10,25 +13,19 @@ export const PreviewComponent = ({ logo, foregroundColor, backgroundColor }) => 
         color: foregroundColor?.hex,
         backgroundColor: backgroundColor?.hex
       }}
-      className='social-svg'
+      className='skill-svg'
     />
   );
 };
 
-export const social = {
-  name: 'social',
-  icon: MdAccountCircle,
+export const skill = {
+  name: 'skill',
+  icon: IoMdHammer,
   type: 'document',
   groups: [{ name: 'content', default: true }, { name: 'options' }],
   fields: [
     {
       name: 'title',
-      type: 'string',
-      group: 'content',
-      validation: (Rule) => Rule.required()
-    },
-    {
-      name: 'username',
       type: 'string',
       group: 'content',
       validation: (Rule) => Rule.required()
@@ -61,24 +58,18 @@ export const social = {
       title: 'URL',
       type: 'link',
       group: 'options'
-    },
-    {
-      ...slug('socials/'),
-      group: 'options'
     }
   ],
   preview: {
     select: {
       title: 'title',
-      subtitle: 'username',
       logo: 'logo',
       textColor: 'textColor',
       baseColor: 'baseColor'
     },
-    prepare({ title, subtitle, logo, textColor, baseColor }) {
+    prepare({ title, logo, textColor, baseColor }) {
       return {
         title,
-        subtitle,
         media: (
           <PreviewComponent
             logo={logo}
