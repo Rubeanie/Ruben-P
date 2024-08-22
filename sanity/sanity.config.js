@@ -22,7 +22,8 @@
   * 1. add modules
   * 1.1. age
   * 2. implement dashboard
-  * 3. frontend - finial push
+  * 3. double check mobile support
+  * 4. frontend - finial push
   */
 
   const singletonTypes = ['site'];
