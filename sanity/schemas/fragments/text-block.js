@@ -1,5 +1,6 @@
 import { MdOutlineImage } from 'react-icons/md';
 import { imageBlock } from './image-block';
+import { youTubeBlock } from './youTubeBlock';
 
 const ImageDecorator = (props) => (
   <span className='img-heading'>{props.children}</span>
@@ -33,6 +34,7 @@ export const textBlock = {
         ]
       }
     },
+    youTubeBlock,
     imageBlock,
     {
       type: 'code',

@@ -25,7 +25,6 @@ import { skillList } from './modules/skill-list';
 import { socialList } from './modules/social-list';
 import { statList } from './modules/stat-list';
 import { threeJs } from './modules/three';
-import { videoYouTube } from './modules/video.youtube';
 
 // objects
 import { cta } from './objects/cta';
@@ -61,7 +60,6 @@ export const schemaTypes = [
   socialList,
   statList,
   threeJs,
-  videoYouTube,
 
   // objects
   cta,

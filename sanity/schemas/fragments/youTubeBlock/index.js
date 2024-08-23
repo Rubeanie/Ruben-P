@@ -1,22 +1,17 @@
-import { MdVideoSettings } from 'react-icons/md';
-import { getBlockText } from '@sanity/src/utils';
-import { textBlock } from '../fragments/text-block';
+import { MdPlayArrow } from 'react-icons/md';
+import { YouTubePreview } from './YouTubePreview';
 
-export const videoYouTube = {
-  name: 'video.youtube',
-  title: 'YouTube video',
-  icon: MdVideoSettings,
+export const youTubeBlock = {
+  name: 'youtube',
   type: 'object',
+  title: 'YouTube',
+  icon: MdPlayArrow,
   groups: [{ name: 'content', default: true }, { name: 'options' }],
   fields: [
     {
-      name: 'intro',
-      ...textBlock,
-      group: 'content'
-    },
-    {
       name: 'url',
       type: 'url',
+      title: 'URL',
       placeholder: 'https://youtu.be/<video_id>',
       validation: (Rule) =>
         Rule.uri({
@@ -39,11 +34,10 @@ export const videoYouTube = {
   ],
   preview: {
     select: {
-      intro: 'intro'
-    },
-    prepare: ({ intro }) => ({
-      title: getBlockText(intro),
-      subtitle: 'YouTube video'
-    })
+      title: 'url'
+    }
+  },
+  components: {
+    preview: YouTubePreview
   }
 };
