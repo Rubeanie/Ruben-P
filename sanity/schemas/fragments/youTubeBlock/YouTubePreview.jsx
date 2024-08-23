@@ -9,7 +9,6 @@ export const YouTubePreview = (props) => {
       actions.props.onOpen();
     }
   };
-  console.log(props);
   return (
     <Stack>
       <Flex align='center' justify='center'>
