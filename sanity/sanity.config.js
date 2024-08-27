@@ -1,5 +1,5 @@
   import { defineConfig } from 'sanity';
-  import { BASE_URL, apiVersion, dataset, projectId } from './src/env';
+  import { BASE_URL, dataset, projectId, apiVersion } from './src/env';
   import { structureTool } from 'sanity/structure';
   import structure from './src/structure';
   import { presentationTool } from 'sanity/presentation';
@@ -18,14 +18,6 @@
     cloudinaryAssetSourcePlugin
   } from 'sanity-plugin-cloudinary';
 
-  /* TODO:
-  * 1. add modules
-  * 1.1. age
-  * 2. implement dashboard
-  * 3. double check mobile support
-  * 4. frontend - finial push
-  */
-
   const singletonTypes = ['site'];
 
   export default defineConfig({
@@ -36,11 +28,6 @@
     basePath: '/admin',
 
     plugins: [
-      /*     dashboardTool({
-        name: 'dashboard',
-        title: 'Dashboard',
-        widgets: []
-      }), */ // TODO: main dashboard/landing page - low priority
       structureTool({
         name: 'content',
         title: 'Content',
