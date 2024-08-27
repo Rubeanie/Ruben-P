@@ -1,5 +1,6 @@
   import { defineConfig } from 'sanity';
-  import { BASE_URL, dataset, projectId, apiVersion } from './src/env';
+  import { BASE_URL } from './src/env';
+  import { dataset, projectId, apiVersion } from '@/lib/env';
   import { structureTool } from 'sanity/structure';
   import structure from './src/structure';
   import { presentationTool } from 'sanity/presentation';

@@ -1,7 +1,6 @@
 import '@/styles/globals.scss';
 import Signature from '@/components/Signature';
 import { Suspense } from 'react';
-import { getThemeUrl } from '@/utils/sanity';
 import { yapari, kollektif } from '@/styles/fonts';
 import { Preload } from './preload';
 
@@ -33,7 +32,6 @@ export default async function RootLayout({
   // This will be populated with nested layouts or pages
   children
 }) {
-  const data = await getThemeUrl();
   return (
     <html lang='en' className={`${yapari.variable} ${kollektif.variable}`}>
       <body>
