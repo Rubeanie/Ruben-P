@@ -48,7 +48,7 @@ export const twitterQuery = groq`
   handle
 `;
 
-export const seofields = groq`
+export const seoFields = groq`
   _type,
   metaTitle,
   nofollowAttributes,
@@ -69,10 +69,10 @@ export const seofields = groq`
 `;
 
 export const seo = groq`seo{
-  ${seofields}
+  ${seoFields}
 }`;
 
-export const metadata = groq`metadata{
+export const metadataQuery = groq`metadata{
   _type,
   "slug":slug.current,
   ${seo}
