@@ -26,24 +26,24 @@ export const ctaaQuery = groq`
 				...,
 				headerMenu->{ ${navigationQuery} },
 				footerMenu->{ ${navigationQuery} },
-        metadata->{ ${seo} }
+        seo->{ ${seo} }
 			}
 `;
 
 export async function getSite() {
-	const site = await fetchSanity(
-		groq`
+  const site = await fetchSanity(
+    groq`
 			*[_type == 'site'][0]{
 				...,
 				headerMenu->{ ${navigationQuery} },
 				footerMenu->{ ${navigationQuery} },
-        metadata->{ ${seo} }
+        seo->{ ${seo} }
 			}
 		`,
-		{ tags: ['site'] },
-	)
+    { tags: ['site'] }
+  );
 
-	if (!site) throw new Error("Missing 'site' document in Sanity Studio")
+  if (!site) throw new Error("Missing 'site' document in Sanity Studio");
 
-	return site
+  return site;
 }
