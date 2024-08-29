@@ -1,5 +1,5 @@
 import { stegaClean } from '@sanity/client/stega'
-import { BASE_URL } from '@sanity/src/env';
+import { baseUrl } from '@/lib/env';
 
 export default function (page,
   {
@@ -7,11 +7,11 @@ export default function (page,
     params
   } = {}
 ) {
-  const slug = page.metadata?.slug?.current;
+  const slug = page?.metadata?.slug?.current;
   const path = slug === 'index' ? null : slug;
 
   return (
-    (base ? BASE_URL + '/' : '/') +
+    (base ? baseUrl + '/' : '/') +
     [path, stegaClean(params)].filter(Boolean).join('/')
-  )
+  );
 }

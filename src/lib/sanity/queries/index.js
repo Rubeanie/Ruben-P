@@ -21,15 +21,6 @@ export const ctaQuery = groq`
 	link{ ${linkQuery} }
 `;
 
-export const ctaaQuery = groq`
-			*[_type == 'site'][0]{
-				...,
-				headerMenu->{ ${navigationQuery} },
-				footerMenu->{ ${navigationQuery} },
-        seo->{ ${seo} }
-			}
-`;
-
 export async function getSite() {
   const site = await fetchSanity(
     groq`
@@ -37,7 +28,7 @@ export async function getSite() {
 				...,
 				headerMenu->{ ${navigationQuery} },
 				footerMenu->{ ${navigationQuery} },
-        seo->{ ${seo} }
+        ${seo}
 			}
 		`,
     { tags: ['site'] }

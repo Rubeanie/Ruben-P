@@ -42,7 +42,7 @@ export const site = {
       group: 'navigation'
     },
     {
-      name: 'metadata',
+      name: 'seo',
       title: 'Default SEO',
       type: 'seoMetaFields',
       group: 'seo'
