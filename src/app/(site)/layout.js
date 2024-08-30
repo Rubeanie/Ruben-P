@@ -1,18 +1,21 @@
+import '@/styles/globals.scss';
+import { yapari, kollektif } from '@/styles/fonts';
+import Signature from '@/components/Signature';
 import dynamic from 'next/dynamic';
+import { Preload } from '../preload';
+import { Suspense } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Theme } from '@/utils/themes';
-import { getThemeUrl } from '@/utils/sanity';
+import { getThemes } from '@/lib/sanity/queries';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { VisualEditingControls } from '@/components/VisualEditingControls';
+import { baseUrl } from '@/lib/env';
 
 const Scene = dynamic(() => import('@/components/canvas/Scene'), {
   ssr: false
 });
-
-const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
-  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-  : 'http://localhost:3000';
 
 export const metadata = {
   metadataBase: new URL(baseUrl),
@@ -48,25 +51,32 @@ export default async function RootLayout({
   // This will be populated with nested layouts or pages
   children
 }) {
-  const data = await getThemeUrl();
+  const themes = await getThemes();
   return (
-    <>
-      <Theme url={data} />
-      <Navbar />
-      {children}
-      <Scene
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          pointerEvents: 'none'
-        }}
-      />
-      <Analytics />
-      <SpeedInsights />
-      <Footer />
-    </>
+    <html lang='en' className={`${yapari.variable} ${kollektif.variable}`}>
+      <body>
+        <Preload />
+        <Signature />
+        <Suspense>
+          <Theme themes={themes} />
+          <Navbar />
+          <main>{children}</main>
+          <Scene
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100vw',
+              height: '100vh',
+              pointerEvents: 'none'
+            }}
+          />
+          <Footer />
+        </Suspense>
+        <Analytics />
+        <SpeedInsights />
+        <VisualEditingControls />
+      </body>
+    </html>
   );
 }

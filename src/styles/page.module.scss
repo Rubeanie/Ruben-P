@@ -1,6 +1,6 @@
 @use './abstracts/index' as var;
 
-.page {
+main {
   max-width: var.$viewport-max-width;
   margin: 0 auto;
   position: inherit;

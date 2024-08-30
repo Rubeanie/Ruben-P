@@ -1,6 +1,6 @@
 import { groq } from '../fetch';
 
-export const imageFields = groq`
+const imageFieldsQuery = groq`
   _type,
   crop{
     _type,
@@ -19,28 +19,28 @@ export const imageFields = groq`
   asset->{...}
 `;
 
-export const metaAttributesQuery = groq`
+const metaAttributesQuery = groq`
   _type,
   attributeValueString,
   attributeType,
   attributeKey,
   attributeValueImage{
-    ${imageFields}
+    ${imageFieldsQuery}
   }
 `;
 
-export const openGraphQuery = groq`
+const openGraphQuery = groq`
   _type,
   siteName,
   url,
   description,
   title,
   image{
-    ${imageFields}
+    ${imageFieldsQuery}
   }
 `;
 
-export const twitterQuery = groq`
+const twitterQuery = groq`
   _type,
   site,
   creator,
@@ -48,7 +48,7 @@ export const twitterQuery = groq`
   handle
 `;
 
-export const seoFields = groq`
+const seoFieldsQuery = groq`
   _type,
   metaTitle,
   nofollowAttributes,
@@ -68,12 +68,12 @@ export const seoFields = groq`
   }
 `;
 
-export const seo = groq`seo{
-  ${seoFields}
+export const seoQuery = groq`seo{
+  ${seoFieldsQuery}
 }`;
 
 export const metadataQuery = groq`metadata{
   _type,
   "slug":slug.current,
-  ${seo}
+  ${seoQuery}
 }`;

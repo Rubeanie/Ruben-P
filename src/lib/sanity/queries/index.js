@@ -1,25 +1,7 @@
 import { fetchSanity, groq } from '../fetch';
-import { metadataQuery } from './metadata';
-import { seo } from './metadata';
-
-export const linkQuery = groq`
-  ...,
-  internal->{ _type, title, ${metadataQuery} }
-`;
-
-const navigationQuery = groq`
-	title,
-	items[]{
-		${linkQuery},
-		link{ ${linkQuery} },
-		links[]{ ${linkQuery} }
-	}
-`;
-
-export const ctaQuery = groq`
-	...,
-	link{ ${linkQuery} }
-`;
+import { navigationQuery } from './navigation';
+import { seoQuery } from './metadata';
+import { themesQuery } from './fragments/themes';
 
 export async function getSite() {
   const site = await fetchSanity(
@@ -28,7 +10,7 @@ export async function getSite() {
 				...,
 				headerMenu->{ ${navigationQuery} },
 				footerMenu->{ ${navigationQuery} },
-        ${seo}
+        ${seoQuery}
 			}
 		`,
     { tags: ['site'] }
@@ -37,4 +19,17 @@ export async function getSite() {
   if (!site) throw new Error("Missing 'site' document in Sanity Studio");
 
   return site;
+}
+
+export async function getThemes() {
+  const site = await fetchSanity(
+    groq`
+			*[_type == 'site'][0]{
+        ${themesQuery}
+			}
+		`,
+    { tags: ['theme'] }
+  );
+
+  return site.themes;
 }

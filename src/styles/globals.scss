@@ -7,9 +7,6 @@
 /* Scrollbar */
 @use './scrollbar.scss';
 
-/* Sanity */
-@use './sanity.module.scss';
-
 /* Page */
 @use './page.module.scss';
 
@@ -187,6 +184,21 @@ svg {
   .shadow {
     filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.6));
     margin: 0.5vw !important;
+  }
+}
+
+.draft-disable {
+  position: fixed;
+  bottom: 0;
+  right: 1rem;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  opacity: 0.5;
+
+  &:hover {
+    opacity: 1;
   }
 }
 

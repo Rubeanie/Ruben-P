@@ -43,10 +43,11 @@ export async function processMetadata(page) {
     metaTitle = site.seo?.metaTitle,
     twitter = site.seo?.twitter,
     nofollowAttributes = site.seo?.nofollowAttributes,
-    seoKeywords = []
+    seoKeywords
   } = page?.metadata.seo || {};
 
-  const combinedKeywords = [...siteKeywords, ...seoKeywords];
+  const safeKeywords = Array.isArray(seoKeywords) ? seoKeywords : [];
+  const combinedKeywords = [...siteKeywords, ...safeKeywords];
   const tags = additionalMetaTags ? getMetaObjects(additionalMetaTags) : {};
   const openGraphData = page?.metadata.seo?.openGraph || site.seo?.openGraph;
   const openGraph = openGraphData ? getOpenGraph(openGraphData) : undefined;
