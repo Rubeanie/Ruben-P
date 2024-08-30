@@ -30,6 +30,7 @@
     "@sanity/dashboard": "^4.0.0",
     "@sanity/image-url": "^1.0.2",
     "@sanity/presentation": "^1.16.4",
+    "@sanity/preview-url-secret": "^1.6.20",
     "@sanity/structure": "^2.36.2",
     "@sanity/ui": "^2.8.8",
     "@sanity/vision": "3.53.0",
@@ -66,6 +67,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
+    "@sanity/eslint-config-studio": "^4.0.0",
     "@types/babel__core": "^7.20.5",
     "@types/babel__generator": "^7.6.8",
     "@types/babel__template": "^7.4.4",
