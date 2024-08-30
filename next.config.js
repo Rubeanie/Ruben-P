@@ -15,13 +15,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 const nextConfig = {
   images: {
-    domains: ['res.cloudinary.com'],
-		remotePatterns: [
-			{
-				protocol: 'https',
-				hostname: 'cdn.sanity.io',
-			},
-		],
+    domains: ['res.cloudinary.com', 'cdn.sanity.io'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io'
+      }
+    ]
   },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')]
