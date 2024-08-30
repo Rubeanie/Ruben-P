@@ -15,6 +15,9 @@ function useTheme(initialThemes) {
   const { data, loading } = usePalette(url);
 
   const randomTheme = useCallback((themes) => {
+    if (!Array.isArray(themes) || themes.length === 0) {
+      return url;
+    }
     const rng = seedrandom.xor4096();
     const index = Math.floor(rng() * themes.length);
     console.log(`Url: ${themes[index].image} | Index: ${index}`);
@@ -25,7 +28,9 @@ function useTheme(initialThemes) {
   }, []);
 
   useEffect(() => {
-    setUrl(randomTheme(initialThemes));
+    if (initialThemes.length > 0) {
+      setUrl(randomTheme(initialThemes));
+    }
 
     const handleFetchTheme = (event) => {
       if (event.detail && event.detail.url) {

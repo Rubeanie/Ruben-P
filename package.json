@@ -67,7 +67,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
-    "@sanity/eslint-config-studio": "^4.0.0",
     "@types/babel__core": "^7.20.5",
     "@types/babel__generator": "^7.6.8",
     "@types/babel__template": "^7.4.4",

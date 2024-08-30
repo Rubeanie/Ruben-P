@@ -3,7 +3,7 @@
 main {
   max-width: var.$viewport-max-width;
   margin: 0 auto;
-  position: inherit;
+  position: relative;
   z-index: 1;
 
   .hero {

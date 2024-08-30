@@ -30,6 +30,10 @@ export async function getThemes() {
 		`,
     { tags: ['theme'] }
   );
+  
+  if (!site?.themes || !Array.isArray(site.themes) || site.themes.length === 0) {
+    return [];
+  }
 
   return site.themes;
 }

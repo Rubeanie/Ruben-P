@@ -1,13 +1,13 @@
-/* Import module types */
+import CustomHTML from "./CustomHTML";
 
 export function Modules({modules, page}) {
   return (
     <>
       {modules.map((module) => {
         switch (module._type) {
-          case '':
-            return <div key={module._key}></div>;
-          
+          case 'custom-html':
+            return <CustomHTML {...module} key={module._key} />;
+
           default:
             return <p key={module._key}>Error Data type mismatch</p>;
         }
