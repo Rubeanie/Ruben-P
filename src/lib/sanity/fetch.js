@@ -18,6 +18,7 @@ export function fetchSanity(query, { params = {}, ...next } = {}) {
     : {
         perspective: 'published',
         useCdn: true,
+        token: process.env.NEXT_PUBLIC_SANITY_TOKEN,
         next: { revalidate: 3600, ...next }
       };
 
