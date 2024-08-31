@@ -7,6 +7,7 @@ import { Suspense } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Theme } from '@/utils/themes';
+import { ThemeProvider } from '@/utils/ThemeContext';
 import { getThemes } from '@/lib/sanity/queries';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -46,36 +47,34 @@ export const viewport = {
   interactiveWidget: 'overlays-content'
 };
 
-export default async function RootLayout({
-  // Layouts must accept a children prop.
-  // This will be populated with nested layouts or pages
-  children
-}) {
+export default async function RootLayout({ children }) {
   const themes = await getThemes();
   return (
     <html lang='en' className={`${yapari.variable} ${kollektif.variable}`}>
       <body>
-        <Preload />
-        <Signature />
-        <Navbar />
-        <Suspense>
-          <main>{children}</main>
-          <Scene
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100vw',
-              height: '100vh',
-              pointerEvents: 'none'
-            }}
-          />
-        </Suspense>
-        <Footer />
-        <Theme themes={themes} />
-        <Analytics />
-        <SpeedInsights />
-        <VisualEditingControls />
+        <ThemeProvider>
+          <Preload />
+          <Signature />
+          <Navbar />
+          <Suspense>
+            <main>{children}</main>
+            <Scene
+              style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100vw',
+                height: '100vh',
+                pointerEvents: 'none'
+              }}
+            />
+          </Suspense>
+          <Footer />
+          <Theme themes={themes} />
+          <Analytics />
+          <SpeedInsights />
+          <VisualEditingControls />
+        </ThemeProvider>
       </body>
     </html>
   );

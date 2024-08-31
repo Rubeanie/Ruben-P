@@ -4,13 +4,16 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { usePalette } from 'react-palette';
 import seedrandom from 'seedrandom';
 import Color from 'color';
+import { useTheme } from './ThemeContext';
 
 const FETCH_THEME_EVENT = 'fetchThemeEvent';
 const UPDATE_THEME_EVENT = 'updateThemeEvent';
 
-function useTheme(initialThemes) {
+function useThemeLogic(initialThemes) {
+  const { theme, setTheme } = useTheme();
   const [url, setUrl] = useState(
-    'https://res.cloudinary.com/ruben-p/image/upload/f_avif,q_30,c_limit,w_800/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq.webp'
+    theme?.url ||
+      'https://res.cloudinary.com/ruben-p/image/upload/f_avif,q_30,c_limit,w_800/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq.webp'
   );
   const { data, loading } = usePalette(url);
 
@@ -28,15 +31,20 @@ function useTheme(initialThemes) {
   }, []);
 
   useEffect(() => {
-    if (initialThemes.length > 0) {
-      setUrl(randomTheme(initialThemes));
+    if (initialThemes.length > 0 && !theme) {
+      const newUrl = randomTheme(initialThemes);
+      setUrl(newUrl);
+      setTheme({ url: newUrl });
     }
 
     const handleFetchTheme = (event) => {
       if (event.detail && event.detail.url) {
         setUrl(event.detail.url);
+        setTheme({ url: event.detail.url });
       } else {
-        setUrl(randomTheme(initialThemes));
+        const newUrl = randomTheme(initialThemes);
+        setUrl(newUrl);
+        setTheme({ url: newUrl });
       }
     };
 
@@ -44,7 +52,7 @@ function useTheme(initialThemes) {
     return () => {
       window.removeEventListener(FETCH_THEME_EVENT, handleFetchTheme);
     };
-  }, [initialThemes, randomTheme]);
+  }, [initialThemes, randomTheme, setTheme, theme]);
 
   const colors = useMemo(() => {
     if (!loading && data) {
@@ -97,7 +105,7 @@ export function useCSSVariable(key) {
 }
 
 export function Theme({ themes }) {
-  const backgroundUrl = useTheme(themes);
+  const backgroundUrl = useThemeLogic(themes);
 
   useEffect(() => {
     window.overrideTheme = (theme) => {
