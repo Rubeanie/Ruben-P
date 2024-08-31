@@ -116,7 +116,6 @@ export function Theme({ themes }) {
 
   return (
     <>
-      <div className='background-image' />
       <div
         style={{
           backgroundImage: `url('${backgroundUrl}')`,

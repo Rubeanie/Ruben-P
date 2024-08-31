@@ -57,9 +57,8 @@ export default async function RootLayout({
       <body>
         <Preload />
         <Signature />
+        <Navbar />
         <Suspense>
-          <Theme themes={themes} />
-          <Navbar />
           <main>{children}</main>
           <Scene
             style={{
@@ -71,8 +70,9 @@ export default async function RootLayout({
               pointerEvents: 'none'
             }}
           />
-          <Footer />
         </Suspense>
+        <Footer />
+        <Theme themes={themes} />
         <Analytics />
         <SpeedInsights />
         <VisualEditingControls />

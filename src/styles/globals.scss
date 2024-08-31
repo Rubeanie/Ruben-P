@@ -109,12 +109,9 @@ svg {
   }
 }
 
-.background-image {
-  color: white;
-  overflow: hidden; // added for pseudo-element
+body {
   position: relative; // added for pseudo-element
   z-index: 0;
-  opacity: 0.35;
 
   &::before {
     content: ' ';
@@ -130,6 +127,7 @@ svg {
     will-change: transform; // creates a new paint layer
     z-index: -1;
     transition: background var.$theme-transition;
+    opacity: 0.35;
     backface-visibility: hidden !important;
     -webkit-backface-visibility: hidden !important;
   }
