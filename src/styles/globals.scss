@@ -187,6 +187,7 @@ body {
 
 .draft-disable {
   position: fixed;
+  z-index: 15;
   bottom: 0;
   right: 1rem;
   border-bottom-right-radius: 0;
