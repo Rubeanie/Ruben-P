@@ -54,10 +54,16 @@ export default async function RootLayout({ children }) {
       <body>
         <ThemeProvider initialThemes={themes}>
           <Preload />
-          <Signature />
-          <Navbar />
-          <Suspense>
+          <Suspense >
+            <Signature />
+          </Suspense>
+          <Suspense >
+            <Navbar />
+          </Suspense>
+          <Suspense >
             <main>{children}</main>
+          </Suspense>
+          <Suspense >
             <Scene
               style={{
                 position: 'fixed',
@@ -69,7 +75,9 @@ export default async function RootLayout({ children }) {
               }}
             />
           </Suspense>
-          <Footer />
+          <Suspense fallback={<div>Loading Footer...</div>}>
+            <Footer />
+          </Suspense>
           <Analytics />
           <SpeedInsights />
           <VisualEditingControls />
