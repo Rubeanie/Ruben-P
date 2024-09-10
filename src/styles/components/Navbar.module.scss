@@ -9,6 +9,7 @@ nav {
   background-color: var.$color-overlay;
   width: 100%;
   height: var.$navbar-height;
+  top: 0px;
   transition:
     background-color var.$dropdown-transition,
     height var.$dropdown-transition;

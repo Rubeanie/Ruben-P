@@ -17,3 +17,7 @@ footer {
     font-size: var.$p4-size;
   }
 }
+
+html[data-nav-dropdown="true"] footer {
+  background-color: rgba(var.$color-overlay-rgb, 0);
+}

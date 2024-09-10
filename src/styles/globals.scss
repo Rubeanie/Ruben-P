@@ -4,11 +4,14 @@
 @use './components/Navbar.module.scss';
 @use './components/Footer.module.scss';
 
+/* Main Content */
+@use './main.module.scss';
+
+/* Lenis */
+@use './lenis.module.scss';
+
 /* Scrollbar */
 @use './scrollbar.scss';
-
-/* Page */
-@use './page.module.scss';
 
 /* CSS Variables */
 :root {
@@ -199,28 +202,6 @@ body {
   &:hover {
     opacity: 1;
   }
-}
-
-/* lenis */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-.lenis.lenis-smooth iframe {
-  pointer-events: none;
 }
 
 [hidden] {
