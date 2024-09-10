@@ -6,8 +6,7 @@ import { Preload } from '../preload';
 import { Suspense } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { Theme } from '@/utils/themes';
-import { ThemeProvider } from '@/utils/ThemeContext';
+import { ThemeProvider } from '@/components/ThemeContext';
 import { getThemes } from '@/lib/sanity/queries';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -40,7 +39,8 @@ export const metadata = {
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 5,
+  maximumScale: 1,
+  userScalable: 'no',
   themeColor: '#121212',
   colorScheme: 'dark',
   viewportFit: 'cover',
@@ -52,7 +52,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang='en' className={`${yapari.variable} ${kollektif.variable}`}>
       <body>
-        <ThemeProvider>
+        <ThemeProvider initialThemes={themes}>
           <Preload />
           <Signature />
           <Navbar />
@@ -70,7 +70,6 @@ export default async function RootLayout({ children }) {
             />
           </Suspense>
           <Footer />
-          <Theme themes={themes} />
           <Analytics />
           <SpeedInsights />
           <VisualEditingControls />

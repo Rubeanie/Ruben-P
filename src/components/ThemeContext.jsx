@@ -1,10 +1,14 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { Theme } from '../lib/themes';
 
-const ThemeContext = createContext();
+const ThemeContext = createContext({
+  theme: null,
+  setTheme: () => {}
+});
 
-export function ThemeProvider({ children }) {
+export function ThemeProvider({ children, initialThemes }) {
   const [theme, setTheme] = useState(null);
 
   useEffect(() => {
@@ -12,8 +16,13 @@ export function ThemeProvider({ children }) {
     const storedTheme = localStorage.getItem('theme');
     if (storedTheme) {
       setTheme(JSON.parse(storedTheme));
+    } else if (initialThemes && initialThemes.length > 0) {
+      // If no stored theme, set a random theme from initialThemes
+      const randomTheme =
+        initialThemes[Math.floor(Math.random() * initialThemes.length)];
+      setTheme({ url: randomTheme.image });
     }
-  }, []);
+  }, [initialThemes]);
 
   useEffect(() => {
     // Save theme to localStorage whenever it changes
@@ -25,6 +34,7 @@ export function ThemeProvider({ children }) {
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>
       {children}
+      <Theme themes={initialThemes} />
     </ThemeContext.Provider>
   );
 }

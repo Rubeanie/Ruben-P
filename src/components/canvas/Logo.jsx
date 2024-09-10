@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { a, useSpring } from '@react-spring/three';
-import { useCSSVariable } from '@/utils/themes.js';
+import { useCSSVariable } from '@/lib/themes.js';
 
 export default function Logo({ ...props }) {
   const [scale, setScale] = useState(Math.min(1, window.screen.width / 600));

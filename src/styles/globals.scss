@@ -30,6 +30,7 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
+  touch-action: pan-y;
   font-family: var.$p-font;
   background-color: var.$color-background;
   transition: background-color var.$theme-transition;

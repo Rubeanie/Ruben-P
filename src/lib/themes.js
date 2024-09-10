@@ -4,22 +4,20 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 import { usePalette } from 'react-palette';
 import seedrandom from 'seedrandom';
 import Color from 'color';
-import { useTheme } from './ThemeContext';
+import { useTheme } from '../components/ThemeContext';
 
 const FETCH_THEME_EVENT = 'fetchThemeEvent';
 const UPDATE_THEME_EVENT = 'updateThemeEvent';
 
 function useThemeLogic(initialThemes) {
   const { theme, setTheme } = useTheme();
-  const [url, setUrl] = useState(
-    theme?.url ||
-      'https://res.cloudinary.com/ruben-p/image/upload/f_avif,q_30,c_limit,w_800/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq.webp'
-  );
-  const { data, loading } = usePalette(url);
+  const [url, setUrl] = useState(theme?.url || '');
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const { data, loading, error } = usePalette(url);
 
   const randomTheme = useCallback((themes) => {
     if (!Array.isArray(themes) || themes.length === 0) {
-      return url;
+      return '';
     }
     const rng = seedrandom.xor4096();
     const index = Math.floor(rng() * themes.length);
@@ -31,12 +29,67 @@ function useThemeLogic(initialThemes) {
   }, []);
 
   useEffect(() => {
-    if (initialThemes.length > 0 && !theme) {
+    if (initialThemes.length > 0 && !url) {
       const newUrl = randomTheme(initialThemes);
       setUrl(newUrl);
       setTheme({ url: newUrl });
     }
+  }, [initialThemes, randomTheme, setTheme, url]);
 
+  useEffect(() => {
+    if (url) {
+      setIsImageLoaded(false);
+      const img = new Image();
+      img.onload = () => {
+        setIsImageLoaded(true);
+      };
+      img.onerror = (e) => {
+        console.error('Error preloading image:', e);
+        setIsImageLoaded(false);
+      };
+      img.src = url;
+    }
+  }, [url]);
+
+  const colors = useMemo(() => {
+    if (isImageLoaded && !loading && data && Object.keys(data).length > 0) {
+      try {
+        const baseColor = Color(data.darkMuted);
+        return {
+          primary: Color(data.lightVibrant).hex(),
+          secondary: baseColor.saturate(0.25).lighten(0.2).hex(),
+          background: baseColor.saturate(0.75).darken(0.55).hex(),
+          text: baseColor.saturate(1.3).lighten(2.5).hex()
+        };
+      } catch (error) {
+        console.error('Error generating colors:', error);
+        return null;
+      }
+    }
+    return null;
+  }, [data, loading, isImageLoaded]);
+
+  useEffect(() => {
+    if (colors && Object.keys(colors).length > 0) {
+      Object.entries(colors).forEach(([key, value]) => {
+        document.documentElement.style.setProperty(`--color-${key}`, value);
+      });
+      document.documentElement.style.setProperty(
+        '--image-background',
+        `url('${url}')`
+      );
+      window.dispatchEvent(new Event(UPDATE_THEME_EVENT));
+      console.log('Colors set successfully');
+    }
+  }, [colors, url]);
+
+  useEffect(() => {
+    if (error && isImageLoaded) {
+      console.error('Error extracting colors:', error);
+    }
+  }, [error, isImageLoaded]);
+
+  useEffect(() => {
     const handleFetchTheme = (event) => {
       if (event.detail && event.detail.url) {
         setUrl(event.detail.url);
@@ -52,33 +105,7 @@ function useThemeLogic(initialThemes) {
     return () => {
       window.removeEventListener(FETCH_THEME_EVENT, handleFetchTheme);
     };
-  }, [initialThemes, randomTheme, setTheme, theme]);
-
-  const colors = useMemo(() => {
-    if (!loading && data) {
-      const baseColor = Color(data.darkMuted);
-      return {
-        primary: Color(data.lightVibrant).hex(),
-        secondary: baseColor.saturate(0.25).lighten(0.2).hex(),
-        background: baseColor.saturate(0.75).darken(0.55).hex(),
-        text: baseColor.saturate(1.3).lighten(2.5).hex()
-      };
-    }
-    return null;
-  }, [data, loading]);
-
-  useEffect(() => {
-    if (colors) {
-      Object.entries(colors).forEach(([key, value]) => {
-        document.documentElement.style.setProperty(`--color-${key}`, value);
-      });
-      document.documentElement.style.setProperty(
-        '--image-background',
-        `url('${url}')`
-      );
-      window.dispatchEvent(new Event(UPDATE_THEME_EVENT));
-    }
-  }, [colors, url]);
+  }, [initialThemes, randomTheme, setTheme]);
 
   return url;
 }
