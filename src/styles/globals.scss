@@ -120,7 +120,7 @@ body {
     content: ' ';
     position: fixed; // instead of background-attachment
     width: 100%;
-    height: 100%;
+    height: 100lvh;
     top: 0;
     left: 0;
     background-color: white;
@@ -223,12 +223,6 @@ body {
 
   h2 {
     font-size: var.$h2-size - 10;
-  }
-
-  .background-image {
-    &::before {
-      height: 100lvh;
-    }
   }
 
   .row {
