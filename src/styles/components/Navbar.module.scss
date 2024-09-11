@@ -75,6 +75,8 @@ nav {
       overflow: auto;
       transform: translate(0, 50vh) scale(1, 0);
       opacity: 0;
+      -webkit-backdrop-filter: blur(0px);
+      backdrop-filter: blur(0px);
 
       a {
         margin: 25px 0px;
