@@ -1,0 +1,15 @@
+@use './abstracts/index'as var;
+
+html::-webkit-scrollbar {
+  width: 7.5px;
+}
+
+html::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background-color: var.$color-primary;
+}
+
+html::-webkit-scrollbar-track {
+  margin: 2px 0;
+  background-color: var.$color-background;
+}

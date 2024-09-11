@@ -1,0 +1,128 @@
+@use '../abstracts/index'as var;
+
+/* Navbar */
+$item-padding: 2rem;
+
+nav {
+  position: fixed;
+  z-index: 10;
+  background-color: var.$color-overlay;
+  width: 100%;
+  height: var.$navbar-height;
+  top: 0px;
+  transition:
+    background-color var.$dropdown-transition,
+    height var.$dropdown-transition;
+
+  .hidden {
+    visibility: hidden;
+    position: absolute;
+    top: -9999px;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: var.$viewport-max-width;
+    height: var.$navbar-height;
+    padding: var.$padding-safe;
+    margin: 0 auto;
+
+    a {
+      flex: 0 1 auto;
+      transition: transform var.$dropdown-transition;
+      margin-inline: $item-padding;
+
+      p {
+        font-weight: bold;
+        color: var.$color-primary;
+        font-size: var.$p2-size;
+        margin-block: 18px;
+        margin-inline: unset;
+      }
+
+      svg {
+        display: block;
+        color: var.$color-primary;
+        width: var.$navbar-height * 0.8;
+        height: var.$navbar-height * 0.8;
+      }
+    }
+
+    .column {
+      justify-content: flex-start;
+    }
+
+    .row-fixed {
+      width: unset;
+      height: unset;
+      flex-wrap: nowrap;
+    }
+
+    .dropdown {
+      position: fixed;
+      margin: var.$inverted-padding-safe;
+      padding: var.$padding-safe;
+      width: 100%;
+      height: calc(100lvh - var.$navbar-height);
+      transform-origin: top;
+      transition:
+        transform var.$dropdown-transition,
+        opacity var.$dropdown-transition;
+      overflow: auto;
+      transform: translate(0, 50vh) scale(1, 0);
+      opacity: 0;
+      -webkit-backdrop-filter: blur(0px);
+      backdrop-filter: blur(0px);
+
+      a {
+        margin: 25px 0px;
+        transform: scale(0, 0);
+
+        p {
+          font-size: var.$p2-size * 1.75;
+        }
+      }
+    }
+
+    .hamburger-react {
+      margin: 0 10px 0 10px;
+    }
+  }
+}
+
+html[data-nav-scrolled="true"]:not([data-nav-dropdown="true"]) {
+  --color-overlay-alpha: 0.325 !important;
+}
+
+html[data-nav-dropdown="true"] {
+  --color-overlay-alpha: 0.6 !important;
+  overflow: hidden;
+  width: 100%;
+
+  body {
+    overflow: hidden;
+    width: 100%;
+
+    nav {
+      height: 100lvh;
+
+      .container .dropdown {
+        transform: translate(0, 50vh) scale(1, 1);
+        opacity: 1;
+
+        a {
+          transform: scale(1, 1);
+
+          p {
+            overflow: visible;
+            text-shadow: 0px 0px 17px rgba(0, 0, 0, 0.75);
+          }
+        }
+      }
+    }
+  }
+}

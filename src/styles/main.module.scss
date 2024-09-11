@@ -1,0 +1,40 @@
+@use './abstracts/index'as var;
+
+main {
+  max-width: var.$viewport-max-width;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var.$padding-safe;
+    padding-top: var.$navbar-height;
+    min-height: 100lvh;
+    transition: min-height 0.2s ease;
+  }
+
+  .hero-no-padding {
+    @extend .hero;
+    padding-top: unset;
+  }
+
+  .content {
+    @extend .hero-no-padding;
+    justify-content: flex-start;
+    min-height: unset;
+  }
+
+  icon {
+    height: 100%;
+    vertical-align: middle;
+  }
+
+  .item {
+    flex: 0 1 auto;
+    margin: 20px;
+  }
+}

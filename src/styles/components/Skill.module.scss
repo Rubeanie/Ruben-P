@@ -1,0 +1,66 @@
+@use '../abstracts/index'as var;
+
+/* Skill Buttons */
+$margin: 7px;
+$min-width: 115px;
+$max-width: 385px;
+$max-width-mobile: 140px;
+$svg-wrapper-height: 100px;
+$text-wrapper-height: 40px;
+$svg-size: 70px;
+
+.skill {
+  display: flex;
+  align-items: center;
+  margin: $margin;
+  width: fit-content;
+  min-width: $min-width;
+  height: fit-content;
+  max-width: $max-width;
+  border-radius: var.$common-border-radius;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.3);
+
+  .svgWrapper,
+  .textWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .svgWrapper {
+    width: 100%;
+    height: $svg-wrapper-height;
+    vertical-align: middle;
+
+    svg {
+      width: $svg-size;
+      height: $svg-size;
+    }
+  }
+
+  .textWrapper {
+    background: rgba(0, 0, 0, 0.212);
+    width: 100%;
+    height: auto;
+    min-height: $text-wrapper-height;
+
+    p {
+      font-size: var.$p3-size;
+      overflow: visible;
+      margin: $margin;
+    }
+  }
+}
+
+/* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: var.$media-mobile-width) {
+  .skill {
+    max-width: $max-width-mobile;
+  }
+}
+
+/* Exports */
+:export {
+  colorPrimary: var.$color-primary;
+}
