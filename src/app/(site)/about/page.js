@@ -56,7 +56,7 @@ export default function page() {
           </div>
         </div>
       </div>
-      <div className='hero-content'>
+      <div className='content'>
         <div className='column'>
           <AboutPageContent />
           <div className='flex-box'>

@@ -4,11 +4,14 @@
 @use './components/Navbar.module.scss';
 @use './components/Footer.module.scss';
 
+/* Main Content */
+@use './main.module.scss';
+
+/* Lenis */
+@use './lenis.module.scss';
+
 /* Scrollbar */
 @use './scrollbar.scss';
-
-/* Page */
-@use './page.module.scss';
 
 /* CSS Variables */
 :root {
@@ -27,6 +30,7 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
+  touch-action: pan-y;
   font-family: var.$p-font;
   background-color: var.$color-background;
   transition: background-color var.$theme-transition;
@@ -109,18 +113,15 @@ svg {
   }
 }
 
-.background-image {
-  color: white;
-  overflow: hidden; // added for pseudo-element
+body {
   position: relative; // added for pseudo-element
   z-index: 0;
-  opacity: 0.35;
 
   &::before {
     content: ' ';
     position: fixed; // instead of background-attachment
     width: 100%;
-    height: 100%;
+    height: 100lvh;
     top: 0;
     left: 0;
     background-color: white;
@@ -130,6 +131,7 @@ svg {
     will-change: transform; // creates a new paint layer
     z-index: -1;
     transition: background var.$theme-transition;
+    opacity: 0.35;
     backface-visibility: hidden !important;
     -webkit-backface-visibility: hidden !important;
   }
@@ -187,6 +189,22 @@ svg {
   }
 }
 
+.draft-disable {
+  position: fixed;
+  z-index: 15;
+  bottom: 0;
+  right: 1rem;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  opacity: 0.5;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
 [hidden] {
   display: none !important;
 }
@@ -206,12 +224,6 @@ svg {
 
   h2 {
     font-size: var.$h2-size - 10;
-  }
-
-  .background-image {
-    &::before {
-      height: 100lvh;
-    }
   }
 
   .row {

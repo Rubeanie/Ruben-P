@@ -1,8 +1,5 @@
 @use '../abstracts/index'as var;
 
-/* Footer */
-$height: 60px;
-
 footer {
   display: flex;
   flex-direction: row;
@@ -11,7 +8,7 @@ footer {
   position: relative;
   background-color: var.$color-overlay;
   width: 100%;
-  height: $height;
+  height: var.$footer-height;
   transition: background-color var.$dropdown-transition;
 
   p {
@@ -19,4 +16,8 @@ footer {
     margin: unset;
     font-size: var.$p4-size;
   }
+}
+
+html[data-nav-dropdown="true"] footer {
+  background-color: rgba(var.$color-overlay-rgb, 0);
 }

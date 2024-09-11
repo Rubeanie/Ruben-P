@@ -2,10 +2,20 @@
 
 import { useState, useEffect } from 'react';
 import { PerspectiveCamera, OrbitControls } from '@react-three/drei';
-import { Perf } from 'r3f-perf';
+import dynamic from 'next/dynamic';
 
-export default function Common ({ color, controls, enableZoom = false }) {
-  const [perf, setPerf] = useState(null);
+const Perf = dynamic(() => import('r3f-perf').then((mod) => mod.Perf), {
+  ssr: false
+});
+
+export default function Common({
+  color,
+  lights,
+  controls,
+  enableZoom = false
+}) {
+  const [perf, setPerf] = useState(false);
+
   useEffect(() => {
     function performanceMonitor(enable) {
       setPerf(enable === true);
@@ -17,6 +27,7 @@ export default function Common ({ color, controls, enableZoom = false }) {
   return (
     <>
       {color && <color attach='background' args={[color]} />}
+      {lights && <ambientLight color={lights} intensity={1} />}
       <PerspectiveCamera makeDefault fov={60} position={[0, 0, 3]} />
       {controls && <OrbitControls enableZoom={enableZoom} />}
       {perf && <Perf position={'bottom-right'} />}

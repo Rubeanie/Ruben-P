@@ -15,22 +15,17 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 const nextConfig = {
   images: {
-    domains: ['res.cloudinary.com']
+    domains: ['res.cloudinary.com', 'cdn.sanity.io'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io'
+      }
+    ]
   },
   sassOptions: {
-    includePaths: [path.join(__dirname, 'styles')],
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/admin/:path*',
-        destination:
-          process.env.NODE_ENV === 'development'
-            ? 'http://localhost:3333/admin/:path*'
-            : '/admin/index.html'
-      }
-    ];
-  },
+    includePaths: [path.join(__dirname, 'styles')]
+  }
 };
 
 module.exports = withBundleAnalyzer(withPWA(nextConfig))
