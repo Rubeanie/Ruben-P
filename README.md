@@ -18,4 +18,8 @@ The website is publicly deployed:
 - ### [Master branch](https://www.ruben-p.com)&nbsp; <a href="https://www.ruben-p.com"><img alt="Website" src="https://img.shields.io/website?down_color=red&down_message=Down&label=is&style=flat-square&up_color=44cc11&up_message=Up&url=https%3A%2F%2Fwww.ruben-p.com%2F"></a>
 - ### [Beta branch](https://www.beta.ruben-p.com)&nbsp; <a href="https://www.beta.ruben-p.com"><img alt="Website" src="https://img.shields.io/website?down_color=red&down_message=Down&label=is&style=flat-square&up_color=44cc11&up_message=Up&url=https%3A%2F%2Fwww.beta.ruben-p.com%2F"></a>
 
-![Visualization of the codebase](./diagram.svg)
+<kbd>
+  <a href="https://mango-dune-07a8b7110.1.azurestaticapps.net/?repo=rubeanie%2Fruben-p">
+    <img alt="Visualization of the codebase" src="./diagram.svg">
+  </a>
+</kbd>
