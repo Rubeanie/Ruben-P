@@ -7,7 +7,6 @@ export async function getSite() {
   const site = await fetchSanity(
     groq`
 			*[_type == 'site'][0]{
-				...,
 				headerMenu->{ ${navigationQuery} },
 				footerMenu->{ ${navigationQuery} },
         ${seoQuery}
