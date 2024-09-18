@@ -79,7 +79,6 @@ function useThemeLogic(initialThemes) {
         `url('${url}')`
       );
       window.dispatchEvent(new Event(UPDATE_THEME_EVENT));
-      console.log('Colors set successfully');
     }
   }, [colors, url]);
 
