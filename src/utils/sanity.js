@@ -2,7 +2,7 @@ import { createClient } from 'next-sanity';
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
-const token = process.env.NEXT_PUBLIC_SANITY_TOKEN;
+const token = process.env.SANITY_READ_TOKEN;
 const apiVersion = '2022-03-29';
 const ignoreBrowserTokenWarning = true;
 const perspective = 'published';
