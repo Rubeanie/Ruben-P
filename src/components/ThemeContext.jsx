@@ -47,8 +47,8 @@ export function ThemeProvider({ children, initialThemes }) {
     // Cleanup to remove functions when component unmounts
     return () => {
       if (typeof window !== 'undefined') {
-        delete window.overrideTheme;
-        delete window.restartTheme;
+        window.overrideTheme = undefined;
+        window.restartTheme = undefined;
       }
     };
   }, [overrideTheme, restartTheme]);
