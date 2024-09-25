@@ -1,6 +1,12 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback
+} from 'react';
 import { Theme } from '@/lib/themes';
 
 export const ThemeContext = createContext({
@@ -25,17 +31,20 @@ export function ThemeProvider({ children, initialThemes }) {
 
   const [colors, setColors] = useState(null);
 
-  const overrideTheme = (url) => {
-    setTheme({ url });
-  };
+  const overrideTheme = useCallback(
+    (url) => {
+      setTheme({ url });
+    },
+    [setTheme]
+  );
 
-  const restartTheme = () => {
+  const restartTheme = useCallback(() => {
     if (initialThemes?.length > 0) {
       const randomTheme =
         initialThemes[Math.floor(Math.random() * initialThemes.length)];
       setTheme({ url: randomTheme.image });
     }
-  };
+  }, [initialThemes, setTheme]);
 
   // Expose functions to the window object for testing
   useEffect(() => {
@@ -47,8 +56,8 @@ export function ThemeProvider({ children, initialThemes }) {
     // Cleanup to remove functions when component unmounts
     return () => {
       if (typeof window !== 'undefined') {
-        delete window.overrideTheme;
-        delete window.restartTheme;
+        window.overrideTheme = undefined;
+        window.restartTheme = undefined;
       }
     };
   }, [overrideTheme, restartTheme]);
