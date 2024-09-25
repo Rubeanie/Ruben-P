@@ -1,40 +1,70 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Theme } from '../lib/themes';
+import { Theme } from '@/lib/themes';
 
-const ThemeContext = createContext({
+export const ThemeContext = createContext({
   theme: null,
-  setTheme: () => {}
+  setTheme: () => {},
+  overrideTheme: () => {},
+  restartTheme: () => {},
+  colors: null,
+  setColors: () => {}
 });
 
 export function ThemeProvider({ children, initialThemes }) {
-  const [theme, setTheme] = useState(null);
+  const [theme, setTheme] = useState(() => {
+    // Always pick a random theme on initial render
+    if (initialThemes?.length > 0) {
+      const randomTheme =
+        initialThemes[Math.floor(Math.random() * initialThemes.length)];
+      return { url: randomTheme.image };
+    }
+    return null;
+  });
 
-  useEffect(() => {
-    // Load theme from localStorage on initial render
-    const storedTheme = localStorage.getItem('theme');
-    if (storedTheme) {
-      setTheme(JSON.parse(storedTheme));
-    } else if (initialThemes && initialThemes.length > 0) {
-      // If no stored theme, set a random theme from initialThemes
+  const [colors, setColors] = useState(null);
+
+  const overrideTheme = (url) => {
+    setTheme({ url });
+  };
+
+  const restartTheme = () => {
+    if (initialThemes?.length > 0) {
       const randomTheme =
         initialThemes[Math.floor(Math.random() * initialThemes.length)];
       setTheme({ url: randomTheme.image });
     }
-  }, [initialThemes]);
+  };
 
+  // Expose functions to the window object for testing
   useEffect(() => {
-    // Save theme to localStorage whenever it changes
-    if (theme) {
-      localStorage.setItem('theme', JSON.stringify(theme));
+    if (typeof window !== 'undefined') {
+      window.overrideTheme = overrideTheme;
+      window.restartTheme = restartTheme;
     }
-  }, [theme]);
+
+    // Cleanup to remove functions when component unmounts
+    return () => {
+      if (typeof window !== 'undefined') {
+        delete window.overrideTheme;
+        delete window.restartTheme;
+      }
+    };
+  }, [overrideTheme, restartTheme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider
+      value={{
+        theme,
+        setTheme,
+        overrideTheme,
+        restartTheme,
+        colors,
+        setColors
+      }}>
       {children}
-      <Theme themes={initialThemes} />
+      <Theme />
     </ThemeContext.Provider>
   );
 }

@@ -9,7 +9,7 @@ export function Modules({modules, page}) {
             return <CustomHTML {...module} key={module._key} />;
 
           default:
-            return <p key={module._key}>Error Data type mismatch</p>;
+            return <p key={module._key}>Error Data type mismatch, {modules._type} does not exist</p>;
         }
       })}
     </>

@@ -12,13 +12,13 @@ export function fetchSanity(query, { params = {}, ...next } = {}) {
         stega: true,
         perspective: 'previewDrafts',
         useCdn: false,
-        token: process.env.NEXT_PUBLIC_SANITY_TOKEN,
+        token: process.env.SANITY_READ_TOKEN,
         next: { revalidate: 0, ...next }
       }
     : {
         perspective: 'published',
         useCdn: true,
-        token: process.env.NEXT_PUBLIC_SANITY_TOKEN,
+        token: process.env.SANITY_READ_TOKEN,
         next: { revalidate: 3600, ...next }
       };
 

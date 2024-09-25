@@ -4,7 +4,7 @@ import { draftMode } from "next/headers";
 import { redirect } from "next/navigation";
 
 const clientWithToken = client.withConfig({
-  token: process.env.NEXT_PUBLIC_SANITY_TOKEN
+  token: process.env.SANITY_READ_TOKEN
 });
 
 export async function GET(request) {
