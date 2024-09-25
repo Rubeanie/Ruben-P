@@ -37,7 +37,6 @@ async function getPage(params) {
       metadata.slug.current == $slug &&
       !(metadata.slug.current in ['index', '404'])
     ][0]{
-      ...,
       modules[]{ ${modulesQuery} },
       ${metadataQuery}
     }`,
