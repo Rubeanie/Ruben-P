@@ -1,7 +1,7 @@
 @use '../abstracts/index'as var;
 
 /* Navbar */
-$item-padding: 2rem;
+$item-padding: 1.5rem;
 
 nav {
   position: fixed;
@@ -87,7 +87,7 @@ nav {
     }
 
     .hamburger-react {
-      margin: 0 10px 0 10px;
+      margin-inline: $item-padding;
     }
   }
 }

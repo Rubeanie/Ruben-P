@@ -54,16 +54,16 @@ export default async function RootLayout({ children }) {
       <body>
         <ThemeProvider initialThemes={themes}>
           <Preload />
-          <Suspense >
+          <Suspense>
             <Signature />
           </Suspense>
-          <Suspense >
+          <Suspense>
             <Navbar />
           </Suspense>
-          <Suspense >
+          <Suspense>
             <main>{children}</main>
           </Suspense>
-          <Suspense >
+          <Suspense>
             <Scene
               style={{
                 position: 'fixed',
