@@ -3,15 +3,11 @@
 .about {
   img {
     width: 100%;
-    max-width: 500px;
+    max-width: 300px;
     border-radius: var.$common-border-radius;
   }
 
   @media screen and (max-width: var.$media-mobile-width) {
-    :global(.row) {
-      flex-direction: column-reverse;
-    }
-
     img {
       width: unset;
       max-width: 100%;

@@ -1,8 +1,9 @@
 @use './abstracts/index'as var;
 
 main {
-  max-width: var.$viewport-max-width;
+  max-width: var.$viewport-max-width - 40rem;
   margin: 0 auto;
+  padding: 1rem;
   position: relative;
   z-index: 1;
 
@@ -22,12 +23,6 @@ main {
     padding-top: unset;
   }
 
-  .content {
-    @extend .hero-no-padding;
-    justify-content: flex-start;
-    min-height: unset;
-  }
-
   icon {
     height: 100%;
     vertical-align: middle;
@@ -36,5 +31,41 @@ main {
   .item {
     flex: 0 1 auto;
     margin: 20px;
+  }
+
+  .alert {
+    &.error {
+      position: relative;
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      border-radius: 0.25rem;
+      border-width: 1px;
+      border-color: #F87171;
+      color: #B91C1C;
+      background-color: #FEE2E2;
+    }
+
+    &.waning {
+      position: relative;
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      border-radius: 0.25rem;
+      border-width: 1px;
+      border-color: #FBBF24;
+      color: #B45309;
+      background-color: #FEF3C7;
+    }
+
+    span {
+      display: block;
+
+      @media (min-width: 640px) {
+        display: inline;
+      }
+    }
   }
 }

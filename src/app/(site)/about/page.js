@@ -39,7 +39,12 @@ export default function page() {
     <div className='page'>
       <div className={`hero ${styles.about}`}>
         <div className='row'>
-          <div className='flex-padding' style={{ flex: '40%' }}>
+          <div className='flex-padding' style={{ flex: '70%' }}>
+            <div className='column'>
+              <h1 className='img-heading'>ABOUT</h1>
+            </div>
+          </div>
+          <div className='flex-padding' style={{ flex: '30%' }}>
             <div className='column'>
               <PersonalPhoto />
               <h2>
@@ -49,11 +54,6 @@ export default function page() {
               </h2>
             </div>
           </div>
-          <div className='flex-padding' style={{ flex: '60%' }}>
-            <div className='column'>
-              <h1 className='img-heading'>ABOUT</h1>
-            </div>
-          </div>
         </div>
       </div>
       <div className='content'>
@@ -61,46 +61,22 @@ export default function page() {
           <AboutPageContent />
           <div className='flex-box'>
             <div className='item shadow'>
-              <Skill
-                heading={'C++'}
-                logo={<SiCplusplus />}
-                color={'#3b95cd'}
-              />
+              <Skill heading={'C++'} logo={<SiCplusplus />} color={'#3b95cd'} />
             </div>
             <div className='item shadow'>
-              <Skill
-                heading={'C#'}
-                logo={<SiCsharp />}
-                color={'#53BC50'}
-              />
+              <Skill heading={'C#'} logo={<SiCsharp />} color={'#53BC50'} />
             </div>
             <div className='item shadow'>
-              <Skill
-                heading={'HTML5'}
-                logo={<SiHtml5 />}
-                color={'#E35D38'}
-              />
+              <Skill heading={'HTML5'} logo={<SiHtml5 />} color={'#E35D38'} />
             </div>
             <div className='item shadow'>
-              <Skill
-                heading={'React'}
-                logo={<SiReact />}
-                color={'#61DAFB'}
-              />
+              <Skill heading={'React'} logo={<SiReact />} color={'#61DAFB'} />
             </div>
             <div className='item shadow'>
-              <Skill
-                heading={'CSS3'}
-                logo={<SiCss3 />}
-                color={'#3880B6'}
-              />
+              <Skill heading={'CSS3'} logo={<SiCss3 />} color={'#3880B6'} />
             </div>
             <div className='item shadow'>
-              <Skill
-                heading={'SASS'}
-                logo={<SiSass />}
-                color={'#cc6699'}
-              />
+              <Skill heading={'SASS'} logo={<SiSass />} color={'#cc6699'} />
             </div>
             <div className='item shadow'>
               <Skill
@@ -187,11 +163,7 @@ export default function page() {
               />
             </div>
             <div className='item shadow'>
-              <Skill
-                heading={'Unity'}
-                logo={<RpUnity />}
-                color={'#2d7b97'}
-              />
+              <Skill heading={'Unity'} logo={<RpUnity />} color={'#2d7b97'} />
             </div>
           </div>
         </div>
