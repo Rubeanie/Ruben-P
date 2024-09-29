@@ -9,6 +9,7 @@ export const page = {
   icon: IoMdBrowsers,
   groups: [
     { name: 'content', default: true },
+    { name: 'options' },
     { name: 'seo', title: 'SEO' }
   ],
   fields: [
@@ -23,6 +24,23 @@ export const page = {
       description: 'Page content',
       group: 'content',
       ...pageBlock
+    },
+    {
+      name: 'tableOfContents',
+      type: 'boolean',
+      initialValue: false,
+      group: 'options'
+    },
+    {
+      name: 'tocPosition',
+      type: 'string',
+      options: {
+        list: ['left', 'right'],
+        layout: 'radio'
+      },
+      hidden: ({ parent }) => !parent?.tableOfContents,
+      initialValue: 'right',
+      group: 'options'
     },
     {
       ...metadata(),
