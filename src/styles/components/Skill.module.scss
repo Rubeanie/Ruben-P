@@ -10,6 +10,7 @@ $text-wrapper-height: 40px;
 $svg-size: 70px;
 
 .skill {
+  position: relative;
   display: flex;
   align-items: center;
   margin: $margin;
