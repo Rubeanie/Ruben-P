@@ -18,7 +18,7 @@ export const metadata = {
 
 export default function Socials() {
   return (
-    <div className='page'>
+    <>
       <div className='hero'>
         <div className='column'>
           <h2>Socials</h2>
@@ -95,6 +95,6 @@ export default function Socials() {
           </Link>
         </div>
       </div>
-    </div>
+    </>
   );
 }

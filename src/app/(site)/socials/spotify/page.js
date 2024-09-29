@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function page() {
   return (
-    <div className='page'>
+    <>
       <div className='hero-no-padding'>
         <Redirect
           name={'Spotify'}
@@ -16,6 +16,6 @@ export default function page() {
           url={'https://open.spotify.com/user/rubeanie?si=87761d3bc88f4fcc'}
         />
       </div>
-    </div>
+    </>
   );
 }

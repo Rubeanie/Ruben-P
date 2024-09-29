@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function page() {
   return (
-    <div className='page'>
+    <>
       <div className='hero-no-padding'>
         <Redirect
           name={'Twitter'}
@@ -16,6 +16,6 @@ export default function page() {
           url={'https://twitter.com/TwitchRubeanie'}
         />
       </div>
-    </div>
+    </>
   );
 }

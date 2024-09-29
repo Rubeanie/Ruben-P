@@ -5,11 +5,13 @@ export const metadata = {
 
 export default function page() {
   return (
-    <div className='page'>
+    <>
       <div className='hero-no-padding'>
-        <h1 className='img-heading'>CONTACT</h1>
+        <h1>
+          <span class='img-heading'>CONTACT</span>
+        </h1>
         <p>Coming Soon...</p>
       </div>
-    </div>
+    </>
   );
 }

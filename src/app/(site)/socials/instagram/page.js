@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function page() {
   return (
-    <div className='page'>
+    <>
       <div className='hero-no-padding'>
         <Redirect
           name={'Instagram'}
@@ -16,6 +16,6 @@ export default function page() {
           url={'https://www.instagram.com/ruben.panzich/'}
         />
       </div>
-    </div>
+    </>
   );
 }

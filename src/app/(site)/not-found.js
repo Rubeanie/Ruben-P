@@ -14,11 +14,13 @@ export default async function NotFound() {
     <div className='hero-no-padding'>
       <div className='column'>
         <h2 style={{ marginBlockEnd: '0px' }}>Error</h2>
-        <h1 className='img-heading'>404</h1>
+        <h1>
+          <span class='img-heading'>404</span>
+        </h1>
         <p>This page could not be found.</p>
       </div>
     </div>
-    )
+  );
   return <Modules modules={page?.modules} />;
 }
 

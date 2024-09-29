@@ -9,17 +9,18 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <div className='page'>
+    <>
       <HeroCanvas />
-      <div
-        className='hero-no-padding'>
+      <div className='hero-no-padding'>
         <div className='column'>
           <div className='layer'>
             <div className='column'>
-              <h1 className='img-heading'>
-                Ruben
-                <br />
-                Panzich
+              <h1>
+                <span class='img-heading'>
+                  Ruben
+                  <br />
+                  Panzich
+                </span>
               </h1>
               <p>
                 <Age />
@@ -31,6 +32,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

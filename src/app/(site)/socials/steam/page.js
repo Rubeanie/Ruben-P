@@ -8,7 +8,7 @@ export const metadata = {
 
 export default function page() {
   return (
-    <div className='page'>
+    <>
       <div className='hero-no-padding'>
         <Redirect
           name={'Steam'}
@@ -16,6 +16,6 @@ export default function page() {
           url={'https://steamcommunity.com/id/Rubeanie/'}
         />
       </div>
-    </div>
+    </>
   );
 }

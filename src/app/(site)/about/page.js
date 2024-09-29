@@ -36,12 +36,14 @@ export const metadata = {
 
 export default function page() {
   return (
-    <div className='page'>
+    <>
       <div className={`hero ${styles.about}`}>
         <div className='row'>
           <div className='flex-padding' style={{ flex: '70%' }}>
             <div className='column'>
-              <h1 className='img-heading'>ABOUT</h1>
+              <h1>
+                <span class='img-heading'>ABOUT</span>
+              </h1>
             </div>
           </div>
           <div className='flex-padding' style={{ flex: '30%' }}>
@@ -168,6 +170,6 @@ export default function page() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
