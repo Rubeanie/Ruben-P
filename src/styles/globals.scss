@@ -55,17 +55,6 @@ h1 {
   max-width: 100%;
   transition: font-size 0.1s ease-in;
   margin-block: var.$h-margin-block;
-
-  .img-heading {
-    background: var.$image-background no-repeat center center;
-    background-size: cover;
-    background-clip: text;
-    -webkit-background-clip: text;
-    background-attachment: fixed;
-    -webkit-text-fill-color: transparent;
-    filter: brightness(115%) contrast(43%) drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.6)) saturate(1.5);
-    transition: background var.$theme-transition !important;
-  }
 }
 
 h2 {
@@ -95,6 +84,17 @@ p {
   margin-block-start: 0.25em;
   margin-block-end: 0em;
   padding-inline: 1px;
+}
+
+.img-heading {
+  background: var.$image-background no-repeat center center;
+  background-size: cover;
+  background-clip: text;
+  -webkit-background-clip: text;
+  background-attachment: fixed;
+  -webkit-text-fill-color: transparent;
+  filter: brightness(115%) contrast(43%) drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.6)) saturate(1.5);
+  transition: background var.$theme-transition !important;
 }
 
 h1,
