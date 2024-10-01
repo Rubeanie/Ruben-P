@@ -2,7 +2,6 @@ import '@/styles/globals.scss';
 import { yapari, kollektif } from '@/styles/fonts';
 import Signature from '@/components/Signature';
 import dynamic from 'next/dynamic';
-import { Preload } from '../preload';
 import { Suspense } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -51,9 +50,26 @@ export default async function RootLayout({ children }) {
   const themes = await getThemes();
   return (
     <html lang='en' className={`${yapari.variable} ${kollektif.variable}`}>
+      <head>
+        <link
+          rel='preload'
+          href='https://www.gstatic.com/draco/versioned/decoders/1.5.5/draco_wasm_wrapper.js'
+          as='fetch'
+          crossOrigin='anonymous'
+        />
+        <link
+          rel='preload'
+          href='https://www.gstatic.com/draco/versioned/decoders/1.5.5/draco_decoder.wasm'
+          as='fetch'
+          crossOrigin='anonymous'
+        />
+        <link rel='preconnect' href='https://www.gstatic.com' />
+        <link rel='preconnect' href='https://api.sanity.com' />
+        <link rel='preconnect' href='https://cdn.sanity.io' />
+        <link rel='preconnect' href='https://res.cloudinary.com' />
+      </head>
       <body>
         <ThemeProvider initialThemes={themes}>
-          <Preload />
           <Suspense>
             <Signature />
           </Suspense>
