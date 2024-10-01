@@ -53,6 +53,7 @@ h1 {
   font-size: var.$h1-size;
   font-stretch: semi-expanded;
   max-width: 100%;
+  filter: var.$common-drop-shadow;
   transition: font-size 0.1s ease-in;
   margin-block: var.$h-margin-block;
 }
@@ -63,6 +64,7 @@ h2 {
   font-family: var.$h-font;
   font-size: var.$h2-size;
   max-width: 100%;
+  filter: var.$common-drop-shadow;
 }
 
 h3 {
@@ -71,6 +73,7 @@ h3 {
   font-family: var.$h-font;
   font-size: var.$p1-size;
   max-width: 100%;
+  filter: var.$common-drop-shadow;
 }
 
 p {
@@ -86,7 +89,7 @@ p {
   padding-inline: 1px;
 }
 
-.img-heading {
+.image-text {
   background: var.$image-background no-repeat center center;
   background-size: cover;
   background-clip: text;
@@ -209,16 +212,24 @@ body {
   display: none !important;
 }
 
-/* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (min-width: var.$media-mobile-width) {
+
+  h1:has(.image-text),
+  h2:has(.image-text),
+  h3:has(.image-text) {
+    filter: none;
+  }
+}
+
 @media screen and (max-width: var.$media-mobile-width) {
-  h1.img-heading {
+  .image-text {
     background: unset;
     background-size: unset;
     background-attachment: unset;
     background-clip: unset;
     -webkit-background-clip: unset;
     -webkit-text-fill-color: unset;
-    filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.85));
+    filter: unset;
     transition: color var.$theme-transition !important;
   }
 

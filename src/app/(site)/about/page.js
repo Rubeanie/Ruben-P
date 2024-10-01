@@ -42,7 +42,7 @@ export default function page() {
           <div className='flex-padding' style={{ flex: '70%' }}>
             <div className='column'>
               <h1>
-                <span class='img-heading'>ABOUT</span>
+                <span class='image-text'>ABOUT</span>
               </h1>
             </div>
           </div>

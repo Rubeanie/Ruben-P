@@ -15,7 +15,7 @@ export default async function NotFound() {
       <div className='column'>
         <h2 style={{ marginBlockEnd: '0px' }}>Error</h2>
         <h1>
-          <span class='img-heading'>404</span>
+          <span class='image-text'>404</span>
         </h1>
         <p>This page could not be found.</p>
       </div>

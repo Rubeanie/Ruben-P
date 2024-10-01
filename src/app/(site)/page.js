@@ -16,7 +16,7 @@ export default function Home() {
           <div className='layer'>
             <div className='column'>
               <h1>
-                <span class='img-heading'>
+                <span class='image-text'>
                   Ruben
                   <br />
                   Panzich

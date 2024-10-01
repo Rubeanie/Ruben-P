@@ -8,7 +8,7 @@ export default function page() {
     <>
       <div className='hero-no-padding'>
         <h1>
-          <span class='img-heading'>CONTACT</span>
+          <span class='image-text'>CONTACT</span>
         </h1>
         <p>Coming Soon...</p>
       </div>
