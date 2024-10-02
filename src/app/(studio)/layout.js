@@ -8,8 +8,13 @@ export default async function RootLayout({
 }) {
   return (
     <html lang='en'>
+      <head>
+        <link rel='preconnect' href='https://www.gstatic.com' />
+        <link rel='preconnect' href='https://api.sanity.com' />
+        <link rel='preconnect' href='https://cdn.sanity.io' />
+        <link rel='preconnect' href='https://res.cloudinary.com' />
+      </head>
       <body style={{ margin: '0px' }}>
-        <Preload />
         <Signature />
         <main>{children}</main>
       </body>
