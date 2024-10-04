@@ -11,7 +11,11 @@ const Common = dynamic(() => import('@/components/canvas/Common'), {
 const Logo = dynamic(() => import('@/components/canvas/Logo'), { ssr: false });
 const Canvas = dynamic(() => import('@/components/canvas/Canvas'), {
   ssr: false,
-  loading: Loading
+  loading: () => (
+    <div className={styles.heroCanvas}>
+      <Loading />
+    </div>
+  )
 });
 
 export default function HeroCanvas() {
