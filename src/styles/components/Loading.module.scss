@@ -2,7 +2,7 @@
 
 .loadingWrapper {
   width: 31.25rem;
-  max-width: 60%;
+  max-width: 70%;
   height: auto;
   position: relative;
 
@@ -30,7 +30,7 @@
         stroke: var.$color-primary;
         stroke-opacity: 0.6;
         stroke-dasharray: 23;
-        stroke-width: 0.2;
+        stroke-width: 0.013rem;
         animation: spin 10s linear infinite;
       }
 

@@ -2,7 +2,7 @@ import styles from '@/styles/components/Loading.module.scss';
 
 export function Loading() {
   return (
-    <div className={styles.parentWrapper}>
+    <div className={styles.loadingWrapper}>
       <div className={styles.aspectRatioBox}>
         <svg width='0' height='0'>
           <defs>
