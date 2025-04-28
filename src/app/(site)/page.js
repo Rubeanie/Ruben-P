@@ -22,7 +22,7 @@ export default function Home() {
                 Panzich
               </h1>
               <p>
-                Freelance Creative Artist/Developer
+                Student Freelance Creative Artist/Developer
               </p>
             </div>
           </div>
