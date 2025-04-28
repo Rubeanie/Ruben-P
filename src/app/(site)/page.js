@@ -22,10 +22,7 @@ export default function Home() {
                 Panzich
               </h1>
               <p>
-                <Age />
-                -year-old student
-                <br />
-                freelance creative artist/developer
+                Freelance Creative Artist/Developer
               </p>
             </div>
           </div>
