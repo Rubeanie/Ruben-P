@@ -8,4 +8,12 @@
   "prettier.jsxSingleQuote": true,
   "prettier.bracketSameLine": true,
   "prettier.prettierPath": "./node_modules/prettier",
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#5adf70",
+    "statusBar.foreground": "#15202b",
+    "statusBarItem.hoverBackground": "#2fd74b",
+    "statusBarItem.remoteBackground": "#5adf70",
+    "statusBarItem.remoteForeground": "#15202b"
+  },
+  "peacock.color": "#5adf70",
 }
