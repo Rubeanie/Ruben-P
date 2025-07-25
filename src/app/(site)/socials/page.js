@@ -38,28 +38,12 @@ export default function Socials() {
               color={'#e1e8ed'}
             />
           </a>
-          <a href='/socials/youtube' target='_blank'>
-            <Social
-              heading={'YouTube'}
-              subheading={'@Rubeanie'}
-              logo={<BsYoutube />}
-              color={'#c4302b'}
-            />
-          </a>
           <a href='/socials/twitch' target='_blank'>
             <Social
               heading={'Twitch'}
               subheading={'@Rubeanie'}
               logo={<BsTwitch />}
               color={'#6441a5'}
-            />
-          </a>
-          <a href='/socials/twitter' target='_blank'>
-            <Social
-              heading={'Twitter'}
-              subheading={'@TwitchRubeanie'}
-              logo={<BsTwitter />}
-              color={'#1da1f2'}
             />
           </a>
           <a href='/socials/instagram' target='_blank'>
