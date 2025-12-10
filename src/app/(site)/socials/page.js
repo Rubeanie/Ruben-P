@@ -38,14 +38,6 @@ export default function Socials() {
               color={'#e1e8ed'}
             />
           </a>
-          <a href='/socials/twitch' target='_blank'>
-            <Social
-              heading={'Twitch'}
-              subheading={'@Rubeanie'}
-              logo={<BsTwitch />}
-              color={'#6441a5'}
-            />
-          </a>
           <a href='/socials/instagram' target='_blank'>
             <Social
               heading={'Instagram'}
