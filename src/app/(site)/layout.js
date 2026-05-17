@@ -1,5 +1,5 @@
 import '@/styles/globals.scss';
-import { yapari, kollektif } from '@/styles/fonts';
+import { mont, kollektif } from '@/styles/fonts';
 import Signature from '@/components/Signature';
 import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
@@ -49,7 +49,7 @@ export const viewport = {
 export default async function RootLayout({ children }) {
   const themes = await getThemes();
   return (
-    <html lang='en' className={`${yapari.variable} ${kollektif.variable}`}>
+    <html lang='en' className={`${mont.variable} ${kollektif.variable}`}>
       <head>
         <link
           rel='preload'

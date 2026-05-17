@@ -1,0 +1,36 @@
+@use '../abstracts/index' as var;
+
+.dlig {
+  @include var.mont-inline;
+  @include var.ot-dlig;
+}
+
+.frac {
+  @include var.mont-inline;
+  @include var.ot-frac;
+}
+
+.ordn {
+  @include var.mont-inline;
+  @include var.ot-ordn;
+}
+
+.sups {
+  @include var.mont-inline;
+  @include var.ot-sups;
+}
+
+.ss01 {
+  @include var.mont-inline;
+  @include var.ot-ss01;
+}
+
+.salt {
+  @include var.mont-inline;
+  @include var.ot-salt;
+}
+
+.aalt {
+  @include var.mont-inline;
+  @include var.ot-aalt;
+}

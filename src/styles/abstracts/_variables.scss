@@ -35,10 +35,12 @@ $padding-safe: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
 $inverted-padding-safe: 0 calc(-1 * env(safe-area-inset-right)) 0 calc(-1 * env(safe-area-inset-left));
 
 /* Font Faces */
-$h-font: var(--font-yapari),
-serif;
+$h-font: var(--font-mont),
+sans-serif;
 $p-font: var(--font-kollektif),
 serif;
+$mont-font: var(--font-mont),
+sans-serif;
 
 /* Text Alignments */
 $h-alignment: center;

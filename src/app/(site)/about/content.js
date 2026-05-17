@@ -1,5 +1,5 @@
 import { fetchSanity, groq } from '@/lib/sanity/fetch';
-import { PortableText } from '@portabletext/react';
+import RichText from '@/components/RichText';
 
 async function getAboutPageData() {
   return await fetchSanity(
@@ -18,7 +18,7 @@ export async function AboutPageContent() {
   return (
     <>
       {data.map((item) => (
-        <PortableText key={item._id} value={item.content} />
+        <RichText key={item._id} value={item.content} />
       ))}
     </>
   );

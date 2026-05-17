@@ -15,11 +15,12 @@ export default function Home() {
         <div className='column'>
           <div className='layer'>
             <div className='column'>
-              <h1>
+              {/* TODO: remove ot-ss01 class once homepage moves to Sanity (apply via decorator or display-heading block style instead) */}
+              <h1 className='ot-ss01'>
                 <span className='image-text'>
-                  Ruben
+                  RUBEN
                   <br />
-                  Panzich
+                  PANZICH
                 </span>
               </h1>
               <p>

@@ -1,5 +1,6 @@
 import '@/styles/sanity.scss';
 import Signature from '@/components/Signature';
+import { mont } from '@/styles/fonts';
 
 export default async function RootLayout({
   // Layouts must accept a children prop.
@@ -7,7 +8,7 @@ export default async function RootLayout({
   children
 }) {
   return (
-    <html lang='en'>
+    <html lang='en' className={mont.variable}>
       <head>
         <link rel='preconnect' href='https://www.gstatic.com' />
         <link rel='preconnect' href='https://api.sanity.com' />
