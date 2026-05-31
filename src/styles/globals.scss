@@ -1,4 +1,4 @@
-@use './abstracts/index'as var;
+@use './abstracts/index' as var;
 
 /* Navbar & Footer */
 @use './components/Navbar.module.scss';
@@ -89,13 +89,16 @@ p {
 }
 
 .image-text {
-  background: var.$image-background no-repeat center center;
+  background-image: var.$image-background;
+  background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
   background-clip: text;
   -webkit-background-clip: text;
   background-attachment: fixed;
   -webkit-text-fill-color: transparent;
-  filter: brightness(115%) contrast(43%) drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.6)) saturate(1.5);
+  filter: brightness(115%) contrast(43%)
+    drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.6)) saturate(1.5);
   transition: background var.$theme-transition !important;
 }
 
@@ -155,13 +158,17 @@ body {
     height: 100lvh;
     top: 0;
     left: 0;
-    background-color: white;
-    background: var.$image-background no-repeat center center;
+    background-color: var.$color-background;
+    background-image: var.$image-background;
+    background-repeat: no-repeat;
+    background-position: center center;
     background-size: cover;
     transform: translateZ(0) !important;
     will-change: transform; // creates a new paint layer
     z-index: -1;
-    transition: background var.$theme-transition;
+    transition:
+      background var.$theme-transition,
+      background-color var.$theme-transition;
     opacity: 0.35;
     backface-visibility: hidden !important;
     -webkit-backface-visibility: hidden !important;
@@ -241,7 +248,6 @@ body {
 }
 
 @media screen and (min-width: var.$media-mobile-width) {
-
   h1:has(.image-text),
   h2:has(.image-text),
   h3:has(.image-text) {

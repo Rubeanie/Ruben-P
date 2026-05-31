@@ -1,6 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import { MdStyle } from 'react-icons/md';
-import { count } from '@sanity/src/utils';
+
+function getStylesSubtitle(styles = []) {
+  const styleCount = Array.isArray(styles) ? styles.length : 0;
+
+  return `${styleCount} style${styleCount === 1 ? '' : 's'}`;
+}
 
 export const theme = {
   name: 'theme',
@@ -28,7 +33,7 @@ export const theme = {
       const { title, styles, url } = selection;
       return {
         title,
-        subtitle: count(styles, 'style'),
+        subtitle: getStylesSubtitle(styles),
         media:
           url !== undefined ? (
             <img
