@@ -4,6 +4,5 @@
   "devCommand": "next dev --turbo",
   "framework": "nextjs",
   "installCommand": "pnpm install",
-  "outputDirectory": ".next",
-  "public": false
+  "outputDirectory": ".next"
 }
