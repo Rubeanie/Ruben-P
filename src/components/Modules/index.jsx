@@ -1,6 +1,7 @@
 import React from 'react';
 import CustomHTML from './CustomHTML';
 import RichtextModule from './RichtextModule';
+import ThreeScene from './ThreeScene';
 import ErrorBoundary from '../ErrorBoundary';
 
 const ModuleRenderer = ({ module }) => {
@@ -10,6 +11,8 @@ const ModuleRenderer = ({ module }) => {
         return <CustomHTML {...module} />;
       case 'richtext-module':
         return <RichtextModule {...module} />;
+      case 'three.js':
+        return <ThreeScene {...module} />;
       default:
         throw new Error(
           `Data type mismatch, '${module._type}' does not exist`

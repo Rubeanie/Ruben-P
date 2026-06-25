@@ -1,7 +1,6 @@
 import '@/styles/globals.scss';
 import { mont, kollektif } from '@/styles/fonts';
 import Signature from '@/components/Signature';
-import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -11,10 +10,6 @@ import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { VisualEditingControls } from '@/components/VisualEditingControls';
 import { baseUrl } from '@/lib/env';
-
-const Scene = dynamic(() => import('@/components/canvas/Scene'), {
-  ssr: false
-});
 
 export const metadata = {
   metadataBase: new URL(baseUrl),
@@ -78,18 +73,6 @@ export default async function RootLayout({ children }) {
           </Suspense>
           <Suspense>
             <main>{children}</main>
-          </Suspense>
-          <Suspense>
-            <Scene
-              style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                width: '100vw',
-                height: '100vh',
-                pointerEvents: 'none'
-              }}
-            />
           </Suspense>
           <Suspense fallback={<div>Loading Footer...</div>}>
             <Footer />

@@ -1,0 +1,7 @@
+.canvas {
+  position: relative;
+  width: 100%;
+  // Fixed height so the in-flow R3F canvas has a sized parent.
+  // Tune per design (or swap to aspect-ratio) when the section layout settles.
+  height: 70vh;
+}

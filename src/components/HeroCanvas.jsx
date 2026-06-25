@@ -21,10 +21,8 @@ const Canvas = dynamic(() => import('@/components/canvas/Canvas'), {
 export default function HeroCanvas() {
   return (
     <Canvas className={styles.heroCanvas}>
-      <Suspense fallback={<Loading message='Preparing logo...' />}>
+      <Suspense fallback={null}>
         <Logo />
-      </Suspense>
-      <Suspense fallback={<Loading message='Preparing common elements...' />}>
         <Common />
       </Suspense>
     </Canvas>
