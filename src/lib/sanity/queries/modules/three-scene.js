@@ -12,6 +12,7 @@ export const threeSceneQuery = groq`
   width,
   environmentSource,
   environmentPreset,
+  environmentBackground,
   "environment": select(
     environmentSource == 'file' => environmentFile.asset->url,
     environmentSource == 'url' => environmentUrl,

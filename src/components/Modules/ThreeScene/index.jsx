@@ -16,6 +16,7 @@ export default function ThreeScene(props) {
     environmentSource,
     environmentPreset,
     environment,
+    environmentBackground,
     orbitControls,
     zoom
   } = props;
@@ -31,6 +32,7 @@ export default function ThreeScene(props) {
         environmentSource={stegaClean(environmentSource)}
         environmentPreset={stegaClean(environmentPreset)}
         environment={stegaClean(environment)}
+        environmentBackground={environmentBackground}
         orbitControls={orbitControls}
         zoom={zoom}
       />

@@ -28,9 +28,10 @@ const presetLoaders = {
   workshop: () => import('@pmndrs/assets/hdri/workshop.exr')
 };
 
-// Image-based lighting only — no `background` prop, so it sets scene.environment
-// without adding geometry (keeps <Bounds> model framing intact).
-export default function SceneEnvironment({ source, preset, url }) {
+// Image-based lighting. With `background` off it only sets scene.environment
+// (no geometry, so <Bounds> model framing is unaffected); with it on, the HDRI
+// also becomes the visible backdrop, overriding the background colour.
+export default function SceneEnvironment({ source, preset, url, background }) {
   const [presetFile, setPresetFile] = useState(null);
 
   useEffect(() => {
@@ -48,10 +49,12 @@ export default function SceneEnvironment({ source, preset, url }) {
   }, [source, preset]);
 
   if (source === 'preset') {
-    return presetFile ? <Environment files={presetFile} /> : null;
+    return presetFile ? (
+      <Environment files={presetFile} background={background} />
+    ) : null;
   }
   if (url) {
-    return <Environment files={url} />;
+    return <Environment files={url} background={background} />;
   }
   return null;
 }

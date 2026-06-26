@@ -31,6 +31,7 @@ export default function SceneCanvas({
   environmentSource,
   environmentPreset,
   environment,
+  environmentBackground,
   orbitControls,
   zoom
 }) {
@@ -51,6 +52,7 @@ export default function SceneCanvas({
           source={environmentSource}
           preset={environmentPreset}
           url={environment}
+          background={environmentBackground}
         />
         <Common
           color={background}

@@ -51,9 +51,9 @@ export const threeJs = {
     },
     {
       name: 'lights',
+      title: 'Ambient light',
       type: 'color',
-      description:
-        'Optional ambient fill. A GLB without embedded lights may render dark unless this is set.',
+      description: 'Optional ambient fill light (helps if the model looks dark).',
       group: 'content'
     },
     {
@@ -79,10 +79,9 @@ export const threeJs = {
       title: 'Environment (reflections)',
       type: 'string',
       description:
-        'Image-based lighting for reflective (metal/glass) materials. Not shown as a background.',
+        'Image-based lighting for reflective (metal/glass) materials. Leave unset for no environment.',
       options: {
         list: [
-          { title: 'None', value: 'none' },
           { title: 'Preset', value: 'preset' },
           { title: 'File upload', value: 'file' },
           { title: 'URL', value: 'url' },
@@ -90,7 +89,6 @@ export const threeJs = {
         ],
         layout: 'radio'
       },
-      initialValue: 'none',
       group: 'options'
     },
     {
@@ -148,6 +146,15 @@ export const threeJs = {
       type: 'cloudinary.asset',
       description: 'HDRI for reflections (.hdr or .exr)',
       hidden: ({ parent }) => parent?.environmentSource !== 'cloudinary',
+      group: 'options'
+    },
+    {
+      name: 'environmentBackground',
+      title: 'Show environment as background',
+      type: 'boolean',
+      description: 'Render the HDRI as the visible backdrop (overrides the background colour).',
+      initialValue: false,
+      hidden: ({ parent }) => !parent?.environmentSource,
       group: 'options'
     },
     {
