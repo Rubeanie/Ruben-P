@@ -1,9 +1,21 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { Canvas as R3FCanvas } from '@react-three/fiber';
 import { PerformanceMonitor, Preload } from '@react-three/drei';
-import CanvasLoader from './CanvasLoader';
+import { Loading } from '@/components/dom/Loading';
+
+// Sentinel rendered inside the Suspense boundary: it only mounts once every
+// suspending child in this boundary has resolved, so it signals "this canvas is
+// loaded" — per instance, with no reliance on three's global loading manager
+// (which would be shared across multiple canvases). Children with their own
+// inner Suspense (e.g. the environment) load independently and don't gate it.
+function Ready({ onReady }) {
+  useEffect(() => {
+    onReady();
+  }, [onReady]);
+  return null;
+}
 
 export default function Canvas({
   children,
@@ -15,6 +27,8 @@ export default function Canvas({
   const containerRef = useRef(null);
   const [onScreen, setOnScreen] = useState(true);
   const [dpr, setDpr] = useState(0.9);
+  const [loaded, setLoaded] = useState(false);
+  const handleReady = useCallback(() => setLoaded(true), []);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -39,7 +53,10 @@ export default function Canvas({
         dpr={dpr}
         frameloop={onScreen ? 'always' : 'never'}
         {...props}>
-        {children}
+        <Suspense fallback={null}>
+          {children}
+          <Ready onReady={handleReady} />
+        </Suspense>
         <Preload all />
         <PerformanceMonitor
           ms={200}
@@ -51,7 +68,19 @@ export default function Canvas({
           }
         />
       </R3FCanvas>
-      {loader && <CanvasLoader />}
+      {loader && !loaded && (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            pointerEvents: 'none'
+          }}>
+          <Loading />
+        </div>
+      )}
     </div>
   );
 }

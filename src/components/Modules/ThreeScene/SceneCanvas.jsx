@@ -1,11 +1,16 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { Suspense } from 'react';
 import { Loading } from '@/components/dom/Loading';
 import styles from '@/styles/components/ThreeScene.module.scss';
 
-const Canvas = dynamic(() => import('@/components/canvas/Canvas'), {
+// Single dynamic boundary for the whole 3D scene, so R3F/three stay out of the
+// page bundle. The inner Scene statically composes Canvas + Model + Environment
+// so they suspend into Canvas's own Suspense — the loader then stays up through
+// the real asset load, not just the JS-chunk load. (Importing Model/Common
+// individually with next/dynamic would let each resolve to null during its own
+// chunk load, hiding the loader before the GLB/HDRI actually arrive.)
+const Scene = dynamic(() => import('@/components/canvas/Scene'), {
   ssr: false,
   loading: () => (
     <div className={styles.canvas}>
@@ -13,54 +18,7 @@ const Canvas = dynamic(() => import('@/components/canvas/Canvas'), {
     </div>
   )
 });
-const Model = dynamic(() => import('@/components/canvas/Model'), { ssr: false });
-const Common = dynamic(() => import('@/components/canvas/Common'), {
-  ssr: false
-});
-const SceneEnvironment = dynamic(
-  () => import('@/components/canvas/SceneEnvironment'),
-  { ssr: false }
-);
 
-export default function SceneCanvas({
-  model,
-  background,
-  lights,
-  height,
-  width,
-  environmentSource,
-  environmentPreset,
-  environment,
-  environmentBackground,
-  orbitControls,
-  zoom
-}) {
-  // Inline styles win over the .canvas class, so height/width override the CSS
-  // defaults only when the CMS sets them. Canvas defaults to pointerEvents:'none';
-  // re-enable them when the scene has interactive orbit controls.
-  const style = {
-    pointerEvents: orbitControls ? 'auto' : 'none',
-    ...(height && { height }),
-    ...(width && { width })
-  };
-
-  return (
-    <Canvas className={styles.canvas} style={style}>
-      <Suspense fallback={null}>
-        {model && <Model url={model} />}
-        <SceneEnvironment
-          source={environmentSource}
-          preset={environmentPreset}
-          url={environment}
-          background={environmentBackground}
-        />
-        <Common
-          color={background}
-          lights={lights}
-          controls={orbitControls}
-          enableZoom={zoom}
-        />
-      </Suspense>
-    </Canvas>
-  );
+export default function SceneCanvas(props) {
+  return <Scene {...props} />;
 }

@@ -1,7 +1,6 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { Suspense } from 'react';
 import { Loading } from '@/components/dom/Loading';
 import styles from '@/styles/components/Canvas.module.scss';
 
@@ -21,10 +20,8 @@ const Canvas = dynamic(() => import('@/components/canvas/Canvas'), {
 export default function HeroCanvas() {
   return (
     <Canvas className={styles.heroCanvas} loader={false}>
-      <Suspense fallback={null}>
-        <Logo />
-        <Common />
-      </Suspense>
+      <Logo />
+      <Common />
     </Canvas>
   );
 }

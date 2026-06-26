@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { Environment } from '@react-three/drei';
 
 // Built-in presets ship as JS modules exporting a base64 data-URI (drei's
@@ -28,30 +27,41 @@ const presetLoaders = {
   workshop: () => import('@pmndrs/assets/hdri/workshop.exr')
 };
 
+// Suspense cache: throw the import promise so a preset HDRI loads *inside* the
+// canvas Suspense boundary (covered by the loader, gated alongside the model —
+// no useEffect two-phase that would re-suspend and flicker the model).
+const presetCache = new Map();
+function readPreset(preset) {
+  let entry = presetCache.get(preset);
+  if (!entry) {
+    entry = { status: 'pending' };
+    entry.promise = presetLoaders[preset]().then(
+      (mod) => {
+        entry.status = 'done';
+        entry.value = mod.default;
+      },
+      (err) => {
+        entry.status = 'error';
+        entry.error = err;
+      }
+    );
+    presetCache.set(preset, entry);
+  }
+  if (entry.status === 'pending') throw entry.promise;
+  if (entry.status === 'error') throw entry.error;
+  return entry.value;
+}
+
+function PresetEnvironment({ preset, background }) {
+  return <Environment files={readPreset(preset)} background={background} />;
+}
+
 // Image-based lighting. With `background` off it only sets scene.environment
 // (no geometry, so <Bounds> model framing is unaffected); with it on, the HDRI
 // also becomes the visible backdrop, overriding the background colour.
 export default function SceneEnvironment({ source, preset, url, background }) {
-  const [presetFile, setPresetFile] = useState(null);
-
-  useEffect(() => {
-    setPresetFile(null); // clear stale HDRI on any source/preset change
-    if (source !== 'preset') return;
-    const load = presetLoaders[preset];
-    if (!load) return;
-    let active = true;
-    load().then((mod) => {
-      if (active) setPresetFile(mod.default);
-    });
-    return () => {
-      active = false;
-    };
-  }, [source, preset]);
-
-  if (source === 'preset') {
-    return presetFile ? (
-      <Environment files={presetFile} background={background} />
-    ) : null;
+  if (source === 'preset' && presetLoaders[preset]) {
+    return <PresetEnvironment preset={preset} background={background} />;
   }
   if (url) {
     return <Environment files={url} background={background} />;

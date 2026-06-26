@@ -87,7 +87,9 @@ export const threeJs = {
           { title: 'URL', value: 'url' },
           { title: 'Cloudinary', value: 'cloudinary' }
         ],
-        layout: 'radio'
+        // dropdown (not radio) so the editor can clear it back to no environment —
+        // Sanity radios can't be deselected once set.
+        layout: 'dropdown'
       },
       group: 'options'
     },
