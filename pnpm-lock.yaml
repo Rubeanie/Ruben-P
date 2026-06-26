@@ -20,6 +20,9 @@ importers:
       '@next/bundle-analyzer':
         specifier: ^14.2.25
         version: 14.2.26
+      '@pmndrs/assets':
+        specifier: ^1.7.0
+        version: 1.7.0
       '@portabletext/react':
         specifier: ^3.1.0
         version: 3.1.0(react@18.3.1)
@@ -1775,6 +1778,9 @@ packages:
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
+
+  '@pmndrs/assets@1.7.0':
+    resolution: {integrity: sha512-zHmKNS+3Jvu9K3zJBQfYQKT9Pn9IQt8s0q/eJC3CXKpWpyg6IBa+ivN9NgDn+fDT2AVjUh2YRZ//GXUueuAdCg==}
 
   '@polka/url@1.0.0-next.28':
     resolution: {integrity: sha512-8LduaNlMZGwdZ6qWrKlfa+2M4gahzFkprZiAt2TF8uS0qQgBizKXpXURqvTJ4WtmupWxaLqjRb2UCTe72mu+Aw==}
@@ -9586,6 +9592,8 @@ snapshots:
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
+
+  '@pmndrs/assets@1.7.0': {}
 
   '@polka/url@1.0.0-next.28': {}
 

@@ -1,21 +1,36 @@
 import { stegaClean } from '@sanity/client/stega';
 import uid from '@/lib/uid';
-import RichText from '@/components/RichText';
 import SceneCanvas from './SceneCanvas';
 
-// Server component: the section wrapper and the intro rich text render on the
-// server. Only the WebGL canvas is a client island (SceneCanvas), which is the
-// most SSR you can get — WebGL can't run server-side.
+// Server component: the query resolves the chosen model source to a single URL,
+// which this passes to the client island. Only the WebGL canvas is client-side
+// (SceneCanvas) — that's the most SSR you can get, since WebGL can't run on the
+// server.
 export default function ThreeScene(props) {
-  const { intro, model, lights, background, orbitControls, zoom } = props;
+  const {
+    model,
+    lights,
+    background,
+    height,
+    width,
+    environmentSource,
+    environmentPreset,
+    environment,
+    orbitControls,
+    zoom
+  } = props;
 
   return (
     <section id={uid(props)}>
-      {intro && <RichText value={intro} />}
       <SceneCanvas
-        model={stegaClean(model?.secure_url)}
+        model={stegaClean(model)}
         background={stegaClean(background?.hex)}
         lights={stegaClean(lights?.hex)}
+        height={stegaClean(height)}
+        width={stegaClean(width)}
+        environmentSource={stegaClean(environmentSource)}
+        environmentPreset={stegaClean(environmentPreset)}
+        environment={stegaClean(environment)}
         orbitControls={orbitControls}
         zoom={zoom}
       />

@@ -1,12 +1,22 @@
 import { groq } from '../../fetch';
-import { contentQuery } from '../fragments/content';
-import { cloudinaryQuery } from '../fragments/cloudinary';
 
 export const threeSceneQuery = groq`
-  intro[]{ ${contentQuery} },
-  model { ${cloudinaryQuery} },
+  "model": select(
+    modelSource == 'file' => modelFile.asset->url,
+    modelSource == 'url' => modelUrl,
+    modelSource == 'cloudinary' => modelCloudinary.secure_url
+  ),
   lights { hex },
   background { hex },
+  height,
+  width,
+  environmentSource,
+  environmentPreset,
+  "environment": select(
+    environmentSource == 'file' => environmentFile.asset->url,
+    environmentSource == 'url' => environmentUrl,
+    environmentSource == 'cloudinary' => environmentCloudinary.secure_url
+  ),
   orbitControls,
   zoom
 `;

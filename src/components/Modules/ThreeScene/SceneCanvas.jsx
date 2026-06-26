@@ -17,22 +17,41 @@ const Model = dynamic(() => import('@/components/canvas/Model'), { ssr: false })
 const Common = dynamic(() => import('@/components/canvas/Common'), {
   ssr: false
 });
+const SceneEnvironment = dynamic(
+  () => import('@/components/canvas/SceneEnvironment'),
+  { ssr: false }
+);
 
 export default function SceneCanvas({
   model,
   background,
   lights,
+  height,
+  width,
+  environmentSource,
+  environmentPreset,
+  environment,
   orbitControls,
   zoom
 }) {
+  // Inline styles win over the .canvas class, so height/width override the CSS
+  // defaults only when the CMS sets them. Canvas defaults to pointerEvents:'none';
+  // re-enable them when the scene has interactive orbit controls.
+  const style = {
+    pointerEvents: orbitControls ? 'auto' : 'none',
+    ...(height && { height }),
+    ...(width && { width })
+  };
+
   return (
-    // Canvas defaults to pointerEvents:'none'; re-enable them when the scene
-    // has interactive orbit controls.
-    <Canvas
-      className={styles.canvas}
-      style={{ pointerEvents: orbitControls ? 'auto' : 'none' }}>
+    <Canvas className={styles.canvas} style={style}>
       <Suspense fallback={null}>
         {model && <Model url={model} />}
+        <SceneEnvironment
+          source={environmentSource}
+          preset={environmentPreset}
+          url={environment}
+        />
         <Common
           color={background}
           lights={lights}

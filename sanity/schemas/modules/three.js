@@ -1,6 +1,4 @@
 import { IoMdCube } from 'react-icons/io';
-import { textBlock } from '../fragments/text-block';
-import { getBlockText } from '@sanity/src/utils';
 
 export const threeJs = {
   name: 'three.js',
@@ -10,26 +8,146 @@ export const threeJs = {
   groups: [{ name: 'content', default: true }, { name: 'options' }],
   fields: [
     {
-      name: 'intro',
-      ...textBlock,
+      name: 'modelSource',
+      title: 'Model source',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'File upload', value: 'file' },
+          { title: 'URL', value: 'url' },
+          { title: 'Cloudinary', value: 'cloudinary' }
+        ],
+        layout: 'radio'
+      },
+      initialValue: 'file',
       group: 'content'
     },
     {
-      name: 'model',
+      name: 'modelFile',
+      title: 'Model file',
+      type: 'file',
+      description: 'Upload a GLB file',
+      options: { accept: '.glb,model/gltf-binary' },
+      hidden: ({ parent }) => parent?.modelSource !== 'file',
+      group: 'content'
+    },
+    {
+      name: 'modelUrl',
+      title: 'Model URL',
+      type: 'url',
+      description:
+        'Direct link to a GLB. The host must allow cross-origin (CORS) requests.',
+      validation: (Rule) => Rule.uri({ scheme: ['https'] }),
+      hidden: ({ parent }) => parent?.modelSource !== 'url',
+      group: 'content'
+    },
+    {
+      name: 'modelCloudinary',
+      title: 'Cloudinary model',
       type: 'cloudinary.asset',
       description: 'Must be a GLB file',
+      hidden: ({ parent }) => parent?.modelSource !== 'cloudinary',
       group: 'content'
     },
     {
       name: 'lights',
       type: 'color',
-      description: 'Ambient light color',
+      description:
+        'Optional ambient fill. A GLB without embedded lights may render dark unless this is set.',
       group: 'content'
     },
     {
       name: 'background',
       type: 'color',
       description: 'Background color',
+      group: 'options'
+    },
+    {
+      name: 'height',
+      type: 'string',
+      description: 'Canvas height override, e.g. 70vh or 500px (default 70vh)',
+      group: 'options'
+    },
+    {
+      name: 'width',
+      type: 'string',
+      description: 'Canvas width override, e.g. 100% or 800px (default 100%)',
+      group: 'options'
+    },
+    {
+      name: 'environmentSource',
+      title: 'Environment (reflections)',
+      type: 'string',
+      description:
+        'Image-based lighting for reflective (metal/glass) materials. Not shown as a background.',
+      options: {
+        list: [
+          { title: 'None', value: 'none' },
+          { title: 'Preset', value: 'preset' },
+          { title: 'File upload', value: 'file' },
+          { title: 'URL', value: 'url' },
+          { title: 'Cloudinary', value: 'cloudinary' }
+        ],
+        layout: 'radio'
+      },
+      initialValue: 'none',
+      group: 'options'
+    },
+    {
+      name: 'environmentPreset',
+      title: 'Environment preset',
+      type: 'string',
+      options: {
+        list: [
+          'apartment',
+          'bridge',
+          'city',
+          'dawn',
+          'esplanade',
+          'forest',
+          'hall',
+          'lab',
+          'lobby',
+          'night',
+          'park',
+          'sky',
+          'studio',
+          'sunrise',
+          'sunset',
+          'venice',
+          'warehouse',
+          'workshop'
+        ]
+      },
+      initialValue: 'studio',
+      hidden: ({ parent }) => parent?.environmentSource !== 'preset',
+      group: 'options'
+    },
+    {
+      name: 'environmentFile',
+      title: 'Environment file',
+      type: 'file',
+      description: 'HDRI for reflections (.hdr or .exr)',
+      options: { accept: '.hdr,.exr' },
+      hidden: ({ parent }) => parent?.environmentSource !== 'file',
+      group: 'options'
+    },
+    {
+      name: 'environmentUrl',
+      title: 'Environment URL',
+      type: 'url',
+      description:
+        'Direct link to a .hdr or .exr HDRI. The host must allow CORS and the URL must end in .hdr/.exr.',
+      validation: (Rule) => Rule.uri({ scheme: ['https'] }),
+      hidden: ({ parent }) => parent?.environmentSource !== 'url',
+      group: 'options'
+    },
+    {
+      name: 'environmentCloudinary',
+      title: 'Cloudinary environment',
+      type: 'cloudinary.asset',
+      description: 'HDRI for reflections (.hdr or .exr)',
+      hidden: ({ parent }) => parent?.environmentSource !== 'cloudinary',
       group: 'options'
     },
     {
@@ -49,13 +167,15 @@ export const threeJs = {
   ],
   preview: {
     select: {
-      intro: 'intro'
+      source: 'modelSource',
+      file: 'modelFile.asset.originalFilename',
+      url: 'modelUrl',
+      cloudinary: 'modelCloudinary.public_id'
     },
-    prepare({ intro }) {
-      return {
-        title: getBlockText(intro),
-        subtitle: '3D scene'
-      };
+    prepare({ source, file, url, cloudinary }) {
+      const subtitle =
+        source === 'file' ? file : source === 'url' ? url : cloudinary;
+      return { title: '3D scene', subtitle: subtitle || 'No model' };
     }
   }
 };

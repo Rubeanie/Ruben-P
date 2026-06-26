@@ -19,6 +19,7 @@
     "@cloudinary/url-gen": "^1.21.0",
     "@focus-reactive/sanity-plugin-inline-svg-input": "^1.1.0",
     "@next/bundle-analyzer": "^14.2.25",
+    "@pmndrs/assets": "^1.7.0",
     "@portabletext/react": "^3.1.0",
     "@react-spring/three": "^9.7.4",
     "@react-spring/web": "^9.7.4",
