@@ -20,7 +20,7 @@ const Canvas = dynamic(() => import('@/components/canvas/Canvas'), {
 
 export default function HeroCanvas() {
   return (
-    <Canvas className={styles.heroCanvas}>
+    <Canvas className={styles.heroCanvas} loader={false}>
       <Suspense fallback={null}>
         <Logo />
         <Common />

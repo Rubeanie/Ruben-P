@@ -3,8 +3,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { Canvas as R3FCanvas } from '@react-three/fiber';
 import { PerformanceMonitor, Preload } from '@react-three/drei';
+import CanvasLoader from './CanvasLoader';
 
-export default function Canvas({ children, className, style, ...props }) {
+export default function Canvas({
+  children,
+  className,
+  style,
+  loader = true,
+  ...props
+}) {
   const containerRef = useRef(null);
   const [onScreen, setOnScreen] = useState(true);
   const [dpr, setDpr] = useState(0.9);
@@ -44,6 +51,7 @@ export default function Canvas({ children, className, style, ...props }) {
           }
         />
       </R3FCanvas>
+      {loader && <CanvasLoader />}
     </div>
   );
 }
