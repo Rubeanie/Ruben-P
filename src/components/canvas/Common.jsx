@@ -29,7 +29,7 @@ export default function Common({
       {color && <color attach='background' args={[color]} />}
       {lights && <ambientLight color={lights} intensity={1} />}
       <PerspectiveCamera makeDefault fov={60} position={[0, 0, 3]} />
-      {controls && <OrbitControls enableZoom={enableZoom} />}
+      {controls && <OrbitControls makeDefault enableZoom={enableZoom} />}
       {perf && <Perf position={'bottom-right'} />}
     </>
   );

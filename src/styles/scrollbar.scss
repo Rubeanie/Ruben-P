@@ -1,5 +1,9 @@
 @use './abstracts/index'as var;
 
+html {
+  scrollbar-gutter: stable;
+}
+
 html::-webkit-scrollbar {
   width: 7.5px;
 }
