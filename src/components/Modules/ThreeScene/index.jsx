@@ -17,22 +17,27 @@ export default function ThreeScene(props) {
     environmentPreset,
     environment,
     environmentBackground,
+    keyLight,
     orbitControls,
     zoom
   } = props;
 
+  const cleanHeight = stegaClean(height);
+  const cleanWidth = stegaClean(width);
+
   return (
-    <section id={uid(props)}>
+    <section
+      id={uid(props)}
+      style={{ height: cleanHeight || '70vh', width: cleanWidth || '100%' }}>
       <SceneCanvas
         model={stegaClean(model)}
         background={stegaClean(background?.hex)}
         lights={stegaClean(lights?.hex)}
-        height={stegaClean(height)}
-        width={stegaClean(width)}
         environmentSource={stegaClean(environmentSource)}
         environmentPreset={stegaClean(environmentPreset)}
         environment={stegaClean(environment)}
         environmentBackground={environmentBackground}
+        keyLight={keyLight}
         orbitControls={orbitControls}
         zoom={zoom}
       />

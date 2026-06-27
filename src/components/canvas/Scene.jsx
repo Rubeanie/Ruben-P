@@ -11,27 +11,24 @@ export default function Scene({
   model,
   background,
   lights,
-  height,
-  width,
   environmentSource,
   environmentPreset,
   environment,
   environmentBackground,
+  keyLight,
   orbitControls,
   zoom
 }) {
-  // Inline styles win over the .canvas class, so height/width override the CSS
-  // defaults only when the CMS sets them. Canvas defaults to pointerEvents:'none';
-  // re-enable them when the scene has interactive orbit controls.
+  // Re-enable pointer events for interactive orbit (Canvas defaults to none).
   const style = {
-    pointerEvents: orbitControls ? 'auto' : 'none',
-    ...(height && { height }),
-    ...(width && { width })
+    pointerEvents: orbitControls ? 'auto' : 'none'
   };
 
   return (
     <Canvas className={styles.canvas} style={style}>
       {model && <Model url={model} />}
+      {/* Key light for form — flat image environments light too evenly. */}
+      {keyLight && <directionalLight position={[3, 4, 5]} intensity={1.2} />}
       {/* Own Suspense so the HDRI loads independently of the model — the model
           (gated by Canvas's boundary + the loader) shows as soon as it's ready
           instead of waiting on the environment. */}

@@ -18,6 +18,7 @@ export const threeSceneQuery = groq`
     environmentSource == 'url' => environmentUrl,
     environmentSource == 'cloudinary' => environmentCloudinary.secure_url
   ),
+  keyLight,
   orbitControls,
   zoom
 `;

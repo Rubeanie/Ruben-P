@@ -53,7 +53,8 @@ export const threeJs = {
       name: 'lights',
       title: 'Ambient light',
       type: 'color',
-      description: 'Optional ambient fill light (helps if the model looks dark).',
+      description:
+        'Optional ambient fill light (helps if the model looks dark).',
       group: 'content'
     },
     {
@@ -65,13 +66,15 @@ export const threeJs = {
     {
       name: 'height',
       type: 'string',
-      description: 'Canvas height override, e.g. 70vh or 500px (default 70vh)',
+      description: 'Canvas height, e.g. 70vh or 500px',
+      initialValue: '70vh',
       group: 'options'
     },
     {
       name: 'width',
       type: 'string',
-      description: 'Canvas width override, e.g. 100% or 800px (default 100%)',
+      description: 'Canvas width, e.g. 100% or 800px',
+      initialValue: '100%',
       group: 'options'
     },
     {
@@ -83,6 +86,7 @@ export const threeJs = {
       options: {
         list: [
           { title: 'Preset', value: 'preset' },
+          { title: 'Theme image', value: 'theme' },
           { title: 'File upload', value: 'file' },
           { title: 'URL', value: 'url' },
           { title: 'Cloudinary', value: 'cloudinary' }
@@ -154,9 +158,19 @@ export const threeJs = {
       name: 'environmentBackground',
       title: 'Show environment as background',
       type: 'boolean',
-      description: 'Render the HDRI as the visible backdrop (overrides the background colour).',
+      description:
+        'Render the HDRI as the visible backdrop (overrides the background colour).',
       initialValue: false,
       hidden: ({ parent }) => !parent?.environmentSource,
+      group: 'options'
+    },
+    {
+      name: 'keyLight',
+      title: 'Add key light',
+      type: 'boolean',
+      description:
+        'Adds a directional light for highlights and a shaded side.',
+      initialValue: false,
       group: 'options'
     },
     {

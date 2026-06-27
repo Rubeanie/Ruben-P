@@ -198,7 +198,7 @@ function deriveThemeColorsFromPalette(palette) {
   }
 }
 
-function loadThemeImage(url) {
+export function loadThemeImage(url) {
   return new Promise((resolve, reject) => {
     const image = new Image();
 

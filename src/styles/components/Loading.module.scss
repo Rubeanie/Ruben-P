@@ -1,8 +1,7 @@
 @use '../abstracts/index'as var;
 
 .loadingWrapper {
-  width: 31.25rem;
-  max-width: 70%;
+  width: clamp(8rem, min(70cqw, calc(70cqh * 24 / 16.3)), 31.25rem);
   height: auto;
   position: relative;
 
