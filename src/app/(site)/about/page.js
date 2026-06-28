@@ -1,29 +1,27 @@
 import styles from '@/styles/pages/about.module.scss';
 import {
   SiCplusplus,
-  SiCsharp,
   SiHtml5,
   SiReact,
-  SiCss3,
+  SiCss,
   SiSass,
   SiJavascript,
   SiNextdotjs,
   SiTypescript,
   SiNodedotjs,
-  SiAdobeaftereffects,
-  SiAdobepremierepro,
-  SiAdobeaudition,
-  SiAdobephotoshop,
-  SiAdobeillustrator,
   SiBlender
 } from 'react-icons/si';
+import { AiFillCaretDown } from 'react-icons/ai';
 import {
-  AiFillCaretDown
-} from 'react-icons/ai';
-import {
+  RpCsharp,
   RpSubstanceSampler,
   RpSubstancePainter,
-  RpUnity
+  RpUnity,
+  RpAdobePhotoshop,
+  RpAdobeIllustrator,
+  RpAdobeAfterEffects,
+  RpAdobePremierePro,
+  RpAdobeAudition
 } from '@/utils/icons';
 import Skill from '@/components/Skill';
 import { AboutPageContent } from './content';
@@ -66,7 +64,7 @@ export default function page() {
               <Skill heading={'C++'} logo={<SiCplusplus />} color={'#3b95cd'} />
             </div>
             <div className='item shadow'>
-              <Skill heading={'C#'} logo={<SiCsharp />} color={'#53BC50'} />
+              <Skill heading={'C#'} logo={<RpCsharp />} color={'#53BC50'} />
             </div>
             <div className='item shadow'>
               <Skill heading={'HTML5'} logo={<SiHtml5 />} color={'#E35D38'} />
@@ -75,7 +73,7 @@ export default function page() {
               <Skill heading={'React'} logo={<SiReact />} color={'#61DAFB'} />
             </div>
             <div className='item shadow'>
-              <Skill heading={'CSS3'} logo={<SiCss3 />} color={'#3880B6'} />
+              <Skill heading={'CSS3'} logo={<SiCss />} color={'#3880B6'} />
             </div>
             <div className='item shadow'>
               <Skill heading={'SASS'} logo={<SiSass />} color={'#cc6699'} />
@@ -111,35 +109,35 @@ export default function page() {
             <div className='item shadow'>
               <Skill
                 heading={'After Effects'}
-                logo={<SiAdobeaftereffects />}
+                logo={<RpAdobeAfterEffects />}
                 color={'#9999FF'}
               />
             </div>
             <div className='item shadow'>
               <Skill
                 heading={'Premiere Pro'}
-                logo={<SiAdobepremierepro />}
+                logo={<RpAdobePremierePro />}
                 color={'#9999FF'}
               />
             </div>
             <div className='item shadow'>
               <Skill
                 heading={'Audition'}
-                logo={<SiAdobeaudition />}
+                logo={<RpAdobeAudition />}
                 color={'#9999FF'}
               />
             </div>
             <div className='item shadow'>
               <Skill
                 heading={'Photoshop'}
-                logo={<SiAdobephotoshop />}
+                logo={<RpAdobePhotoshop />}
                 color={'#31a8ff'}
               />
             </div>
             <div className='item shadow'>
               <Skill
                 heading={'Illustrator'}
-                logo={<SiAdobeillustrator />}
+                logo={<RpAdobeIllustrator />}
                 color={'#ff9a00'}
               />
             </div>

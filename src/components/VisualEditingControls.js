@@ -1,10 +1,11 @@
-import { VisualEditing } from 'next-sanity';
+import { VisualEditing } from 'next-sanity/visual-editing';
 import { draftMode } from 'next/headers';
 
-export function VisualEditingControls() {
+export async function VisualEditingControls() {
+  const { isEnabled } = await draftMode();
   return (
     <>
-      {draftMode().isEnabled && (
+      {isEnabled && (
         <>
           <VisualEditing />
 

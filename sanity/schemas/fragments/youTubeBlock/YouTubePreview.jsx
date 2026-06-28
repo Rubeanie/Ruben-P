@@ -1,6 +1,6 @@
 import { MdEdit } from 'react-icons/md';
 import { Button, Flex, Stack, Text } from '@sanity/ui';
-import YouTubePlayer from 'react-player/youtube';
+import ReactPlayer from 'react-player';
 
 export const YouTubePreview = (props) => {
   const { title: url, actions } = props;
@@ -13,7 +13,7 @@ export const YouTubePreview = (props) => {
     <Stack>
       <Flex align='center' justify='center'>
         {typeof url === 'string' ? (
-          <YouTubePlayer url={url} />
+          <ReactPlayer src={url} />
         ) : (
           <Text>Add a YouTube URL</Text>
         )}

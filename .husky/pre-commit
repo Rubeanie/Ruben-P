@@ -1,0 +1,5 @@
+# Format staged files with Prettier (see .lintstagedrc).
+# NOTE: still on Prettier instead of Biome because Biome can't format SCSS yet
+# (16 .scss files here). Revisit a Biome switch once Sass support ships — it's
+# on the Biome 2026 roadmap. Then Biome could replace both Prettier and ESLint.
+bunx lint-staged
