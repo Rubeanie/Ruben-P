@@ -6,6 +6,9 @@
   "author": "Ruben",
   "license": "MIT",
   "packageManager": "bun@1.3.14",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "prettier:check": "prettier --check --ignore-path .gitignore .",
     "prettier:apply": "prettier --write --ignore-path .gitignore .",
