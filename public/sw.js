@@ -9,7 +9,7 @@ const OFFLINE_URL = '/offline.html';
 
 // Skip caching error/redirect responses and dynamic/private ones (draft-mode HTML).
 function isCacheable(res) {
-  if (!res || !res.ok || res.type === 'opaqueredirect') return false;
+  if (!res || !res.ok) return false;
   return !/no-store|private/i.test(res.headers.get('Cache-Control') || '');
 }
 
