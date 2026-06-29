@@ -63,7 +63,7 @@ export const portfolioList = {
       return {
         title: getBlockText(intro),
         subtitle: 'Blog list'
-      }
+      };
     }
   }
 };

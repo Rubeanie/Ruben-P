@@ -33,8 +33,10 @@ export const cta = {
     prepare({ label, pageTitle, internal, external }) {
       return {
         title: label || pageTitle,
-        subtitle: external || (internal && (internal === 'index' ? '/' : `/${internal}`))
-      }
+        subtitle:
+          external ||
+          (internal && (internal === 'index' ? '/' : `/${internal}`))
+      };
     }
   }
 };

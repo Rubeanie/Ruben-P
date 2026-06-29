@@ -1,10 +1,14 @@
-import { textBlock } from "@sanity/schemas/fragments/text-block";
-import { creativeCtas } from "./creativeCtas";
-import { creativeIcon } from "./creativeIcon";
-import { creativeImage } from "./creativeImage";
-import { creativeRichtext } from "./creativeRichtext";
-import { textAlign, alignItems, alignmentFieldset } from "@sanity/schemas/fragments/fields/alignment";
-import { count, getBlockText } from "@sanity/src/utils";
+import { textBlock } from '@sanity/schemas/fragments/text-block';
+import { creativeCtas } from './creativeCtas';
+import { creativeIcon } from './creativeIcon';
+import { creativeImage } from './creativeImage';
+import { creativeRichtext } from './creativeRichtext';
+import {
+  textAlign,
+  alignItems,
+  alignmentFieldset
+} from '@sanity/schemas/fragments/fields/alignment';
+import { count, getBlockText } from '@sanity/src/utils';
 import { MdExtension } from 'react-icons/md';
 
 export const creativeModule = {
@@ -93,7 +97,7 @@ export const creativeModule = {
       return {
         title: getBlockText(intro),
         subtitle: count(modules, 'module')
-      }
+      };
     }
   }
 };

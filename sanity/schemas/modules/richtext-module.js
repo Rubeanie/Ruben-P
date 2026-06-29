@@ -1,5 +1,5 @@
 import { MdArticle } from 'react-icons/md';
-import { getBlockText } from '@sanity/src/utils'
+import { getBlockText } from '@sanity/src/utils';
 import { textBlock } from '../fragments/text-block';
 
 export const richtextModule = {
@@ -10,8 +10,8 @@ export const richtextModule = {
   fields: [
     {
       name: 'content',
-      ...textBlock,
-    },
+      ...textBlock
+    }
   ],
   preview: {
     select: {

@@ -10,17 +10,18 @@ export const metadata = {
 
 export default async function NotFound() {
   const page = await get404();
-  if(!page) return (
-    <div className='hero-no-padding'>
-      <div className='column'>
-        <h2 style={{ marginBlockEnd: '0px' }}>Error</h2>
-        <h1>
-          <span className='image-text'>404</span>
-        </h1>
-        <p>This page could not be found.</p>
+  if (!page)
+    return (
+      <div className='hero-no-padding'>
+        <div className='column'>
+          <h2 style={{ marginBlockEnd: '0px' }}>Error</h2>
+          <h1>
+            <span className='image-text'>404</span>
+          </h1>
+          <p>This page could not be found.</p>
+        </div>
       </div>
-    </div>
-  );
+    );
   return <Modules modules={page?.modules} />;
 }
 

@@ -1,15 +1,12 @@
-import { getBlockText } from "@sanity/src/utils";
-import { MdQuestionMark } from "react-icons/md";
-import { textBlock } from "../fragments/text-block";
+import { getBlockText } from '@sanity/src/utils';
+import { MdQuestionMark } from 'react-icons/md';
+import { textBlock } from '../fragments/text-block';
 
 export const accordionList = {
   name: 'accordion-list',
   type: 'object',
   icon: MdQuestionMark,
-  groups: [
-    { name: 'content', default: true },
-    { name: 'options' }
-  ],
+  groups: [{ name: 'content', default: true }, { name: 'options' }],
   fields: [
     {
       name: 'intro',
@@ -48,7 +45,7 @@ export const accordionList = {
               return {
                 title,
                 subtitle: getBlockText(content)
-              }
+              };
             }
           }
         }
@@ -60,7 +57,7 @@ export const accordionList = {
       type: 'string',
       options: {
         layout: 'radio',
-        list: [ 'vertical', 'horizontal' ]
+        list: ['vertical', 'horizontal']
       },
       initialValue: 'vertical',
       group: 'options'
@@ -80,7 +77,7 @@ export const accordionList = {
       return {
         title: getBlockText(intro),
         subtitle: 'Accordion List'
-      }
+      };
     }
   }
-}
+};

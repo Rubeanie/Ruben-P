@@ -27,7 +27,8 @@ export const site = {
       type: 'array',
       of: [{ type: 'reference', to: [{ type: 'announcement' }] }],
       group: 'general',
-      description: 'One announcement shown at a time. Top items have higher precedence.'
+      description:
+        'One announcement shown at a time. Top items have higher precedence.'
     },
     {
       name: 'headerMenu',

@@ -4,7 +4,7 @@ import { textBlock } from '../fragments/text-block';
 
 export const heroSaas = {
   name: 'hero.saas',
-	title: 'Hero (SaaS)',
+  title: 'Hero (SaaS)',
   icon: Md3dRotation,
   type: 'object',
   fields: [
@@ -21,11 +21,11 @@ export const heroSaas = {
       title: 'Call-to-actions',
       type: 'array',
       of: [{ type: 'cta' }]
-    },
+    }
   ],
   preview: {
     select: {
-      content: 'content',
+      content: 'content'
     },
     prepare: ({ content }) => ({
       title: getBlockText(content),

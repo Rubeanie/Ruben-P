@@ -27,7 +27,9 @@ self.addEventListener('activate', (event) => {
     caches
       .keys()
       .then((keys) =>
-        Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
+        Promise.all(
+          keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))
+        )
       )
       .then(() => self.clients.claim())
   );
@@ -41,7 +43,8 @@ self.addEventListener('fetch', (event) => {
   if (url.origin !== self.location.origin) return;
 
   // Never intercept API routes or the Sanity Studio shell (it has its own scope).
-  if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/admin')) return;
+  if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/admin'))
+    return;
 
   // HTML navigations: network-first, fall back to cached page, then offline page.
   if (request.mode === 'navigate') {

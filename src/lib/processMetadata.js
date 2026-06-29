@@ -11,10 +11,10 @@ const getOpenGraph = ({ _type, description, image, title, siteName, url }) => ({
   images: [{ url: image?.asset?.url || '' }]
 });
 
-const getMetaObjects = (tags) => 
+const getMetaObjects = (tags) =>
   tags.reduce((mergedObject, tag) => {
     const metaTag = getMetaAttribute(tag?.metaAttributes);
-    return metaTag ? {...mergedObject, ...metaTag} : mergedObject;
+    return metaTag ? { ...mergedObject, ...metaTag } : mergedObject;
   }, {});
 
 const resolveImage = (image) => image?.asset?.url ?? '';

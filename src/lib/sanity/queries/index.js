@@ -33,7 +33,11 @@ export async function getThemes() {
     { tags: ['theme'] }
   );
 
-  if (!site?.themes || !Array.isArray(site.themes) || site.themes.length === 0) {
+  if (
+    !site?.themes ||
+    !Array.isArray(site.themes) ||
+    site.themes.length === 0
+  ) {
     return [];
   }
 

@@ -1,4 +1,4 @@
-import { IoMdBrowsers, IoMdEyeOff} from 'react-icons/io';
+import { IoMdBrowsers, IoMdEyeOff } from 'react-icons/io';
 import { MdHomeFilled, MdQuestionMark } from 'react-icons/md';
 import { pageBlock } from '../fragments/page-block';
 import { metadata } from '../fragments/metadata';

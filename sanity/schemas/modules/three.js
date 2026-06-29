@@ -168,8 +168,7 @@ export const threeJs = {
       name: 'keyLight',
       title: 'Add key light',
       type: 'boolean',
-      description:
-        'Adds a directional light for highlights and a shaded side.',
+      description: 'Adds a directional light for highlights and a shaded side.',
       initialValue: false,
       group: 'options'
     },

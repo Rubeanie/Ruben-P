@@ -1,4 +1,4 @@
-@use './abstracts/index'as var;
+@use './abstracts/index' as var;
 
 main {
   max-width: var.$viewport-max-width - 40rem;
@@ -44,9 +44,9 @@ main {
       padding-right: 1rem;
       border-radius: 0.25rem;
       border-width: 1px;
-      border-color: #F87171;
-      color: #B91C1C;
-      background-color: #FEE2E2;
+      border-color: #f87171;
+      color: #b91c1c;
+      background-color: #fee2e2;
     }
 
     &.warning {
@@ -57,9 +57,9 @@ main {
       padding-right: 1rem;
       border-radius: 0.25rem;
       border-width: 1px;
-      border-color: #FBBF24;
-      color: #B45309;
-      background-color: #FEF3C7;
+      border-color: #fbbf24;
+      color: #b45309;
+      background-color: #fef3c7;
     }
 
     span {

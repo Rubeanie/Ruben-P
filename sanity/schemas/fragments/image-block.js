@@ -92,7 +92,7 @@ export const imageBlock = {
           <img
             src={cloudinary}
             alt={subtitle}
-            style={{ 
+            style={{
               height: '100%',
               width: 'auto',
               display: 'block',

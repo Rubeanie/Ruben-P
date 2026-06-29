@@ -29,9 +29,7 @@ export const creativeIcon = {
   },
   components: {
     preview({ title, icon }) {
-      return (
-        <InlineSvgPreviewItem title={title} subtitle="Icon" icon={icon} />
-      );
+      return <InlineSvgPreviewItem title={title} subtitle='Icon' icon={icon} />;
     }
   }
 };

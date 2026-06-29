@@ -35,4 +35,4 @@ export const locations = (params, context) => {
   }
 
   return null;
-}
+};

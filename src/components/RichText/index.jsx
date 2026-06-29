@@ -2,9 +2,7 @@ import { PortableText } from '@portabletext/react';
 import styles from '@/styles/components/RichText.module.scss';
 
 const span = (className) => {
-  const Mark = ({ children }) => (
-    <span className={className}>{children}</span>
-  );
+  const Mark = ({ children }) => <span className={className}>{children}</span>;
   return Mark;
 };
 

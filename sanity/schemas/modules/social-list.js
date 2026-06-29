@@ -10,13 +10,13 @@ export const socialList = {
   fields: [
     {
       name: 'intro',
-      ...textBlock,
+      ...textBlock
     },
     {
       name: 'socials',
       type: 'array',
-      of: [{ type: 'reference', to: [{ type: 'social' }] }],
-    },
+      of: [{ type: 'reference', to: [{ type: 'social' }] }]
+    }
   ],
   preview: {
     select: {

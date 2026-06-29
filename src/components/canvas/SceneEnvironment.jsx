@@ -82,7 +82,8 @@ function meanLuminance(img) {
   const { data } = ctx.getImageData(0, 0, 16, 16);
   let sum = 0;
   for (let i = 0; i < data.length; i += 4) {
-    sum += (0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]) / 255;
+    sum +=
+      (0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]) / 255;
   }
   return sum / (data.length / 4);
 }

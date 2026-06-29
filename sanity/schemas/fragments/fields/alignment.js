@@ -1,18 +1,18 @@
 export const alignmentFieldset = {
   name: 'alignment',
-  options: { columns:  2 }
-}
+  options: { columns: 2 }
+};
 
 export const textAlign = {
   name: 'textAlign',
   type: 'string',
   options: {
     layout: 'radio',
-    list: [ 'left', 'center', 'right' ]
+    list: ['left', 'center', 'right']
   },
   initialValue: 'center',
   group: 'options'
-}
+};
 
 export const alignItems = {
   name: 'alignItems',
@@ -28,4 +28,4 @@ export const alignItems = {
   },
   initialValue: 'center',
   group: 'options'
-}
+};

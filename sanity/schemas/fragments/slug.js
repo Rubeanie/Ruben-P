@@ -8,9 +8,7 @@ export const slug = (prefix = '') => {
         prefix +
         (doc.name ||
           doc.title ||
-          (doc.metadata.seo !== undefined
-            ? doc.metadata.seo.metaTitle
-            : null)),
+          (doc.metadata.seo !== undefined ? doc.metadata.seo.metaTitle : null)),
       slugify: (input) =>
         input
           .toLowerCase()
@@ -19,5 +17,5 @@ export const slug = (prefix = '') => {
           .replace(/[&\\#,+()$~%.'"!:*?<>{}]/g, '')
     },
     validation: (Rule) => Rule.required()
-  }
+  };
 };

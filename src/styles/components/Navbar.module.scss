@@ -1,4 +1,4 @@
-@use '../abstracts/index'as var;
+@use '../abstracts/index' as var;
 
 /* Navbar */
 $item-padding: 1.5rem;
@@ -92,11 +92,11 @@ nav {
   }
 }
 
-html[data-nav-scrolled="true"]:not([data-nav-dropdown="true"]) {
+html[data-nav-scrolled='true']:not([data-nav-dropdown='true']) {
   --color-overlay-alpha: 0.325 !important;
 }
 
-html[data-nav-dropdown="true"] {
+html[data-nav-dropdown='true'] {
   --color-overlay-alpha: 0.6 !important;
   overflow: hidden;
   width: 100%;

@@ -24,7 +24,7 @@ export const navigation = {
     },
     prepare: ({ title, items }) => ({
       title,
-      subtitle: count(items, "link")
+      subtitle: count(items, 'link')
     })
   }
 };

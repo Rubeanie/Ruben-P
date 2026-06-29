@@ -2,7 +2,11 @@ import { MdAccountCircle } from 'react-icons/md';
 import { InlineSvgPreviewComponent } from '@focus-reactive/sanity-plugin-inline-svg-input';
 import { slug } from '../fragments/slug';
 
-export const PreviewComponent = ({ logo, foregroundColor, backgroundColor }) => {
+export const PreviewComponent = ({
+  logo,
+  foregroundColor,
+  backgroundColor
+}) => {
   return (
     <InlineSvgPreviewComponent
       value={logo}

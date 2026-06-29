@@ -1,7 +1,7 @@
-import { IoMdStats } from "react-icons/io";
-import { textAlign } from "../fragments/fields/alignment";
-import { count, getBlockText } from "@sanity/src/utils";
-import { textBlock } from "../fragments/text-block";
+import { IoMdStats } from 'react-icons/io';
+import { textAlign } from '../fragments/fields/alignment';
+import { count, getBlockText } from '@sanity/src/utils';
+import { textBlock } from '../fragments/text-block';
 
 export const statList = {
   name: 'stat-list',
@@ -45,7 +45,7 @@ export const statList = {
               return {
                 title: [value, subValue].filter(Boolean).join(' '),
                 subtitle
-              }
+              };
             }
           }
         }
@@ -66,7 +66,7 @@ export const statList = {
       return {
         title: getBlockText(intro) || count(stats, 'stat'),
         subtitle: 'Stat list'
-      }
+      };
     }
   }
-}
+};

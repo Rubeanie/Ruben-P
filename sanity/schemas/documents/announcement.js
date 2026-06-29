@@ -1,6 +1,6 @@
-import { IoMdMegaphone, IoMdCalendar } from "react-icons/io";
-import { getBlockText } from '@sanity/src/utils'
-import { textBlock } from "../fragments/text-block";
+import { IoMdMegaphone, IoMdCalendar } from 'react-icons/io';
+import { getBlockText } from '@sanity/src/utils';
+import { textBlock } from '../fragments/text-block';
 
 export const announcement = {
   name: 'announcement',

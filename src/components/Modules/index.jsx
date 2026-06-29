@@ -14,15 +14,11 @@ const ModuleRenderer = ({ module }) => {
       case 'three.js':
         return <ThreeScene {...module} />;
       default:
-        throw new Error(
-          `Data type mismatch, '${module._type}' does not exist`
-        );
+        throw new Error(`Data type mismatch, '${module._type}' does not exist`);
     }
   } catch (error) {
     return (
-      <div
-        className='alert error'
-        role='alert'>
+      <div className='alert error' role='alert'>
         <strong>Error: </strong>
         <span>{error.message}</span>
       </div>
@@ -37,9 +33,7 @@ export function Modules({ modules, page }) {
         <ErrorBoundary
           key={module._key}
           fallback={
-            <div
-              className='alert warning'
-              role='alert'>
+            <div className='alert warning' role='alert'>
               <strong>Warning: </strong>
               <span>
                 An error occurred while rendering this module. Please check the

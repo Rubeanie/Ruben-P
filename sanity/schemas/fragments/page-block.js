@@ -19,9 +19,7 @@ export const pageBlock = {
   options: {
     insertMenu: {
       views: [{ name: 'list' }, { name: 'grid' }],
-      groups: [
-        { name: 'hero', of: ['hero', 'hero.saas', 'hero.split'] }
-      ]
+      groups: [{ name: 'hero', of: ['hero', 'hero.saas', 'hero.split'] }]
     }
   }
 };

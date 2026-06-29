@@ -1,4 +1,4 @@
-import { slug } from "./slug";
+import { slug } from './slug';
 
 export const metadata = (prefix = '') => {
   return {

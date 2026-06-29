@@ -4,7 +4,7 @@ import { textBlock } from '../fragments/text-block';
 
 export const heroSplit = {
   name: 'hero.split',
-	title: 'Hero (Split)',
+  title: 'Hero (Split)',
   icon: MdArtTrack,
   type: 'object',
   groups: [{ name: 'content', default: true }, { name: 'image' }],
@@ -55,7 +55,7 @@ export const heroSplit = {
   preview: {
     select: {
       content: 'content',
-      media: 'image.asset',
+      media: 'image.asset'
     },
     prepare: ({ content, media }) => ({
       title: getBlockText(content),

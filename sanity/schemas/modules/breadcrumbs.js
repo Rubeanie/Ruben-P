@@ -1,5 +1,5 @@
-import { count } from "@sanity/src/utils";
-import { MdLinearScale } from "react-icons/md";
+import { count } from '@sanity/src/utils';
+import { MdLinearScale } from 'react-icons/md';
 
 export const breadcrumbs = {
   name: 'breadcrumbs',
@@ -21,7 +21,7 @@ export const breadcrumbs = {
       return {
         title: count(crumbs, 'crumb') + ' + Current page',
         subtitle: 'Breadcrumbs'
-      }
+      };
     }
   }
-}
+};
