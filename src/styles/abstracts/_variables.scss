@@ -32,24 +32,24 @@ $dropdown-transition: 0.325s ease;
 
 /* Safe Padding */
 $padding-safe: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
-$inverted-padding-safe: 0 calc(-1 * env(safe-area-inset-right)) 0 calc(-1 * env(safe-area-inset-left));
+$inverted-padding-safe: 0 calc(-1 * env(safe-area-inset-right)) 0
+  calc(-1 * env(safe-area-inset-left));
 
 /* Font Faces */
-$h-font: var(--font-mont),
-sans-serif;
-$p-font: var(--font-kollektif),
-serif;
-$mont-font: var(--font-mont),
-sans-serif;
+$h-font: var(--font-mont), sans-serif;
+$p-font: var(--font-kollektif), serif;
+$mont-font: var(--font-mont), sans-serif;
 
 /* Text Alignments */
 $h-alignment: center;
 $p-alignment: center;
 
 /* Heading Text Sizes */
-$h1-size: clamp(0.1rem,
+$h1-size: clamp(
+  0.1rem,
   calc(2.4549rem + ((1vw - 0.25875rem) * 7.4122)),
-  9.5627rem);
+  9.5627rem
+);
 $h2-size: 2.512rem;
 
 /* Paragraph Text Sizes */
@@ -60,15 +60,3 @@ $p4-size: 1rem;
 
 /* Heading Margins */
 $h-margin-block: clamp(2px, 0.3em, 10px);
-
-/* Color Exports */
-:export {
-  colorOverlayRgb: $color-overlay-rgb;
-  colorOverlayAlpha: $color-overlay-alpha;
-  colorPrimary: $color-primary;
-  colorSecondary: $color-secondary;
-  colorBackground: $color-background;
-  colorText: $color-text;
-  imageBackground: $image-background;
-  colorOverlay: $color-overlay;
-}

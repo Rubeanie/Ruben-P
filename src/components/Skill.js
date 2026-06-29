@@ -1,6 +1,11 @@
 import styles from '@/styles/components/Skill.module.scss';
 
-export default function Skill({ heading = "heading", logo, color = styles.colorPrimary, textColor = "#121212" }) {
+export default function Skill({
+  heading = 'heading',
+  logo,
+  color = 'var(--color-primary)',
+  textColor = '#121212'
+}) {
   return (
     <div className={styles.skill} style={{ background: color }}>
       <div className='column'>

@@ -1,20 +1,20 @@
-import client from "@/lib/sanity/client";
-import { fetchSanity, groq } from "@/lib/sanity/fetch";
-import { metadataQuery } from "@/lib/sanity/queries/metadata";
-import { modulesQuery } from "@/lib/sanity/queries/modules";
-import { notFound } from "next/navigation";
-import { Modules } from "@/components/Modules";
-import { processMetadata } from "@/lib/processMetadata";
+import client from '@/lib/sanity/client';
+import { fetchSanity, groq } from '@/lib/sanity/fetch';
+import { metadataQuery } from '@/lib/sanity/queries/metadata';
+import { modulesQuery } from '@/lib/sanity/queries/modules';
+import { notFound } from 'next/navigation';
+import { Modules } from '@/components/Modules';
+import { processMetadata } from '@/lib/processMetadata';
 
 export default async function Page({ params }) {
-  const page = await getPage(params);
+  const page = await getPage(await params);
   if (!page) notFound();
   return <Modules modules={page?.modules} page={page} />;
 }
 
 export async function generateMetadata({ params }) {
-  const page = await getPage(params);
-  if(!page) notFound();
+  const page = await getPage(await params);
+  if (!page) notFound();
   return processMetadata(page);
 }
 
@@ -25,7 +25,7 @@ export async function generateStaticParams() {
       defined(metadata.slug.current) &&
       !(metadata.slug.current in ['index', '404'])
     ].metadata.slug.current`
-  )
+  );
 
   return slugs.map((slug) => ({ slug: slug.split('/') }));
 }

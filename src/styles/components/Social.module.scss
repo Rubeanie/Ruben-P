@@ -1,4 +1,4 @@
-@use '../abstracts/index'as var;
+@use '../abstracts/index' as var;
 
 /* Social Buttons */
 $width: 385px;
@@ -56,17 +56,17 @@ $transition: 0.4s ease-in-out;
   }
 
   &:after {
-    content: "";
+    content: '';
     height: 55px;
     width: 1px;
     position: absolute;
     left: 0px;
     top: 50%;
-    transition: top $transition, opacity $transition;
+    transition:
+      top $transition,
+      opacity $transition;
     transition-duration: 0.6s;
-    background: linear-gradient(transparent,
-        var.$color-text,
-        transparent);
+    background: linear-gradient(transparent, var.$color-text, transparent);
     opacity: 0;
   }
 
@@ -74,7 +74,6 @@ $transition: 0.4s ease-in-out;
     top: 65%;
     opacity: 0;
   }
-
 
   &:hover:after {
     top: 10%;
@@ -105,9 +104,4 @@ $transition: 0.4s ease-in-out;
       content: unset;
     }
   }
-}
-
-/* Exports */
-:export {
-  colorPrimary: var.$color-primary;
 }

@@ -1,4 +1,4 @@
-@use '../abstracts/index'as var;
+@use '../abstracts/index' as var;
 
 /* Skill Buttons */
 $margin: 7px;
@@ -58,9 +58,4 @@ $svg-size: 70px;
   .skill {
     max-width: $max-width-mobile;
   }
-}
-
-/* Exports */
-:export {
-  colorPrimary: var.$color-primary;
 }
