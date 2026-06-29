@@ -4,13 +4,14 @@ import { draftMode } from 'next/headers';
 
 export { default as groq } from 'groq';
 
-export function fetchSanity(query, { params = {}, ...next } = {}) {
-  const preview = isDev || draftMode().isEnabled;
+export async function fetchSanity(query, { params = {}, ...next } = {}) {
+  const { isEnabled: isDraft } = await draftMode();
+  const preview = isDev || isDraft;
 
   const options = preview
     ? {
-        stega: true,
-        perspective: 'previewDrafts',
+        stega: isDraft,
+        perspective: 'drafts',
         useCdn: false,
         token: process.env.SANITY_READ_TOKEN,
         next: { revalidate: 0, ...next }
