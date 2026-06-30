@@ -99,6 +99,22 @@ p {
   transition: background var.$theme-transition !important;
 }
 
+// Firefox renders background-clip:text + background-attachment:fixed with repaint
+// bugs, so skip the image and show the heading in a solid color (same as the
+// mobile fallback below). Pure CSS — no JS, no scroll listeners.
+@-moz-document url-prefix() {
+  .image-text {
+    background: unset;
+    background-size: unset;
+    background-attachment: unset;
+    background-clip: unset;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
+    filter: unset;
+    transition: color var.$theme-transition !important;
+  }
+}
+
 /* TRT Mont Broz OpenType feature utility classes — opt-in only, never global */
 .ot-dlig {
   @include var.ot-dlig;
