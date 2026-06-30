@@ -9,7 +9,7 @@ export default function CustomHTML({ className, html, ...props }) {
 
   const [firstRender, setFirstRender] = useState(true);
 
-  // Hooks must run unconditionally — guard the body, not the hook (react-hooks/rules-of-hooks)
+  // Hooks must run unconditionally, so guard inside the effect rather than around it.
   useEffect(() => {
     if (!html.code || !html.code.includes('<script')) return;
     if (firstRender) {

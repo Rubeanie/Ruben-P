@@ -99,9 +99,8 @@ p {
   transition: background var.$theme-transition !important;
 }
 
-// Firefox renders background-clip:text + background-attachment:fixed with repaint
-// bugs, so skip the image and show the heading in a solid color (same as the
-// mobile fallback below). Pure CSS — no JS, no scroll listeners.
+// Firefox has repaint bugs with background-clip:text + background-attachment:fixed,
+// so fall back to a solid heading colour (same as the mobile rule below).
 @-moz-document url-prefix() {
   .image-text {
     background: unset;

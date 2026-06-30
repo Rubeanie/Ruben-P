@@ -144,8 +144,7 @@ function RpAdobeAudition(props) {
   })(props);
 }
 
-// C# brand icon — also removed from simple-icons/react-icons (trademark),
-// restored from simple-icons 11.0.0 path data.
+// C# icon — not in react-icons, inlined from its SVG path.
 function RpCsharp(props) {
   return GenIcon({
     tag: 'svg',
