@@ -1,28 +1,24 @@
-// Service worker. Caching strategy:
-//   - HTML navigations -> network-first (offline.html when offline)
-//   - /_next/static/   -> cache-first (content-hashed = immutable)
-//   - everything else  -> stale-while-revalidate
-// ponytail: no full-route precache, so unvisited pages fall back to offline.html.
-// Bump CACHE to force a refresh.
+// Service worker: light offline support without a build-time precache.
+//   - page navigations: network first, fall back to a cached copy, then /offline.html
+//   - /_next/static assets: cache first (filenames are content-hashed)
+//   - images, fonts, css: stale-while-revalidate
+// Bump CACHE to invalidate everything on the next visit.
 const CACHE = 'rubenp-v2';
 const OFFLINE_URL = '/offline.html';
+const RUNTIME_CACHEABLE = new Set(['image', 'font', 'style']);
 
-// Skip caching error/redirect responses and dynamic/private ones (draft-mode HTML).
+// Don't cache error/redirect responses or anything marked no-store/private (e.g. draft-mode HTML).
 function isCacheable(res) {
   if (!res || !res.ok) return false;
   return !/no-store|private/i.test(res.headers.get('Cache-Control') || '');
 }
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches
-      .open(CACHE)
-      .then((cache) => cache.add(OFFLINE_URL))
-      .then(() => self.skipWaiting())
-  );
+  event.waitUntil(caches.open(CACHE).then((cache) => cache.add(OFFLINE_URL)));
 });
 
 self.addEventListener('activate', (event) => {
+  // Activates only once no old tabs remain, so dropping previous caches is safe.
   event.waitUntil(
     caches
       .keys()
@@ -31,7 +27,6 @@ self.addEventListener('activate', (event) => {
           keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))
         )
       )
-      .then(() => self.clients.claim())
   );
 });
 
@@ -42,11 +37,15 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  // Never intercept API routes or the Sanity Studio shell (it has its own scope).
-  if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/admin'))
+  // Leave API routes, the Sanity Studio, and React Server Component requests to the network.
+  if (
+    url.pathname.startsWith('/api/') ||
+    url.pathname.startsWith('/admin') ||
+    request.headers.get('RSC')
+  )
     return;
 
-  // HTML navigations: network-first, fall back to cached page, then offline page.
+  // Page navigations: network first; offline falls back to a cached copy, then /offline.html.
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
@@ -57,15 +56,14 @@ self.addEventListener('fetch', (event) => {
           }
           return res;
         })
-        .catch(async () => {
-          const cached = await caches.match(request);
-          return cached || caches.match(OFFLINE_URL);
-        })
+        .catch(
+          async () => (await caches.match(request)) || caches.match(OFFLINE_URL)
+        )
     );
     return;
   }
 
-  // Content-hashed build assets are immutable: cache-first.
+  // Content-hashed build assets never change: cache first.
   if (url.pathname.startsWith('/_next/static/')) {
     event.respondWith(
       caches.match(request).then(
@@ -83,7 +81,8 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Everything else (images, fonts, etc.): stale-while-revalidate.
+  // Static sub-resources only (images, fonts, css): stale-while-revalidate.
+  if (!RUNTIME_CACHEABLE.has(request.destination)) return;
   event.respondWith(
     (async () => {
       const cache = await caches.open(CACHE);
