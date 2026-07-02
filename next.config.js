@@ -8,6 +8,11 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 const nextConfig = {
+  // Inline the (tiny) CSS chunks as <style> in <head> so they leave the
+  // critical request chain — Turbopack-native replacement for optimizeCss.
+  experimental: {
+    inlineCss: true
+  },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'cdn.sanity.io' },

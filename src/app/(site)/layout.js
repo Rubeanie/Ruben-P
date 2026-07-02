@@ -34,8 +34,8 @@ export const metadata = {
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
-//  maximumScale: 1,
-//  userScalable: 'no',
+  //  maximumScale: 1,
+  //  userScalable: 'no',
   themeColor: '#121212',
   colorScheme: 'dark',
   viewportFit: 'cover',
@@ -60,7 +60,6 @@ export default async function RootLayout({ children }) {
           crossOrigin='anonymous'
         />
         <link rel='preconnect' href='https://www.gstatic.com' />
-        <link rel='preconnect' href='https://api.sanity.com' />
         <link rel='preconnect' href='https://cdn.sanity.io' />
         <link rel='preconnect' href='https://res.cloudinary.com' />
       </head>
