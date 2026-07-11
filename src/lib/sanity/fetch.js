@@ -1,27 +1,10 @@
-import client from '@/lib/sanity/client';
-import { isDev } from '@/lib/env';
-import { draftMode } from 'next/headers';
+import { sanityFetch } from './live';
 
 export { default as groq } from 'groq';
 
-export async function fetchSanity(query, { params = {}, ...next } = {}) {
-  const { isEnabled: isDraft } = await draftMode();
-  const preview = isDev || isDraft;
-
-  const options = preview
-    ? {
-        stega: isDraft,
-        perspective: 'drafts',
-        useCdn: false,
-        token: process.env.SANITY_READ_TOKEN,
-        next: { revalidate: 0, ...next }
-      }
-    : {
-        perspective: 'published',
-        useCdn: true,
-        token: process.env.SANITY_READ_TOKEN,
-        next: { revalidate: 3600, ...next }
-      };
-
-  return client.fetch(query, params, options);
+// Keeps the existing fetchSanity signature. sanityFetch handles draft mode
+// (drafts perspective, stega) and sync-tag caching itself.
+export async function fetchSanity(query, { params = {}, tags = [] } = {}) {
+  const { data } = await sanityFetch({ query, params, tags });
+  return data;
 }

@@ -9,6 +9,7 @@ import { getThemes } from '@/lib/sanity/queries';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { VisualEditingControls } from '@/components/VisualEditingControls';
+import { SanityLive } from '@/lib/sanity/live';
 import { ServiceWorkerRegister } from '@/components/ServiceWorkerRegister';
 import { baseUrl } from '@/lib/env';
 
@@ -79,6 +80,7 @@ export default async function RootLayout({ children }) {
           </Suspense>
           <Analytics />
           <SpeedInsights />
+          <SanityLive />
           <VisualEditingControls />
           <ServiceWorkerRegister />
         </ThemeProvider>
