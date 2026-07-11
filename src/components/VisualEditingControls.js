@@ -9,9 +9,12 @@ export async function VisualEditingControls() {
         <>
           <VisualEditing />
 
-          <a className='draft-disable' href='/api/disable-draft'>
-            Disable draft mode
-          </a>
+          {/* Per Next.js draft-mode docs: a GET route handler needs a full navigation via <form>, not a link, Link prefetch would clear the draft cookie early, and forms are never prefetched. */}
+          <form method='GET' action='/api/disable-draft'>
+            <button className='draft-disable' type='submit'>
+              Disable draft mode
+            </button>
+          </form>
         </>
       )}
     </>

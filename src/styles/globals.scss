@@ -244,10 +244,16 @@ body {
   z-index: 15;
   bottom: 0;
   right: 1rem;
+  border: 0;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
   font-size: 0.75rem;
   line-height: 1rem;
+  padding: 0;
+  cursor: pointer;
   opacity: 0.5;
 
   &:hover {
