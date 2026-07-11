@@ -27,7 +27,6 @@
         "@sanity/vision": "6.2.0",
         "@vercel/analytics": "^2.0.1",
         "@vercel/speed-insights": "^2.0.0",
-        "age-calculator": "^1.0.0",
         "color": "^5.0.3",
         "groq": "^6.2.0",
         "hamburger-react": "^2.5.2",
@@ -1361,8 +1360,6 @@
     "acorn-walk": ["acorn-walk@8.3.5", "", { "dependencies": { "acorn": "^8.11.0" } }, "sha512-HEHNfbars9v4pgpW6SO1KSPkfoS0xVOM/9UzkJltjlsHZmJasxg8aXkuZa7SMf8vKGIBhpUsPluQSqhJFCqebw=="],
 
     "adm-zip": ["adm-zip@0.5.17", "", {}, "sha512-+Ut8d9LLqwEvHHJl1+PIHqoyDxFgVN847JTVM3Izi3xHDWPE4UtzzXysMZQs64DMcrJfBeS/uoEP4AD3HQHnQQ=="],
-
-    "age-calculator": ["age-calculator@1.0.0", "", {}, "sha512-3+vuEZXhfUpwl70cHJ/0g1r1nxVMzKjuOSuwXZdPRJ/z9vZMUj4/DfzkQwVABSaG0YEdr1zz6hlTR1g3lYvolg=="],
 
     "agent-base": ["agent-base@7.1.4", "", {}, "sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ=="],
 

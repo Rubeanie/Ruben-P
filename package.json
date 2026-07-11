@@ -41,7 +41,6 @@
     "@sanity/vision": "6.2.0",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
-    "age-calculator": "^1.0.0",
     "color": "^5.0.3",
     "groq": "^6.2.0",
     "hamburger-react": "^2.5.2",
