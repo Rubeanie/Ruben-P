@@ -73,6 +73,7 @@ export function ThemeProvider({ children, initialThemes }) {
       return;
     }
 
+    setIsResolving(true);
     setRequestedTheme(normalizedTheme);
   }, []);
 
@@ -84,12 +85,12 @@ export function ThemeProvider({ children, initialThemes }) {
   );
 
   const restartTheme = useCallback(() => {
-    const randomTheme = pickRandomTheme(availableThemes, theme?.url);
+    const randomTheme = pickRandomTheme(availableThemes, theme.url);
 
     if (randomTheme) {
       requestTheme(randomTheme);
     }
-  }, [availableThemes, requestTheme, theme?.url]);
+  }, [availableThemes, requestTheme, theme.url]);
 
   useEffect(() => {
     if (hasRequestedInitialTheme.current || availableThemes.length === 0) {
@@ -106,8 +107,6 @@ export function ThemeProvider({ children, initialThemes }) {
     }
 
     let isCancelled = false;
-
-    setIsResolving(true);
 
     resolveRequestedTheme(requestedTheme)
       .then((resolvedTheme) => {

@@ -5,24 +5,22 @@ import ThreeScene from './ThreeScene';
 import ErrorBoundary from '../ErrorBoundary';
 
 const ModuleRenderer = ({ module }) => {
-  try {
-    switch (module._type) {
-      case 'custom-html':
-        return <CustomHTML {...module} />;
-      case 'richtext-module':
-        return <RichtextModule {...module} />;
-      case 'three.js':
-        return <ThreeScene {...module} />;
-      default:
-        throw new Error(`Data type mismatch, '${module._type}' does not exist`);
-    }
-  } catch (error) {
-    return (
-      <div className='alert error' role='alert'>
-        <strong>Error: </strong>
-        <span>{error.message}</span>
-      </div>
-    );
+  switch (module._type) {
+    case 'custom-html':
+      return <CustomHTML {...module} />;
+    case 'richtext-module':
+      return <RichtextModule {...module} />;
+    case 'three.js':
+      return <ThreeScene {...module} />;
+    default:
+      // Render errors are caught by the surrounding ErrorBoundary; an unknown
+      // type isn't a throw, just a config mistake , show it inline.
+      return (
+        <div className='alert error' role='alert'>
+          <strong>Error: </strong>
+          <span>{`Data type mismatch, '${module._type}' does not exist`}</span>
+        </div>
+      );
   }
 };
 

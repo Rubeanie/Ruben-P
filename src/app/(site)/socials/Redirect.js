@@ -5,22 +5,13 @@ import { useEffect, useState } from 'react';
 
 export default function Redirect(props) {
   const [count, setCount] = useState(3);
-  const [counting, setCounting] = useState(true);
   useEffect(() => {
-    if (counting) {
-      if (count > 0) {
-        setTimeout(() => {
-          setCount((count) => count - 1);
-        }, 1000);
-      } else {
-        clearTimeout();
-        setCounting(() => {
-          false;
-        });
-        window.location.href = props.url;
-      }
+    if (count > 0) {
+      const timer = setTimeout(() => setCount((count) => count - 1), 1000);
+      return () => clearTimeout(timer);
     }
-  }, [count, counting, props.url]);
+    window.location.href = props.url;
+  }, [count, props.url]);
   return (
     <div>
       <div className='column'>

@@ -97,10 +97,7 @@ function ThemeEnvironment({ background }) {
   const [env, setEnv] = useState(null);
 
   useEffect(() => {
-    if (!url) {
-      setEnv(null);
-      return undefined;
-    }
+    if (!url) return undefined;
     let cancelled = false;
     let created = null;
 
@@ -128,7 +125,7 @@ function ThemeEnvironment({ background }) {
           const lum = Math.max(meanLuminance(img), 0.001);
           const intensity = Math.min(4, Math.max(0.5, TARGET / lum));
 
-          setEnv({ texture: tex, intensity });
+          setEnv({ texture: tex, intensity, url });
         } finally {
           img.close?.();
         }
@@ -141,7 +138,10 @@ function ThemeEnvironment({ background }) {
     };
   }, [url]);
 
-  if (!env) return null;
+  // Render-time reset (per react.dev "you might not need an effect"): an env
+  // loaded for a previous url — or one lingering after url went null — is
+  // never rendered; its texture is disposed by the effect cleanup.
+  if (!env || env.url !== url) return null;
   return (
     <Environment
       map={env.texture}

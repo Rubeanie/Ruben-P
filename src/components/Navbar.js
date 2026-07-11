@@ -47,12 +47,19 @@ const Navbar = () => {
     }
   }));
 
+  const toggleDropdown = useCallback((open) => {
+    setOpenDropdown(open);
+    document.documentElement.setAttribute('data-nav-dropdown', open);
+  }, []);
+
   const updateNav = useCallback(() => {
     const shouldShowDropdown =
       logoRef.current.offsetWidth + pagesRef.current.offsetWidth + 136 >=
       navRef.current.offsetWidth;
     setShowDropdown(shouldShowDropdown);
-  }, []);
+    // Nav grew wide enough to drop hamburger mode, close any open dropdown.
+    if (!shouldShowDropdown) toggleDropdown(false);
+  }, [toggleDropdown]);
 
   const handleScroll = useCallback(() => {
     const newBlurAmount = window.scrollY > 100 ? 4 : 1;
@@ -61,11 +68,6 @@ const Navbar = () => {
       'data-nav-scrolled',
       window.scrollY > 100 ? 'true' : 'false'
     );
-  }, []);
-
-  const toggleDropdown = useCallback((open) => {
-    setOpenDropdown(open);
-    document.documentElement.setAttribute('data-nav-dropdown', open);
   }, []);
 
   useEffect(() => {
@@ -86,13 +88,7 @@ const Navbar = () => {
       WebkitBackdropFilter: `blur(${openDropdown ? 7 : blurAmount}px)`,
       backdropFilter: `blur(${openDropdown ? 7 : blurAmount}px)`
     });
-  }, [openDropdown, blurAmount]);
-
-  useEffect(() => {
-    if (!showDropdown && openDropdown) {
-      toggleDropdown(false);
-    }
-  }, [showDropdown, openDropdown, toggleDropdown]);
+  }, [openDropdown, blurAmount, api]);
 
   return (
     <animated.nav style={springs}>

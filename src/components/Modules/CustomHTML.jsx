@@ -2,26 +2,23 @@
 
 import uid from '@/lib/uid';
 import { stegaClean } from '@sanity/client/stega';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 export default function CustomHTML({ className, html, ...props }) {
   const ref = useRef(null);
+  const injectedRef = useRef(false);
 
-  const [firstRender, setFirstRender] = useState(true);
-
-  // Hooks must run unconditionally, so guard inside the effect rather than around it.
+  // Inject the script fragment once. The ref flag makes any re-run — StrictMode's
+  // double-invoke or an html.code change — a no-op, so the script runs exactly once.
   useEffect(() => {
+    if (injectedRef.current) return;
     if (!html.code || !html.code.includes('<script')) return;
-    if (firstRender) {
-      setFirstRender(false);
-    } else {
-      const parsed = document
-        .createRange()
-        .createContextualFragment(stegaClean(html.code));
-
-      ref.current?.appendChild(parsed);
-    }
-  }, [ref.current, html.code]);
+    injectedRef.current = true;
+    const parsed = document
+      .createRange()
+      .createContextualFragment(stegaClean(html.code));
+    ref.current?.appendChild(parsed);
+  }, [html.code]);
 
   if (!html.code) return null;
 
