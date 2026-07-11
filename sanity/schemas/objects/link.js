@@ -44,7 +44,9 @@ export const link = {
       placeholder: 'https://example.com',
       validation: (Rule) =>
         Rule.uri({
-          scheme: ['http', 'https', 'mailto', 'tel'],
+          // any scheme except the executable ones; mirrors isSafeHref in
+          // src/lib/processUrl.js
+          scheme: /^(?!(?:javascript|data|vbscript|blob|file)$)/i,
           allowRelative: true
         }),
       hidden: ({ parent }) => parent?.type !== 'external'
