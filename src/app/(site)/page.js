@@ -1,4 +1,3 @@
-import { Age } from '@/utils/common';
 import HeroCanvas from '@/components/HeroCanvas';
 
 export const metadata = {
@@ -23,12 +22,7 @@ export default function Home() {
                   PANZICH
                 </span>
               </h1>
-              <p>
-                <Age />
-                -year-old student
-                <br />
-                freelance creative artist/developer
-              </p>
+              <p>freelance creative artist/developer</p>
             </div>
           </div>
         </div>
