@@ -4,7 +4,6 @@ import {
   ThemeStyleInput
 } from '../../src/components/ThemeStyleInput';
 
-/* eslint-disable @next/next/no-img-element */
 export const style = {
   name: 'style',
   type: 'object',

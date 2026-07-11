@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import { MdStyle } from 'react-icons/md';
 
 function getStylesSubtitle(styles = []) {

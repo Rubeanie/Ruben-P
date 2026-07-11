@@ -89,6 +89,7 @@ export const imageBlock = {
         media = sanity;
       } else if (type === 'cloudinary.asset' && cloudinary) {
         media = (
+          // Sanity Studio preview thumbnail, next/image doesn't run in Studio.
           <img
             src={cloudinary}
             alt={subtitle}
