@@ -5,7 +5,7 @@ export const locations = (params, context) => {
     const doc$ = context.documentStore.listenQuery(
       `*[_id == $id][0]{title,metadata}`,
       params,
-      { perspective: 'previewDrafts' }
+      { perspective: 'drafts' }
     );
 
     return doc$.pipe(
