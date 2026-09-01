@@ -12,6 +12,13 @@ export const navigation = {
       validation: (Rule) => Rule.required()
     },
     {
+      name: 'logoLink',
+      title: 'Logo link',
+      description:
+        'Where the brand icon links. Its label only shows in the dropdown menu.',
+      type: 'link'
+    },
+    {
       name: 'items',
       type: 'array',
       of: [{ type: 'link' }]

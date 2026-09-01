@@ -1,126 +1,308 @@
 @use '../abstracts/index' as var;
 
-/* Navbar */
-$item-padding: 1.5rem;
+$ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
 
-nav {
+.nav {
   position: fixed;
   z-index: 10;
-  background-color: var.$color-overlay;
+  top: 0;
   width: 100%;
-  height: var.$navbar-height;
-  top: 0px;
-  transition:
-    background-color var.$dropdown-transition,
-    height var.$dropdown-transition;
-
-  .hidden {
-    visibility: hidden;
-    position: absolute;
-    top: -9999px;
-  }
+  padding: var.$nav-float-gap var.$nav-float-gap 0; // floats the pill off the edges
+  transition: padding 0.3s $ease-out-strong;
 
   .container {
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     width: 100%;
     max-width: var.$viewport-max-width;
-    height: var.$navbar-height;
-    padding: var.$padding-safe;
     margin: 0 auto;
+    padding: var.$nav-pad;
+    // light glass at the top of the page; full glass once scrolled (rules at file end)
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var.$nav-radius;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 4px 12px rgba(0, 0, 0, 0.15);
+    background-color: rgba(0, 0, 0, 0.35);
+    transition:
+      border-radius 0.3s $ease-out-strong,
+      border-color 0.3s ease,
+      box-shadow 0.3s ease,
+      background-color 0.3s ease,
+      backdrop-filter 0.3s ease;
+
+    // Don't add a -webkit- pair by hand: the minifier then keeps only the prefixed
+    // form, which Edge ignores.
+    @supports (backdrop-filter: blur(1px)) {
+      backdrop-filter: blur(4px) saturate(120%);
+      background-color: rgba(0, 0, 0, 0.12);
+    }
 
     a {
       flex: 0 1 auto;
-      transition: transform var.$dropdown-transition;
-      margin-inline: $item-padding;
 
       p {
         font-weight: bold;
         color: var.$color-primary;
         font-size: var.$p2-size;
-        margin-block: 18px;
-        margin-inline: unset;
+        margin-block: 0;
       }
 
       svg {
         display: block;
         color: var.$color-primary;
-        width: var.$navbar-height * 0.8;
-        height: var.$navbar-height * 0.8;
+        width: var.$nav-logo-size;
+        height: var.$nav-logo-size;
       }
     }
 
-    .column {
-      justify-content: flex-start;
+    // extra inset so the line-art logo doesn't sit crammed against the edge
+    > a:first-of-type {
+      margin-inline-start: 0.9rem;
     }
 
-    .row-fixed {
-      width: unset;
-      height: unset;
-      flex-wrap: nowrap;
-    }
+    .links {
+      display: flex;
+      align-items: center;
+      // Fills the leftover space; overflowing it is the compact-mode signal. The
+      // 4px padding/margin keeps the CTA's shadows inside the clip.
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      gap: 1.5rem;
+      padding: 4px;
+      margin: -4px;
 
-    .dropdown {
-      position: fixed;
-      margin: var.$inverted-padding-safe;
-      padding: var.$padding-safe;
-      width: 100%;
-      height: calc(100lvh - var.$navbar-height);
-      transform-origin: top;
-      transition:
-        transform var.$dropdown-transition,
-        opacity var.$dropdown-transition;
-      overflow: auto;
-      transform: translate(0, 50vh) scale(1, 0);
-      opacity: 0;
+      // Right-align with an auto margin, not justify-content: flex-end. Start-side
+      // overflow doesn't count towards scrollWidth, so the check would miss it.
+      > a:first-child {
+        margin-inline-start: auto;
+      }
+
+      // bare glyphs get extra room from the edge; a filled CTA sits at the inset
+      &:not(:has(.cta:last-child)) {
+        padding-inline-end: calc(4px + 0.9rem);
+      }
 
       a {
-        margin: 25px 0px;
-        transform: scale(0, 0);
+        // must overflow rather than shrink, or the compact check never fires
+        flex: none;
+        white-space: nowrap;
+        transition:
+          opacity 0.15s ease,
+          transform 0.12s $ease-out-strong;
 
-        p {
-          font-size: var.$p2-size * 1.75;
+        @media (hover: hover) and (pointer: fine) {
+          &:hover {
+            opacity: 0.7;
+          }
+
+          &:active {
+            transform: scale(0.96);
+          }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          transition: opacity 0.15s ease;
+
+          &:active {
+            transform: none;
+          }
         }
       }
     }
 
-    .hamburger-react {
-      margin-inline: $item-padding;
+    .dropdown {
+      order: 10; // wraps below the bar; DOM order would put it between logo and burger
+      flex-basis: 100%;
+      height: 0;
+      overflow: hidden;
+      // animating height on purpose; there's no transform equivalent
+      transition: height 0.3s $ease-out-strong;
+
+      .menu {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: safe center;
+        gap: 1.75rem;
+        height: 100%;
+        overflow-y: auto;
+      }
+
+      a {
+        opacity: 0;
+        // drift in the same direction the panel grows
+        transform: translateY(-4px);
+        transition:
+          opacity 0.2s ease,
+          transform 0.25s $ease-out-strong;
+
+        p {
+          font-size: var.$p2-size * 1.5;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          transform: none;
+          transition: opacity 0.2s ease;
+        }
+      }
+
+      .cta {
+        padding: 0.45em 1.3em;
+
+        p {
+          font-size: var.$p2-size !important;
+        }
+      }
+    }
+
+    // matches the logo's inset; the icon has ~0.3rem of its own padding
+    :global(.hamburger-react) {
+      margin-inline-end: 0.6rem;
     }
   }
 }
 
-html[data-nav-scrolled='true']:not([data-nav-dropdown='true']) {
-  --color-overlay-alpha: 0.325 !important;
+// A nav link flagged as a button.
+.cta {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.45em 1.1em;
+  border-radius: calc(
+    #{var.$nav-radius} - #{var.$nav-pad}
+  ); // concentric with the shell
+  @include var.candy;
+  transition:
+    transform 0.12s $ease-out-strong,
+    filter 0.2s ease;
+
+  p {
+    color: var.$color-on-primary !important;
+    font-size: var.$p3-size !important;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      opacity: 1 !important; // don't inherit the plain-link hover dip
+    }
+
+    &:active {
+      transform: scale(0.97);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:active {
+      transform: none;
+    }
+  }
 }
 
+// Compact mode docks the bar: flush to the top and sides, bottom corners only,
+// so opening the menu never moves the toggle.
+.nav[data-compact='true'] {
+  padding: 0;
+
+  .container {
+    border-top: none;
+    border-inline: none;
+    border-radius: 0 0 var.$nav-radius var.$nav-radius;
+
+    // hidden, not removed: it still has to be measured to leave compact mode
+    .links {
+      visibility: hidden;
+    }
+  }
+}
+
+// Open menu: corners square off, the panel fills the viewport, links stagger in.
 html[data-nav-dropdown='true'] {
-  --color-overlay-alpha: 0.6 !important;
   overflow: hidden;
   width: 100%;
 
   body {
     overflow: hidden;
     width: 100%;
+  }
+}
 
-    nav {
-      height: 100lvh;
+:global(html[data-nav-dropdown='true']) .nav {
+  padding: 0; // compact mode on desktop drops the float gap too
 
-      .container .dropdown {
-        transform: translate(0, 50vh) scale(1, 1);
+  .container {
+    border-radius: 0;
+    // Snap to full glass on open so the page doesn't show through the panel.
+    // Only the way in is instant: closing drops the attribute and eases out.
+    transition:
+      border-radius 0.3s $ease-out-strong,
+      border-color 0s,
+      box-shadow 0s,
+      background-color 0s,
+      backdrop-filter 0s;
+
+    .dropdown {
+      height: calc(100lvh - #{var.$nav-bar-height});
+
+      a {
         opacity: 1;
+        transform: none;
 
-        a {
-          transform: scale(1, 1);
-
-          p {
-            overflow: visible;
-            text-shadow: 0px 0px 17px rgba(0, 0, 0, 0.75);
-          }
+        // stagger only on the way in; exit fades together
+        &:nth-child(2) {
+          transition-delay: 40ms;
+        }
+        &:nth-child(3) {
+          transition-delay: 80ms;
+        }
+        &:nth-child(4) {
+          transition-delay: 120ms;
+        }
+        &:nth-child(5) {
+          transition-delay: 160ms;
         }
       }
     }
   }
+}
+
+// Scrolled or menu open: full glass.
+:global(html[data-nav-scrolled='true']) .nav .container,
+:global(html[data-nav-dropdown='true']) .nav .container {
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 8px 24px rgba(0, 0, 0, 0.35);
+  background-color: rgba(0, 0, 0, 0.65);
+
+  @supports (backdrop-filter: blur(1px)) {
+    backdrop-filter: blur(14px) saturate(160%);
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+}
+
+// Docked, the top highlight reads as a stray line, so drop it. Sits after the
+// full-glass rule so it wins when the menu is open.
+html .nav[data-compact='true'] .container {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .nav .container,
+  :global(html[data-nav-scrolled='true']) .nav .container,
+  :global(html[data-nav-dropdown='true']) .nav .container {
+    backdrop-filter: none;
+    background-color: rgba(0, 0, 0, 0.92);
+  }
+}
+
+// The footer reads this overlay tint.
+html[data-nav-scrolled='true']:not([data-nav-dropdown='true']) {
+  --color-overlay-alpha: 0.325 !important;
+}
+
+html[data-nav-dropdown='true'] {
+  --color-overlay-alpha: 0.6 !important;
 }

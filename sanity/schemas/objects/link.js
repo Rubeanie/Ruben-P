@@ -31,9 +31,6 @@ export const link = {
         },
         {
           type: 'page.portfolio'
-        },
-        {
-          type: 'social'
         }
       ],
       hidden: ({ parent }) => parent?.type !== 'internal'
@@ -56,7 +53,16 @@ export const link = {
       title: 'URL parameters',
       placeholder: 'e.g. #jump-link or ?foo=bar',
       type: 'string',
-      hidden: ({ parent }) => parent?.type !== 'internal'
+      hidden: ({ parent }) => !parent?.type
+    },
+    {
+      name: 'cta',
+      title: 'Style as button',
+      description: 'Renders the link as a call-to-action button in menus',
+      type: 'boolean',
+      initialValue: false,
+      // only meaningful where links render as menu items
+      hidden: ({ document }) => document?._type !== 'navigation'
     }
   ],
   preview: {

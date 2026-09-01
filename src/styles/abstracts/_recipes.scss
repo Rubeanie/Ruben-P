@@ -1,0 +1,21 @@
+@use './variables' as var;
+
+// Raised, glossy button surface on the theme colour.
+@mixin candy {
+  background: linear-gradient(
+    color-mix(in srgb, var(--color-primary) 75%, #fff),
+    var(--color-primary)
+  );
+  box-shadow:
+    inset 0 0 1px 1px rgba(255, 255, 255, 0.14),
+    0 0 0 1px rgba(0, 0, 0, 0.08),
+    0 2px 2px rgba(0, 0, 0, 0.04),
+    0 0 0 1px var(--color-primary);
+  color: var.$color-on-primary;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      filter: brightness(1.05);
+    }
+  }
+}

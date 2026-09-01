@@ -5,7 +5,7 @@ import { Suspense } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { ThemeProvider } from '@/components/ThemeContext';
-import { getThemes } from '@/lib/sanity/queries';
+import { getSite, getThemes } from '@/lib/sanity/queries';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { VisualEditingControls } from '@/components/VisualEditingControls';
@@ -44,7 +44,7 @@ export const viewport = {
 };
 
 export default async function RootLayout({ children }) {
-  const themes = await getThemes();
+  const [themes, site] = await Promise.all([getThemes(), getSite()]);
   return (
     <html lang='en' className={`${mont.variable} ${kollektif.variable}`}>
       <head>
@@ -70,13 +70,13 @@ export default async function RootLayout({ children }) {
             <Signature />
           </Suspense>
           <Suspense>
-            <Navbar />
+            <Navbar menu={site.headerMenu} />
           </Suspense>
           <Suspense>
             <main>{children}</main>
           </Suspense>
           <Suspense fallback={<div>Loading Footer...</div>}>
-            <Footer />
+            <Footer menu={site.footerMenu} />
           </Suspense>
           <Analytics />
           <SpeedInsights />

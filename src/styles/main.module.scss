@@ -4,6 +4,8 @@ main {
   max-width: var.$viewport-max-width - 40rem;
   margin: 0 auto;
   padding: 1rem;
+  // Every page fills the viewport, so the footer always starts below the fold.
+  min-height: 100lvh;
   position: relative;
   z-index: 1;
 
@@ -21,6 +23,11 @@ main {
   .hero-no-padding {
     @extend .hero;
     padding-top: unset;
+  }
+
+  // Per-page CMS option: clears the floating navbar on pages without a hero
+  .nav-pad {
+    padding-top: var.$navbar-height;
   }
 
   icon {

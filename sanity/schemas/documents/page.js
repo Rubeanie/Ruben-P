@@ -26,6 +26,15 @@ export const page = {
       ...pageBlock
     },
     {
+      name: 'navPadding',
+      title: 'Navbar padding',
+      description:
+        'Pad the top of the page so content clears the floating navbar. Turn off when the page opens with a hero, which handles its own clearance.',
+      type: 'boolean',
+      initialValue: true,
+      group: 'options'
+    },
+    {
       name: 'tableOfContents',
       type: 'boolean',
       initialValue: false,
