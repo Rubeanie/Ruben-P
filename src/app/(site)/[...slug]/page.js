@@ -53,6 +53,7 @@ async function getPage(params) {
       metadata.slug.current == $slug &&
       !(metadata.slug.current in ['index', '404'])
     ][0]{
+      _id,
       title,
       // initialValue only applies to new docs, so older pages default here
       "navPadding": coalesce(navPadding, true),

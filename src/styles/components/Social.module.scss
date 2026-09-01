@@ -1,107 +1,166 @@
 @use '../abstracts/index' as var;
 
-/* Social Buttons */
-$width: 385px;
-$height: 100px;
-$width-mobile: 230px;
-$svg-wrapper-width: 30%;
-$text-wrapper-height-mobile: 75px;
-$svg-size: 70px;
-$transition: 0.4s ease-in-out;
+$width: 440px;
+$height: 120px;
+$hover-scale: 1.05;
+$ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+$zoom-transition: transform 0.25s $ease-out-strong;
+$gap: 20px;
+
+// Columns top out at --max-cols (from Sanity) via the max-width and drop as
+// the viewport narrows; min(width, 100%) lets one column shrink on phones.
+.list {
+  display: grid;
+  // interpolated so Sass doesn't try to evaluate min() itself
+  grid-template-columns: repeat(auto-fit, min(#{$width}, 100%));
+  justify-content: center;
+  gap: $gap;
+  width: 100%;
+  max-width: calc(
+    var(--max-cols, 2) * #{$width} + (var(--max-cols, 2) - 1) * #{$gap}
+  );
+  margin-inline: auto;
+}
+
+.card:focus-visible {
+  outline: 2px solid var.$color-primary;
+  outline-offset: 4px;
+  border-radius: var.$common-border-radius;
+}
 
 .social {
-  display: flex;
-  background: var.$color-primary;
+  --bar: var(--brand-ink, var(--brand));
   position: relative;
-  align-items: center;
-  transition: transform $transition;
-  margin: 10px;
-  width: $width;
-  max-width: 100vw;
-  height: $height;
+  display: flex;
+  align-items: stretch;
+  // Laid out at hover size and scaled down at rest, so hovering never upscales
+  // the raster (that's what blurred the text mid-zoom). The negative margins
+  // cancel the oversize so the card still fits its cell.
+  width: $hover-scale * 100%;
+  height: $height * $hover-scale;
+  margin: ($height * ($hover-scale - 1) * -0.5) (($hover-scale - 1) * -50%);
+  transform: scale(calc(1 / #{$hover-scale}));
   border-radius: var.$common-border-radius;
   overflow: hidden;
-  box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.3);
+  background: color-mix(in srgb, var(--brand) 14%, #0a0e1a);
+  // hairline ring, brighter along the top edge
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  color: var.$color-on-dark;
+  transition:
+    $zoom-transition,
+    box-shadow var.$theme-transition,
+    background-color var.$theme-transition;
 
-  .svgWrapper,
-  .textWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-  }
+  @media (hover: hover) and (pointer: fine) {
+    // Permanent layer: promoting on hover re-rasterised the text and made it jump.
+    will-change: transform;
 
-  .svgWrapper {
-    width: $svg-wrapper-width;
-    vertical-align: middle;
+    &:hover {
+      transform: scale(1);
+      background: color-mix(in srgb, var(--brand) 22%, #0a0e1a);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+        0 12px 32px rgba(0, 0, 0, 0.4);
 
-    svg {
-      width: $svg-size;
-      height: $svg-size;
+      .watermark {
+        opacity: 0.38;
+      }
+
+      &::after {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    // press feedback
+    &:hover:active {
+      transform: scale(0.98);
     }
   }
 
-  .textWrapper {
-    background: rgba(0, 0, 0, 0.212);
-    width: 100% - $svg-wrapper-width;
-
-    p {
-      font-size: var.$p3-size;
-      overflow: visible;
-    }
-  }
-
-  &:hover {
-    transform: scale(1.05) perspective(1px);
-  }
-
-  &:after {
+  // light bar; translate rather than top so it stays off the layout path
+  &::after {
     content: '';
-    height: 55px;
-    width: 1px;
     position: absolute;
-    left: 0px;
-    top: 50%;
-    transition:
-      top $transition,
-      opacity $transition;
-    transition-duration: 0.6s;
-    background: linear-gradient(transparent, var.$color-text, transparent);
-    opacity: 0;
-  }
-
-  &:after {
-    top: 65%;
-    opacity: 0;
-  }
-
-  &:hover:after {
+    left: 0;
     top: 10%;
-    opacity: 1;
+    height: 66px;
+    width: 1px;
+    background: linear-gradient(
+      transparent,
+      var(--bar, var.$color-text),
+      transparent
+    );
+    opacity: 0;
+    transform: translateY(105%);
+    transition:
+      transform 0.6s $ease-out-strong,
+      opacity 0.6s ease;
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: background-color var.$theme-transition;
+
+    &:hover {
+      transform: scale(calc(1 / #{$hover-scale}));
+    }
+
+    &::after {
+      transform: translateY(0);
+      transition: opacity 0.3s ease;
+    }
   }
 }
 
-@media screen and (max-width: var.$media-mobile-width) {
-  .social {
-    width: $width-mobile;
-    height: fit-content;
+.watermark {
+  position: absolute;
+  right: -32px;
+  bottom: -44px;
+  color: var(--brand-ink, color-mix(in srgb, var(--brand) 70%, #fff));
+  opacity: 0.2;
+  transition: opacity var.$theme-transition;
+  pointer-events: none;
 
-    .svgWrapper {
-      margin-block: 7.5px;
-      width: 100%;
-    }
-
-    .textWrapper {
-      width: 100%;
-      height: $text-wrapper-height-mobile;
-    }
-
-    &:hover {
-      transform: unset;
-    }
-
-    &:after {
-      content: unset;
-    }
+  svg {
+    width: 172px;
+    height: 172px;
   }
+}
+
+.text {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.15rem;
+  min-width: 0;
+  padding: 0 1.5rem;
+  text-align: left; // anchors against the bottom-right watermark
+}
+
+.title,
+.username {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.title {
+  font-family: var.$h-font;
+  font-size: var.$p1-size;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  // caps have no descenders, so a tighter line box
+  line-height: 1.1;
+}
+
+.username {
+  font-size: var.$p3-size;
+  opacity: 0.8;
 }

@@ -1,6 +1,8 @@
 import React from 'react';
+import { createDataAttribute } from 'next-sanity';
 import CustomHTML from './CustomHTML';
 import RichtextModule from './RichtextModule';
+import SocialList from './SocialList';
 import ThreeScene from './ThreeScene';
 import ErrorBoundary from '../ErrorBoundary';
 
@@ -10,6 +12,8 @@ const ModuleRenderer = ({ module, page }) => {
       return <CustomHTML {...module} />;
     case 'richtext-module':
       return <RichtextModule {...module} values={page?.values} />;
+    case 'social-list':
+      return <SocialList {...module} />;
     case 'three.js':
       return <ThreeScene {...module} />;
     default:
@@ -25,22 +29,33 @@ const ModuleRenderer = ({ module, page }) => {
 };
 
 export function Modules({ modules, page }) {
+  // Lets the Presentation tool open a module from anywhere inside it.
+  const sanity =
+    page?._id &&
+    createDataAttribute({ baseUrl: '/admin', id: page._id, type: 'page' });
   return (
     <>
       {modules.map((module) => (
-        <ErrorBoundary
+        <div
           key={module._key}
-          fallback={
-            <div className='alert warning' role='alert'>
-              <strong>Warning: </strong>
-              <span>
-                An error occurred while rendering this module. Please check the
-                module configuration.
-              </span>
-            </div>
+          data-sanity={
+            sanity
+              ? sanity(`modules[_key=="${module._key}"]`).toString()
+              : undefined
           }>
-          <ModuleRenderer module={module} page={page} />
-        </ErrorBoundary>
+          <ErrorBoundary
+            fallback={
+              <div className='alert warning' role='alert'>
+                <strong>Warning: </strong>
+                <span>
+                  An error occurred while rendering this module. Please check
+                  the module configuration.
+                </span>
+              </div>
+            }>
+            <ModuleRenderer module={module} page={page} />
+          </ErrorBoundary>
+        </div>
       ))}
     </>
   );
