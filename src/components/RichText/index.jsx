@@ -1,4 +1,5 @@
 import { PortableText } from '@portabletext/react';
+import DynamicValue from './DynamicValue';
 import styles from '@/styles/components/RichText.module.scss';
 
 const span = (className) => {
@@ -19,7 +20,18 @@ const components = {
   }
 };
 
-export default function RichText({ value }) {
+export default function RichText({ value, values }) {
   if (!value) return null;
-  return <PortableText value={value} components={components} />;
+  return (
+    <PortableText
+      value={value}
+      components={{
+        ...components,
+        types: {
+          ...components.types,
+          dynamicValue: (props) => <DynamicValue {...props} values={values} />
+        }
+      }}
+    />
+  );
 }

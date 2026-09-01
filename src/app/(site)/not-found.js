@@ -14,7 +14,6 @@ export default async function NotFound() {
     return (
       <div className='hero-no-padding'>
         <div className='column'>
-          <h2 style={{ marginBlockEnd: '0px' }}>Error</h2>
           <h1>
             <span className='image-text'>404</span>
           </h1>

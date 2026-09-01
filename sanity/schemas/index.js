@@ -28,6 +28,7 @@ import { threeJs } from './modules/three';
 
 // objects
 import { cta } from './objects/cta';
+import { dynamicValue } from './objects/dynamic-value';
 import { link } from './objects/link';
 import { style } from './objects/style';
 import { uid } from './objects/uid';
@@ -63,6 +64,7 @@ export const schemaTypes = [
 
   // objects
   cta,
+  dynamicValue,
   link,
   style,
   uid

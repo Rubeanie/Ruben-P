@@ -12,6 +12,7 @@ export const textBlock = {
   of: [
     {
       type: 'block',
+      of: [{ type: 'dynamicValue' }],
       styles: [
         { title: 'Normal', value: 'normal' },
         { title: 'Heading 1', value: 'h1' },

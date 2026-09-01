@@ -8,48 +8,35 @@ export const redirect = {
     {
       name: 'source',
       title: 'Redirect from',
-      placeholder: 'e.g. /old-path, /old-path/:slug',
+      description: 'Local path to redirect, e.g. /old-path or /old-path/:slug',
       type: 'string',
-      validation: (Rule) => Rule.required()
+      validation: (Rule) =>
+        Rule.required().regex(/^\//, { name: 'local path starting with /' })
     },
     {
       name: 'destination',
       title: 'Redirect to',
-      placeholder: 'e.g. /new-path, /new-path/:slug',
-      type: 'string',
+      type: 'link',
       validation: (Rule) => Rule.required()
     },
     {
       name: 'permanent',
       type: 'boolean',
       initialValue: true,
-      description: (
-        <>
-          <p>
-            If <code>true</code> will use the 308 status code which instructs
-            clients/search engines to cache the redirect forever, if{' '}
-            <code>false</code> will use the 307 status code which is temporary
-            and is not cached.
-          </p>
-          <p>
-            <a
-              href='https://nextjs.org/docs/app/api-reference/next-config-js/redirects'
-              target='_blank'>
-              Next.js redirects documentation
-            </a>
-          </p>
-        </>
-      )
+      description:
+        '308: clients and search engines cache the redirect forever. Off: 307, temporary and uncached.'
     }
   ],
   preview: {
     select: {
       title: 'source',
-      destination: 'destination'
+      label: 'destination.label',
+      external: 'destination.external',
+      internal: 'destination.internal.title'
     },
-    prepare: ({ title, destination }) => ({
+    prepare: ({ title, label, external, internal }) => ({
       title,
-      subtitle: `to ${destination}`
+      subtitle: `to ${label || internal || external || '?'}`
     })
   }
 };

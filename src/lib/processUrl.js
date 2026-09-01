@@ -29,7 +29,7 @@ export function resolveLink({ type, external, params, internal } = {}) {
     return processUrl(internal, { base: false, params });
   }
   if (cleanType === 'external' && external) {
-    const url = stegaClean(external);
+    const url = stegaClean(external) + (stegaClean(params) || '');
     return isSafeHref(url) ? url : null;
   }
   return null;

@@ -4,12 +4,12 @@ import RichtextModule from './RichtextModule';
 import ThreeScene from './ThreeScene';
 import ErrorBoundary from '../ErrorBoundary';
 
-const ModuleRenderer = ({ module }) => {
+const ModuleRenderer = ({ module, page }) => {
   switch (module._type) {
     case 'custom-html':
       return <CustomHTML {...module} />;
     case 'richtext-module':
-      return <RichtextModule {...module} />;
+      return <RichtextModule {...module} values={page?.values} />;
     case 'three.js':
       return <ThreeScene {...module} />;
     default:
@@ -39,7 +39,7 @@ export function Modules({ modules, page }) {
               </span>
             </div>
           }>
-          <ModuleRenderer module={module} />
+          <ModuleRenderer module={module} page={page} />
         </ErrorBoundary>
       ))}
     </>
