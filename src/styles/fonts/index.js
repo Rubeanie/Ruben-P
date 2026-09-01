@@ -32,7 +32,16 @@ export const mont = localFont({
   ],
   variable: '--font-mont',
   display: 'swap',
-  preload: true
+  preload: true,
+  adjustFontFallback: 'Arial',
+  // Mont's 800/300 win metrics leave 150 more units below caps than above, so
+  // caps sit high in the line box. Rebalanced around the 650 cap height; the
+  // total stays 1100 so line boxes keep their size.
+  declarations: [
+    { prop: 'ascent-override', value: '87.5%' },
+    { prop: 'descent-override', value: '22.5%' },
+    { prop: 'line-gap-override', value: '0%' }
+  ]
 });
 
 export const kollektif = localFont({
@@ -50,5 +59,6 @@ export const kollektif = localFont({
   ],
   variable: '--font-kollektif',
   display: 'swap',
-  preload: true
+  preload: true,
+  adjustFontFallback: 'Arial'
 });
