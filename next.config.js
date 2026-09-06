@@ -8,6 +8,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 const nextConfig = {
+  // Extra hosts allowed to reach the dev server (e.g. a phone on the LAN), comma-separated
+  allowedDevOrigins: process.env.ALLOWED_DEV_ORIGINS?.split(','),
   // Inline the (tiny) CSS chunks as <style> in <head> so they leave the
   // critical request chain — Turbopack-native replacement for optimizeCss.
   experimental: {
