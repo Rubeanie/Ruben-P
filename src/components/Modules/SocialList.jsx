@@ -10,8 +10,10 @@ export default function SocialList({ socials = [], maxColumns = 2 }) {
     <section>
       {socials?.length > 0 && (
         <div className={styles.list} style={{ '--max-cols': maxColumns }}>
-          {socials.map(
-            ({ _id, title, username, logo, baseColor, redirect }) => {
+          {/* a reference still being picked in the Studio dereferences to null */}
+          {socials
+            .filter(Boolean)
+            .map(({ _id, title, username, logo, baseColor, redirect }) => {
               // Internal destinations link direct; external ones go through the vanity path
               // (the query leaves `external` out on purpose).
               const href =
@@ -43,8 +45,7 @@ export default function SocialList({ socials = [], maxColumns = 2 }) {
                   {card}
                 </div>
               );
-            }
-          )}
+            })}
         </div>
       )}
     </section>
