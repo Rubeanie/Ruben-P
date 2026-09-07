@@ -18,7 +18,8 @@ const Navbar = ({ menu }) => {
     };
   // The bar shows the logo link as an icon; the dropdown lists it by label first.
   const home = toLink(menu?.logoLink);
-  const links = (menu?.items ?? []).map(toLink).filter((link) => link.href);
+  const links = (menu?.items ?? []).map(toLink).filter((link) => link?.href);
+  const navRef = useRef(null);
   const linksRef = useRef(null);
   const [compact, setCompact] = useState(false);
   const [open, setOpen] = useState(false);
@@ -41,20 +42,26 @@ const Navbar = ({ menu }) => {
       setCompact(overflowing);
       if (!overflowing) setOpen(false);
     });
-    observer.observe(links);
+    // the row's own box only changes on resize; the links change with fonts and content
+    for (const el of [links, ...links.children]) observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
   // Scroll lock, glass state and the footer tint all read these <html> attributes.
   useEffect(() => {
     document.documentElement.setAttribute('data-nav-dropdown', open);
+    // the open menu covers the page, so keep keyboard focus out of it too
+    for (const el of document.querySelectorAll('main, footer'))
+      el.toggleAttribute('inert', open);
   }, [open]);
 
-  // Escape closes the menu.
+  // Escape closes the menu and hands focus back to the toggle.
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (event) => {
-      if (event.key === 'Escape') setOpen(false);
+      if (event.key !== 'Escape') return;
+      setOpen(false);
+      navRef.current?.querySelector('[role="button"]')?.focus();
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
@@ -72,7 +79,10 @@ const Navbar = ({ menu }) => {
   }, []);
 
   return (
-    <nav className={styles.nav} data-compact={compact || undefined}>
+    <nav
+      ref={navRef}
+      className={styles.nav}
+      data-compact={compact || undefined}>
       <div className={styles.container}>
         <Link href={home?.href ?? '/'} title={home?.label} onClick={close}>
           <RubenP />
@@ -104,11 +114,12 @@ const Navbar = ({ menu }) => {
           <div className={styles.menu}>
             {[home, ...links]
               .filter((link) => link?.href)
-              .map((link) => (
+              .map((link, i) => (
                 <Link
                   key={link.key}
                   href={link.href}
                   onClick={close}
+                  style={{ '--i': i }}
                   className={link.cta ? styles.cta : undefined}>
                   <p>{link.label}</p>
                 </Link>

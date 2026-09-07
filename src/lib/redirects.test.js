@@ -12,6 +12,7 @@ test(':param segments carry into the destination', () => {
   const r = { source: '/old-blog/:slug', destination: '/portfolio/:slug' };
   expect(matchRedirect(r, '/old-blog/hello')).toBe('/portfolio/hello');
   expect(matchRedirect(r, '/old-blog')).toBe(null);
+  expect(matchRedirect(r, '/old-blog/a?b')).toBe('/portfolio/a%3Fb');
 });
 
 test('external destinations pass, unsafe schemes are blocked', () => {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { createDataAttribute } from 'next-sanity';
+import { draftMode } from 'next/headers';
 import CustomHTML from './CustomHTML';
 import RichtextModule from './RichtextModule';
 import SocialList from './SocialList';
@@ -28,22 +29,20 @@ const ModuleRenderer = ({ module, page }) => {
   }
 };
 
-export function Modules({ modules, page }) {
-  // Lets the Presentation tool open a module from anywhere inside it.
+export async function Modules({ modules, page }) {
+  // In the Presentation tool each module gets a wrapper it can be opened from;
+  // production markup stays untouched.
+  const { isEnabled } = await draftMode();
   const sanity =
+    isEnabled &&
     page?._id &&
     createDataAttribute({ baseUrl: '/admin', id: page._id, type: 'page' });
   return (
     <>
-      {modules.map((module) => (
-        <div
-          key={module._key}
-          data-sanity={
-            sanity
-              ? sanity(`modules[_key=="${module._key}"]`).toString()
-              : undefined
-          }>
+      {modules.map((module) => {
+        const rendered = (
           <ErrorBoundary
+            key={module._key}
             fallback={
               <div className='alert warning' role='alert'>
                 <strong>Warning: </strong>
@@ -55,8 +54,17 @@ export function Modules({ modules, page }) {
             }>
             <ModuleRenderer module={module} page={page} />
           </ErrorBoundary>
-        </div>
-      ))}
+        );
+        return sanity ? (
+          <div
+            key={module._key}
+            data-sanity={sanity(`modules[_key=="${module._key}"]`).toString()}>
+            {rendered}
+          </div>
+        ) : (
+          rendered
+        );
+      })}
     </>
   );
 }

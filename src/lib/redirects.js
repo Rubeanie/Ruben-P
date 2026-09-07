@@ -15,9 +15,8 @@ export function matchRedirect({ source, destination }, path) {
     else if (pattern[i] !== segments[i]) return null;
   }
 
-  const url = stegaClean(destination).replace(
-    /:(\w+)/g,
-    (all, name) => params[name] ?? all
+  const url = stegaClean(destination).replace(/:(\w+)/g, (all, name) =>
+    name in params ? encodeURIComponent(params[name]) : all
   );
   return isSafeHref(url) ? url : null;
 }
@@ -27,11 +26,14 @@ export function matchRedirect({ source, destination }, path) {
 // result for good.
 export async function getRedirect(path) {
   // imported lazily so matchRedirect stays importable from bun test
-  const { default: client } = await import('@/lib/sanity/client');
+  const [{ default: client }, { linkQuery }] = await Promise.all([
+    import('@/lib/sanity/client'),
+    import('@/lib/sanity/queries/fragments/link')
+  ]);
   const redirects = await client.fetch(
     groq`*[_type == 'redirect']{
       source,
-      destination{ label, type, external, params, internal->{ metadata { "slug": slug.current } } },
+      destination{ ${linkQuery} },
       permanent
     }`,
     {},

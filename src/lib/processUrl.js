@@ -23,7 +23,8 @@ export function isSafeHref(url) {
 }
 
 // Resolve a `link` GROQ fragment (internal page reference or external URL) to an href.
-export function resolveLink({ type, external, params, internal } = {}) {
+export function resolveLink(link) {
+  const { type, external, params, internal } = link ?? {};
   const cleanType = stegaClean(type);
   if (cleanType === 'internal' && internal?.metadata?.slug) {
     return processUrl(internal, { base: false, params });

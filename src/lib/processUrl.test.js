@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test';
-import { isSafeHref } from './processUrl';
+import { isSafeHref, resolveLink } from './processUrl';
 
 test('isSafeHref allows app schemes and relative paths, blocks executable ones', () => {
   expect(isSafeHref('modrinth://mod/sodium')).toBe(true);
@@ -12,4 +12,9 @@ test('isSafeHref allows app schemes and relative paths, blocks executable ones',
   expect(isSafeHref('JavaScript:alert(1)')).toBe(false);
   expect(isSafeHref('data:text/html,x')).toBe(false);
   expect(isSafeHref('http://[')).toBe(false);
+});
+
+test('resolveLink tolerates a missing link', () => {
+  expect(resolveLink(null)).toBe(null);
+  expect(resolveLink(undefined)).toBe(null);
 });

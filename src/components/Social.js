@@ -21,7 +21,7 @@ export default function Social({
   return (
     <div
       className={styles.social}
-      style={{ '--brand': color, ...(ink && { '--brand-ink': ink }) }}>
+      style={{ '--brand': color, '--brand-ink': ink }}>
       {logo && (
         <span className={styles.watermark} aria-hidden='true'>
           {logo}

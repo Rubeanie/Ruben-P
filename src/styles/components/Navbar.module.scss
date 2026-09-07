@@ -251,18 +251,7 @@ html[data-nav-dropdown='true'] {
         transform: none;
 
         // stagger only on the way in; exit fades together
-        &:nth-child(2) {
-          transition-delay: 40ms;
-        }
-        &:nth-child(3) {
-          transition-delay: 80ms;
-        }
-        &:nth-child(4) {
-          transition-delay: 120ms;
-        }
-        &:nth-child(5) {
-          transition-delay: 160ms;
-        }
+        transition-delay: calc(var(--i) * 40ms);
       }
     }
   }
