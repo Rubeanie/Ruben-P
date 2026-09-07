@@ -21,9 +21,9 @@ export function matchRedirect({ source, destination }, path) {
   return isSafeHref(url) ? url : null;
 }
 
-// The redirect a path should follow, or null. Uncached on purpose: this only
-// runs on paths that missed a page, and sanityFetch would cache an empty
-// result for good.
+// The redirect a path should follow, or null. Cached briefly rather than
+// no-store: a no-store fetch turns the static catch-all route dynamic at
+// request time, which Next rejects with a 500 for paths not built ahead.
 export async function getRedirect(path) {
   // imported lazily so matchRedirect stays importable from bun test
   const [{ default: client }, { linkQuery }] = await Promise.all([
@@ -37,7 +37,7 @@ export async function getRedirect(path) {
       permanent
     }`,
     {},
-    { perspective: 'published', cache: 'no-store' }
+    { perspective: 'published', next: { revalidate: 60 } }
   );
 
   for (const { source, destination, permanent } of redirects ?? []) {
