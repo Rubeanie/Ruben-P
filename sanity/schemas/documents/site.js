@@ -17,6 +17,13 @@ export const site = {
       validation: (Rule) => Rule.required()
     },
     {
+      name: 'logo',
+      type: 'inlineSvg',
+      group: 'general',
+      description: 'Site mark for the navbar and footer.',
+      validation: (Rule) => Rule.required()
+    },
+    {
       name: 'themes',
       type: 'array',
       group: 'general',

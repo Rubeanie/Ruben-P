@@ -12,6 +12,8 @@ import { VisualEditingControls } from '@/components/VisualEditingControls';
 import { SanityLive } from '@/lib/sanity/live';
 import { ServiceWorkerRegister } from '@/components/ServiceWorkerRegister';
 import { baseUrl } from '@/lib/env';
+import { stegaClean } from '@sanity/client/stega';
+import { sanitizeSvg } from '@/lib/sanitizeSvg';
 
 export const metadata = {
   metadataBase: new URL(baseUrl),
@@ -45,6 +47,7 @@ export const viewport = {
 
 export default async function RootLayout({ children }) {
   const [themes, site] = await Promise.all([getThemes(), getSite()]);
+  const logo = sanitizeSvg(stegaClean(site.logo));
   return (
     <html lang='en' className={`${mont.variable} ${kollektif.variable}`}>
       <head>
@@ -70,12 +73,12 @@ export default async function RootLayout({ children }) {
             <Signature />
           </Suspense>
           <Suspense>
-            <Navbar menu={site.headerMenu} />
+            <Navbar menu={site.headerMenu} logo={logo} />
           </Suspense>
           <Suspense>
             <main>{children}</main>
           </Suspense>
-          <Footer menu={site.footerMenu} />
+          <Footer menu={site.footerMenu} logo={logo} />
           <Analytics />
           <SpeedInsights />
           <SanityLive />

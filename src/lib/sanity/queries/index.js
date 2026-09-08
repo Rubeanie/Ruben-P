@@ -9,6 +9,7 @@ export async function getSite() {
     groq`
 			*[_type == 'site'][0]{
 				title,
+				logo,
 				headerMenu->{ ${navigationQuery} },
 				footerMenu->{ ${navigationQuery} },
 				announcements[]->{ ${announcementQuery} },

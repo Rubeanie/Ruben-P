@@ -3,12 +3,12 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { RubenP } from '@/utils/icons';
+import Logo from '@/components/Logo';
 import { Squeeze as Hamburger } from 'hamburger-react';
 import { resolveLink } from '@/lib/processUrl';
 import styles from '@/styles/components/Navbar.module.scss';
 
-const Navbar = ({ menu }) => {
+const Navbar = ({ menu, logo }) => {
   const toLink = (item) =>
     item && {
       key: item._key ?? 'logo',
@@ -89,7 +89,7 @@ const Navbar = ({ menu }) => {
       data-compact={compact || undefined}>
       <div className={styles.container}>
         <Link href={home?.href ?? '/'} title={home?.label} onClick={close}>
-          <RubenP />
+          <Logo svg={logo} />
         </Link>
         <div className={styles.links} ref={linksRef} inert={compact}>
           {links.map((link) => (

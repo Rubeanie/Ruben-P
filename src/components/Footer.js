@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { RubenP } from '@/utils/icons';
+import Logo from '@/components/Logo';
 import { resolveLink } from '@/lib/processUrl';
 import styles from '@/styles/components/Footer.module.scss';
 
-export default function Footer({ menu }) {
+export default function Footer({ menu, logo }) {
   const links = (menu?.items ?? [])
     // an item still being added in the Studio can be null
     .filter(Boolean)
@@ -17,7 +17,7 @@ export default function Footer({ menu }) {
   return (
     <footer className={styles.footer}>
       <span className={styles.mark} aria-hidden='true'>
-        <RubenP />
+        <Logo svg={logo} />
       </span>
       <div className={styles.container}>
         {links.length > 0 && (
