@@ -11,8 +11,9 @@ export const cta = {
       type: 'link'
     },
     {
-      name: 'style',
+      name: 'variant',
       type: 'string',
+      initialValue: 'action',
       options: {
         list: [
           'action',

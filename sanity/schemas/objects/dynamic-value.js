@@ -24,7 +24,8 @@ export const dynamicValue = {
         layout: 'radio',
         list: [
           { title: 'Text', value: 'text' },
-          { title: 'Link', value: 'link' }
+          { title: 'Link', value: 'link' },
+          { title: 'Button', value: 'button' }
         ]
       }
     },

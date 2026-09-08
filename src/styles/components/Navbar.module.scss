@@ -172,9 +172,7 @@ $ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
   display: inline-flex;
   align-items: center;
   padding: 0.45em 1.1em;
-  border-radius: calc(
-    #{var.$nav-radius} - #{var.$nav-pad}
-  ); // concentric with the shell
+  border-radius: var.$button-radius;
   @include var.candy;
   transition:
     transform 0.12s $ease-out-strong,

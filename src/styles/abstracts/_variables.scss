@@ -24,6 +24,9 @@ $nav-bar-height: calc(
 ); // logo + inset + hairline borders
 $navbar-height: calc(#{$nav-float-gap * 2} + #{$nav-bar-height});
 
+/* Buttons: the navbar button and page CTAs share the pill's inner radius */
+$button-radius: $nav-radius - $nav-pad;
+
 /* Maximum Width of Viewport Content */
 $viewport-max-width: 120rem;
 $content-max-width: $viewport-max-width - 40rem; // main column
