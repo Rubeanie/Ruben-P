@@ -5,7 +5,6 @@ export const linkQuery = groq`
   _key,
   "label": coalesce(label, internal->title, external),
   type,
-  cta,
   external,
   params,
   internal->{

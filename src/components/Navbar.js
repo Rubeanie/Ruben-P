@@ -13,12 +13,16 @@ const Navbar = ({ menu }) => {
     item && {
       key: item._key ?? 'logo',
       label: item.label,
-      href: resolveLink(item),
-      cta: item.cta
+      href: resolveLink(item)
     };
   // The bar shows the logo link as an icon; the dropdown lists it by label first.
   const home = toLink(menu?.logoLink);
-  const links = (menu?.items ?? []).map(toLink).filter((link) => link?.href);
+  // The optional call to action renders as a button after the links.
+  const cta = toLink(menu?.cta);
+  const links = [
+    ...(menu?.items ?? []).map(toLink),
+    cta && { ...cta, key: 'cta', cta: true }
+  ].filter((link) => link?.href);
   const navRef = useRef(null);
   const linksRef = useRef(null);
   const [compact, setCompact] = useState(false);

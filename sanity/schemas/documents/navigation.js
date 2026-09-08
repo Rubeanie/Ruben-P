@@ -22,6 +22,12 @@ export const navigation = {
       name: 'items',
       type: 'array',
       of: [{ type: 'link' }]
+    },
+    {
+      name: 'cta',
+      title: 'Call to action',
+      description: 'Optional link shown as a button at the end of the bar.',
+      type: 'link'
     }
   ],
   preview: {
