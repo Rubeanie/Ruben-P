@@ -39,6 +39,7 @@
     "@sanity/structure": "^2.36.2",
     "@sanity/ui": "^3.2.0",
     "@sanity/vision": "6.2.0",
+    "@sanity/webhook": "^4.0.4",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "color": "^5.0.3",
