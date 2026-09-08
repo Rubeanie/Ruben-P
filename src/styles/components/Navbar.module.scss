@@ -74,6 +74,7 @@ $ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
       gap: 1.5rem;
       padding: 4px;
       margin: -4px;
+      padding-inline-start: calc(4px + #{var.$nav-logo-gap});
 
       // Right-align with an auto margin, not justify-content: flex-end. Start-side
       // overflow doesn't count towards scrollWidth, so the check would miss it.
