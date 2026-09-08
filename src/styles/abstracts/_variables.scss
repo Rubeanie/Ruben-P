@@ -1,12 +1,9 @@
 /* Sass Colors */
-$color-overlay-rgb: var(--color-overlay-rgb);
-$color-overlay-alpha: var(--color-overlay-alpha);
 $color-primary: var(--color-primary);
 $color-secondary: var(--color-secondary);
 $color-background: var(--color-background);
 $color-text: var(--color-text);
 $image-background: var(--image-background);
-$color-overlay: var(--color-overlay);
 $color-on-primary: #121212;
 $color-on-dark: #fff;
 
@@ -26,18 +23,15 @@ $nav-bar-height: calc(
 ); // logo + inset + hairline borders
 $navbar-height: calc(#{$nav-float-gap * 2} + #{$nav-bar-height});
 
-/* Footer Height */
-$footer-height: 60px;
-
 /* Maximum Width of Viewport Content */
 $viewport-max-width: 120rem;
+$content-max-width: $viewport-max-width - 40rem; // main column
 
 /* Mobile Display Width */
 $media-mobile-width: 43.75rem;
 
 /* Transitions */
 $theme-transition: 0.15s ease-out;
-$dropdown-transition: 0.325s ease;
 
 /* Safe Padding */
 $padding-safe: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
@@ -66,6 +60,7 @@ $p1-size: 1.56rem;
 $p2-size: 1.375rem;
 $p3-size: 1.25rem;
 $p4-size: 1rem;
+$p5-size: 0.875rem;
 
 /* Heading Margins */
 $h-margin-block: clamp(2px, 0.3em, 10px);

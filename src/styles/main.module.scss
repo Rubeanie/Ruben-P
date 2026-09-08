@@ -1,7 +1,7 @@
 @use './abstracts/index' as var;
 
 main {
-  max-width: var.$viewport-max-width - 40rem;
+  max-width: var.$content-max-width;
   margin: 0 auto;
   padding: 1rem;
   // Every page fills the viewport, so the footer always starts below the fold.

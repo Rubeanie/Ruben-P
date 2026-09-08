@@ -1,23 +1,136 @@
 @use '../abstracts/index' as var;
 
-footer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-  background-color: var.$color-overlay;
-  width: 100%;
-  height: var.$footer-height;
-  transition: background-color var.$dropdown-transition;
+$ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
 
-  p {
-    display: unset;
-    margin: unset;
-    font-size: var.$p4-size;
+// Edge-to-edge glass, quieter than the navbar on purpose: body face, on-dark
+// text, no buttons.
+.footer {
+  position: relative;
+  width: 100%;
+  overflow: hidden; // the watermark bleeds past the corner
+  background-color: rgba(0, 0, 0, 0.6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    backdrop-filter 0.3s ease;
+
+  // Don't add a -webkit- pair by hand: the minifier then keeps only the prefixed
+  // form, which Edge ignores.
+  @supports (backdrop-filter: blur(1px)) {
+    backdrop-filter: blur(20px) saturate(180%);
+    background-color: rgba(0, 0, 0, 0.4);
   }
 }
 
-html[data-nav-dropdown='true'] footer {
-  background-color: rgba(var.$color-overlay-rgb, 0);
+.container {
+  position: relative; // above the watermark
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+  max-width: var.$content-max-width;
+  margin: 0 auto;
+  // same inline padding as main, so the text lines up with the page content
+  padding: 1.75rem 1rem calc(1.5rem + env(safe-area-inset-bottom));
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 1.5rem;
+
+  a {
+    // 44px touch target on 16px text; the row height is the rhythm
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    font-size: var.$p4-size;
+    letter-spacing: 0.01em;
+    color: var.$color-on-dark;
+    opacity: 0.72;
+    transition:
+      opacity 0.15s ease,
+      transform 0.12s $ease-out-strong;
+
+    &:focus-visible {
+      outline: 2px solid var.$color-primary;
+      outline-offset: 4px;
+      border-radius: 4px;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        opacity: 1;
+      }
+
+      &:active {
+        transform: scale(0.96);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: opacity 0.15s ease;
+
+      &:active {
+        transform: none;
+      }
+    }
+  }
+}
+
+.copyright {
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  text-align: left;
+  font-size: var.$p5-size;
+  letter-spacing: 0.01em;
+  color: var.$color-on-dark;
+  opacity: 0.7; // 0.5 fell to the contrast floor at this size
+}
+
+// Anchored to the top so the glyph bleeds off the bottom-right corner however
+// short the footer is. Its ink starts 16% into the box, hence the negative top.
+.mark {
+  position: absolute;
+  top: -2.25rem;
+  right: -1rem;
+  color: var.$color-primary;
+  opacity: 0.12;
+  pointer-events: none;
+  transition: color var.$theme-transition;
+
+  svg {
+    display: block;
+    width: 11rem;
+    height: 11rem;
+  }
+}
+
+// Phones centre everything else on the page, so the footer follows.
+@media screen and (max-width: var.$media-mobile-width) {
+  .container {
+    align-items: center;
+    text-align: center;
+  }
+
+  .links {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .footer {
+    backdrop-filter: none;
+    background-color: rgba(0, 0, 0, 0.92);
+  }
+}
+
+// The open menu is glass over the whole page; a plate under it shows as a band.
+:global(html[data-nav-dropdown='true']) .footer {
+  background-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
 }

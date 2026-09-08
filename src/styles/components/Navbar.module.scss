@@ -286,12 +286,3 @@ html .nav[data-compact='true'] .container {
     background-color: rgba(0, 0, 0, 0.92);
   }
 }
-
-// The footer reads this overlay tint.
-html[data-nav-scrolled='true']:not([data-nav-dropdown='true']) {
-  --color-overlay-alpha: 0.325 !important;
-}
-
-html[data-nav-dropdown='true'] {
-  --color-overlay-alpha: 0.6 !important;
-}

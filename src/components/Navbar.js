@@ -51,7 +51,7 @@ const Navbar = ({ menu }) => {
     return () => observer.disconnect();
   }, []);
 
-  // Scroll lock, glass state and the footer tint all read these <html> attributes.
+  // Scroll lock, glass state and the footer all read these <html> attributes.
   useEffect(() => {
     document.documentElement.setAttribute('data-nav-dropdown', open);
     // the open menu covers the page, so keep keyboard focus out of it too

@@ -75,9 +75,7 @@ export default async function RootLayout({ children }) {
           <Suspense>
             <main>{children}</main>
           </Suspense>
-          <Suspense fallback={<div>Loading Footer...</div>}>
-            <Footer menu={site.footerMenu} />
-          </Suspense>
+          <Footer menu={site.footerMenu} />
           <Analytics />
           <SpeedInsights />
           <SanityLive />
