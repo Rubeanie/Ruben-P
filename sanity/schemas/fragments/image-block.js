@@ -1,4 +1,5 @@
 import { MdImage } from 'react-icons/md';
+import { blockLayoutFields } from './fields/block-layout';
 
 export const imageBlock = {
   name: 'imageBlock',
@@ -7,7 +8,7 @@ export const imageBlock = {
   icon: MdImage,
   fieldsets: [
     { name: 'info', options: { collapsible: true, collapsed: true } },
-    { name: 'options', options: { collapsible: true, collapsed: true } }
+    { name: 'options', options: { collapsible: true, collapsed: false } }
   ],
   fields: [
     {
@@ -55,6 +56,7 @@ export const imageBlock = {
       type: 'url',
       fieldset: 'options'
     },
+    ...blockLayoutFields({ fieldset: 'options' }),
     {
       name: 'loading',
       type: 'string',

@@ -1,9 +1,10 @@
 import { MdEdit } from 'react-icons/md';
 import { Button, Flex, Stack, Text } from '@sanity/ui';
-import ReactPlayer from 'react-player';
+import { getYouTubeId } from '@/lib/youtube';
 
 export const YouTubePreview = (props) => {
   const { title: url, actions } = props;
+  const id = getYouTubeId(url);
   const handleEditClick = () => {
     if (actions && typeof actions.props.onOpen === 'function') {
       actions.props.onOpen();
@@ -12,8 +13,15 @@ export const YouTubePreview = (props) => {
   return (
     <Stack>
       <Flex align='center' justify='center'>
-        {typeof url === 'string' ? (
-          <ReactPlayer src={url} />
+        {id ? (
+          // The Studio document sends no referrer, and YouTube refuses embeds without one.
+          <iframe
+            referrerPolicy='strict-origin-when-cross-origin'
+            src={`https://www.youtube-nocookie.com/embed/${id}`}
+            title='YouTube preview'
+            style={{ aspectRatio: '16 / 9', width: '100%', border: 0 }}
+            allowFullScreen
+          />
         ) : (
           <Text>Add a YouTube URL</Text>
         )}

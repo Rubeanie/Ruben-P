@@ -1,5 +1,7 @@
 import { groq } from '../../fetch';
 import { imageBlockQuery } from './image-block';
+import { youtubeBlockQuery } from './youtube-block';
+import { codeBlockQuery } from './code-block';
 
 export const contentQuery = groq`
   _type,
@@ -15,13 +17,9 @@ export const contentQuery = groq`
     ${imageBlockQuery}
   },
   _type == 'youtube' => {
-    url,
-    autoplay,
-    controls
+    ${youtubeBlockQuery}
   },
   _type == 'code' => {
-    code,
-    language,
-    filename
+    ${codeBlockQuery}
   }
 `;

@@ -11,6 +11,19 @@ export const richtextModule = {
     {
       name: 'content',
       ...textBlock
+    },
+    {
+      name: 'align',
+      title: 'Alignment',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Start', value: 'start' },
+          { title: 'Centre', value: 'center' }
+        ],
+        layout: 'radio'
+      },
+      initialValue: 'start'
     }
   ],
   preview: {

@@ -1,5 +1,8 @@
 import { PortableText } from '@portabletext/react';
 import DynamicValue from './DynamicValue';
+import ImageBlock from './ImageBlock';
+import YouTube from './YouTube';
+import Code from './Code';
 import styles from '@/styles/components/RichText.module.scss';
 
 const span = (className) => {
@@ -11,16 +14,22 @@ const components = {
   marks: {
     imgHeading: span('image-text'),
     dlig: span(styles.dlig),
-    frac: span(styles.frac),
-    ordn: span(styles.ordn),
-    sups: span(styles.sups),
-    ss01: span(styles.ss01),
-    salt: span(styles.salt),
-    aalt: span(styles.aalt)
+    ss01: span(styles.ss01)
+  },
+  types: {
+    imageBlock: ImageBlock,
+    youtube: YouTube,
+    code: Code
   }
 };
 
-export default function RichText({ value, values }) {
+// Presentation tool only: each block gets the path the Studio opens it from; production markup is untouched.
+const blockPath = (dataAttribute, props) =>
+  dataAttribute
+    ? dataAttribute.scope(`[_key=="${props.value._key}"]`).toString()
+    : undefined;
+
+export default function RichText({ value, values, dataAttribute }) {
   if (!value) return null;
   return (
     <PortableText
@@ -29,6 +38,15 @@ export default function RichText({ value, values }) {
         ...components,
         types: {
           ...components.types,
+          imageBlock: (props) => (
+            <ImageBlock {...props} sanity={blockPath(dataAttribute, props)} />
+          ),
+          youtube: (props) => (
+            <YouTube {...props} sanity={blockPath(dataAttribute, props)} />
+          ),
+          code: (props) => (
+            <Code {...props} sanity={blockPath(dataAttribute, props)} />
+          ),
           dynamicValue: (props) => <DynamicValue {...props} values={values} />
         }
       }}

@@ -10,5 +10,7 @@ export const imageBlockQuery = groq`
   alt,
   source,
   loading,
-  placeholder
+  placeholder,
+  size,
+  align
 `;

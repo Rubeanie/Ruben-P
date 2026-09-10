@@ -18,7 +18,8 @@ const nextConfig = {
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'cdn.sanity.io' },
-      { protocol: 'https', hostname: 'res.cloudinary.com' }
+      { protocol: 'https', hostname: 'res.cloudinary.com' },
+      { protocol: 'https', hostname: 'i.ytimg.com' }
     ]
   },
   sassOptions: {

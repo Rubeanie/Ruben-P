@@ -1,5 +1,6 @@
 import { MdPlayArrow } from 'react-icons/md';
 import { YouTubePreview } from './YouTubePreview';
+import { blockLayoutFields } from '../fields/block-layout';
 
 export const youTubeBlock = {
   name: 'youtube',
@@ -30,7 +31,8 @@ export const youTubeBlock = {
       type: 'boolean',
       initialValue: true,
       group: 'options'
-    }
+    },
+    ...blockLayoutFields({ group: 'options' })
   ],
   preview: {
     select: {

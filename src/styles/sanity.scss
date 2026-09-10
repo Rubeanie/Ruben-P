@@ -1,11 +1,9 @@
+@use './abstracts/index' as var;
+
 #sanity {
   left: 0;
   width: 100vw;
   height: 100dvh;
-
-  .image-text {
-    text-shadow: 0px 0px 30px;
-  }
 
   p {
     font-size: 0.8125rem;
@@ -25,4 +23,15 @@
       color: currentColor !important;
     }
   }
+}
+
+// The Studio's image heading: the site photo clipped to the glyphs, without the
+// fixed attachment the site uses, which breaks inside the editor's scroll pane.
+.image-heading {
+  background: url('#{var.$image-background-url}') center / cover no-repeat;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: brightness(1.15) contrast(0.6) saturate(1.5);
 }

@@ -4,6 +4,8 @@ $color-secondary: var(--color-secondary);
 $color-background: var(--color-background);
 $color-text: var(--color-text);
 $image-background: var(--image-background);
+// One copy of the default photo; the site root and the Studio decorator both read it.
+$image-background-url: 'https://res.cloudinary.com/ruben-p/image/upload/f_avif,q_30,c_limit,w_800/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq.webp';
 $color-on-primary: #121212;
 $color-on-dark: #fff;
 

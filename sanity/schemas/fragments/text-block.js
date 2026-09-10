@@ -3,8 +3,9 @@ import { imageBlock } from './image-block';
 import { youTubeBlock } from './youTubeBlock';
 import { otDecorators } from './ot-decorators';
 
+// Styled in styles/sanity.scss so the photo URL lives in one place with the site's.
 const ImageDecorator = (props) => (
-  <span className='image-text'>{props.children}</span>
+  <span className='image-heading'>{props.children}</span>
 );
 
 export const textBlock = {

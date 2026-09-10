@@ -1,9 +1,5 @@
 /* OpenType feature mixins for TRT Mont Broz */
 
-@mixin mont-inline {
-  font-family: var(--font-mont), sans-serif;
-}
-
 /* Composable (use font-variant-* family — these stack correctly when nested) */
 @mixin ot-dlig {
   font-variant-ligatures: discretionary-ligatures;
@@ -13,27 +9,7 @@
   font-variant-ligatures: no-common-ligatures;
 }
 
-@mixin ot-ordn {
-  font-variant-numeric: ordinal;
-}
-
-@mixin ot-frac {
-  font-variant-numeric: diagonal-fractions;
-}
-
-@mixin ot-sups {
-  font-variant-position: super;
-}
-
 /* Non-composable (font-feature-settings replaces on override) */
 @mixin ot-ss01 {
   font-feature-settings: 'ss01' 1;
-}
-
-@mixin ot-salt {
-  font-feature-settings: 'salt' 1;
-}
-
-@mixin ot-aalt {
-  font-feature-settings: 'aalt' 1;
 }

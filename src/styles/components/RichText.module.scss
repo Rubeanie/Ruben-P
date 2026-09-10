@@ -1,36 +1,685 @@
 @use '../abstracts/index' as var;
 
+// The copy control sits inset equally on both axes inside the code header,
+// so its corner stays concentric with the block's corner.
+$copy-inset: 0.375rem;
+
+.richtext {
+  max-width: var.$measure-wide;
+  margin-inline: auto;
+  text-align: start;
+
+  // Prose and code keep the reading measure; figures and video take the wider column.
+  > :not(.figure, .video) {
+    max-width: var.$measure;
+    margin-inline: auto;
+  }
+
+  // Article rhythm: a full line between paragraphs, headings set off above more than below.
+  > p {
+    margin-block-end: calc(var.$lh-body * 1em);
+  }
+
+  > h2 {
+    margin-block: 3.25rem var.$space-3;
+  }
+
+  > h3 {
+    margin-block: var.$space-5 var.$space-3;
+  }
+
+  > :first-child {
+    margin-block-start: 0;
+  }
+
+  &[data-align='center'] {
+    text-align: center;
+  }
+
+  // Globals centre everything for the display pages; running copy follows the module.
+  h1,
+  h2,
+  h3,
+  p,
+  li {
+    text-align: inherit;
+  }
+
+  ul,
+  ol {
+    padding-inline-start: 1.25em;
+    margin-block: 0 var.$space-3;
+    font-size: var.$body-size;
+    line-height: var.$lh-body;
+  }
+
+  li + li {
+    margin-block-start: var.$space-1;
+  }
+
+  li::marker {
+    color: var.$color-primary;
+  }
+
+  &[data-align='center'] {
+    ul,
+    ol {
+      list-style-position: inside;
+      padding-inline-start: 0;
+    }
+  }
+
+  // The editor emits a bare blockquote, so the type has to land on the element
+  // itself; the nested rule only covers quotes that do wrap their paragraphs.
+  blockquote,
+  blockquote p {
+    font-size: var.$p2-size;
+    // Looser than a heading, tighter than body: the quote is only a step up
+    // from running copy, so body leading read slack and 1.4 read cramped.
+    line-height: 1.45;
+  }
+
+  blockquote {
+    margin: var.$space-4 0;
+    padding-inline-start: var.$space-3;
+    border-inline-start: 2px solid var.$color-primary;
+    color: var.$color-text;
+    font-style: italic;
+
+    p:last-child {
+      margin-block-end: 0;
+    }
+  }
+
+  &[data-align='center'] blockquote {
+    border-inline-start: none;
+    padding-inline-start: 0;
+    padding-block: var.$space-2;
+    border-block: 1px solid
+      color-mix(in srgb, var(--color-text) 25%, transparent);
+  }
+
+  // Inline code mark from the editor; the code block below has its own rules.
+  :not(pre) > code {
+    font-family: ui-monospace, 'Cascadia Mono', 'SF Mono', Consolas, monospace;
+    font-size: 0.9em;
+    padding: 0.1em 0.35em;
+    border-radius: 0.3em;
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
 .dlig {
-  @include var.mont-inline;
   @include var.ot-dlig;
 }
 
-.frac {
-  @include var.mont-inline;
-  @include var.ot-frac;
-}
-
-.ordn {
-  @include var.mont-inline;
-  @include var.ot-ordn;
-}
-
-.sups {
-  @include var.mont-inline;
-  @include var.ot-sups;
-}
-
 .ss01 {
-  @include var.mont-inline;
   @include var.ot-ss01;
 }
 
-.salt {
-  @include var.mont-inline;
-  @include var.ot-salt;
+/* Image and video blocks share their sizing and alignment */
+
+.figure,
+.video {
+  margin-block: var.$block-gap;
+  // Browsers give figure a 40px inline margin of its own.
+  margin-inline: 0;
+
+  // Sizes are fractions of the measure; phones always get the full column.
+  &[data-size='medium'] {
+    width: 75%;
+    margin-inline: auto;
+  }
+
+  &[data-size='small'] {
+    width: 50%;
+    margin-inline: auto;
+  }
+
+  &[data-align='start'] {
+    margin-inline: 0 auto;
+  }
+
+  &[data-align='end'] {
+    margin-inline: auto 0;
+  }
 }
 
-.aalt {
-  @include var.mont-inline;
-  @include var.ot-aalt;
+/* Image block */
+
+.figure {
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var.$common-border-radius;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+
+  // The caption belongs to the image, so it centres under it whatever the image's alignment.
+  figcaption {
+    margin: 0.75rem auto 0;
+    max-width: 48ch;
+    text-align: center;
+    font-size: var.$p5-size;
+    line-height: var.$lh-small;
+    letter-spacing: var.$track-small;
+    opacity: 0.75;
+  }
+
+  a {
+    display: block;
+    border-radius: var.$common-border-radius;
+  }
+}
+
+/* YouTube block */
+
+.video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var.$common-border-radius;
+  background: #000;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+
+  img,
+  iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  img {
+    object-fit: cover;
+  }
+
+  iframe {
+    border: 0;
+    opacity: 0;
+    transition: opacity 0.3s var.$ease-out;
+
+    &[data-loaded] {
+      opacity: 1;
+    }
+  }
+}
+
+// Phones: figures and video run edge to edge; copy and code keep the page padding.
+@media (max-width: var.$media-mobile-width) {
+  .figure,
+  .video,
+  .figure[data-size],
+  .video[data-size] {
+    width: auto;
+    margin-inline: calc(-1 * var.$inline-pad);
+    border-radius: 0;
+  }
+
+  .figure img {
+    border-radius: 0;
+  }
+
+  .figure figcaption {
+    padding-inline: var.$inline-pad;
+  }
+}
+
+// The glass clears so the video reads through the disc.
+@mixin disc-clear {
+  background-color: rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(6px) saturate(1.6);
+
+  svg {
+    fill: #fff;
+    scale: 1.12;
+  }
+}
+
+// The whole frame is the button; the disc is its child so hovering anywhere lifts it.
+.play {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  border-radius: inherit;
+  // The frame clips outward outlines, so the ring sits inside.
+  @include var.focus-ring(-2px);
+}
+
+.disc {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  // Flex, not grid: the busy spinner is wider than the disc, and only flex
+  // centring lets it overflow evenly on both sides.
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(16px) saturate(1.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  // The disc itself never transforms: its 1px hairlines would re-rasterise and
+  // snap when a scale settles, and a filter over backdrop-filter pops. Hover
+  // lightens the plate and moves only the glyph.
+  transition:
+    background-color 0.2s ease,
+    backdrop-filter 0.2s ease;
+
+  // YouTube's 18:20 triangle, nudged right by a twelfth of its width so it reads centred.
+  svg {
+    width: 1.08rem;
+    height: 1.2rem;
+    fill: rgba(255, 255, 255, 0.95);
+    translate: 0.09rem 0;
+    transition:
+      fill 0.2s ease,
+      scale 0.2s var.$ease-out;
+  }
+
+  @supports (animation-timeline: view()) {
+    animation: playIn linear both;
+    animation-timeline: view();
+    animation-range: entry 10% entry 60%;
+  }
+}
+
+@keyframes discIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes playIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  // Deep enough that the title holds over a bright frame; fades out before the middle.
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0) 60%
+  );
+  opacity: 0;
+  transition: opacity 0.2s var.$ease-out;
+  pointer-events: none;
+}
+
+.caption {
+  position: absolute;
+  inset-inline: 1rem;
+  bottom: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  font-family: var.$h-font;
+  font-weight: 600;
+  // Reads as a title on the 980px desktop frame without shouting on a phone.
+  font-size: clamp(1rem, 0.9rem + 0.4vw, 1.125rem);
+  letter-spacing: 0.02em;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  translate: 0 4px;
+  transition:
+    opacity 0.2s var.$ease-out,
+    translate 0.2s var.$ease-out;
+  pointer-events: none;
+
+  span:last-child {
+    opacity: 0.7;
+    font-weight: 500;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .play:hover .disc {
+    @include disc-clear;
+  }
+
+  .play:hover .caption,
+  .play:hover .scrim {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+// Once pressed the plate gives way to the ring: a 64px ring around a 56px disc
+// would read as a halo.
+.play[aria-busy='true'] .disc {
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+.play[aria-busy='true'] .caption,
+.play[aria-busy='true'] .scrim {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.play:active .disc svg {
+  scale: 0.94;
+}
+
+.play:focus-visible .caption,
+.play:focus-visible .scrim {
+  opacity: 1;
+  translate: 0 0;
+}
+
+@media (hover: none) {
+  .caption,
+  .scrim {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+// 64px ring with a 6px stroke: the size YouTube's own spinner takes over at.
+.spinner {
+  // The disc is narrower than the ring, so it must not be allowed to shrink it.
+  flex: none;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 6px solid transparent;
+  border-top-color: #ddd;
+  border-right-color: #ddd;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    rotate: 1turn;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  // Fewer and gentler, not none: the disc still fades up with the frame, it
+  // just no longer travels.
+  .disc {
+    transition: background-color 0.2s ease;
+
+    @supports (animation-timeline: view()) {
+      animation-name: discIn;
+    }
+  }
+
+  .disc svg {
+    transition: fill 0.2s ease;
+  }
+
+  .play:hover .disc svg,
+  .play:active .disc svg,
+  .play[aria-busy='true'] .disc svg {
+    scale: 1;
+  }
+
+  .caption {
+    translate: 0 0;
+    transition: opacity 0.2s var.$ease-out;
+  }
+
+  .spinner {
+    animation: pulse 1.2s ease-in-out infinite alternate;
+    border-top-color: rgba(255, 255, 255, 0.35);
+    border-right-color: rgba(255, 255, 255, 0.35);
+  }
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.5;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@include var.solid-fallback {
+  // The busy disc stays bare even on hover, so it is left out of the solid fallback.
+  .disc,
+  .play:not([aria-busy='true']):hover .disc {
+    backdrop-filter: none;
+    background: rgba(10, 14, 26, 0.94);
+  }
+}
+
+/* Code block */
+
+.code {
+  margin-block: var.$block-gap;
+  // Code never follows a centred module.
+  text-align: start;
+  border-radius: var.$common-border-radius;
+  overflow: hidden;
+}
+
+.codeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var.$space-3;
+  padding: 0 $copy-inset 0 var.$space-3;
+  min-height: 2.75rem;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(20px) saturate(1.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+  font-family: ui-monospace, 'Cascadia Mono', 'SF Mono', Consolas, monospace;
+  font-size: 0.8rem;
+
+  @include var.solid-fallback {
+    backdrop-filter: none;
+    background: rgba(10, 14, 26, 0.94);
+  }
+}
+
+// Directory part of the filename.
+.codePath {
+  opacity: 0.7;
+}
+
+// The header is clipped, so a long basename ellipsises instead of pushing the copy control out.
+.codeName {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// Stands in for the filename when the block has none.
+.codeLang {
+  font-family: var.$mont-font;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+}
+
+.codeBody {
+  background: rgba(0, 0, 0, 0.45);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.07);
+
+  // The header already goes solid; the plate the code sits on has to follow, or
+  // the photo behind it shows through the syntax colours.
+  @include var.solid-fallback {
+    background: rgba(10, 14, 26, 0.94);
+  }
+
+  pre {
+    margin: 0;
+    padding: var.$space-3 var.$space-3 var.$space-3 calc(var.$space-3 + 3.5ch);
+    overflow-x: auto;
+
+    // Quiet scrollbar for the rare long line; the browser keeps its own controls.
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
+    font-size: 0.875em;
+    line-height: 1.55;
+    tab-size: 2;
+    counter-reset: line;
+
+    &:focus-visible {
+      outline-offset: -3px;
+    }
+  }
+}
+
+.codeBody :global(.line) {
+  display: block;
+  width: max-content;
+  min-width: 100%;
+  counter-increment: line;
+  position: relative;
+
+  // 1.5ch of air between the numbers and the code.
+  &::before {
+    content: counter(line);
+    position: absolute;
+    left: -3.5ch;
+    width: 2ch;
+    text-align: end;
+    opacity: 0.7;
+    user-select: none;
+  }
+}
+
+.codeNoGutter pre {
+  padding-inline-start: var.$space-3;
+}
+
+.codeNoGutter :global(.line)::before {
+  content: none;
+}
+
+// A 2rem control inside the 2.75rem header; the hit area, not the box, reaches 44px.
+// Colour feedback only: scaling a 2rem control resamples the glyph and reads as a wobble.
+.copy {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  border-radius: calc(#{var.$common-border-radius} - #{$copy-inset});
+  cursor: pointer;
+  opacity: 0.75;
+  transition:
+    opacity 0.16s ease,
+    color 0.16s ease,
+    background-color 0.16s ease;
+  @include var.focus-ring(2px);
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -$copy-inset;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      opacity: 1;
+      background-color: rgba(255, 255, 255, 0.06);
+    }
+  }
+
+  &:active {
+    background-color: rgba(255, 255, 255, 0.12);
+  }
+
+  &[data-copied] {
+    opacity: 1;
+    color: var.$color-primary;
+  }
+}
+
+.copyIcon {
+  display: grid;
+
+  svg {
+    grid-area: 1 / 1;
+    width: 1rem;
+    height: 1rem;
+    transition:
+      opacity 0.16s ease,
+      scale 0.16s var.$ease-out;
+  }
+
+  svg:last-child {
+    opacity: 0;
+    scale: 0.8;
+  }
+
+  .copy[data-copied] & {
+    svg:first-child {
+      opacity: 0;
+      scale: 0.8;
+    }
+
+    svg:last-child {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .copyIcon svg {
+    transition: opacity 0.16s ease;
+  }
+
+  // Same selectors as the rules that set a scale, so the crossfade is left
+  // alone but neither icon jumps.
+  .copyIcon svg,
+  .copyIcon svg:last-child,
+  .copy[data-copied] .copyIcon svg:first-child,
+  .copy[data-copied] .copyIcon svg:last-child {
+    scale: 1;
+  }
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }

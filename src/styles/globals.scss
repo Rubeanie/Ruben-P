@@ -12,7 +12,7 @@
   --color-secondary: #33456d;
   --color-background: #0f182d;
   --color-text: #eaf6ff;
-  --image-background: url('https://res.cloudinary.com/ruben-p/image/upload/f_avif,q_30,c_limit,w_800/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq.webp');
+  --image-background: url('#{var.$image-background-url}');
 }
 
 html,

@@ -7,12 +7,18 @@ import SocialList from './SocialList';
 import ThreeScene from './ThreeScene';
 import ErrorBoundary from '../ErrorBoundary';
 
-const ModuleRenderer = ({ module, page }) => {
+const ModuleRenderer = ({ module, page, dataAttribute }) => {
   switch (module._type) {
     case 'custom-html':
       return <CustomHTML {...module} />;
     case 'richtext-module':
-      return <RichtextModule {...module} values={page?.values} />;
+      return (
+        <RichtextModule
+          {...module}
+          values={page?.values}
+          dataAttribute={dataAttribute}
+        />
+      );
     case 'social-list':
       return <SocialList {...module} />;
     case 'three.js':
@@ -40,6 +46,9 @@ export async function Modules({ modules, page }) {
   return (
     <>
       {modules.map((module) => {
+        const scoped = sanity
+          ? sanity.scope(`modules[_key=="${module._key}"]`)
+          : undefined;
         const rendered = (
           <ErrorBoundary
             key={module._key}
@@ -52,13 +61,15 @@ export async function Modules({ modules, page }) {
                 </span>
               </div>
             }>
-            <ModuleRenderer module={module} page={page} />
+            <ModuleRenderer
+              module={module}
+              page={page}
+              dataAttribute={scoped}
+            />
           </ErrorBoundary>
         );
-        return sanity ? (
-          <div
-            key={module._key}
-            data-sanity={sanity(`modules[_key=="${module._key}"]`).toString()}>
+        return scoped ? (
+          <div key={module._key} data-sanity={scoped.toString()}>
             {rendered}
           </div>
         ) : (
