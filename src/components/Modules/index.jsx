@@ -1,6 +1,7 @@
 import React from 'react';
 import { createDataAttribute } from 'next-sanity';
 import { draftMode } from 'next/headers';
+import Breadcrumbs from './Breadcrumbs';
 import CustomHTML from './CustomHTML';
 import RichtextModule from './RichtextModule';
 import SocialList from './SocialList';
@@ -9,6 +10,8 @@ import ErrorBoundary from '../ErrorBoundary';
 
 const ModuleRenderer = ({ module, page, dataAttribute }) => {
   switch (module._type) {
+    case 'breadcrumbs':
+      return <Breadcrumbs {...module} page={page} />;
     case 'custom-html':
       return <CustomHTML {...module} />;
     case 'richtext-module':

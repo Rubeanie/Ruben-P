@@ -7,19 +7,36 @@ export const breadcrumbs = {
   type: 'object',
   fields: [
     {
+      name: 'mode',
+      type: 'string',
+      options: {
+        layout: 'radio',
+        list: [
+          { title: 'Auto', value: 'auto' },
+          { title: 'Manual', value: 'manual' }
+        ]
+      },
+      initialValue: 'auto'
+    },
+    {
       name: 'crumbs',
       type: 'array',
       of: [{ type: 'link', initialValue: { type: 'internal' } }],
-      description: 'Current page is automatically added to the end of the list.'
+      hidden: ({ parent }) => (parent?.mode ?? 'auto') === 'auto',
+      description: 'Home and the current page are added automatically.'
     }
   ],
   preview: {
     select: {
+      mode: 'mode',
       crumbs: 'crumbs'
     },
-    prepare({ crumbs }) {
+    prepare({ mode, crumbs }) {
       return {
-        title: count(crumbs, 'crumb') + ' + Current page',
+        title:
+          (mode ?? 'auto') === 'auto'
+            ? 'Home › … › Current page'
+            : 'Home + ' + count(crumbs, 'crumb') + ' + Current page',
         subtitle: 'Breadcrumbs'
       };
     }
