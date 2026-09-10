@@ -1,7 +1,5 @@
 @use '../abstracts/index' as var;
 
-$ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
-
 // Edge-to-edge glass, quieter than the navbar on purpose: body face, on-dark
 // text, no buttons.
 .footer {
@@ -42,32 +40,27 @@ $ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
   gap: 0 1.5rem;
 
   a {
-    // 44px touch target on 16px text; the row height is the rhythm
-    display: inline-flex;
-    align-items: center;
-    min-height: 2.75rem;
+    // the row height is the rhythm
+    @include var.touch-target;
     font-size: var.$p4-size;
-    letter-spacing: 0.01em;
+    letter-spacing: var.$track-small;
     color: var.$color-on-dark;
     opacity: 0.72;
     transition:
       opacity 0.15s ease,
-      transform 0.12s $ease-out-strong;
+      transform 0.12s var.$ease-out;
 
-    &:focus-visible {
-      outline: 2px solid var.$color-primary;
-      outline-offset: 4px;
-      border-radius: 4px;
-    }
+    border-radius: 4px;
+    @include var.focus-ring(4px);
 
     @media (hover: hover) and (pointer: fine) {
       &:hover {
         opacity: 1;
       }
+    }
 
-      &:active {
-        transform: scale(0.96);
-      }
+    &:active {
+      transform: scale(0.96);
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -81,12 +74,10 @@ $ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .copyright {
-  margin: 0;
-  padding: 0;
-  overflow: visible;
+  margin: 0; // last line in the plate; the container padding sets the space below
   text-align: left;
   font-size: var.$p5-size;
-  letter-spacing: 0.01em;
+  letter-spacing: var.$track-small;
   color: var.$color-on-dark;
   opacity: 0.7; // 0.5 fell to the contrast floor at this size
 }
@@ -121,7 +112,7 @@ $ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
   }
 }
 
-@media (prefers-reduced-transparency: reduce) {
+@include var.solid-fallback {
   .footer {
     backdrop-filter: none;
     background-color: rgba(0, 0, 0, 0.92);

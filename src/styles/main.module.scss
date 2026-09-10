@@ -3,7 +3,7 @@
 main {
   max-width: var.$content-max-width;
   margin: 0 auto;
-  padding: 1rem;
+  padding: var.$space-3 var.$inline-pad;
   // Every page fills the viewport, so the footer always starts below the fold.
   min-height: 100lvh;
   position: relative;
@@ -30,14 +30,9 @@ main {
     padding-top: var.$navbar-height;
   }
 
-  icon {
-    height: 100%;
-    vertical-align: middle;
-  }
-
   .item {
     flex: 0 1 auto;
-    margin: 20px;
+    margin: var.$space-4;
   }
 
   .alert {
@@ -72,7 +67,7 @@ main {
     span {
       display: block;
 
-      @media (min-width: 640px) {
+      @media (min-width: var.$media-mobile-width) {
         display: inline;
       }
     }

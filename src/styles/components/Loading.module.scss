@@ -30,11 +30,26 @@
         stroke-dasharray: 23;
         stroke-width: 0.013rem;
         animation: spin 10s linear infinite;
+
+        // A dash chasing its own path reads as motion, so pulse instead.
+        @media (prefers-reduced-motion: reduce) {
+          animation: pulse 1.2s ease-in-out infinite alternate;
+        }
       }
 
       @keyframes spin {
         to {
           stroke-dashoffset: 230;
+        }
+      }
+
+      @keyframes pulse {
+        from {
+          opacity: 0.5;
+        }
+
+        to {
+          opacity: 1;
         }
       }
     }
@@ -47,9 +62,13 @@
       height: 100%;
       z-index: 1;
       backdrop-filter: blur(7px) brightness(1.085);
-      -webkit-backdrop-filter: blur(7px) brightness(1.085);
       outline: 1px solid transparent;
       clip-path: url(#clip-path);
+
+      @include var.solid-fallback {
+        backdrop-filter: none;
+        background: rgba(10, 14, 26, 0.94);
+      }
     }
   }
 }

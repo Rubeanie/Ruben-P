@@ -29,13 +29,16 @@ $button-radius: $nav-radius - $nav-pad;
 
 /* Maximum Width of Viewport Content */
 $viewport-max-width: 120rem;
-$content-max-width: $viewport-max-width - 40rem; // main column
+// Page content shares the navbar's edge; the reading measure keeps prose narrow inside it.
+$content-max-width: $viewport-max-width;
 
 /* Mobile Display Width */
 $media-mobile-width: 43.75rem;
 
 /* Transitions */
 $theme-transition: 0.15s ease-out;
+// The built-in ease-out is too weak for deliberate motion.
+$ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 
 /* Safe Padding */
 $padding-safe: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
@@ -44,27 +47,53 @@ $inverted-padding-safe: 0 calc(-1 * env(safe-area-inset-right)) 0
 
 /* Font Faces */
 $h-font: var(--font-mont), sans-serif;
-$p-font: var(--font-kollektif), serif;
+$p-font: var(--font-kollektif), sans-serif;
 $mont-font: var(--font-mont), sans-serif;
 
 /* Text Alignments */
 $h-alignment: center;
 $p-alignment: center;
 
-/* Heading Text Sizes */
-$h1-size: clamp(
-  0.1rem,
-  calc(2.4549rem + ((1vw - 0.25875rem) * 7.4122)),
-  9.5627rem
-);
-$h2-size: 2.512rem;
+/* Type scale (18px body, 1.2 steps) */
+$p5-size: 0.875rem; // captions
+$p4-size: 1rem; // small text, footer links, breadcrumbs
+$p3-size: 1.125rem; // body
+$p2-size: 1.35rem; // lead, nav links
+$p1-size: 1.62rem; // large lead
+// Running copy grows with the screen: 17px on phones to 19px on desktops, the newsroom range.
+$body-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+$h3-size: $p1-size;
+$h2-size: clamp(1.75rem, 1.2rem + 1.6vw, 2.33rem);
+// Same slope the hero has always had (115px at 1440, 153px cap); the floor stops
+// phones at 40px instead of 37px.
+$h1-size: clamp(2.5rem, 0.54rem + 7.41vw, 9.56rem);
 
-/* Paragraph Text Sizes */
-$p1-size: 1.56rem;
-$p2-size: 1.375rem;
-$p3-size: 1.25rem;
-$p4-size: 1rem;
-$p5-size: 0.875rem;
+/* Leading */
+$lh-h1: 1;
+$lh-h2: 1.15;
+$lh-h3: 1.25;
+$lh-body: 1.6;
+$lh-small: 1.5;
 
-/* Heading Margins */
-$h-margin-block: clamp(2px, 0.3em, 10px);
+/* Tracking */
+$track-h1: -0.02em;
+$track-h2: -0.015em;
+$track-h3: -0.01em;
+$track-small: 0.01em;
+
+/* Spacing */
+$space-1: 0.25rem;
+$space-2: 0.5rem;
+$space-3: 1rem;
+$space-4: 1.5rem;
+$space-5: 2.5rem;
+$space-6: 4rem;
+
+/* Reading measure and page gutter */
+// In rem, not ch, so a quote or heading at a larger size keeps the same column as body copy.
+$measure: 41rem;
+// Figures, video and code break out of the prose measure to this width, 1.5x the copy.
+$measure-wide: 61.25rem;
+// Space above and below a figure, video or code block: 32px on phones up to 44px on desktop.
+$block-gap: clamp(2rem, 1.25rem + 1.5vw, 2.75rem);
+$inline-pad: clamp(1rem, 4vw, 2rem);

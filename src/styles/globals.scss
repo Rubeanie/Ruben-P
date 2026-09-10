@@ -20,10 +20,15 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
-  touch-action: pan-y;
+  touch-action: pan-y pinch-zoom;
   font-family: var.$p-font;
   background-color: var.$color-background;
   transition: background-color var.$theme-transition;
+}
+
+:focus-visible {
+  outline: 2px solid var.$color-primary;
+  outline-offset: 3px;
 }
 
 a {
@@ -33,7 +38,6 @@ a {
 
 * {
   box-sizing: border-box;
-  z-index: inherit;
 }
 
 h1 {
@@ -43,8 +47,9 @@ h1 {
   font-size: var.$h1-size;
   max-width: 100%;
   filter: var.$common-drop-shadow;
-  transition: font-size 0.1s ease-in;
-  margin-block: var.$h-margin-block;
+  line-height: var.$lh-h1;
+  letter-spacing: var.$track-h1;
+  margin-block: 0 var.$space-3;
 }
 
 h2 {
@@ -54,28 +59,37 @@ h2 {
   font-size: var.$h2-size;
   max-width: 100%;
   filter: var.$common-drop-shadow;
+  line-height: var.$lh-h2;
+  letter-spacing: var.$track-h2;
+  margin-block: var.$space-5 var.$space-3;
 }
 
 h3 {
   text-align: var.$p-alignment;
   color: var.$color-text;
   font-family: var.$h-font;
-  font-size: var.$p1-size;
+  font-size: var.$h3-size;
   max-width: 100%;
   filter: var.$common-drop-shadow;
+  font-weight: 500;
+  line-height: var.$lh-h3;
+  letter-spacing: var.$track-h3;
+  margin-block: var.$space-4 var.$space-2;
 }
 
 p {
-  line-height: 1.1;
-  overflow: auto;
-  text-align: var.$p-alignment;
+  font-size: var.$body-size;
+  line-height: var.$lh-body;
   color: var.$color-text;
-  font-size: var.$p1-size;
+  text-align: var.$p-alignment;
   max-width: 100%;
-  margin: 0px 20px 0px 20px;
-  margin-block-start: 0.25em;
-  margin-block-end: 0em;
-  padding-inline: 1px;
+  margin: 0 0 var.$space-3;
+}
+
+// The old `overflow: auto` on paragraphs was the only guard against unbroken tokens like pasted URLs.
+p,
+li {
+  overflow-wrap: anywhere;
 }
 
 .image-text {
@@ -89,51 +103,38 @@ p {
   -webkit-text-fill-color: transparent;
   filter: brightness(115%) contrast(43%)
     drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.6)) saturate(1.5);
-  transition: background var.$theme-transition !important;
+  transition: background var.$theme-transition;
+}
+
+// Sass can't @extend across a media query, so this is a mixin.
+@mixin image-text-flat {
+  background: unset;
+  background-size: unset;
+  background-attachment: unset;
+  background-clip: unset;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  filter: unset;
+  transition: color var.$theme-transition;
 }
 
 // Firefox has repaint bugs with background-clip:text + background-attachment:fixed,
-// so fall back to a solid heading colour (same as the mobile rule below).
+// so fall back to a solid heading colour.
 @-moz-document url-prefix() {
   .image-text {
-    background: unset;
-    background-size: unset;
-    background-attachment: unset;
-    background-clip: unset;
-    -webkit-background-clip: unset;
-    -webkit-text-fill-color: unset;
-    filter: unset;
-    transition: color var.$theme-transition !important;
+    @include image-text-flat;
   }
 }
 
-/* TRT Mont Broz OpenType feature utility classes — opt-in only, never global */
-.ot-dlig {
-  @include var.ot-dlig;
+@media (prefers-contrast: more) {
+  .image-text {
+    @include image-text-flat;
+  }
 }
 
-.ot-frac {
-  @include var.ot-frac;
-}
-
-.ot-ordn {
-  @include var.ot-ordn;
-}
-
-.ot-sups {
-  @include var.ot-sups;
-}
-
+/* TRT Mont Broz OpenType feature utility class — opt-in only, never global */
 .ot-ss01 {
   @include var.ot-ss01;
-}
-
-.ot-salt {
-  @include var.ot-salt;
-}
-
-.ot-aalt {
-  @include var.ot-aalt;
 }
 
 h1,
@@ -144,17 +145,18 @@ svg {
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
   transition: color var.$theme-transition;
+}
 
-  a {
-    text-decoration: underline;
-    text-decoration-color: #4285f4;
-    color: #4285f4;
-  }
+p a,
+li a {
+  @include var.text-link;
 }
 
 body {
   position: relative; // added for pseudo-element
   z-index: 0;
+  // Lining figures everywhere; the fonts' old-style sets stay off.
+  font-variant-numeric: lining-nums;
 
   &::before {
     content: ' ';
@@ -168,18 +170,26 @@ body {
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
-    transform: translateZ(0) !important;
+    transform: translateZ(0);
     will-change: transform; // creates a new paint layer
     z-index: -1;
     transition:
       background var.$theme-transition,
       background-color var.$theme-transition;
     opacity: 0.35;
-    backface-visibility: hidden !important;
-    -webkit-backface-visibility: hidden !important;
+    backface-visibility: hidden;
   }
 }
 
+// The background photo is the biggest contrast drop on the page.
+@media (prefers-contrast: more) {
+  body::before {
+    opacity: 0;
+  }
+}
+
+// Layout utilities for the hand-written pages (About, Home, 404, Redirecting,
+// Skill); they go when About moves to the CMS.
 .layer {
   position: absolute;
 }
@@ -226,9 +236,9 @@ body {
     margin: 0.25vw;
   }
 
-  .shadow {
+  .item.shadow {
     filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.6));
-    margin: 0.5vw !important;
+    margin: 0.5vw;
   }
 }
 
@@ -243,14 +253,19 @@ body {
   background: none;
   color: inherit;
   font: inherit;
-  font-size: 0.75rem;
-  line-height: 1rem;
+  font-size: var.$p5-size;
+  line-height: var.$lh-small;
+  @include var.touch-target;
   padding: 0;
   cursor: pointer;
-  opacity: 0.5;
+  opacity: 0.7;
 
-  &:hover {
-    opacity: 1;
+  transition: opacity 0.15s ease;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      opacity: 1;
+    }
   }
 }
 
@@ -268,18 +283,7 @@ body {
 
 @media screen and (max-width: var.$media-mobile-width) {
   .image-text {
-    background: unset;
-    background-size: unset;
-    background-attachment: unset;
-    background-clip: unset;
-    -webkit-background-clip: unset;
-    -webkit-text-fill-color: unset;
-    filter: unset;
-    transition: color var.$theme-transition !important;
-  }
-
-  h2 {
-    font-size: var.$h2-size - 10;
+    @include image-text-flat;
   }
 
   .row {

@@ -19,3 +19,46 @@
     }
   }
 }
+
+// Focus ring shared by every interactive element.
+@mixin focus-ring($offset: 3px) {
+  &:focus-visible {
+    outline: 2px solid var.$color-primary;
+    outline-offset: $offset;
+  }
+}
+
+// Glass needs a solid stand-in when the user turns transparency down or contrast up.
+@mixin solid-fallback {
+  @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+    @content;
+  }
+}
+
+// Text link inside running copy: primary colour with a quiet underline that
+// fills on hover.
+@mixin text-link {
+  color: var.$color-primary;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(
+    in srgb,
+    var(--color-primary) 45%,
+    transparent
+  );
+  transition: text-decoration-color 0.15s ease;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      text-decoration-color: currentColor;
+    }
+  }
+}
+
+// 44px minimum touch target for links that are otherwise text-height.
+@mixin touch-target {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+}

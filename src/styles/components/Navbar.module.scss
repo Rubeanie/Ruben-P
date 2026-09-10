@@ -1,14 +1,12 @@
 @use '../abstracts/index' as var;
 
-$ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
-
 .nav {
   position: fixed;
   z-index: 10;
   top: 0;
   width: 100%;
   padding: var.$nav-float-gap var.$nav-float-gap 0; // floats the pill off the edges
-  transition: padding 0.3s $ease-out-strong;
+  transition: padding 0.3s var.$ease-out;
 
   .container {
     display: flex;
@@ -27,7 +25,7 @@ $ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
       0 4px 12px rgba(0, 0, 0, 0.15);
     background-color: rgba(0, 0, 0, 0.35);
     transition:
-      border-radius 0.3s $ease-out-strong,
+      border-radius 0.3s var.$ease-out,
       border-color 0.3s ease,
       box-shadow 0.3s ease,
       background-color 0.3s ease,
@@ -47,7 +45,16 @@ $ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
         font-weight: bold;
         color: var.$color-primary;
         font-size: var.$p2-size;
-        margin-block: 0;
+        margin: 0;
+      }
+
+      // the filled button reads on the theme colour, not in it
+      &.cta p {
+        color: var.$color-on-primary;
+        font-size: var.$p3-size;
+        // body leading here would make the button taller than the logo and
+        // push the pill past $nav-bar-height
+        line-height: 1.2;
       }
 
       svg {
@@ -93,16 +100,22 @@ $ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
         white-space: nowrap;
         transition:
           opacity 0.15s ease,
-          transform 0.12s $ease-out-strong;
+          transform 0.12s var.$ease-out;
 
         @media (hover: hover) and (pointer: fine) {
           &:hover {
             opacity: 0.7;
           }
 
-          &:active {
-            transform: scale(0.96);
+          // the filled button doesn't take the plain-link hover dip
+          &.cta:hover {
+            opacity: 1;
           }
+        }
+
+        // Press is not hover: a tap has to answer on touch too.
+        &:active {
+          transform: scale(0.96);
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -121,7 +134,7 @@ $ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
       height: 0;
       overflow: hidden;
       // animating height on purpose; there's no transform equivalent
-      transition: height 0.3s $ease-out-strong;
+      transition: height 0.3s var.$ease-out;
 
       .menu {
         display: flex;
@@ -137,12 +150,22 @@ $ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
         opacity: 0;
         // drift in the same direction the panel grows
         transform: translateY(-4px);
+        @include var.touch-target;
         transition:
           opacity 0.2s ease,
-          transform 0.25s $ease-out-strong;
+          transform 0.25s var.$ease-out;
 
         p {
           font-size: var.$p2-size * 1.5;
+          // Display-sized text: tracking tightens and the line box comes in, so
+          // the gap sets the rhythm instead of body leading.
+          line-height: 1.2;
+          letter-spacing: var.$track-h2;
+        }
+
+        // the button keeps bar-sized text in the panel
+        &.cta p {
+          font-size: var.$p2-size;
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -153,16 +176,18 @@ $ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
 
       .cta {
         padding: 0.45em 1.3em;
-
-        p {
-          font-size: var.$p2-size !important;
-        }
       }
     }
 
     // matches the logo's inset; the icon has ~0.3rem of its own padding
     :global(.hamburger-react) {
       margin-inline-end: 0.6rem;
+
+      // hamburger-react sets outline:none inline, so the ring has to be a shadow
+      &:focus-visible {
+        box-shadow: 0 0 0 2px var.$color-primary;
+        border-radius: 50%;
+      }
     }
   }
 }
@@ -175,22 +200,11 @@ $ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
   border-radius: var.$button-radius;
   @include var.candy;
   transition:
-    transform 0.12s $ease-out-strong,
+    transform 0.12s var.$ease-out,
     filter 0.2s ease;
 
-  p {
-    color: var.$color-on-primary !important;
-    font-size: var.$p3-size !important;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    &:hover {
-      opacity: 1 !important; // don't inherit the plain-link hover dip
-    }
-
-    &:active {
-      transform: scale(0.97);
-    }
+  &:active {
+    transform: scale(0.97);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -236,7 +250,7 @@ html[data-nav-dropdown='true'] {
     // Snap to full glass on open so the page doesn't show through the panel.
     // Only the way in is instant: closing drops the attribute and eases out.
     transition:
-      border-radius 0.3s $ease-out-strong,
+      border-radius 0.3s var.$ease-out,
       border-color 0s,
       box-shadow 0s,
       background-color 0s,
@@ -251,6 +265,12 @@ html[data-nav-dropdown='true'] {
 
         // stagger only on the way in; exit fades together
         transition-delay: calc(var(--i) * 40ms);
+
+        // The open rule's transform: none outranks the plain press below.
+        &:active {
+          transform: scale(0.97);
+          transition-delay: 0s;
+        }
       }
     }
   }
@@ -277,7 +297,32 @@ html .nav[data-compact='true'] .container {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
-@media (prefers-reduced-transparency: reduce) {
+// Docking and the panel growing are position and size changes with no fade
+// equivalent, so they land instead of travelling. The glass still eases.
+@media (prefers-reduced-motion: reduce) {
+  .nav {
+    transition: none;
+  }
+
+  .nav .container {
+    transition:
+      border-color 0.3s ease,
+      box-shadow 0.3s ease,
+      background-color 0.3s ease,
+      backdrop-filter 0.3s ease;
+  }
+
+  .nav .container .dropdown {
+    transition: none;
+  }
+
+  // The open-menu rule above would still ease the radius on the way in.
+  :global(html[data-nav-dropdown='true']) .nav .container {
+    transition: none;
+  }
+}
+
+@include var.solid-fallback {
   .nav .container,
   :global(html[data-nav-scrolled='true']) .nav .container,
   :global(html[data-nav-dropdown='true']) .nav .container {
