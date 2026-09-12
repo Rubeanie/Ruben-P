@@ -157,6 +157,8 @@ body {
   z-index: 0;
   // Lining figures everywhere; the fonts' old-style sets stay off.
   font-variant-numeric: lining-nums;
+  // Figtree's ss02: barred I and tailed l, so the two stay distinct in running copy.
+  font-feature-settings: 'ss02';
 
   &::before {
     content: ' ';

@@ -51,6 +51,8 @@
       // the filled button reads on the theme colour, not in it
       &.cta p {
         color: var.$color-on-primary;
+        // Matches the module CTA; the bar's links stay bold.
+        font-weight: 600;
         font-size: var.$p3-size;
         // body leading here would make the button taller than the logo and
         // push the pill past $nav-bar-height

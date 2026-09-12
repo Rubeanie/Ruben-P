@@ -44,20 +44,17 @@ export const mont = localFont({
   ]
 });
 
-export const kollektif = localFont({
+// Figtree 2.002 from google/fonts; ss02's slashed zero is removed so the set is just the barred I and tailed l.
+export const figtree = localFont({
   src: [
+    { path: './figtree/figtree.woff2', weight: '300 900', style: 'normal' },
     {
-      path: './kollektif/kollektif-regular.woff2',
-      weight: '400',
-      style: 'normal'
-    },
-    {
-      path: './kollektif/kollektif-italic.woff2',
-      weight: '400',
+      path: './figtree/figtree-italic.woff2',
+      weight: '300 900',
       style: 'italic'
     }
   ],
-  variable: '--font-kollektif',
+  variable: '--font-figtree',
   display: 'swap',
   preload: true,
   adjustFontFallback: 'Arial'
