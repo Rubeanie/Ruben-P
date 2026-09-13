@@ -1,0 +1,118 @@
+@use '../abstracts/index' as var;
+
+// Hairline between stats: the same 15% of the text colour the plates use.
+$hairline: color-mix(in srgb, var(--color-text) 15%, transparent);
+
+.statList {
+  width: 100%;
+  // Modules space themselves; sibling margins collapse to one gap.
+  margin-block: var.$block-gap;
+  text-align: center;
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var.$space-5 var.$space-6;
+  max-width: var.$measure-wide;
+  margin-inline: auto;
+}
+
+.stat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 8rem;
+}
+
+// Up to four stats stay on one line and get dividers; more wrap and lose
+// them, a wrapped row would float a rule at its edge.
+.stats:not(:has(.stat:nth-child(5))) {
+  flex-wrap: nowrap;
+
+  .stat + .stat::before {
+    content: '';
+    position: absolute;
+    // Half the column gap, so the rule sits midway between two stats.
+    inset-inline-start: calc(#{var.$space-6} / -2);
+    inset-block: 0;
+    width: 1px;
+    background: #{$hairline};
+  }
+}
+
+.value {
+  display: inline-flex;
+  align-items: baseline;
+  margin: 0;
+  font-family: var.$h-font;
+  font-weight: 600;
+  font-size: var.$h2-size;
+  line-height: 1;
+  color: var.$color-primary;
+  font-variant-numeric: tabular-nums;
+}
+
+.subValue {
+  margin-inline-start: 0.12em;
+  font-family: var.$p-font;
+  font-weight: 600;
+  font-size: 0.45em;
+}
+
+.text {
+  max-width: 12rem;
+  margin-block: var.$space-2 0;
+  margin-inline: 0;
+  font-family: var.$p-font;
+  font-weight: 500;
+  font-size: var.$p4-size;
+  line-height: var.$lh-small;
+  letter-spacing: var.$track-small;
+  opacity: var.$muted;
+}
+
+// Phones always centre; alignment is a desktop-only preference.
+@media (min-width: var.$media-mobile-width) {
+  .statList[data-align='left'] {
+    text-align: start;
+
+    .stats {
+      justify-content: flex-start;
+    }
+
+    .stat {
+      align-items: flex-start;
+    }
+  }
+
+  .statList[data-align='right'] {
+    text-align: end;
+
+    .stats {
+      justify-content: flex-end;
+    }
+
+    .stat {
+      align-items: flex-end;
+    }
+  }
+}
+
+@media (max-width: var.$media-mobile-width) {
+  // Two per row on phones: flex packed them unevenly at this width.
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var.$space-5 var.$space-3;
+  }
+
+  // Stats centre on phones; the dividers would fall between wrapped rows.
+  // Same selector as the base rule: :has() raises its specificity above a
+  // bare override.
+  .stats:not(:has(.stat:nth-child(5))) .stat + .stat::before {
+    display: none;
+  }
+}

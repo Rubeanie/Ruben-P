@@ -1,0 +1,191 @@
+@use '../abstracts/index' as var;
+
+// 15% white, close to the plate's 14% top highlight.
+$hairline: color-mix(in srgb, #fff 15%, transparent);
+
+.accordionList {
+  width: 100%;
+  // Modules space themselves; sibling margins collapse to one gap.
+  margin-block: var.$block-gap;
+}
+
+.plate {
+  max-width: var.$measure;
+  margin-inline: auto;
+  // Rows carry their own padding so their hairlines run the full plate width.
+  border-radius: var.$common-border-radius;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(20px) saturate(140%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  color: var.$color-on-dark;
+
+  @include var.solid-fallback {
+    backdrop-filter: none;
+    background: rgba(10, 14, 26, 0.94);
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  interpolate-size: allow-keywords;
+  // Rows sit 0.5rem off each hairline and off the plate edge, the tint's inset.
+  padding-block: var.$space-2;
+
+  // Chrome 131+ animates the open height; elsewhere the panel snaps, which is fine.
+  &::details-content {
+    height: 0;
+    overflow: hidden;
+    transition:
+      height 0.25s var.$ease-out,
+      content-visibility 0.25s allow-discrete;
+  }
+
+  &[open]::details-content {
+    height: auto;
+  }
+
+  // Each column closes on its own, so the last row carries no hairline.
+  &:not(:last-child) {
+    border-block-end: 1px solid #{$hairline};
+  }
+}
+
+.summary {
+  min-height: 2.75rem;
+  // The press tint and focus ring sit 0.5rem off the text and 0.5rem inside the
+  // plate edge; the radius is concentric to that inset.
+  padding: var.$space-2;
+  margin-inline: var.$space-2;
+  border-radius: calc(var.$common-border-radius - var.$space-2);
+  cursor: pointer;
+  list-style: none;
+  transition: background-color 0.12s var.$ease-out;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  // Rows are text, so the press tints instead of scaling.
+  &:active {
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+}
+
+// The question is a heading for navigation only; it keeps the row's body type.
+.question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var.$space-3;
+  margin: 0;
+  font-family: var.$p-font;
+  font-weight: 600;
+  font-size: var.$body-size;
+  line-height: var.$lh-small;
+  letter-spacing: normal;
+  filter: none;
+  color: var.$color-on-dark;
+  text-align: start;
+}
+
+.chevron {
+  flex: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  opacity: var.$muted;
+  transition:
+    rotate 0.2s var.$ease-out,
+    opacity 0.15s ease;
+}
+
+.item[open] > .summary .chevron {
+  rotate: 180deg;
+  opacity: 1;
+  color: var.$color-primary;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .summary:hover .chevron {
+    opacity: 1;
+  }
+}
+
+.answer {
+  padding-block-end: var.$space-3;
+  padding-inline: var.$space-3;
+  opacity: var.$muted-strong;
+
+  p,
+  ul,
+  ol {
+    margin-block: 0;
+    font-size: var.$body-size;
+    line-height: var.$lh-body;
+    color: var.$color-text;
+    text-align: start;
+  }
+
+  ul,
+  ol {
+    padding-inline-start: 1.25em;
+  }
+
+  p + p,
+  p + ul,
+  p + ol,
+  ul + p,
+  ol + p {
+    margin-block-start: var.$space-3;
+  }
+
+  li::marker {
+    color: var.$color-primary;
+  }
+}
+
+.horizontal {
+  max-width: var.$measure-wide;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var.$space-5;
+  align-items: start;
+}
+
+@media (max-width: var.$media-mobile-width) {
+  .horizontal {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  // Stacked, the two columns read as one list, so the seam needs its hairline back.
+  .horizontal .column:not(:last-child) .item:last-child {
+    border-block-end: 1px solid #{$hairline};
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  // The rotation and the open height are travel; a short fade keeps the change legible.
+  .chevron {
+    transition: opacity 0.15s ease;
+  }
+
+  .item[open] > .summary .chevron {
+    rotate: none;
+  }
+
+  .item::details-content {
+    opacity: 0;
+    // content-visibility must stay paired with the fade, or closing hides
+    // the content before it can fade out.
+    transition:
+      opacity 0.15s ease,
+      content-visibility 0.15s allow-discrete;
+  }
+
+  .item[open]::details-content {
+    opacity: 1;
+  }
+}
