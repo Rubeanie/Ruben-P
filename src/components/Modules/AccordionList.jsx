@@ -1,23 +1,8 @@
 import RichText from '@/components/RichText';
 import uid from '@/lib/uid';
 import { stegaClean } from '@sanity/client/stega';
+import { LuChevronDown } from 'react-icons/lu';
 import styles from '@/styles/components/AccordionList.module.scss';
-
-function Chevron() {
-  return (
-    <svg
-      className={styles.chevron}
-      viewBox='0 0 24 24'
-      fill='none'
-      stroke='currentColor'
-      strokeWidth='1.5'
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      aria-hidden='true'>
-      <path d='m6 9 6 6 6-6' />
-    </svg>
-  );
-}
 
 export default function AccordionList({
   items,
@@ -64,7 +49,11 @@ export default function AccordionList({
                     {/* A heading per question lets screen readers jump through the list. */}
                     <h3 className={styles.question}>
                       <span>{item.summary}</span>
-                      <Chevron />
+                      <LuChevronDown
+                        className={styles.chevron}
+                        strokeWidth={1.5}
+                        aria-hidden='true'
+                      />
                     </h3>
                   </summary>
                   {item.content?.length > 0 && (

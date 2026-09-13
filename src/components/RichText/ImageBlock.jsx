@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { stegaClean } from '@sanity/client/stega';
+import { LuExternalLink } from 'react-icons/lu';
 import { isSafeHref } from '@/lib/processUrl';
 import { blockLayout } from './layout';
 import styles from '@/styles/components/RichText.module.scss';
@@ -68,19 +69,11 @@ export default function ImageBlock({ value, sanity }) {
             rel='noopener noreferrer'
             className={styles.source}>
             {caption || 'Source'}
-            <svg
+            <LuExternalLink
               className={styles.sourceIcon}
-              viewBox='0 0 24 24'
-              fill='none'
-              stroke='currentColor'
-              strokeWidth='1.75'
-              strokeLinecap='round'
-              strokeLinejoin='round'
-              aria-hidden='true'>
-              <path d='M14 4h6v6' />
-              <path d='M20 4 10 14' />
-              <path d='M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5' />
-            </svg>
+              strokeWidth={1.75}
+              aria-hidden='true'
+            />
             <span className={styles.srOnly}>, opens in a new tab</span>
           </a>
         </figcaption>
