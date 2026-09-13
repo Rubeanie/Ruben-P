@@ -168,9 +168,29 @@ $copy-inset: 0.375rem;
     opacity: 0.75;
   }
 
-  a {
-    display: block;
-    border-radius: var.$common-border-radius;
+  // The caption carries the source link so the picture itself is not a tab stop.
+  .source {
+    @include var.text-link;
+    color: inherit;
+    // One colour: the caption is a feature of the figure, not a call to action.
+    text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+    position: relative;
+
+    // 44px hit area without changing the caption's rhythm.
+    &::before {
+      content: '';
+      position: absolute;
+      inset: -0.75rem 0;
+    }
+  }
+
+  // inline-block keeps the underline off the glyph.
+  .sourceIcon {
+    display: inline-block;
+    inline-size: 0.8em;
+    block-size: 0.8em;
+    margin-inline-start: 0.3em;
+    vertical-align: -0.08em;
   }
 }
 
