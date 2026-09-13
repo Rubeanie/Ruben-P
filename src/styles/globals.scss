@@ -19,6 +19,11 @@ html,
 body {
   margin: 0;
   padding: 0;
+  // iOS Safari inflates text in blocks wider than the screen, so long code
+  // lines came out a size up from short ones. Prefixed only: with the unprefixed
+  // property beside it, Turbopack's Lightning CSS drops the -webkit- one, and
+  // Safari reads nothing else.
+  -webkit-text-size-adjust: 100%;
   text-align: center;
   touch-action: pan-y pinch-zoom;
   font-family: var.$p-font;

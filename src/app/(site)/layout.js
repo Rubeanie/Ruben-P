@@ -1,5 +1,5 @@
 import '@/styles/globals.scss';
-import { mont, figtree } from '@/styles/fonts';
+import { mont, figtree, jetbrainsMono } from '@/styles/fonts';
 import Signature from '@/components/Signature';
 import { Suspense } from 'react';
 import Navbar from '@/components/Navbar';
@@ -49,7 +49,9 @@ export default async function RootLayout({ children }) {
   const [themes, site] = await Promise.all([getThemes(), getSite()]);
   const logo = sanitizeSvg(stegaClean(site.logo));
   return (
-    <html lang='en' className={`${mont.variable} ${figtree.variable}`}>
+    <html
+      lang='en'
+      className={`${mont.variable} ${figtree.variable} ${jetbrainsMono.variable}`}>
       <head>
         <link
           rel='preload'

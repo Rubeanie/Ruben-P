@@ -59,3 +59,14 @@ export const figtree = localFont({
   preload: true,
   adjustFontFallback: 'Arial'
 });
+
+// JetBrains Mono 2.211 from google/fonts, upright only: the code theme sets
+// nothing in italic. Only code blocks use it, so no preload.
+export const jetbrainsMono = localFont({
+  src: './jetbrains-mono/jetbrains-mono.woff2',
+  weight: '100 800',
+  variable: '--font-mono',
+  display: 'swap',
+  preload: false,
+  adjustFontFallback: false
+});

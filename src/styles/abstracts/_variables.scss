@@ -50,6 +50,7 @@ $inverted-padding-safe: 0 calc(-1 * env(safe-area-inset-right)) 0
 /* Font Faces */
 $h-font: var(--font-mont), sans-serif;
 $p-font: var(--font-figtree), sans-serif;
+$mono-font: var(--font-mono), ui-monospace, monospace;
 
 /* Text Alignments */
 $h-alignment: center;

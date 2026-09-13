@@ -6,15 +6,18 @@ import styles from '@/styles/components/RichText.module.scss';
 // Shiki inlines its theme background on <pre>; the plate under it is ours.
 // It also separates lines with newline text nodes, which select as a visible
 // block at each line end; the lines are blocks instead, so selections and the
-// clipboard still break where the code does.
+// clipboard still break where the code does. The <code> is the scroller here,
+// so it takes the keyboard focus Shiki puts on the <pre>.
 const dropBackground = {
   pre(node) {
     node.properties.style = String(node.properties.style ?? '').replace(
       /background-color:[^;]*;?/g,
       ''
     );
+    delete node.properties.tabindex;
   },
   code(node) {
+    node.properties.tabindex = 0;
     node.children = node.children.filter(
       (child) => !(child.type === 'text' && !child.value.trim())
     );
