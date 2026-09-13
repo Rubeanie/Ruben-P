@@ -1,6 +1,5 @@
 import { getBlockText } from '@sanity/src/utils';
 import { MdQuestionMark } from 'react-icons/md';
-import { textBlock } from '../fragments/text-block';
 
 export const accordionList = {
   name: 'accordion-list',
@@ -8,11 +7,6 @@ export const accordionList = {
   icon: MdQuestionMark,
   groups: [{ name: 'content', default: true }, { name: 'options' }],
   fields: [
-    {
-      name: 'intro',
-      ...textBlock,
-      group: 'content'
-    },
     {
       name: 'items',
       type: 'array',
@@ -63,6 +57,13 @@ export const accordionList = {
       group: 'options'
     },
     {
+      name: 'multiple',
+      title: 'Allow several open',
+      type: 'boolean',
+      initialValue: false,
+      group: 'options'
+    },
+    {
       name: 'uid',
       title: 'Unique Identifier',
       type: 'uid',
@@ -71,11 +72,11 @@ export const accordionList = {
   ],
   preview: {
     select: {
-      intro: 'intro'
+      title: 'items.0.summary'
     },
-    prepare({ intro }) {
+    prepare({ title }) {
       return {
-        title: getBlockText(intro),
+        title,
         subtitle: 'Accordion List'
       };
     }

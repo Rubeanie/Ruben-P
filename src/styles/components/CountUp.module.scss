@@ -1,0 +1,20 @@
+@use '../abstracts/index' as var;
+
+// The final string sits under the counter so changing digits cannot resize the row.
+.count {
+  display: inline-grid;
+  // End-aligned so the unit keeps its gap while the digits are still narrow.
+  justify-items: end;
+}
+
+.count > * {
+  grid-area: 1 / 1;
+}
+
+.reserve {
+  visibility: hidden;
+}
+
+.srOnly {
+  @include var.sr-only;
+}

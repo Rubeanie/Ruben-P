@@ -1,15 +1,19 @@
 import React from 'react';
 import { createDataAttribute } from 'next-sanity';
 import { draftMode } from 'next/headers';
+import AccordionList from './AccordionList';
 import Breadcrumbs from './Breadcrumbs';
 import CustomHTML from './CustomHTML';
 import RichtextModule from './RichtextModule';
 import SocialList from './SocialList';
+import StatList from './StatList';
 import ThreeScene from './ThreeScene';
 import ErrorBoundary from '../ErrorBoundary';
 
 const ModuleRenderer = ({ module, page, dataAttribute }) => {
   switch (module._type) {
+    case 'accordion-list':
+      return <AccordionList {...module} dataAttribute={dataAttribute} />;
     case 'breadcrumbs':
       return <Breadcrumbs {...module} page={page} />;
     case 'custom-html':
@@ -24,6 +28,8 @@ const ModuleRenderer = ({ module, page, dataAttribute }) => {
       );
     case 'social-list':
       return <SocialList {...module} />;
+    case 'stat-list':
+      return <StatList {...module} dataAttribute={dataAttribute} />;
     case 'three.js':
       return <ThreeScene {...module} />;
     default:

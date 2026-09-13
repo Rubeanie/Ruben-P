@@ -70,6 +70,10 @@ $h2-size: clamp(1.75rem, 1.2rem + 1.6vw, 2.33rem);
 // phones at 40px instead of 37px.
 $h1-size: clamp(2.5rem, 0.54rem + 7.41vw, 9.56rem);
 
+/* Muted text: 0.7 is the contrast floor measured on every CMS theme (RBN-58) */
+$muted: 0.7;
+$muted-strong: 0.85;
+
 /* Leading */
 $lh-h1: 1;
 $lh-h2: 1.15;

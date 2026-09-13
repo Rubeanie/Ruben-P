@@ -1,7 +1,6 @@
 import { IoMdStats } from 'react-icons/io';
 import { textAlign } from '../fragments/fields/alignment';
-import { count, getBlockText } from '@sanity/src/utils';
-import { textBlock } from '../fragments/text-block';
+import { count } from '@sanity/src/utils';
 
 export const statList = {
   name: 'stat-list',
@@ -10,11 +9,6 @@ export const statList = {
   type: 'object',
   groups: [{ name: 'content', default: true }, { name: 'options' }],
   fields: [
-    {
-      name: 'intro',
-      ...textBlock,
-      group: 'content'
-    },
     {
       name: 'stats',
       type: 'array',
@@ -59,12 +53,11 @@ export const statList = {
   ],
   preview: {
     select: {
-      intro: 'intro',
       stats: 'stats'
     },
-    prepare({ intro, stats }) {
+    prepare({ stats }) {
       return {
-        title: getBlockText(intro) || count(stats, 'stat'),
+        title: count(stats, 'stat'),
         subtitle: 'Stat list'
       };
     }
