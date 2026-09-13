@@ -59,18 +59,34 @@ export default function ImageBlock({ value, sanity }) {
       className={styles.figure}
       {...layout}
       {...(sanity && { 'data-sanity': sanity })}>
+      {img}
       {linked ? (
-        <a
-          href={href}
-          target='_blank'
-          rel='noopener noreferrer'
-          aria-label={stegaClean(alt) || 'Open the image source'}>
-          {img}
-        </a>
+        <figcaption>
+          <a
+            href={href}
+            target='_blank'
+            rel='noopener noreferrer'
+            className={styles.source}>
+            {caption || 'Source'}
+            <svg
+              className={styles.sourceIcon}
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              strokeWidth='1.75'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              aria-hidden='true'>
+              <path d='M14 4h6v6' />
+              <path d='M20 4 10 14' />
+              <path d='M18 13v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5' />
+            </svg>
+            <span className={styles.srOnly}>, opens in a new tab</span>
+          </a>
+        </figcaption>
       ) : (
-        img
+        caption && <figcaption>{caption}</figcaption>
       )}
-      {caption && <figcaption>{caption}</figcaption>}
     </figure>
   );
 }
