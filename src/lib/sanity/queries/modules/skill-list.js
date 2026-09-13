@@ -1,9 +1,7 @@
 import { groq } from '../../fetch';
-import { contentQuery } from '../fragments/content';
 import { linkQuery } from '../fragments/link';
 
 export const skillListQuery = groq`
-  intro[]{ ${contentQuery} },
   skills[]->{
     _id,
     title,

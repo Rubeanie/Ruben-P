@@ -1,4 +1,3 @@
-import { textBlock } from '@sanity/schemas/fragments/text-block';
 import { creativeCtas } from './creativeCtas';
 import { creativeIcon } from './creativeIcon';
 import { creativeImage } from './creativeImage';
@@ -8,7 +7,7 @@ import {
   alignItems,
   alignmentFieldset
 } from '@sanity/schemas/fragments/fields/alignment';
-import { count, getBlockText } from '@sanity/src/utils';
+import { count } from '@sanity/src/utils';
 import { MdExtension } from 'react-icons/md';
 
 export const creativeModule = {
@@ -19,11 +18,6 @@ export const creativeModule = {
   groups: [{ name: 'content', default: true }, { name: 'options' }],
   fieldsets: [alignmentFieldset],
   fields: [
-    {
-      name: 'intro',
-      ...textBlock,
-      group: 'content'
-    },
     {
       name: 'modules',
       type: 'object',
@@ -90,13 +84,12 @@ export const creativeModule = {
   ],
   preview: {
     select: {
-      intro: 'intro',
       modules: 'modules'
     },
-    prepare({ intro, modules }) {
+    prepare({ modules }) {
       return {
-        title: getBlockText(intro),
-        subtitle: count(modules, 'module')
+        title: 'Creative module',
+        subtitle: count(modules?.subModules, 'block')
       };
     }
   }

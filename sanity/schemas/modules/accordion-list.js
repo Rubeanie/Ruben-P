@@ -72,12 +72,12 @@ export const accordionList = {
   ],
   preview: {
     select: {
-      title: 'items.0.summary'
+      subtitle: 'items.0.summary'
     },
-    prepare({ title }) {
+    prepare({ subtitle }) {
       return {
-        title,
-        subtitle: 'Accordion List'
+        title: 'Accordion list',
+        subtitle: subtitle ?? 'No items'
       };
     }
   }

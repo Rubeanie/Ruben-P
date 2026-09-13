@@ -4,7 +4,6 @@ import { imageBlockQuery } from '../fragments/image-block';
 import { ctaQuery } from './cta';
 
 export const creativeModuleQuery = groq`
-  intro[]{ ${contentQuery} },
   modules {
     colSpan,
     subModules[]{

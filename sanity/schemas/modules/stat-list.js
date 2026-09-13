@@ -57,8 +57,8 @@ export const statList = {
     },
     prepare({ stats }) {
       return {
-        title: count(stats, 'stat'),
-        subtitle: 'Stat list'
+        title: 'Stat list',
+        subtitle: count(stats, 'stat')
       };
     }
   }
