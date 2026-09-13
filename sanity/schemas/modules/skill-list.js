@@ -1,6 +1,5 @@
 import { IoMdHammer } from 'react-icons/io';
-import { textBlock } from '../fragments/text-block';
-import { getBlockText } from '@sanity/src/utils';
+import { count } from '@sanity/src/utils';
 
 export const skillList = {
   name: 'skill-list',
@@ -9,10 +8,6 @@ export const skillList = {
   type: 'object',
   fields: [
     {
-      name: 'intro',
-      ...textBlock
-    },
-    {
       name: 'skills',
       type: 'array',
       of: [{ type: 'reference', to: [{ type: 'skill' }] }]
@@ -20,12 +15,12 @@ export const skillList = {
   ],
   preview: {
     select: {
-      intro: 'intro'
+      skills: 'skills'
     },
-    prepare({ intro }) {
+    prepare({ skills }) {
       return {
-        title: getBlockText(intro),
-        subtitle: 'Skill list'
+        title: 'Skill list',
+        subtitle: count(skills, 'skill')
       };
     }
   }

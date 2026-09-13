@@ -1,6 +1,5 @@
 import { MdEdit } from 'react-icons/md';
-import { textBlock } from '../fragments/text-block';
-import { getBlockText } from '@sanity/src/utils';
+import { count } from '@sanity/src/utils';
 
 export const portfolioList = {
   name: 'portfolio-list',
@@ -13,11 +12,6 @@ export const portfolioList = {
     { name: 'options' }
   ],
   fields: [
-    {
-      name: 'intro',
-      ...textBlock,
-      group: 'content'
-    },
     {
       name: 'layout',
       type: 'string',
@@ -57,12 +51,12 @@ export const portfolioList = {
   ],
   preview: {
     select: {
-      intro: 'intro'
+      predefinedFilters: 'predefinedFilters'
     },
-    prepare({ intro }) {
+    prepare({ predefinedFilters }) {
       return {
-        title: getBlockText(intro),
-        subtitle: 'Blog list'
+        title: 'Portfolio list',
+        subtitle: count(predefinedFilters, 'category')
       };
     }
   }
