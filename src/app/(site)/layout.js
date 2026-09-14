@@ -78,7 +78,7 @@ export default async function RootLayout({ children }) {
             <Navbar menu={site.headerMenu} logo={logo} />
           </Suspense>
           <main>
-            <Suspense>{children}</Suspense>
+            {children}
           </main>
           <Footer menu={site.footerMenu} logo={logo} />
           <Analytics />
