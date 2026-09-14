@@ -1,7 +1,7 @@
 import { revalidateTag } from 'next/cache';
 import { isValidSignature, SIGNATURE_HEADER_NAME } from '@sanity/webhook';
 
-// Every user tag sanityFetch is called with. Any publish marks them all stale: the
+// Every tag a Sanity fetch is called with. Any publish marks them all stale: the
 // site is small and edits are rare, so per-type mapping isn't worth its bugs.
 const TAGS = [
   'site',
@@ -10,7 +10,8 @@ const TAGS = [
   'portfolios',
   'aboutPage',
   '404',
-  'redirect-page'
+  'redirect-page',
+  'redirects'
 ];
 
 // Sanity webhook target. Live updates only revalidate while a visitor has the
