@@ -35,7 +35,7 @@ $hairline: color-mix(in srgb, #fff 15%, transparent);
   // Rows sit 0.5rem off each hairline and off the plate edge, the tint's inset.
   padding-block: var.$space-2;
 
-  // Chrome 131+ animates the open height; elsewhere the panel snaps, which is fine.
+  // Chromium animates the open height natively; the fallback at the end covers the rest.
   &::details-content {
     height: 0;
     overflow: hidden;
@@ -187,5 +187,45 @@ $hairline: color-mix(in srgb, #fff 15%, transparent);
 
   .item[open]::details-content {
     opacity: 1;
+  }
+}
+
+// Safari and Firefox cannot interpolate height to auto, so the panel is a grid
+// row that grows from 0fr to 1fr instead. The content must stay laid out for
+// the row to have a size to grow to; visibility keeps the closed content out
+// of the tab order and the accessibility tree the way content-visibility did.
+// The answer's bottom padding would hold the collapsed row open, so the panel
+// carries it and animates it on the same curve.
+@supports not (interpolate-size: allow-keywords) {
+  .item::details-content {
+    content-visibility: visible;
+    visibility: hidden;
+    display: grid;
+    grid-template-rows: 0fr;
+    height: auto;
+    padding-block-end: 0;
+    transition:
+      grid-template-rows 0.25s var.$ease-out,
+      padding-block-end 0.25s var.$ease-out,
+      visibility 0.25s;
+  }
+
+  .item[open]::details-content {
+    grid-template-rows: 1fr;
+    visibility: visible;
+    padding-block-end: var.$space-3;
+  }
+
+  .answer {
+    min-height: 0;
+    padding-block-end: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .item::details-content {
+      transition:
+        opacity 0.15s ease,
+        visibility 0.15s;
+    }
   }
 }
