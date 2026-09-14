@@ -1,23 +1,18 @@
 import styles from '@/styles/components/Skill.module.scss';
 
 export default function Skill({
-  heading = 'heading',
+  heading,
   logo,
-  color = 'var(--color-primary)',
-  textColor = '#121212'
+  color = 'var(--color-primary)'
 }) {
   return (
-    <div className={styles.skill} style={{ background: color }}>
-      <div className='column'>
-        <div className={styles.svgWrapper} style={{ color: textColor }}>
+    <div className={styles.skill} style={{ '--brand': color }}>
+      {logo && (
+        <span className={styles.watermark} aria-hidden='true'>
           {logo}
-        </div>
-        <div className={styles.textWrapper}>
-          <p style={{ color: textColor }}>
-            <b>{heading}</b>
-          </p>
-        </div>
-      </div>
+        </span>
+      )}
+      <span className={styles.label}>{heading}</span>
     </div>
   );
 }

@@ -1,61 +1,106 @@
 @use '../abstracts/index' as var;
 
-/* Skill Buttons */
-$margin: 7px;
-$min-width: 115px;
-$max-width: 385px;
-$max-width-mobile: 140px;
-$svg-wrapper-height: 100px;
-$text-wrapper-height: 40px;
-$svg-size: 70px;
+$height: 4.5rem;
+$mark-size: 5.5rem;
+// Fixed tile width, five across the wide measure; phones fit two per row instead.
+$column: 11.25rem;
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  // Flex rather than grid so a short last row centres under the full ones.
+  justify-content: center;
+  gap: var.$space-3;
+  max-width: var.$measure-wide;
+  margin-inline: auto;
+  // Modules space themselves; sibling margins collapse to one gap.
+  margin-block: var.$block-gap;
+}
+
+.card {
+  flex: 0 0 $column;
+  max-width: 100%;
+  border-radius: var.$common-border-radius;
+  @include var.focus-ring(4px);
+}
 
 .skill {
   position: relative;
   display: flex;
   align-items: center;
-  margin: $margin;
-  width: fit-content;
-  min-width: $min-width;
-  height: fit-content;
-  max-width: $max-width;
-  border-radius: var.$common-border-radius;
+  // A floor, not a fixed height, so a long name or enlarged text grows the row instead of clipping.
+  min-height: $height;
+  padding-block: var.$space-2;
+  padding-inline: var.$space-3;
   overflow: hidden;
-  box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.3);
+  border-radius: var.$common-border-radius;
+  background: color-mix(in srgb, var(--brand) 14%, #0a0e1a);
+  // hairline ring, brighter along the top edge
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  color: var.$color-on-dark;
+  transition:
+    transform 0.12s var.$ease-out,
+    background-color var.$theme-transition;
+}
 
-  .svgWrapper,
-  .textWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+.watermark {
+  position: absolute;
+  right: -1rem;
+  bottom: -1.5rem;
+  font-size: $mark-size;
+  // lifted toward white so near-black brands still surface
+  color: color-mix(in srgb, var(--brand) 70%, #fff);
+  opacity: 0.2;
+  transition: opacity 0.25s var.$ease-out;
+  pointer-events: none;
 
-  .svgWrapper {
-    width: 100%;
-    height: $svg-wrapper-height;
-    vertical-align: middle;
-
-    svg {
-      width: $svg-size;
-      height: $svg-size;
-    }
-  }
-
-  .textWrapper {
-    background: rgba(0, 0, 0, 0.212);
-    width: 100%;
-    height: auto;
-    min-height: $text-wrapper-height;
-
-    p {
-      font-size: var.$p3-size;
-      overflow: visible;
-      margin: $margin;
-    }
+  // Uploaded marks are sized in em; the span's font-size is the mark's size.
+  svg {
+    display: block;
+    width: 1em;
+    height: 1em;
   }
 }
 
-@media screen and (max-width: var.$media-mobile-width) {
-  .skill {
-    max-width: $max-width-mobile;
+// Sits above the mark and stops short of the corner; long names wrap to two lines.
+.label {
+  position: relative;
+  min-width: 0;
+  padding-inline-end: var.$space-4;
+  font-family: var.$p-font;
+  font-weight: 600;
+  font-size: var.$p4-size;
+  line-height: var.$lh-small;
+  overflow-wrap: anywhere;
+  // anchors against the bottom-right watermark
+  text-align: left;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a.card:hover .skill {
+    background: color-mix(in srgb, var(--brand) 22%, #0a0e1a);
+  }
+
+  a.card:hover .watermark {
+    opacity: 0.25;
+  }
+}
+
+// Tiles clear 44px, so the press can dip the whole plate; unlinked tiles stay still.
+a.card:active .skill {
+  transform: scale(0.98);
+}
+
+@media (max-width: var.$media-mobile-width) {
+  .card {
+    flex-basis: calc(50% - var.$space-3 / 2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.card:active .skill {
+    transform: none;
   }
 }
