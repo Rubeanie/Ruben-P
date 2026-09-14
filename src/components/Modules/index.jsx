@@ -5,6 +5,7 @@ import AccordionList from './AccordionList';
 import Breadcrumbs from './Breadcrumbs';
 import CustomHTML from './CustomHTML';
 import RichtextModule from './RichtextModule';
+import SkillList from './SkillList';
 import SocialList from './SocialList';
 import StatList from './StatList';
 import ThreeScene from './ThreeScene';
@@ -26,6 +27,8 @@ const ModuleRenderer = ({ module, page, dataAttribute }) => {
           dataAttribute={dataAttribute}
         />
       );
+    case 'skill-list':
+      return <SkillList {...module} />;
     case 'social-list':
       return <SocialList {...module} />;
     case 'stat-list':
