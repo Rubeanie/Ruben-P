@@ -112,3 +112,38 @@
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+// Sizing and alignment shared by the media blocks (image, video, 3D scene) so
+// their columns line up. Bleeding to the page edge on phones is the image's
+// own rule, not part of this.
+@mixin figure-block {
+  margin-block: var.$block-gap;
+  // Browsers give figure a 40px inline margin of its own.
+  margin-inline: 0;
+
+  // Sizes are fractions of the measure; phones always get the full column.
+  &[data-size='medium'] {
+    width: 75%;
+    margin-inline: auto;
+  }
+
+  &[data-size='small'] {
+    width: 50%;
+    margin-inline: auto;
+  }
+
+  &[data-align='start'] {
+    margin-inline: 0 auto;
+  }
+
+  &[data-align='end'] {
+    margin-inline: auto 0;
+  }
+
+  @media (max-width: var.$media-mobile-width) {
+    &,
+    &[data-size] {
+      width: auto;
+    }
+  }
+}

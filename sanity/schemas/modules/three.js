@@ -1,4 +1,5 @@
 import { IoMdCube } from 'react-icons/io';
+import { blockLayoutFields } from '../fragments/fields/block-layout';
 
 export const threeJs = {
   name: 'three.js',
@@ -58,25 +59,40 @@ export const threeJs = {
       group: 'content'
     },
     {
+      name: 'caption',
+      type: 'text',
+      rows: 2,
+      group: 'content'
+    },
+    {
+      name: 'source',
+      type: 'url',
+      description: 'Credit link shown in the caption',
+      group: 'content'
+    },
+    {
       name: 'background',
       type: 'color',
       description: 'Background color',
       group: 'options'
     },
     {
-      name: 'height',
+      name: 'aspectRatio',
+      title: 'Aspect ratio',
       type: 'string',
-      description: 'Canvas height, e.g. 70vh or 500px',
-      initialValue: '70vh',
+      options: {
+        list: [
+          { title: 'Wide (16:9)', value: '16:9' },
+          { title: 'Standard (4:3)', value: '4:3' },
+          { title: 'Square (1:1)', value: '1:1' },
+          { title: 'Cinema (21:9)', value: '21:9' }
+        ],
+        layout: 'radio'
+      },
+      initialValue: '16:9',
       group: 'options'
     },
-    {
-      name: 'width',
-      type: 'string',
-      description: 'Canvas width, e.g. 100% or 800px',
-      initialValue: '100%',
-      group: 'options'
-    },
+    ...blockLayoutFields({ group: 'options' }),
     {
       name: 'environmentSource',
       title: 'Environment (reflections)',

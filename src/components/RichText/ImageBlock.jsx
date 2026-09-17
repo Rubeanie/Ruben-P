@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import { stegaClean } from '@sanity/client/stega';
-import { LuExternalLink } from 'react-icons/lu';
-import { isSafeHref } from '@/lib/processUrl';
+import FigureCaption from './FigureCaption';
 import { blockLayout } from './layout';
 import styles from '@/styles/components/RichText.module.scss';
 
@@ -38,48 +37,24 @@ export default function ImageBlock({ value, sanity }) {
   const { src, width, height, blurDataURL } = resolved;
   const { caption, alt, source, loading, placeholder, size, align } = value;
   const blur = stegaClean(placeholder) === 'blur' && blurDataURL;
-  const href = stegaClean(source);
-  const linked = href && isSafeHref(href) && /^(https?:|\/)/.test(href);
   const layout = blockLayout(stegaClean(size), stegaClean(align));
-
-  const img = (
-    <Image
-      src={src}
-      width={width || FALLBACK_WIDTH}
-      height={height || FALLBACK_HEIGHT}
-      alt={stegaClean(alt) || ''}
-      sizes='(max-width: 43.75rem) 100vw, 65rem'
-      loading={stegaClean(loading) || 'lazy'}
-      placeholder={blur ? 'blur' : 'empty'}
-      blurDataURL={blur ? blurDataURL : undefined}
-    />
-  );
 
   return (
     <figure
       className={styles.figure}
       {...layout}
       {...(sanity && { 'data-sanity': sanity })}>
-      {img}
-      {linked ? (
-        <figcaption>
-          <a
-            href={href}
-            target='_blank'
-            rel='noopener noreferrer'
-            className={styles.source}>
-            {caption || 'Source'}
-            <LuExternalLink
-              className={styles.sourceIcon}
-              strokeWidth={1.75}
-              aria-hidden='true'
-            />
-            <span className={styles.srOnly}>, opens in a new tab</span>
-          </a>
-        </figcaption>
-      ) : (
-        caption && <figcaption>{caption}</figcaption>
-      )}
+      <Image
+        src={src}
+        width={width || FALLBACK_WIDTH}
+        height={height || FALLBACK_HEIGHT}
+        alt={stegaClean(alt) || ''}
+        sizes='(max-width: 43.75rem) 100vw, 65rem'
+        loading={stegaClean(loading) || 'lazy'}
+        placeholder={blur ? 'blur' : 'empty'}
+        blurDataURL={blur ? blurDataURL : undefined}
+      />
+      <FigureCaption caption={caption} source={source} />
     </figure>
   );
 }

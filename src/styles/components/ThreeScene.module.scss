@@ -1,12 +1,51 @@
-.canvas {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  container-type: size;
+@use '../abstracts/index' as var;
+
+// The module is not inside a rich text column, so it carries the figure measure
+// itself; the sized variants are fractions of this, not of the page.
+.column {
+  max-width: var.$measure-wide;
+  margin-inline: auto;
 }
 
-.canvasLoading {
+.figure {
+  @include var.figure-block;
+}
+
+.frame {
+  position: relative;
+  aspect-ratio: var(--aspect, 16 / 9);
+  overflow: hidden;
+  border-radius: var.$common-border-radius;
+  // Neutral plate: the scene has no dominant colour of its own to borrow.
+  background: var.$plate-neutral;
+  box-shadow: var.$hairline;
+}
+
+// Holds the loader over the plate until the scene is ready. It is the size
+// container the logo measures itself against (70cqw / 70cqh).
+.loading {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  container-type: size;
+  pointer-events: none;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s var.$ease-out;
+
+  &[data-loaded] {
+    opacity: 1;
+  }
+}
+
+.gl {
+  width: 100%;
+  height: 100%;
 }

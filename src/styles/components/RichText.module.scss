@@ -122,28 +122,7 @@ $copy-inset: 0.375rem;
 
 .figure,
 .video {
-  margin-block: var.$block-gap;
-  // Browsers give figure a 40px inline margin of its own.
-  margin-inline: 0;
-
-  // Sizes are fractions of the measure; phones always get the full column.
-  &[data-size='medium'] {
-    width: 75%;
-    margin-inline: auto;
-  }
-
-  &[data-size='small'] {
-    width: 50%;
-    margin-inline: auto;
-  }
-
-  &[data-align='start'] {
-    margin-inline: 0 auto;
-  }
-
-  &[data-align='end'] {
-    margin-inline: auto 0;
-  }
+  @include var.figure-block;
 }
 
 /* Image block */
@@ -154,43 +133,7 @@ $copy-inset: 0.375rem;
     width: 100%;
     height: auto;
     border-radius: var.$common-border-radius;
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
-  }
-
-  // The caption belongs to the image, so it centres under it whatever the image's alignment.
-  figcaption {
-    margin: 0.75rem auto 0;
-    max-width: 48ch;
-    text-align: center;
-    font-size: var.$p5-size;
-    line-height: var.$lh-small;
-    letter-spacing: var.$track-small;
-    opacity: 0.75;
-  }
-
-  // The caption carries the source link so the picture itself is not a tab stop.
-  .source {
-    @include var.text-link;
-    color: inherit;
-    // One colour: the caption is a feature of the figure, not a call to action.
-    text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
-    position: relative;
-
-    // 44px hit area without changing the caption's rhythm.
-    &::before {
-      content: '';
-      position: absolute;
-      inset: -0.75rem 0;
-    }
-  }
-
-  // inline-block keeps the underline off the glyph.
-  .sourceIcon {
-    display: inline-block;
-    inline-size: 0.8em;
-    block-size: 0.8em;
-    margin-inline-start: 0.3em;
-    vertical-align: -0.08em;
+    box-shadow: var.$hairline;
   }
 }
 
@@ -202,7 +145,7 @@ $copy-inset: 0.375rem;
   overflow: hidden;
   border-radius: var.$common-border-radius;
   background: #000;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  box-shadow: var.$hairline;
 
   img,
   iframe {
@@ -230,20 +173,15 @@ $copy-inset: 0.375rem;
 // Phones: figures run edge to edge; video and code carry chrome, so they keep
 // the page padding and their corners.
 @media (max-width: var.$media-mobile-width) {
+  // The figure sizes itself in the shared mixin; this only takes it past the gutter.
   .figure,
   .figure[data-size] {
-    width: auto;
     margin-inline: calc(-1 * var.$inline-pad);
     border-radius: 0;
   }
 
   .figure img {
     border-radius: 0;
-  }
-
-  // Sized video keeps its corners but still takes the full column.
-  .video[data-size] {
-    width: auto;
   }
 
   .figure figcaption {
@@ -290,7 +228,7 @@ $copy-inset: 0.375rem;
   backdrop-filter: blur(16px) saturate(1.3);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    var.$hairline;
   // The disc itself never transforms: its 1px hairlines would re-rasterise and
   // snap when a scale settles, and a filter over backdrop-filter pops. Hover
   // lightens the plate and moves only the glyph.

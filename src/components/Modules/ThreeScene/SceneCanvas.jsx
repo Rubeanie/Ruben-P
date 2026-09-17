@@ -1,29 +1,27 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Loading } from '@/components/dom/Loading';
 import styles from '@/styles/components/ThreeScene.module.scss';
 
 // Single dynamic boundary for the whole 3D scene, so R3F/three stay out of the
 // page bundle. Scene statically composes Canvas + Model + Environment so they
-// suspend into Canvas's own Suspense — the loader stays up through the real asset
-// load, not just the JS-chunk load.
+// suspend into Canvas's own Suspense: ready means the real assets are in, not
+// just the JS chunk. The frame's plate and the loader stand in until then.
 const Scene = dynamic(() => import('@/components/canvas/Scene'), {
-  ssr: false,
-  loading: () => (
-    <div className={`${styles.canvas} ${styles.canvasLoading}`}>
-      <Loading />
-    </div>
-  )
+  ssr: false
 });
 
-// Defer the scene — chunk, GLB, HDRI/PMREM, GPU uploads — until it nears the
+// Defer the scene (chunk, GLB, HDRI/PMREM, GPU uploads) until it nears the
 // viewport, so off-screen scenes don't all load at once and jank scrolling. The
-// section reserves the box, so mounting late causes no layout shift.
+// frame reserves the box, so mounting late causes no layout shift.
 export default function SceneCanvas(props) {
   const ref = useRef(null);
   const [active, setActive] = useState(false);
+  const [ready, setReady] = useState(false);
+  // Stable: Canvas's ready sentinel runs an effect keyed on this callback.
+  const handleReady = useCallback(() => setReady(true), []);
 
   useEffect(() => {
     if (active) return undefined;
@@ -44,8 +42,18 @@ export default function SceneCanvas(props) {
   }, [active]);
 
   return (
-    <div ref={ref} className={styles.canvas}>
-      {active && <Scene {...props} />}
-    </div>
+    <>
+      <div
+        ref={ref}
+        className={styles.canvas}
+        data-loaded={ready ? '' : undefined}>
+        {active && <Scene {...props} onReady={handleReady} />}
+      </div>
+      {!ready && (
+        <div className={styles.loading}>
+          <Loading />
+        </div>
+      )}
+    </>
   );
 }
