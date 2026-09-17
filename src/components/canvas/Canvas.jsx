@@ -22,13 +22,17 @@ export default function Canvas({
   className,
   style,
   loader = true,
+  onReady,
   ...props
 }) {
   const containerRef = useRef(null);
   const [onScreen, setOnScreen] = useState(true);
   const [dpr, setDpr] = useState(0.9);
   const [loaded, setLoaded] = useState(false);
-  const handleReady = useCallback(() => setLoaded(true), []);
+  const handleReady = useCallback(() => {
+    setLoaded(true);
+    onReady?.();
+  }, [onReady]);
 
   useEffect(() => {
     const el = containerRef.current;

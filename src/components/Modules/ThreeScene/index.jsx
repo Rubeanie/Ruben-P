@@ -1,18 +1,33 @@
 import { stegaClean } from '@sanity/client/stega';
+import FigureCaption from '@/components/RichText/FigureCaption';
+import { blockLayout } from '@/components/RichText/layout';
 import uid from '@/lib/uid';
 import SceneCanvas from './SceneCanvas';
+import styles from '@/styles/components/ThreeScene.module.scss';
+
+// Fixed lookup rather than parsing the string: the schema offers these four and
+// an unknown value should not reach CSS.
+const ASPECTS = {
+  '16:9': '16 / 9',
+  '4:3': '4 / 3',
+  '1:1': '1 / 1',
+  '21:9': '21 / 9'
+};
 
 // Server component: the query resolves the chosen model source to a single URL,
 // which this passes to the client island. Only the WebGL canvas is client-side
-// (SceneCanvas) — that's the most SSR you can get, since WebGL can't run on the
+// (SceneCanvas): that is the most SSR you can get, since WebGL cannot run on the
 // server.
 export default function ThreeScene(props) {
   const {
     model,
     lights,
     background,
-    height,
-    width,
+    aspectRatio,
+    size,
+    align,
+    caption,
+    source,
     environmentSource,
     environmentPreset,
     environment,
@@ -22,25 +37,32 @@ export default function ThreeScene(props) {
     zoom
   } = props;
 
-  const cleanHeight = stegaClean(height);
-  const cleanWidth = stegaClean(width);
+  const layout = blockLayout(stegaClean(size), stegaClean(align));
+  const aspect = ASPECTS[stegaClean(aspectRatio)] || ASPECTS['16:9'];
 
   return (
-    <section
-      id={uid(props)}
-      style={{ height: cleanHeight || '70vh', width: cleanWidth || '100%' }}>
-      <SceneCanvas
-        model={stegaClean(model)}
-        background={stegaClean(background?.hex)}
-        lights={stegaClean(lights?.hex)}
-        environmentSource={stegaClean(environmentSource)}
-        environmentPreset={stegaClean(environmentPreset)}
-        environment={stegaClean(environment)}
-        environmentBackground={environmentBackground}
-        keyLight={keyLight}
-        orbitControls={orbitControls}
-        zoom={zoom}
-      />
-    </section>
+    <div className={styles.column}>
+      <figure
+        id={uid(props)}
+        className={styles.figure}
+        {...layout}
+        style={{ '--aspect': aspect }}>
+        <div className={styles.frame}>
+          <SceneCanvas
+            model={stegaClean(model)}
+            background={stegaClean(background?.hex)}
+            lights={stegaClean(lights?.hex)}
+            environmentSource={stegaClean(environmentSource)}
+            environmentPreset={stegaClean(environmentPreset)}
+            environment={stegaClean(environment)}
+            environmentBackground={environmentBackground}
+            keyLight={keyLight}
+            orbitControls={orbitControls}
+            zoom={zoom}
+          />
+        </div>
+        <FigureCaption caption={caption} source={source} />
+      </figure>
+    </div>
   );
 }
