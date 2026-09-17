@@ -50,7 +50,13 @@ export async function processMetadata(page) {
   const combinedKeywords = [...siteKeywords, ...safeKeywords];
   const tags = additionalMetaTags ? getMetaObjects(additionalMetaTags) : {};
   const openGraphData = page?.metadata.seo?.openGraph || site.seo?.openGraph;
-  const openGraph = openGraphData ? getOpenGraph(openGraphData) : undefined;
+  // Posts rarely get a dedicated share image; the cover stands in, ahead of the site default.
+  const withCover =
+    page?.cover?.asset?.url &&
+    !page?.metadata?.seo?.openGraph?.image?.asset?.url
+      ? { ...openGraphData, image: page.cover }
+      : openGraphData;
+  const openGraph = withCover ? getOpenGraph(withCover) : undefined;
 
   return {
     metadataBase: new URL(baseUrl),

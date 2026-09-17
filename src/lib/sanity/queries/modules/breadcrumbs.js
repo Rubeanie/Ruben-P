@@ -7,7 +7,7 @@ export const breadcrumbsQuery = groq`
 `;
 
 export const breadcrumbAncestorsQuery = groq`
-  *[_type in ["page", "page.portfolio"] && metadata.slug.current in $slugs]{
+  *[_type in ["page", "page.post"] && metadata.slug.current in $slugs]{
     title,
     "slug": metadata.slug.current
   }

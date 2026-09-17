@@ -2,9 +2,9 @@ import { MdEdit } from 'react-icons/md';
 import { pageBlock } from '../fragments/page-block';
 import { metadata } from '../fragments/metadata';
 
-export const pagePortfolio = {
-  name: 'page.portfolio',
-  title: 'Portfolio Post',
+export const pagePost = {
+  name: 'page.post',
+  title: 'Post',
   icon: MdEdit,
   type: 'document',
   groups: [
@@ -20,6 +20,21 @@ export const pagePortfolio = {
       validation: (Rule) => Rule.required()
     },
     {
+      name: 'cover',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Shown on tiles and at the top of the post',
+      validation: (Rule) => Rule.required(),
+      group: 'content'
+    },
+    {
+      name: 'summary',
+      type: 'string',
+      description: 'One sentence, shown on tiles and under the title',
+      validation: (Rule) => Rule.required().max(160),
+      group: 'content'
+    },
+    {
       name: 'modules',
       ...pageBlock,
       group: 'content'
@@ -30,7 +45,7 @@ export const pagePortfolio = {
       of: [
         {
           type: 'reference',
-          to: [{ type: 'portfolio.category' }]
+          to: [{ type: 'post.category' }]
         }
       ],
       group: 'options'
@@ -77,7 +92,7 @@ export const pagePortfolio = {
       featured: 'featured',
       title: 'title',
       date: 'publishDate',
-      media: 'metadata.seo.openGraph.image'
+      media: 'cover'
     },
     prepare({ featured, title, date, media }) {
       return {

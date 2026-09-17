@@ -29,7 +29,7 @@ async function autoAncestors(path) {
 
   const docs = await fetchSanity(breadcrumbAncestorsQuery, {
     params: { slugs: paths.map((href) => href.slice(1)) },
-    tags: ['pages', 'portfolios']
+    tags: ['pages', 'posts']
   });
 
   // A layer with no page behind it has no name to show, so it is skipped rather than invented.

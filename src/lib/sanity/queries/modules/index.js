@@ -8,7 +8,8 @@ import { calloutQuery } from './callout';
 import { statListQuery } from './stat-list';
 import { skillListQuery } from './skill-list';
 import { socialListQuery } from './social-list';
-import { portfolioListQuery } from './portfolio-list';
+import { postListQuery } from './post-list';
+import { postFeaturedQuery } from './post-featured';
 import { threeSceneQuery } from './three-scene';
 import { creativeModuleQuery } from './creative-module';
 import { breadcrumbsQuery } from './breadcrumbs';
@@ -26,7 +27,8 @@ export const modulesQuery = groq`
   _type == 'stat-list' => { ${statListQuery} },
   _type == 'skill-list' => { ${skillListQuery} },
   _type == 'social-list' => { ${socialListQuery} },
-  _type == 'portfolio-list' => { ${portfolioListQuery} },
+  _type == 'post-list' => { ${postListQuery} },
+  _type == 'post-featured' => { ${postFeaturedQuery} },
   _type == 'three.js' => { ${threeSceneQuery} },
   _type == 'creative-module' => { ${creativeModuleQuery} },
   _type == 'breadcrumbs' => { ${breadcrumbsQuery} },

@@ -2,8 +2,10 @@ import client from '@/lib/sanity/client';
 import { fetchSanity, groq } from '@/lib/sanity/fetch';
 import { metadataQuery } from '@/lib/sanity/queries/metadata';
 import { modulesQuery } from '@/lib/sanity/queries/modules';
+import { postCardQuery } from '@/lib/sanity/queries/posts';
 import { notFound, permanentRedirect, redirect } from 'next/navigation';
 import { Modules } from '@/components/Modules';
+import PostHeader from '@/components/PostHeader';
 import { processMetadata } from '@/lib/processMetadata';
 import { getRedirect } from '@/lib/redirects';
 import Redirecting from '@/components/Redirecting';
@@ -22,6 +24,7 @@ export default async function Page({ params }) {
   }
   return (
     <div className={page.navPadding ? 'nav-pad' : undefined}>
+      {page._type === 'page.post' && <PostHeader post={page} />}
       <Modules modules={page?.modules} page={page} />
     </div>
   );
@@ -37,7 +40,7 @@ export async function generateMetadata({ params }) {
 export async function generateStaticParams() {
   const slugs = await client.fetch(
     groq`*[
-      _type == 'page' &&
+      _type in ['page', 'page.post'] &&
       defined(metadata.slug.current) &&
       !(metadata.slug.current in ['index', '404'])
     ].metadata.slug.current`
@@ -49,12 +52,12 @@ export async function generateStaticParams() {
 async function getPage(params) {
   return await fetchSanity(
     groq`*[
-      _type == 'page' &&
+      _type in ['page', 'page.post'] &&
       metadata.slug.current == $slug &&
       !(metadata.slug.current in ['index', '404'])
     ][0]{
-      _id,
-      title,
+      _type,
+      ${postCardQuery},
       // initialValue only applies to new docs, so older pages default here
       "navPadding": coalesce(navPadding, true),
       modules[]{ ${modulesQuery} },
@@ -62,7 +65,7 @@ async function getPage(params) {
     }`,
     {
       params: { slug: params.slug.join('/') },
-      tags: ['pages']
+      tags: ['pages', 'posts']
     }
   );
 }

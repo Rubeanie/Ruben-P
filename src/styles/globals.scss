@@ -8,6 +8,8 @@
 
 /* CSS Variables */
 :root {
+  // Script animations read the standard curve here instead of repeating the bezier.
+  --ease-out: #{var.$ease-out};
   --color-primary: #ed5f68;
   --color-secondary: #33456d;
   --color-background: #0f182d;

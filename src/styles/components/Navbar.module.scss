@@ -1,5 +1,21 @@
 @use '../abstracts/index' as var;
 
+// Published for anything that must clear the pill: the bento's morph clip and its search blur read it.
+@property --nav-clearance {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
+:global(html) {
+  --nav-clearance: calc(#{var.$nav-float-gap} + #{var.$nav-bar-height});
+}
+
+// Docked, the pill sits flush to the top.
+:global(html):has(.nav[data-compact='true']) {
+  --nav-clearance: #{var.$nav-bar-height};
+}
+
 .nav {
   position: fixed;
   z-index: 10;
