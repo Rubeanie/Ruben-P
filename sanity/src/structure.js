@@ -12,10 +12,8 @@ const structure = (S, context) =>
       singleton(S, 'site', 'Site Settings').icon(MdSettingsSuggest),
       S.divider(),
       S.documentTypeListItem('page').title('Pages').icon(MdAutoAwesomeMotion),
-      S.documentTypeListItem('page.portfolio').title('Portfolio posts'),
-      S.documentTypeListItem('portfolio.category').title(
-        'Portfolio categories'
-      ),
+      S.documentTypeListItem('page.post').title('Posts'),
+      S.documentTypeListItem('post.category').title('Post categories'),
       S.divider(),
       S.documentTypeListItem('announcement').title('Announcements'),
       S.documentTypeListItem('navigation').title('Navigation'),

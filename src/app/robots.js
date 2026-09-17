@@ -1,3 +1,5 @@
+import { baseUrl } from '@/lib/env';
+
 export default function robots() {
   return {
     rules: {
@@ -5,6 +7,6 @@ export default function robots() {
       allow: '/',
       disallow: '/404'
     },
-    sitemap: 'https://www.ruben-p.com/sitemap.xml'
+    sitemap: `${baseUrl}/sitemap.xml`
   };
 }

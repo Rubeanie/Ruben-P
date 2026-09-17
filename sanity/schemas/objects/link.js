@@ -30,7 +30,7 @@ export const link = {
           type: 'page'
         },
         {
-          type: 'page.portfolio'
+          type: 'page.post'
         }
       ],
       hidden: ({ parent }) => parent?.type !== 'internal'
@@ -69,7 +69,7 @@ export const link = {
       return {
         title: label || title,
         subtitle: [
-          _type === 'page.portfolio' ? '/portfolio' : null,
+          _type === 'page.post' ? '/portfolio' : null,
           external || (slug && (slug === 'index' ? '/' : `/${slug}`)),
           params
         ]

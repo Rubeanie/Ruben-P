@@ -1,82 +1,24 @@
-export default function sitemap() {
+import { fetchSanity, groq } from '@/lib/sanity/fetch';
+import { baseUrl } from '@/lib/env';
+
+// The home and contact routes, then every indexable CMS page and post. The
+// same tags as the pages themselves, so a publish refreshes the sitemap too.
+export default async function sitemap() {
+  const pages = await fetchSanity(
+    groq`*[
+      _type in ['page', 'page.post'] &&
+      defined(metadata.slug.current) &&
+      !(metadata.slug.current in ['index', '404']) &&
+      metadata.seo.nofollowAttributes != true
+    ]{ 'slug': metadata.slug.current, _updatedAt }`,
+    { tags: ['pages', 'posts'] }
+  );
   return [
-    {
-      url: 'https://www.ruben-p.com',
-      lastModified: new Date('2023-09-11T04:44:56.901Z'),
-      changeFrequency: 'daily',
-      priority: 1
-    },
-    {
-      url: 'https://www.ruben-p.com/about',
-      lastModified: new Date('2023-09-11T04:44:56.901Z'),
-      changeFrequency: 'daily',
-      priority: 0.95
-    },
-    {
-      url: 'https://www.ruben-p.com/contact',
-      lastModified: new Date('2023-09-11T04:44:56.901Z'),
-      changeFrequency: 'daily',
-      priority: 0.95
-    },
-    {
-      url: 'https://www.ruben-p.com/portfolio',
-      lastModified: new Date('2023-09-11T04:44:56.901Z'),
-      changeFrequency: 'daily',
-      priority: 0.95
-    },
-    {
-      url: 'https://www.ruben-p.com/socials',
-      lastModified: new Date('2023-09-11T04:44:56.901Z'),
-      changeFrequency: 'daily',
-      priority: 0.95
-    },
-    {
-      url: 'https://www.ruben-p.com/socials/github',
-      lastModified: new Date('2023-09-11T04:44:56.901Z'),
-      changeFrequency: 'daily',
-      priority: 0.9
-    },
-    {
-      url: 'https://www.ruben-p.com/socials/instagram',
-      lastModified: new Date('2023-09-11T04:44:56.901Z'),
-      changeFrequency: 'daily',
-      priority: 0.9
-    },
-    {
-      url: 'https://www.ruben-p.com/socials/linkedin',
-      lastModified: new Date('2023-09-11T04:44:56.901Z'),
-      changeFrequency: 'daily',
-      priority: 0.9
-    },
-    {
-      url: 'https://www.ruben-p.com/socials/spotify',
-      lastModified: new Date('2023-09-11T04:44:56.901Z'),
-      changeFrequency: 'daily',
-      priority: 0.9
-    },
-    {
-      url: 'https://www.ruben-p.com/socials/steam',
-      lastModified: new Date('2023-09-11T04:44:56.901Z'),
-      changeFrequency: 'daily',
-      priority: 0.9
-    },
-    {
-      url: 'https://www.ruben-p.com/socials/twitch',
-      lastModified: new Date('2023-09-11T04:44:56.901Z'),
-      changeFrequency: 'daily',
-      priority: 0.9
-    },
-    {
-      url: 'https://www.ruben-p.com/socials/twitter',
-      lastModified: new Date('2023-09-11T04:44:56.901Z'),
-      changeFrequency: 'daily',
-      priority: 0.9
-    },
-    {
-      url: 'https://www.ruben-p.com/socials/youtube',
-      lastModified: new Date('2023-09-11T04:44:56.901Z'),
-      changeFrequency: 'daily',
-      priority: 0.9
-    }
+    { url: baseUrl },
+    { url: `${baseUrl}/contact` },
+    ...pages.map(({ slug, _updatedAt }) => ({
+      url: `${baseUrl}/${slug}`,
+      lastModified: _updatedAt
+    }))
   ];
 }

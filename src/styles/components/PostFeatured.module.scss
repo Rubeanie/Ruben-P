@@ -1,0 +1,46 @@
+@use '../abstracts/index' as var;
+
+.section {
+  max-width: var.$measure-wide;
+  margin-inline: auto;
+  // Modules space themselves; sibling margins collapse to one gap.
+  margin-block: var.$block-gap;
+}
+
+// The globals' h2 is the page display size; a row heading is a section heading.
+.heading {
+  margin-block: 0 var.$space-4;
+  font-size: var.$h3-size;
+  text-align: start;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var.$tile-gap;
+}
+
+// Phones: a scroll-snap strip bleeding to the viewport edge, the first tile on the gutter.
+@media (max-width: var.$media-mobile-width) {
+  .heading {
+    text-align: center;
+  }
+
+  .row {
+    display: flex;
+    overflow-x: auto;
+    @include var.hidden-touch-scrollbar;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var.$inline-pad;
+    margin-inline: calc(-1 * var.$inline-pad);
+    padding-inline: var.$inline-pad;
+    // The scroller clips vertically; this gives the focus ring room without moving the layout.
+    padding-block: var.$space-1;
+    margin-block: calc(-1 * var.$space-1);
+  }
+
+  .row > * {
+    flex: 0 0 82%;
+    scroll-snap-align: start;
+  }
+}

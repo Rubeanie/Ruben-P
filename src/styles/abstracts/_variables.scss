@@ -8,12 +8,22 @@ $image-background: var(--image-background);
 $image-background-url: 'https://res.cloudinary.com/ruben-p/image/upload/f_avif,q_30,c_limit,w_800/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq.webp';
 $color-on-primary: #121212;
 $color-on-dark: #fff;
+// Dark plate under chips and capsules that sit over photos.
+$color-plate-dark: #0a0e1a;
+// The plate a cover or a scene sits on before it paints.
+$plate-neutral: color-mix(in srgb, var(--color-primary) 10%, $color-plate-dark);
+// Hairline ring on plates and media frames, brighter than the glass edge but never a border.
+$hairline: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+// The featured mark, a gold that reads on both a light and a dark photo.
+$color-star: #f6c85f;
 
 /* Common Drop Shadow */
 $common-drop-shadow: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.85));
 
 /* Common Border Radius */
 $common-border-radius: 1rem;
+// Capsules: a full pill at any height.
+$radius-pill: 999px;
 
 /* Navbar: floating pill geometry; pages clear the pill plus its float gap */
 $nav-radius: 1.375rem;
@@ -36,11 +46,15 @@ $content-max-width: $viewport-max-width;
 
 /* Mobile Display Width */
 $media-mobile-width: 43.75rem;
+// Minimum pointer target (WCAG 2.5.8 plus the platform norm).
+$touch-target: 2.75rem;
 
 /* Transitions */
 $theme-transition: 0.15s ease-out;
 // The built-in ease-out is too weak for deliberate motion.
 $ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+// Movement already on screen (nothing entering) starts and ends gently; the strong ease-in-out peaks at four times the average speed and reads as a rush mid-way.
+$ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
 
 /* Safe Padding */
 $padding-safe: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
@@ -103,3 +117,6 @@ $measure-wide: 61.25rem;
 // Space above and below a figure, video or code block: 32px on phones up to 44px on desktop.
 $block-gap: clamp(2rem, 1.25rem + 1.5vw, 2.75rem);
 $inline-pad: clamp(1rem, 4vw, 2rem);
+
+/* Tiles: Apple Newsroom grid gap, 24px on phones to 36px at 1440 */
+$tile-gap: clamp(1.5rem, 2.5vw, 2.25rem);
