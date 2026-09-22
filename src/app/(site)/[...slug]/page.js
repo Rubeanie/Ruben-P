@@ -5,7 +5,6 @@ import { modulesQuery } from '@/lib/sanity/queries/modules';
 import { postCardQuery } from '@/lib/sanity/queries/posts';
 import { notFound, permanentRedirect, redirect } from 'next/navigation';
 import { Modules } from '@/components/Modules';
-import PostHeader from '@/components/PostHeader';
 import { processMetadata } from '@/lib/processMetadata';
 import { getRedirect } from '@/lib/redirects';
 import Redirecting from '@/components/Redirecting';
@@ -24,7 +23,6 @@ export default async function Page({ params }) {
   }
   return (
     <div className={page.navPadding ? 'nav-pad' : undefined}>
-      {page._type === 'page.post' && <PostHeader post={page} />}
       <Modules modules={page?.modules} page={page} />
     </div>
   );
