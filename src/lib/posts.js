@@ -9,10 +9,20 @@ export function categorySlug(title) {
     .replace(/^-|-$/g, '');
 }
 
-// Title order for categories with no editor order: the chips when the module lists none, and the dots on tiles outside the bento.
+// Title order, the tail order for categories the site list leaves out.
 export function byCategory(a, b) {
   const title = (c) => stegaClean(c?.title) ?? '';
   return title(a).localeCompare(title(b), 'en');
+}
+
+// The site's category order first, anything unlisted after it by title.
+export function orderCategories(categories, order) {
+  const rank = new Map(order.map((c, i) => [c?._id, i]));
+  return [...categories].sort(
+    (a, b) =>
+      (rank.get(a?._id) ?? Infinity) - (rank.get(b?._id) ?? Infinity) ||
+      byCategory(a, b)
+  );
 }
 
 // The index is pure date order, so the rows that want featured posts first lift them here; the sort is stable, so each group keeps its dates.

@@ -66,8 +66,6 @@ export default function Bento({ posts, filters }) {
     ...c,
     slug: categorySlug(stegaClean(c.title))
   }));
-  // Chip positions, so every tile's dots read in the filter row's order.
-  const rank = new Map(categories.map((c, i) => [c._id, i]));
   const categoryFor = (p) =>
     categories.find((c) => c.slug === p.get('category'))?._id;
   const category = categoryFor(params) ?? null;
@@ -246,7 +244,6 @@ export default function Bento({ posts, filters }) {
             // The post's own band in every shape, so neither a phone fold nor a desktop reshape flips it.
             band={bands[i]}
             mobileShape={mobile[i]}
-            rank={rank}
             active={category}
             morphing={morphing}
           />

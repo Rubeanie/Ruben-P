@@ -7,7 +7,7 @@ import { stegaClean } from '@sanity/client/stega';
 import { LuStar } from 'react-icons/lu';
 import { imageBuilder } from '@/lib/sanity/image';
 import { shapeSize } from '@/lib/bento';
-import { byCategory, easeOut, formatDate, reducedMotion } from '@/lib/posts';
+import { easeOut, formatDate, reducedMotion } from '@/lib/posts';
 import styles from '@/styles/components/PostList.module.scss';
 
 const ZOOM = 1.04;
@@ -24,15 +24,11 @@ function hasFinePointer() {
 }
 
 // One dot per category in the tile's free corner; the filtered one moves to the right end with a FLIP.
-function Dots({ categories, rank, active }) {
-  // The chip order first so every tile reads the same sequence as the filter row, then the filtered one moves to the end.
-  const ordered = [...categories]
-    .sort(
-      (a, b) =>
-        (rank?.get(a._id) ?? Infinity) - (rank?.get(b._id) ?? Infinity) ||
-        byCategory(a, b)
-    )
-    .sort((a, b) => (a._id === active) - (b._id === active));
+function Dots({ categories, active }) {
+  // Categories arrive in the site order; only the filtered one moves to the end.
+  const ordered = [...categories].sort(
+    (a, b) => (a._id === active) - (b._id === active)
+  );
   const ref = useRef(null);
   const rects = useRef(new Map());
   useLayoutEffect(() => {
@@ -87,7 +83,6 @@ export default function Tile({
   shape = '1x1',
   band = 'bottom',
   mobileShape,
-  rank,
   active,
   wide = false,
   morphing = false
@@ -256,7 +251,7 @@ export default function Tile({
         </span>
       )}
       {categories.length > 0 && (
-        <Dots categories={categories} rank={rank} active={active} />
+        <Dots categories={categories} active={active} />
       )}
     </Link>
   );
