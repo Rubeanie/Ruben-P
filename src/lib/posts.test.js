@@ -5,6 +5,7 @@ import {
   featuredFirst,
   formatDate,
   inkFor,
+  orderCategories,
   relatedPosts
 } from './posts';
 
@@ -139,6 +140,28 @@ test('byCategory sorts by title', () => {
     'Audio',
     'Electrical',
     'Web'
+  ]);
+});
+
+test('orderCategories follows the site order, then title for the rest', () => {
+  const order = [{ _id: 'web' }, { _id: 'audio' }];
+  const cats = [
+    { _id: 'zed', title: 'Zed' },
+    { _id: 'audio', title: 'Audio' },
+    { _id: 'alpha', title: 'Alpha' },
+    { _id: 'web', title: 'Web' }
+  ];
+  expect(orderCategories(cats, order).map((c) => c._id)).toEqual([
+    'web',
+    'audio',
+    'alpha',
+    'zed'
+  ]);
+  expect(orderCategories(cats, []).map((c) => c._id)).toEqual([
+    'alpha',
+    'audio',
+    'web',
+    'zed'
   ]);
 });
 

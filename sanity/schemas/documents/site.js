@@ -30,6 +30,16 @@ export const site = {
       of: [{ name: 'theme', type: 'reference', to: [{ type: 'theme' }] }]
     },
     {
+      name: 'postCategories',
+      title: 'Post categories',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'post.category' }] }],
+      validation: (Rule) => Rule.unique(),
+      group: 'general',
+      description:
+        'The order of the filter chips and the dots on every post tile. A category left out is never a chip.'
+    },
+    {
       name: 'announcements',
       type: 'array',
       of: [{ type: 'reference', to: [{ type: 'announcement' }] }],

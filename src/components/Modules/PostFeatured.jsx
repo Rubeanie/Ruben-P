@@ -6,7 +6,7 @@ import styles from '@/styles/components/PostFeatured.module.scss';
 
 // Featured posts first, newest after; under a post it becomes the related row instead.
 export default async function PostFeatured({ limit, page }) {
-  const posts = await getPostIndex();
+  const { posts } = await getPostIndex();
   const onPost = page?._type === 'page.post';
   const shown = onPost
     ? relatedPosts(posts, page, limit)
