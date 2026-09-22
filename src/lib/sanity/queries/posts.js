@@ -2,7 +2,9 @@ import { groq, fetchSanity } from '../fetch';
 import { categoryQuery } from './fragments/category';
 import { orderCategories } from '@/lib/posts';
 
-// Everything a tile needs; the post page projects the same fields.
+// Everything a tile needs; the post page projects the same fields. A filter after a
+// dereferenced projection nulls every element (verified against the API, 23 Sep), so
+// missing references are dropped with array::compact instead.
 export const postCardQuery = groq`
   _id,
   title,
@@ -10,7 +12,7 @@ export const postCardQuery = groq`
   publishDate,
   featured,
   "slug": metadata.slug.current,
-  categories[]->{ ${categoryQuery} }[defined(_id)],
+  "categories": array::compact(categories[]->{ ${categoryQuery} }),
   cover {
     asset->{
       _id,
@@ -30,7 +32,7 @@ export const postIndexQuery = groq`{
     | order(publishDate desc) {
     ${postCardQuery}
   },
-  'categories': *[_type == 'site'][0].postCategories[]->{ ${categoryQuery} }[defined(_id)]
+  'categories': array::compact(*[_type == 'site'][0].postCategories[]->{ ${categoryQuery} })
 }`;
 
 // Each post's categories come back in the site order, so tiles never sort them again.
