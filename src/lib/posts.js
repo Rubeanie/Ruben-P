@@ -102,3 +102,18 @@ export function easeOut(el) {
     'cubic-bezier(0, 0, 0.58, 1)'
   );
 }
+
+// The letters on an avatar without a photo: the first of each of the first two words.
+export function initials(name) {
+  return String(name ?? '')
+    .trim()
+    .split(/\s+/, 2)
+    .map((word) => word[0] ?? '')
+    .join('')
+    .toUpperCase();
+}
+
+// Whether two ISO timestamps fall on the same calendar day.
+export function sameDay(a, b) {
+  return String(a).slice(0, 10) === String(b).slice(0, 10);
+}

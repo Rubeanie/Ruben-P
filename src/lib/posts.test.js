@@ -4,9 +4,11 @@ import {
   categorySlug,
   featuredFirst,
   formatDate,
+  initials,
   inkFor,
   orderCategories,
-  relatedPosts
+  relatedPosts,
+  sameDay
 } from './posts';
 
 test('featuredFirst lifts featured posts and keeps date order in each group', () => {
@@ -169,4 +171,17 @@ test('byCategory compares titles without their stega markers', () => {
   const marked = (title) => ({ title: `${title}​⁠stega` });
   expect(byCategory(marked('Audio'), marked('Web'))).toBeLessThan(0);
   expect(byCategory(marked('Web'), marked('Audio'))).toBeGreaterThan(0);
+});
+
+test('initials takes the first letter of the first two words', () => {
+  expect(initials('Ruben Panzich')).toBe('RP');
+  expect(initials('  jane   doe smith ')).toBe('JD');
+  expect(initials('Cher')).toBe('C');
+  expect(initials('')).toBe('');
+  expect(initials(undefined)).toBe('');
+});
+
+test('sameDay compares calendar days, not times', () => {
+  expect(sameDay('2026-09-22', '2026-09-22T23:59:00Z')).toBe(true);
+  expect(sameDay('2026-09-22', '2026-09-23T00:00:00Z')).toBe(false);
 });

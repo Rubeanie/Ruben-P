@@ -19,6 +19,7 @@ const structure = (S, context) =>
       S.documentTypeListItem('redirect').title('Redirects'),
       S.divider(),
       group(S, 'Miscellaneous', [
+        S.documentTypeListItem('author').title('Authors'),
         S.documentTypeListItem('post.category').title('Post categories'),
         S.documentTypeListItem('skill').title('Skills'),
         S.documentTypeListItem('social').title('Socials'),

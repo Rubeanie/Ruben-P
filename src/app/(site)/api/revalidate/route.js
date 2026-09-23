@@ -8,6 +8,7 @@ const TAGS = [
   'theme',
   'pages',
   'posts',
+  'authors',
   '404',
   'redirect-page',
   'redirects'
