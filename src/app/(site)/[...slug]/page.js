@@ -2,10 +2,13 @@ import client from '@/lib/sanity/client';
 import { fetchSanity, groq } from '@/lib/sanity/fetch';
 import { metadataQuery } from '@/lib/sanity/queries/metadata';
 import { modulesQuery } from '@/lib/sanity/queries/modules';
+import { authorQuery } from '@/lib/sanity/queries/fragments/author';
 import { postCardQuery } from '@/lib/sanity/queries/posts';
 import { notFound, permanentRedirect, redirect } from 'next/navigation';
 import { Modules } from '@/components/Modules';
 import { processMetadata } from '@/lib/processMetadata';
+import processUrl, { resolveLink } from '@/lib/processUrl';
+import { stegaClean } from '@sanity/client/stega';
 import { getRedirect } from '@/lib/redirects';
 import Redirecting from '@/components/Redirecting';
 
@@ -24,6 +27,7 @@ export default async function Page({ params }) {
   return (
     <div className={page.navPadding ? 'nav-pad' : undefined}>
       <Modules modules={page?.modules} page={page} />
+      {page._type === 'page.post' && <ArticleJsonLd page={page} />}
     </div>
   );
 }
@@ -55,7 +59,13 @@ async function getPage(params) {
       !(metadata.slug.current in ['index', '404'])
     ][0]{
       _type,
+      _updatedAt,
       ${postCardQuery},
+      // Posts that name no authors credit the site's default one; compact drops a missing default.
+      "authors": array::compact(select(
+        count(authors) > 0 => authors[]->{ ${authorQuery} },
+        [*[_type == 'site'][0].author->{ ${authorQuery} }]
+      )),
       // initialValue only applies to new docs, so older pages default here
       "navPadding": coalesce(navPadding, true),
       modules[]{ ${modulesQuery} },
@@ -63,7 +73,41 @@ async function getPage(params) {
     }`,
     {
       params: { slug: params.slug.join('/') },
-      tags: ['pages', 'posts']
+      tags: ['pages', 'posts', 'authors']
     }
+  );
+}
+
+// Search engines read the byline from here; the page itself has no fixed header.
+function ArticleJsonLd({ page }) {
+  const authors = page.authors ?? [];
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: stegaClean(page.title),
+    description: stegaClean(page.summary),
+    datePublished: stegaClean(page.publishDate),
+    dateModified: page._updatedAt,
+    ...(page.cover?.asset?.url && { image: page.cover.asset.url }),
+    ...(authors.length && {
+      author: authors.map((author) => {
+        const url = resolveLink(author.link);
+        return {
+          '@type': 'Person',
+          name: stegaClean(author.name),
+          ...(url?.startsWith('http') && { url })
+        };
+      })
+    }),
+    mainEntityOfPage: processUrl(page)
+  };
+  return (
+    <script
+      type='application/ld+json'
+      // Escape `<` so content containing `</script>` can't break out of the tag.
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c')
+      }}
+    />
   );
 }

@@ -1,0 +1,274 @@
+@use '../abstracts/index' as var;
+
+// A byline disc sits a step under the navbar's 2.5rem logo disc.
+$avatar-size: 2rem;
+// How far each later disc sits over the one before.
+$overlap: 0.5rem;
+// Initials small enough to sit in the uncovered part of a stacked disc.
+$initials-size: 0.6875rem;
+// Cut-out breathing room around the disc that overlaps this one.
+$crescent-gap: 2px;
+// Discs rest a step down and the pointed-at one comes back to full.
+$avatar-rest: 0.75;
+// The eyebrow label sits a step under the caption size so the names lead.
+$label-size: 0.75rem;
+// The hairline token is an inset shadow; a border spans the column exactly.
+$rule: 1px solid var.$hairline-color;
+// Six discs is the widest stack that still fits beside the names on a phone.
+$author-count: 6;
+// A text-height link grown to the touch target and pulled back so the byline keeps its rhythm.
+$name-reach: calc((var.$touch-target - var.$p5-size * var.$lh-small) / 2);
+// Where a neighbour's centre lands: the next disc to the right, the previous to the left.
+$cut-right: calc(#{$avatar-size} * 1.5 - #{$overlap});
+$cut-left: calc(#{$overlap} - #{$avatar-size} / 2);
+
+// Grid rather than flex so the categories can drop under the text column on phones.
+.details {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var.$space-3;
+  max-width: var.$measure;
+  margin-inline: auto;
+  // Modules space themselves; sibling margins collapse to one gap.
+  margin-block: var.$block-gap;
+  padding-block-start: var.$space-3;
+  border-block-start: $rule;
+  text-align: start;
+}
+
+.withAuthors {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+.discs {
+  display: flex;
+}
+
+.who {
+  display: flex;
+  flex-direction: column;
+  gap: var.$space-1;
+  font-size: var.$p5-size;
+  line-height: var.$lh-small;
+  color: var.$color-text;
+}
+
+.role {
+  font-size: $label-size;
+  font-weight: 600;
+  letter-spacing: var.$track-small;
+  text-transform: uppercase;
+  opacity: var.$muted;
+}
+
+.nameLine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var.$space-2;
+}
+
+.nameItem {
+  display: inline-flex;
+  align-items: center;
+  gap: var.$space-2;
+}
+
+// Names rest a step down like the discs and wake with them.
+.name {
+  color: var.$color-text;
+  opacity: var.$muted-strong;
+  transition: opacity 0.15s var.$ease-out;
+}
+
+.nameLink {
+  @include var.text-link;
+  @include var.touch-target;
+  color: var.$color-text;
+  margin-block: calc(-1 * #{$name-reach});
+  transition:
+    opacity 0.15s var.$ease-out,
+    text-decoration-color 0.15s ease;
+}
+
+.when {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var.$space-2;
+  opacity: var.$muted-strong;
+}
+
+.sep {
+  opacity: var.$muted;
+}
+
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var.$space-2;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  @include var.category-capsule;
+}
+
+// One hole in the mask, centred $cx from the disc's left edge, the mask image being
+// three discs wide with the disc box starting one disc in.
+@function cut($cx) {
+  $r: calc(#{$avatar-size} / 2 + #{$crescent-gap});
+  @return radial-gradient(
+    circle at calc(#{$avatar-size} + #{$cx}) 50%,
+    transparent $r,
+    #000 calc(#{$r} + 1px)
+  );
+}
+
+// Each layer punches its own hole, intersect keeps the rest.
+@mixin cuts($layers...) {
+  mask-image: $layers;
+  mask-size: calc(#{$avatar-size} * 3) calc(#{$avatar-size} * 3);
+  mask-repeat: no-repeat;
+  mask-position: calc(-1 * #{$avatar-size}) calc(-1 * #{$avatar-size});
+  // The focus ring sits outside the box and must survive the mask.
+  mask-clip: no-clip;
+  mask-composite: intersect;
+}
+
+.avatar {
+  position: relative;
+  flex: none;
+  display: block;
+  border-radius: 50%;
+  opacity: $avatar-rest;
+  transition: opacity 0.15s var.$ease-out;
+  @include var.focus-ring(2px);
+
+  & + & {
+    margin-inline-start: -$overlap;
+  }
+
+  // The disc under an overlap loses a crescent around its neighbour, so the two read as
+  // separate discs without an outline.
+  &:not(:last-child) {
+    @include cuts(cut($cut-right));
+  }
+
+  // The disc stays small; the tap area grows around it.
+  &:is(a)::before {
+    content: '';
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    inline-size: var.$touch-target;
+    block-size: var.$touch-target;
+    translate: -50% -50%;
+  }
+}
+
+.disc {
+  display: grid;
+  place-items: center;
+  inline-size: $avatar-size;
+  block-size: $avatar-size;
+  border-radius: 50%;
+  overflow: hidden;
+  background: color-mix(in srgb, var.$color-primary 25%, transparent);
+  color: var.$color-text;
+  font-family: var.$p-font;
+  font-size: $initials-size;
+  font-weight: 600;
+}
+
+.photo {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+// The marked disc comes to the front whole; the disc now underneath it on the right
+// takes a cut on its left, keeping its own right cut if it has a neighbour after it.
+@mixin marked($i, $state) {
+  .details:has([data-author='#{$i}']:#{$state}) {
+    .discs [data-author='#{$i}'] {
+      opacity: 1;
+      z-index: 1;
+      mask-image: none;
+    }
+
+    // A focused disc is never recut, or a hover beside it would clip its ring.
+    @if $i < $author-count {
+      .discs [data-author='#{$i + 1}']:not(:focus-visible) {
+        &:not(:last-child) {
+          @include cuts(cut($cut-left), cut($cut-right));
+        }
+
+        &:last-child {
+          @include cuts(cut($cut-left));
+        }
+      }
+    }
+
+    .nameLine [data-author='#{$i}'] {
+      opacity: 1;
+    }
+  }
+}
+
+@for $i from 1 through $author-count {
+  @include marked($i, 'focus-visible');
+  @include marked($i, 'active');
+}
+
+@media (hover: hover) and (pointer: fine) {
+  @for $i from 1 through $author-count {
+    @include marked($i, 'hover');
+  }
+}
+
+// Pointer-down shows the state at once instead of easing into it.
+.details:has(:active) {
+  .avatar,
+  .name {
+    transition-duration: 0s;
+  }
+}
+
+// Phones: the byline keeps its left edge; categories line up under the names.
+@media (max-width: var.$media-mobile-width) {
+  .details {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .withAuthors {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .categories {
+    grid-column: -2;
+    justify-content: flex-start;
+    margin-block-start: var.$space-2;
+  }
+
+  // One author or date per line; the dots have nothing to separate.
+  .nameLine,
+  .when {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  // Stacked names each own their full touch target; the inline pull-back would overlap them.
+  .nameLink {
+    margin-block: 0;
+  }
+
+  .sep {
+    display: none;
+  }
+}

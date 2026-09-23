@@ -4,6 +4,7 @@ import { draftMode } from 'next/headers';
 import AccordionList from './AccordionList';
 import Breadcrumbs from './Breadcrumbs';
 import CustomHTML from './CustomHTML';
+import PostDetails from './PostDetails';
 import PostFeatured from './PostFeatured';
 import PostList from './PostList';
 import RichtextModule from './RichtextModule';
@@ -21,6 +22,8 @@ const ModuleRenderer = ({ module, page, dataAttribute }) => {
       return <Breadcrumbs {...module} page={page} />;
     case 'custom-html':
       return <CustomHTML {...module} />;
+    case 'post-details':
+      return <PostDetails {...module} page={page} />;
     case 'post-featured':
       return <PostFeatured {...module} page={page} />;
     case 'post-list':

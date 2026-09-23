@@ -1,5 +1,6 @@
 // documents
 import { announcement } from './documents/announcement';
+import { author } from './documents/author';
 import { navigation } from './documents/navigation';
 import { page } from './documents/page';
 import { pagePost } from './documents/page.post';
@@ -19,6 +20,7 @@ import { customHtml } from './modules/custom-html';
 import { hero } from './modules/hero';
 import { heroSaas } from './modules/hero.saas';
 import { heroSplit } from './modules/hero.split';
+import { postDetails } from './modules/post-details';
 import { postList } from './modules/post-list';
 import { postFeatured } from './modules/post-featured';
 import { richtextModule } from './modules/richtext-module';
@@ -37,6 +39,7 @@ import { uid } from './objects/uid';
 export const schemaTypes = [
   // documents
   announcement,
+  author,
   navigation,
   page,
   pagePost,
@@ -56,6 +59,7 @@ export const schemaTypes = [
   hero,
   heroSaas,
   heroSplit,
+  postDetails,
   postList,
   postFeatured,
   richtextModule,

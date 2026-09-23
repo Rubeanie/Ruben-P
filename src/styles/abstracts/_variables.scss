@@ -13,7 +13,8 @@ $color-plate-dark: #0a0e1a;
 // The plate a cover or a scene sits on before it paints.
 $plate-neutral: color-mix(in srgb, var(--color-primary) 10%, $color-plate-dark);
 // Hairline ring on plates and media frames, brighter than the glass edge but never a border.
-$hairline: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+$hairline-color: rgba(255, 255, 255, 0.08);
+$hairline: inset 0 0 0 1px $hairline-color;
 // The featured mark, a gold that reads on both a light and a dark photo.
 $color-star: #f6c85f;
 

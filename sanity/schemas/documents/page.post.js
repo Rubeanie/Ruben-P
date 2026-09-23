@@ -2,6 +2,9 @@ import { MdEdit } from 'react-icons/md';
 import { pageBlock } from '../fragments/page-block';
 import { metadata } from '../fragments/metadata';
 
+// Module types that carry a heading of their own.
+const HEADED = new Set(['hero', 'hero.saas', 'hero.split', 'richtext-module']);
+
 export const pagePost = {
   name: 'page.post',
   title: 'Post',
@@ -37,7 +40,23 @@ export const pagePost = {
     {
       name: 'modules',
       ...pageBlock,
+      // Post details read post fields, so plain pages never offer the module.
+      of: [...pageBlock.of, { type: 'post-details' }],
+      validation: (Rule) =>
+        Rule.custom((modules) =>
+          (modules ?? []).some((module) => HEADED.has(module._type))
+            ? true
+            : 'A post needs one heading: add a hero or a rich text block with a heading'
+        ).warning(),
       group: 'content'
+    },
+    {
+      name: 'authors',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'author' }] }],
+      validation: (Rule) => Rule.unique(),
+      group: 'options',
+      description: "Leave empty to credit the site's default author"
     },
     {
       name: 'categories',

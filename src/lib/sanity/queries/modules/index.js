@@ -9,6 +9,7 @@ import { statListQuery } from './stat-list';
 import { skillListQuery } from './skill-list';
 import { socialListQuery } from './social-list';
 import { postListQuery } from './post-list';
+import { postDetailsQuery } from './post-details';
 import { postFeaturedQuery } from './post-featured';
 import { threeSceneQuery } from './three-scene';
 import { creativeModuleQuery } from './creative-module';
@@ -28,6 +29,7 @@ export const modulesQuery = groq`
   _type == 'skill-list' => { ${skillListQuery} },
   _type == 'social-list' => { ${socialListQuery} },
   _type == 'post-list' => { ${postListQuery} },
+  _type == 'post-details' => { ${postDetailsQuery} },
   _type == 'post-featured' => { ${postFeaturedQuery} },
   _type == 'three.js' => { ${threeSceneQuery} },
   _type == 'creative-module' => { ${creativeModuleQuery} },

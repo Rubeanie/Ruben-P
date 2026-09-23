@@ -40,6 +40,14 @@ export const site = {
         'The order of the filter chips and the dots on every post tile. A category left out is never a chip.'
     },
     {
+      name: 'author',
+      title: 'Default author',
+      type: 'reference',
+      to: [{ type: 'author' }],
+      group: 'general',
+      description: 'Credited on every post that names no authors of its own'
+    },
+    {
       name: 'announcements',
       type: 'array',
       of: [{ type: 'reference', to: [{ type: 'announcement' }] }],
