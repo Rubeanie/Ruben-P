@@ -13,15 +13,16 @@ import { getRedirect } from '@/lib/redirects';
 import Redirecting from '@/components/Redirecting';
 
 export default async function Page({ params }) {
-  const { slug } = await params;
-  const page = await getPage({ slug });
+  const { page, path } = await getPage(params);
   if (!page) {
-    // No page: check the CMS redirects. Internal targets redirect natively,
-    // external ones get the interstitial.
-    const target = await getRedirect(`/${slug.join('/')}`);
-    if (target?.url.startsWith('/'))
-      (target.permanent ? permanentRedirect : redirect)(target.url);
-    if (target) return <Redirecting url={target.url} label={target.label} />;
+    if (path) {
+      // No page: check the CMS redirects. Internal targets redirect natively,
+      // external ones get the interstitial.
+      const target = await getRedirect(`/${path}`);
+      if (target?.url.startsWith('/'))
+        (target.permanent ? permanentRedirect : redirect)(target.url);
+      if (target) return <Redirecting url={target.url} label={target.label} />;
+    }
     notFound();
   }
   return (
@@ -33,7 +34,7 @@ export default async function Page({ params }) {
 }
 
 export async function generateMetadata({ params }) {
-  const page = await getPage(await params);
+  const { page } = await getPage(params);
   // redirects and 404s are handled by the page component
   if (!page) return {};
   return processMetadata(page);
@@ -48,15 +49,22 @@ export async function generateStaticParams() {
     ].metadata.slug.current`
   );
 
-  return slugs.map((slug) => ({ slug: slug.split('/') }));
+  return [
+    // the home route is the CMS index page
+    { slug: [] },
+    ...slugs.map((slug) => ({ slug: slug.split('/') }))
+  ];
 }
 
 async function getPage(params) {
-  return await fetchSanity(
+  const { slug } = await params;
+  const path = slug?.join('/');
+  const home = !path;
+  const page = await fetchSanity(
     groq`*[
       _type in ['page', 'page.post'] &&
       metadata.slug.current == $slug &&
-      !(metadata.slug.current in ['index', '404'])
+      ($home || !(metadata.slug.current in ['index', '404']))
     ][0]{
       _type,
       _updatedAt,
@@ -72,10 +80,11 @@ async function getPage(params) {
       ${metadataQuery}
     }`,
     {
-      params: { slug: params.slug.join('/') },
+      params: { slug: home ? 'index' : path, home },
       tags: ['pages', 'posts', 'authors']
     }
   );
+  return { page, path };
 }
 
 // Search engines read the byline from here; the page itself has no fixed header.

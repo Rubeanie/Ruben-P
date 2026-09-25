@@ -4,7 +4,6 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from '@/components/Logo';
-import { Squeeze as Hamburger } from 'hamburger-react';
 import { resolveLink } from '@/lib/processUrl';
 import styles from '@/styles/components/Navbar.module.scss';
 
@@ -23,8 +22,8 @@ const Navbar = ({ menu, logo }) => {
     ...(menu?.items ?? []).map(toLink),
     cta && { ...cta, key: 'cta', cta: true }
   ].filter((link) => link?.href);
-  const navRef = useRef(null);
   const linksRef = useRef(null);
+  const toggleRef = useRef(null);
   const [compact, setCompact] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -65,7 +64,7 @@ const Navbar = ({ menu, logo }) => {
     const onKeyDown = (event) => {
       if (event.key !== 'Escape') return;
       setOpen(false);
-      navRef.current?.querySelector('[role="button"]')?.focus();
+      toggleRef.current?.focus();
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
@@ -83,10 +82,7 @@ const Navbar = ({ menu, logo }) => {
   }, []);
 
   return (
-    <nav
-      ref={navRef}
-      className={styles.nav}
-      data-compact={compact || undefined}>
+    <nav className={styles.nav} data-compact={compact || undefined}>
       <div className={styles.container}>
         <Link href={home?.href ?? '/'} title={home?.label} onClick={close}>
           <Logo svg={logo} />
@@ -102,19 +98,17 @@ const Navbar = ({ menu, logo }) => {
           ))}
         </div>
         {compact && (
-          <Hamburger
-            toggled={open}
-            toggle={setOpen}
-            size={30}
-            duration={0.3}
-            distance='sm'
-            color='var(--color-primary)'
-            easing='ease-out'
-            rounded={true}
-            label='Show menu'
+          <button
+            ref={toggleRef}
+            type='button'
+            className={styles.burger}
+            aria-expanded={open}
+            aria-controls='nav-menu'
+            aria-label='Show menu'
+            onClick={() => setOpen(!open)}
           />
         )}
-        <div className={styles.dropdown} inert={!open}>
+        <div id='nav-menu' className={styles.dropdown} inert={!open}>
           <div className={styles.menu}>
             {[home, ...links]
               .filter((link) => link?.href)

@@ -10,6 +10,9 @@ export const DEFAULT_THEME_COLORS = {
 export const DEFAULT_THEME_URL =
   'https://res.cloudinary.com/ruben-p/image/upload/f_avif,q_30,c_limit,w_800/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq.webp';
 
+// The browser bar colour while no hero sets one.
+export const SITE_BAR_COLOR = '#121212';
+
 export const DEFAULT_THEME = {
   url: DEFAULT_THEME_URL,
   colors: DEFAULT_THEME_COLORS,
@@ -151,6 +154,8 @@ export function applyThemeToDocument(theme) {
 
   Object.entries(theme.colors).forEach(([key, value]) => {
     document.documentElement.style.setProperty(`--color-${key}`, value);
+    // the page's own theme, published so a hero can blend back to it
+    document.documentElement.style.setProperty(`--page-${key}`, value);
   });
 
   document.documentElement.style.setProperty(
@@ -171,7 +176,7 @@ function getSwatchHex(palette, names) {
   return null;
 }
 
-function deriveThemeColorsFromPalette(palette) {
+export function deriveThemeColorsFromPalette(palette) {
   const baseHex = getSwatchHex(palette, BASE_SWATCHES);
 
   if (!baseHex) {
@@ -198,6 +203,31 @@ function deriveThemeColorsFromPalette(palette) {
   }
 }
 
+export function clampContrast(colors) {
+  const ground = Color(colors.background);
+  const direction = ground.isDark() ? 1 : -1;
+
+  const clamp = (hex) => {
+    let color = Color(hex);
+
+    for (let step = 0; step < 50 && color.contrast(ground) < 4.5; step += 1) {
+      const nextLightness = Math.min(
+        100,
+        Math.max(0, color.lightness() + direction * 2)
+      );
+      color = color.lightness(nextLightness);
+    }
+
+    return color.hex();
+  };
+
+  return {
+    ...colors,
+    primary: clamp(colors.primary),
+    text: clamp(colors.text)
+  };
+}
+
 export function loadThemeImage(url) {
   return new Promise((resolve, reject) => {
     const image = new Image();
@@ -209,13 +239,6 @@ export function loadThemeImage(url) {
     image.onerror = (event) => reject(event);
     image.src = url;
   });
-}
-
-async function extractThemeColorsFromImage(image) {
-  const { Vibrant } = await import('node-vibrant/browser');
-  const palette = await Vibrant.from(image).getPalette();
-
-  return deriveThemeColorsFromPalette(palette);
 }
 
 export async function resolveThemeDefinition(theme) {
@@ -235,12 +258,9 @@ export async function resolveThemeDefinition(theme) {
       : null;
   }
 
-  const image = await loadThemeImage(normalizedTheme.url);
+  await loadThemeImage(normalizedTheme.url);
 
-  const colors =
-    normalizedTheme.colors || (await extractThemeColorsFromImage(image));
-
-  if (!colors) {
+  if (!normalizedTheme.colors) {
     throw new Error(
       `Could not resolve theme colors for ${normalizedTheme.url}`
     );
@@ -248,9 +268,7 @@ export async function resolveThemeDefinition(theme) {
 
   return {
     ...normalizedTheme,
-    colors,
-    source:
-      normalizedTheme.source || (normalizedTheme.colors ? 'cms' : 'client'),
+    source: normalizedTheme.source || 'cms',
     status: 'ready'
   };
 }

@@ -197,14 +197,66 @@
       }
     }
 
-    // matches the logo's inset; the icon has ~0.3rem of its own padding
-    :global(.hamburger-react) {
+    // Two bars that squeeze together, then cross. Only the transform animates,
+    // so the colour follows a theme change instantly.
+    .burger {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: none;
+      cursor: pointer;
+      // matches the logo's inset; the bars sit 9px inside the button
       margin-inline-end: 0.6rem;
+      @include var.focus-ring(0px);
 
-      // hamburger-react sets outline:none inline, so the ring has to be a shadow
-      &:focus-visible {
-        box-shadow: 0 0 0 2px var.$color-primary;
-        border-radius: 50%;
+      &::before,
+      &::after {
+        content: '';
+        position: absolute;
+        left: 9px;
+        width: 30px;
+        height: 3px;
+        border-radius: 9em;
+        background: var.$color-primary;
+        // closing: uncross first, then spread
+        transition:
+          translate 0.15s var.$ease-out 0.15s,
+          rotate 0.15s var.$ease-out;
+      }
+
+      &::before {
+        top: 17px;
+      }
+
+      &::after {
+        top: 28px;
+      }
+
+      &[aria-expanded='true'] {
+        &::before,
+        &::after {
+          transition-delay: 0s, 0.15s;
+        }
+
+        &::before {
+          translate: 0 5.5px;
+          rotate: 45deg;
+        }
+
+        &::after {
+          translate: 0 -5.5px;
+          rotate: -45deg;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        &::before,
+        &::after {
+          transition: none;
+        }
       }
     }
   }

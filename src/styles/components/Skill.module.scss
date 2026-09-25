@@ -40,9 +40,7 @@ $column: 11.25rem;
     inset 0 1px 0 rgba(255, 255, 255, 0.14),
     var.$hairline;
   color: var.$color-on-dark;
-  transition:
-    transform 0.12s var.$ease-out,
-    background-color var.$theme-transition;
+  transition: transform 0.12s var.$ease-out;
 }
 
 .watermark {

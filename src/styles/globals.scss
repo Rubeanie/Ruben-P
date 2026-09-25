@@ -17,6 +17,31 @@
   --image-background: url('#{var.$image-background-url}');
 }
 
+// registered colours interpolate once at the root and everything that reads
+// them follows, so no element needs a colour transition of its own
+$theme-color-properties: (
+  '--color-primary': #ed5f68,
+  '--color-secondary': #33456d,
+  '--color-background': #0f182d,
+  '--color-text': #eaf6ff
+);
+
+@each $name, $value in $theme-color-properties {
+  @property #{$name} {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: #{$value};
+  }
+}
+
+html {
+  transition:
+    --color-primary var.$theme-transition,
+    --color-secondary var.$theme-transition,
+    --color-background var.$theme-transition,
+    --color-text var.$theme-transition;
+}
+
 html,
 body {
   margin: 0;
@@ -30,7 +55,6 @@ body {
   touch-action: pan-y pinch-zoom;
   font-family: var.$p-font;
   background-color: var.$color-background;
-  transition: background-color var.$theme-transition;
 }
 
 :focus-visible {
@@ -110,7 +134,6 @@ li {
   -webkit-text-fill-color: transparent;
   filter: brightness(115%) contrast(43%)
     drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.6)) saturate(1.5);
-  transition: background var.$theme-transition;
 }
 
 // Sass can't @extend across a media query, so this is a mixin.
@@ -122,7 +145,6 @@ li {
   -webkit-background-clip: unset;
   -webkit-text-fill-color: unset;
   filter: unset;
-  transition: color var.$theme-transition;
 }
 
 // Firefox has repaint bugs with background-clip:text + background-attachment:fixed,
@@ -151,7 +173,6 @@ p,
 svg {
   -webkit-font-smoothing: auto;
   -moz-osx-font-smoothing: auto;
-  transition: color var.$theme-transition;
 }
 
 p a,
@@ -182,9 +203,6 @@ body {
     transform: translateZ(0);
     will-change: transform; // creates a new paint layer
     z-index: -1;
-    transition:
-      background var.$theme-transition,
-      background-color var.$theme-transition;
     opacity: 0.35;
     backface-visibility: hidden;
   }

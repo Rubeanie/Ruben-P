@@ -46,10 +46,7 @@ $gap: 1.25rem;
     inset 0 1px 0 rgba(255, 255, 255, 0.14),
     var.$hairline;
   color: var.$color-on-dark;
-  transition:
-    $zoom-transition,
-    box-shadow var.$theme-transition,
-    background-color var.$theme-transition;
+  transition: $zoom-transition;
 
   // Permanent layer: promoting on hover or press re-rasterised the text and made it jump.
   will-change: transform;
@@ -106,7 +103,8 @@ $gap: 1.25rem;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    transition: background-color var.$theme-transition;
+    // cancels the zoom transition; colours don't transition per-element anymore
+    transition: none;
 
     &:hover,
     &:active,
