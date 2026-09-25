@@ -7,6 +7,10 @@ import CustomHTML from './CustomHTML';
 import PostDetails from './PostDetails';
 import PostFeatured from './PostFeatured';
 import PostList from './PostList';
+import Hero from './Hero';
+import HeroGlass from './HeroGlass';
+import HeroSplit from './HeroSplit';
+import Hero3D from './Hero3D';
 import RichtextModule from './RichtextModule';
 import SkillList from './SkillList';
 import SocialList from './SocialList';
@@ -28,6 +32,14 @@ const ModuleRenderer = ({ module, page, dataAttribute }) => {
       return <PostFeatured {...module} page={page} />;
     case 'post-list':
       return <PostList {...module} page={page} />;
+    case 'hero':
+      return <Hero {...module} />;
+    case 'hero.saas':
+      return <HeroGlass {...module} />;
+    case 'hero.split':
+      return <HeroSplit {...module} />;
+    case 'hero.3d':
+      return <Hero3D {...module} />;
     case 'richtext-module':
       return (
         <RichtextModule

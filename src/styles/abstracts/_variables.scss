@@ -121,3 +121,8 @@ $inline-pad: clamp(1rem, 4vw, 2rem);
 
 /* Tiles: Apple Newsroom grid gap, 24px on phones to 36px at 1440 */
 $tile-gap: clamp(1.5rem, 2.5vw, 2.25rem);
+
+/* Heroes are the page's ground: they clear the navbar and pad themselves */
+$hero-pad: max(#{$inline-pad}, 4vw);
+$hero-top: calc(var(--nav-clearance) + #{$space-6});
+$hero-heading: clamp(2.5rem, 1.2rem + 4.5vw, 5.5rem);

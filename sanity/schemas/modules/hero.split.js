@@ -1,13 +1,18 @@
 import { MdArtTrack } from 'react-icons/md';
 import { getBlockText } from '@sanity/src/utils';
 import { textBlock } from '../fragments/text-block';
+import { scrollHintField } from '../fragments/fields/scroll-hint';
 
 export const heroSplit = {
   name: 'hero.split',
   title: 'Hero (Split)',
   icon: MdArtTrack,
   type: 'object',
-  groups: [{ name: 'content', default: true }, { name: 'image' }],
+  groups: [
+    { name: 'content', default: true },
+    { name: 'image' },
+    { name: 'options' }
+  ],
   fields: [
     {
       name: 'pretitle',
@@ -50,7 +55,8 @@ export const heroSplit = {
         }
       ],
       group: 'image'
-    }
+    },
+    scrollHintField({ initialValue: false, group: 'options' })
   ],
   preview: {
     select: {

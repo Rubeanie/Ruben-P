@@ -13,6 +13,5 @@ export const heroQuery = groq`
     loading
   },
   bgImageMobile { ${imageQuery} },
-  textAlign,
-  alignItems
+  "scrollHint": coalesce(scrollHint, true)
 `;

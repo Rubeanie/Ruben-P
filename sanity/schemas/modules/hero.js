@@ -1,11 +1,7 @@
 import { MdVrpano } from 'react-icons/md';
 import { getBlockText } from '@sanity/src/utils';
-import {
-  textAlign,
-  alignItems,
-  alignmentFieldset
-} from '../fragments/fields/alignment';
 import { textBlock } from '../fragments/text-block';
+import { scrollHintField } from '../fragments/fields/scroll-hint';
 
 export const hero = {
   name: 'hero',
@@ -16,7 +12,6 @@ export const hero = {
     { name: 'image' },
     { name: 'options' }
   ],
-  fieldsets: [alignmentFieldset],
   fields: [
     {
       name: 'pretitle',
@@ -68,16 +63,7 @@ export const hero = {
       },
       group: 'image'
     },
-    {
-      ...textAlign,
-      fieldset: 'alignment',
-      group: 'options'
-    },
-    {
-      ...alignItems,
-      fieldset: 'alignment',
-      group: 'options'
-    }
+    scrollHintField({ initialValue: true, group: 'options' })
   ],
   preview: {
     select: {

@@ -3,7 +3,13 @@ import { pageBlock } from '../fragments/page-block';
 import { metadata } from '../fragments/metadata';
 
 // Module types that carry a heading of their own.
-const HEADED = new Set(['hero', 'hero.saas', 'hero.split', 'richtext-module']);
+const HEADED = new Set([
+  'hero',
+  'hero.saas',
+  'hero.split',
+  'hero.3d',
+  'richtext-module'
+]);
 
 export const pagePost = {
   name: 'page.post',

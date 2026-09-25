@@ -10,7 +10,7 @@ export const heroSplitQuery = groq`
   image {
     ${imageQuery},
     alt,
-    onRight,
-    loading
-  }
+    onRight
+  },
+  "scrollHint": coalesce(scrollHint, false)
 `;

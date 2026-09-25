@@ -2,6 +2,7 @@ import { groq } from '../../fetch';
 import { heroQuery } from './hero';
 import { heroSaasQuery } from './hero-saas';
 import { heroSplitQuery } from './hero-split';
+import { hero3dQuery } from './hero-3d';
 import { richtextModuleQuery } from './richtext-module';
 import { accordionListQuery } from './accordion-list';
 import { calloutQuery } from './callout';
@@ -22,6 +23,7 @@ export const modulesQuery = groq`
   _type == 'hero' => { ${heroQuery} },
   _type == 'hero.saas' => { ${heroSaasQuery} },
   _type == 'hero.split' => { ${heroSplitQuery} },
+  _type == 'hero.3d' => { ${hero3dQuery} },
   _type == 'richtext-module' => { ${richtextModuleQuery} },
   _type == 'accordion-list' => { ${accordionListQuery} },
   _type == 'callout' => { ${calloutQuery} },

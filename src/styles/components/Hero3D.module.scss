@@ -1,0 +1,195 @@
+@use '../abstracts/index' as var;
+
+// The move runs over 2.1 viewports on a fixed layer. The section ends early so
+// the content after it scrolls up over the canvas as the lit opening fills the
+// frame: its top edge from e 0.79 (100lvh + 0.697 x 2.1 x 100lvh).
+.section {
+  @include var.hero-ground;
+  position: relative;
+  height: 246lvh;
+
+  &:has(> a[href^='#']) {
+    @include var.hint-room;
+  }
+}
+
+// Full bleed on the large viewport, so a phone's toolbars never show an edge.
+.stage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  overflow: hidden;
+  width: 100%;
+  height: 100lvh;
+  opacity: 0;
+  transition: opacity 0.8s var.$ease-out;
+
+  &[data-ready='true'] {
+    opacity: 1;
+  }
+
+  &[data-done] {
+    visibility: hidden;
+  }
+}
+
+.fill {
+  position: absolute;
+  inset: 0;
+}
+
+// The rig sets opacity and scale from the same progress as the camera.
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 35%,
+    rgba(0, 0, 0, 0.75) 100%
+  );
+  opacity: 0;
+}
+
+.copy {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 100lvh;
+  padding: var(--nav-clearance) var.$hero-pad 0;
+}
+
+.name {
+  h1 {
+    margin-block-end: var.$space-2;
+  }
+
+  p {
+    font-size: var.$p2-size;
+    margin: 0;
+  }
+}
+
+// Over the canvas, under the page: later in the same layer as the stage.
+.beats {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100lvh;
+  pointer-events: none;
+}
+
+// Hidden until the beats' loop first places it. Centring is done with auto
+// margins, not a -50% translate, so the text never lands on a half pixel.
+.beat {
+  position: absolute;
+  visibility: hidden;
+
+  // A column on the side away from the counter, vertically centred.
+  &[data-beat='turn'] {
+    top: 0;
+    bottom: 0;
+    left: var.$hero-pad;
+    max-width: min(28rem, 34vw);
+    height: fit-content;
+    margin-block: auto;
+  }
+
+  // Centred in the frame, on both axes.
+  &[data-beat='approach'] {
+    inset: 0;
+    width: min(34rem, 100% - 2 * #{var.$hero-pad});
+    height: fit-content;
+    margin-block: auto;
+    margin-inline: auto;
+  }
+}
+
+// Balanced heading lines and no one-word last line on the lead: the beats are
+// read in a glance.
+.heading {
+  position: relative;
+  margin-block: 0 var.$space-3;
+  text-align: start;
+  text-wrap: balance;
+  transform-origin: left center;
+
+  [data-beat='approach'] & {
+    text-align: center;
+    transform-origin: center;
+  }
+}
+
+// Room for descenders and the blur inside each word's clip, given back in margins.
+.clip {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0.1em 0.12em;
+  margin: -0.1em -0.12em;
+}
+
+.word {
+  display: inline-block;
+}
+
+.lead {
+  margin: 0;
+  text-align: start;
+  text-wrap: pretty;
+
+  [data-beat='approach'] & {
+    text-align: center;
+  }
+}
+
+@media (max-width: var.$media-mobile-width) {
+  // The mark fills the width, so the side column drops below it to the
+  // bottom-left.
+  .beat[data-beat='turn'] {
+    top: auto;
+    right: var.$hero-pad;
+    bottom: calc(#{var.$space-6} + env(safe-area-inset-bottom));
+    max-width: none;
+    margin-block: 0;
+  }
+}
+
+// Static and stacked: the still mark on the first screen, the beats under it.
+@media (prefers-reduced-motion: reduce) {
+  .section {
+    height: auto;
+  }
+
+  .stage {
+    position: absolute;
+  }
+
+  .beats {
+    position: static;
+    display: grid;
+    gap: var.$space-5;
+    height: auto;
+    padding: var.$space-4 var.$hero-pad var.$space-6;
+  }
+
+  .beat {
+    position: static;
+    visibility: visible;
+
+    &[data-beat] {
+      width: auto;
+      max-width: 30rem;
+      height: auto;
+      margin-block: 0;
+      margin-inline: 0;
+    }
+  }
+
+  .beats .beat .heading,
+  .beats .beat .lead {
+    text-align: start;
+  }
+}
