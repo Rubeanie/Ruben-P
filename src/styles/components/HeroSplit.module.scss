@@ -1,0 +1,65 @@
+@use '../abstracts/index' as var;
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: var.$space-6;
+  min-height: 80lvh;
+  padding: var.$hero-top var.$hero-pad var.$space-6;
+  text-align: start;
+  @include var.hero-ground;
+
+  &[data-image-right] {
+    flex-direction: row;
+  }
+}
+
+.copy {
+  flex: 1 1 0;
+}
+
+.frame {
+  position: relative;
+  flex: 1 1 0;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: var.$common-border-radius;
+
+  // The ring sits over the picture, where an inset shadow on the frame would be covered.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: var.$hairline;
+  }
+}
+
+.hero:has(> a[href^='#']) {
+  @include var.hint-room;
+
+  // The image on the left puts the copy right of the gap.
+  &:not([data-image-right]) {
+    --hint-inset: calc(50% + #{var.$space-6} / 2);
+  }
+}
+
+@media (max-width: var.$media-mobile-width) {
+  .hero,
+  .hero[data-image-right] {
+    flex-direction: column;
+    gap: var.$space-5;
+  }
+
+  .frame {
+    flex: none;
+    width: 100%;
+  }
+
+  // Stacked, copy on top.
+  .hero:has(> a[href^='#']):not([data-image-right]) {
+    --hint-inset: #{var.$hero-pad};
+  }
+}

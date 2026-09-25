@@ -1,5 +1,7 @@
 @use './variables' as var;
 
+/* Shared component shell recipes */
+
 // Small dark capsule over a photo: the filter chips and the category capsules share it.
 @mixin capsule {
   display: inline-flex;
@@ -28,6 +30,14 @@
   &[data-ink='dark'] {
     color: var.$color-on-primary;
   }
+}
+
+/* Pretitle */
+@mixin pretitle {
+  font-family: var.$h-font;
+  color: var.$color-primary;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 // Raised, glossy button surface on the theme colour.
@@ -111,6 +121,19 @@
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+// A hero is the ground, not an object on it: it cancels main's padding and
+// runs edge to edge.
+@mixin hero-ground {
+  margin-block-start: calc(-1 * #{var.$space-3});
+  margin-inline: calc(-1 * #{var.$inline-pad});
+}
+
+// A hero with a scroll hint keeps its bottom edge clear for it, lined up with the copy column.
+@mixin hint-room {
+  --hint-inset: #{var.$hero-pad};
+  padding-block-end: calc(#{var.$space-6} + 3.5rem);
 }
 
 // Sizing and alignment shared by the media blocks (image, video, 3D scene) so

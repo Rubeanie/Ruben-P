@@ -9,6 +9,7 @@ export const pageBlock = {
     { type: 'hero' },
     { type: 'hero.saas' },
     { type: 'hero.split' },
+    { type: 'hero.3d' },
     { type: 'post-list' },
     { type: 'post-featured' },
     { type: 'richtext-module' },
@@ -20,7 +21,9 @@ export const pageBlock = {
   options: {
     insertMenu: {
       views: [{ name: 'list' }, { name: 'grid' }],
-      groups: [{ name: 'hero', of: ['hero', 'hero.saas', 'hero.split'] }]
+      groups: [
+        { name: 'hero', of: ['hero', 'hero.saas', 'hero.split', 'hero.3d'] }
+      ]
     }
   }
 };

@@ -1,0 +1,168 @@
+@use '../abstracts/index' as var;
+
+$ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+.hero {
+  position: relative;
+  display: flex;
+  min-height: 100svh;
+  text-align: start;
+  background-color: var.$color-background;
+  @include var.hero-ground;
+}
+
+.frame {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  padding: var.$hero-top var.$hero-pad var.$space-6;
+
+  &:has(> a[href^='#']) {
+    @include var.hint-room;
+  }
+}
+
+.photo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  // The navbar glass is thin: over a bright sky the photo's own dark shades its top edge.
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    background: linear-gradient(
+      color-mix(in srgb, var(--color-background) 85%, transparent),
+      transparent calc(var(--nav-clearance) * 3)
+    );
+  }
+
+  // The vignette lifts as the light comes up.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at center,
+      transparent 45%,
+      rgba(0, 0, 0, 0.55)
+    );
+    opacity: 0;
+    animation-name: lift;
+  }
+
+  img {
+    animation-name: settle;
+  }
+
+  // The intro waits for the picture (GatedPhoto sets data-loaded), paused on its first frame.
+  img,
+  &::after {
+    animation-duration: 1.3s;
+    animation-timing-function: $ease-out-expo;
+    animation-fill-mode: both;
+    animation-play-state: paused;
+  }
+
+  &[data-loaded] img,
+  &[data-loaded]::after {
+    animation-play-state: running;
+  }
+}
+
+@keyframes settle {
+  from {
+    transform: scale(1.12);
+    filter: brightness(0.7);
+  }
+}
+
+@keyframes lift {
+  from {
+    opacity: 1;
+  }
+}
+
+.copy {
+  // On a photo the primary can land on its own colour; the type takes the theme's light.
+  h1,
+  p {
+    color: var.$color-text;
+  }
+
+  // The only shade: the theme's dark behind the type, gone before the photo's middle.
+  &::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: -40% -50% -60% -40%;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--color-background) 55%, transparent) 40%,
+      transparent
+    );
+    pointer-events: none;
+  }
+}
+
+// Heading lines, each its own clip.
+.lines {
+  display: flex;
+  flex-direction: column;
+}
+
+.line {
+  display: block;
+  overflow: hidden;
+  // Room for descenders inside the clip.
+  padding-block-end: 0.08em;
+  margin-block-end: -0.08em;
+
+  > span {
+    display: block;
+    animation: rise 0.9s $ease-out-expo calc(0.3s + var(--i) * 70ms) both;
+  }
+}
+
+.lead {
+  display: flex;
+  flex-direction: column;
+  gap: var.$space-3;
+}
+
+// Lead and buttons after the last line; one fade, no stagger of their own.
+.leadIn {
+  animation: fade-in 0.6s var.$ease-out 0.85s both;
+}
+
+// The type waits for the picture too, so it always lands after the photo starts.
+[data-gate]:not([data-loaded]) .copy :is(.line > span, .leadIn) {
+  animation-play-state: paused;
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(105%);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo img,
+  .photo::after,
+  .line > span,
+  .leadIn {
+    animation: none;
+  }
+}

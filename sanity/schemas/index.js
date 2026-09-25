@@ -20,6 +20,7 @@ import { customHtml } from './modules/custom-html';
 import { hero } from './modules/hero';
 import { heroSaas } from './modules/hero.saas';
 import { heroSplit } from './modules/hero.split';
+import { hero3d } from './modules/hero.3d';
 import { postDetails } from './modules/post-details';
 import { postList } from './modules/post-list';
 import { postFeatured } from './modules/post-featured';
@@ -59,6 +60,7 @@ export const schemaTypes = [
   hero,
   heroSaas,
   heroSplit,
+  hero3d,
   postDetails,
   postList,
   postFeatured,

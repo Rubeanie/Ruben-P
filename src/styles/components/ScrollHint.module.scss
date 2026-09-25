@@ -1,0 +1,154 @@
+@use '../abstracts/index' as var;
+
+// Loops start once the entrance has landed; at most two per showing.
+$loops: calc(var(--loop-wait, var(--hint-delay)) + 500ms);
+
+// Sits in the hero's own layout (the hero is its positioning box), measured
+// from the small viewport's bottom so phone toolbars never cover it.
+.hint {
+  position: absolute;
+  z-index: 2;
+  top: calc(min(100%, 100svh) - max(24px, env(safe-area-inset-bottom) + 16px));
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  // translate and transform never share a rule: the minifier keeps only the transform.
+  --hint-x: -50%;
+  translate: var(--hint-x) calc(-100% + 6px);
+  color: var.$color-text;
+  font-family: var.$p-font;
+  text-decoration: none;
+  opacity: 0;
+  visibility: hidden;
+  @include var.focus-ring;
+
+  &[data-align='start'] {
+    --hint-x: 0;
+    left: var(--hint-inset, 50%);
+    justify-content: flex-start;
+  }
+
+  &[data-state='shown'] {
+    opacity: 1;
+    visibility: visible;
+    translate: var(--hint-x) -100%;
+    transition:
+      opacity 0.5s var.$ease-out var(--hint-wait, var(--hint-delay)),
+      translate 0.5s var.$ease-out var(--hint-wait, var(--hint-delay));
+  }
+
+  // Back at the top: no intro to wait for.
+  &[data-state='shown'][data-again] {
+    --hint-wait: 0ms;
+  }
+
+  // Once fully hidden the loops are dropped; later showings restart them right after the entrance.
+  &[data-rewound] {
+    --loop-wait: 0ms;
+  }
+
+  &[data-state='gone'] {
+    translate: var(--hint-x) calc(-100% + 8px);
+    transition:
+      opacity 0.24s ease-out,
+      translate 0.24s ease-out,
+      visibility 0s linear 0.24s;
+  }
+}
+
+// The hint's target: the hero's bottom edge, clear of the navbar when jumped to.
+.target {
+  position: absolute;
+  bottom: 0;
+  display: block;
+  height: 0;
+  scroll-margin-top: var(--nav-clearance);
+}
+
+.word {
+  position: relative;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.72;
+
+  // Hover and focus draw a hairline under the word.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 -3px;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 240ms var.$ease-out;
+  }
+}
+
+.hint:focus-visible .word::after {
+  transform: scaleX(1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hint:hover .word::after {
+    transform: scaleX(1);
+  }
+}
+
+.roll {
+  overflow: hidden;
+  width: 12px;
+  height: 12px;
+  opacity: 0.9;
+}
+
+// Two chevrons stacked; sliding by one box swaps them seamlessly.
+.rollInner {
+  display: flex;
+  flex-direction: column;
+
+  svg {
+    display: block;
+    flex: none;
+    width: 12px;
+    height: 12px;
+    padding: 3px 1px;
+  }
+}
+
+.hint:is([data-state='shown'], [data-state='gone']) .rollInner {
+  animation: roll 3000ms linear $loops 2 both;
+}
+
+@keyframes roll {
+  0% {
+    transform: translateY(-50%);
+    animation-timing-function: cubic-bezier(0.1, 0, 0.1, 1);
+  }
+
+  33%,
+  100% {
+    transform: translateY(0);
+  }
+}
+
+// Fade only: no rise, no loops.
+@media (prefers-reduced-motion: reduce) {
+  .hint,
+  .hint[data-state] {
+    translate: var(--hint-x) -100%;
+  }
+
+  .hint[data-state] .rollInner {
+    animation: none;
+  }
+
+  .word::after {
+    transition: none;
+  }
+}

@@ -11,6 +11,7 @@ import processUrl, { resolveLink } from '@/lib/processUrl';
 import { stegaClean } from '@sanity/client/stega';
 import { getRedirect } from '@/lib/redirects';
 import Redirecting from '@/components/Redirecting';
+import { themeFromImage } from '@/lib/imageTheme';
 
 export default async function Page({ params }) {
   const { page, path } = await getPage(params);
@@ -38,6 +39,18 @@ export async function generateMetadata({ params }) {
   // redirects and 404s are handled by the page component
   if (!page) return {};
   return processMetadata(page);
+}
+
+// First paint of the browser bars in the hero's colour; the handoff takes over after.
+export async function generateViewport({ params }) {
+  const { page } = await getPage(params);
+  const hero = page?.modules?.[0];
+  const url =
+    (hero?._type === 'hero' && hero.bgImage?.asset?.url) ||
+    (hero?._type === 'hero.saas' && hero.image?.asset?.url);
+  if (!url) return {};
+  const colors = await themeFromImage(url);
+  return colors ? { themeColor: colors.background } : {};
 }
 
 export async function generateStaticParams() {

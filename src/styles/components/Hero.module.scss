@@ -1,0 +1,171 @@
+@use '../abstracts/index' as var;
+
+$blend-end: 28lvh;
+
+// A 12lvh runway under the sticky screen: the page starts moving almost at
+// once and arrives while the card settles.
+.hero {
+  position: relative;
+  isolation: isolate;
+  height: 112lvh;
+  @include var.hero-ground;
+}
+
+.stick {
+  --card-bottom: 44%;
+  position: sticky;
+  top: 0;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 100lvh;
+  padding: var.$hero-top var.$hero-pad var.$space-6;
+  text-align: start;
+}
+
+.photo,
+.photoMobile {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  clip-path: inset(0 0 0 0 round 0);
+
+  // The scrim belongs to the photo: it is clipped with it into the card and
+  // never paints over the page ground, so the section edge has no band.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--color-background) 85%, transparent),
+      transparent 60%
+    );
+  }
+}
+
+.photoMobile {
+  display: none;
+}
+
+$card: inset(
+  calc(var(--nav-clearance) + #{var.$space-4}) #{var.$hero-pad}
+    var(--card-bottom) round #{var.$common-border-radius}
+);
+
+@keyframes card {
+  to {
+    clip-path: $card;
+  }
+}
+
+@keyframes scrim-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    // Shrink, scrim and colour blend all end at --blend-end (ThemeStyle).
+    .photo,
+    .photoMobile {
+      animation: card linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 var(--blend-end, #{$blend-end});
+    }
+
+    .photo::after,
+    .photoMobile::after {
+      animation: scrim-out linear both;
+      animation-timeline: scroll(root);
+      animation-range: calc(var(--blend-end, #{$blend-end}) * 0.6)
+        var(--blend-end, #{$blend-end});
+    }
+  }
+}
+
+// No scroll timeline (Firefox): the same shrink as a timed transition, cued
+// by the handoff's data-hero-theme flip. The end state matches; only the
+// drive differs.
+@supports not (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .photo,
+    .photoMobile {
+      transition: clip-path 0.7s var.$ease-in-out;
+    }
+
+    .photo::after,
+    .photoMobile::after {
+      transition: opacity 0.7s var.$ease-in-out;
+    }
+
+    .hero[data-hero-theme='off'] {
+      .photo,
+      .photoMobile {
+        clip-path: $card;
+      }
+
+      .photo::after,
+      .photoMobile::after {
+        opacity: 0;
+      }
+    }
+  }
+}
+
+// The settled card from the start.
+@media (prefers-reduced-motion: reduce) {
+  .photo,
+  .photoMobile {
+    clip-path: $card;
+  }
+
+  .photo::after,
+  .photoMobile::after {
+    opacity: 0;
+  }
+}
+
+.stick:has(> a[href^='#']) {
+  @include var.hint-room;
+}
+
+// No photo: the copy on the page ground, nothing to pin.
+.hero:not([data-hero-theme]) {
+  height: auto;
+  min-height: 100svh;
+
+  .stick {
+    position: relative;
+    height: auto;
+    min-height: 100svh;
+  }
+}
+
+@media (max-width: var.$media-mobile-width) {
+  .stick {
+    --card-bottom: 52%;
+    align-items: center;
+    text-align: center;
+  }
+
+  .copy {
+    align-items: center;
+    text-align: center;
+
+    > div {
+      justify-content: center;
+    }
+  }
+
+  .stick:has(> .photoMobile) > .photo {
+    display: none;
+  }
+
+  .photoMobile {
+    display: block;
+  }
+}
