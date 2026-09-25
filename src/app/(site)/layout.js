@@ -14,6 +14,7 @@ import { ServiceWorkerRegister } from '@/components/ServiceWorkerRegister';
 import { baseUrl } from '@/lib/env';
 import { stegaClean } from '@sanity/client/stega';
 import { sanitizeSvg } from '@/lib/sanitizeSvg';
+import { SITE_BAR_COLOR } from '@/lib/themes';
 
 export const metadata = {
   metadataBase: new URL(baseUrl),
@@ -39,7 +40,7 @@ export const viewport = {
   initialScale: 1,
   //  maximumScale: 1,
   //  userScalable: 'no',
-  themeColor: '#121212',
+  themeColor: SITE_BAR_COLOR,
   colorScheme: 'dark',
   viewportFit: 'cover',
   interactiveWidget: 'overlays-content'
@@ -77,9 +78,7 @@ export default async function RootLayout({ children }) {
           <Suspense>
             <Navbar menu={site.headerMenu} logo={logo} />
           </Suspense>
-          <main>
-            {children}
-          </main>
+          <main>{children}</main>
           <Footer menu={site.footerMenu} logo={logo} />
           <Analytics />
           <SpeedInsights />
