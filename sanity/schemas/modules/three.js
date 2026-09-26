@@ -1,6 +1,9 @@
 import { IoMdCube } from 'react-icons/io';
 import { blockLayoutFields } from '../fragments/fields/block-layout';
 
+// Grain and vignette ride on the glow's composer, so they only exist with it.
+const GLOWING = ['quiet', 'medium'];
+
 export const threeJs = {
   name: 'three.js',
   title: '3D scene',
@@ -186,6 +189,40 @@ export const threeJs = {
       type: 'boolean',
       description: 'Adds a directional light for highlights and a shaded side.',
       initialValue: false,
+      group: 'options'
+    },
+    {
+      name: 'bloom',
+      title: 'Glow',
+      type: 'string',
+      description: 'Highlights bleed a soft glow.',
+      options: {
+        list: [
+          { title: 'Off', value: 'off' },
+          { title: 'Quiet', value: 'quiet' },
+          { title: 'Medium', value: 'medium' }
+        ],
+        layout: 'radio'
+      },
+      initialValue: 'off',
+      group: 'options'
+    },
+    {
+      name: 'grain',
+      title: 'Film grain',
+      type: 'boolean',
+      description: 'Fine monochrome grain. It rides on the glow.',
+      initialValue: false,
+      hidden: ({ parent }) => !GLOWING.includes(parent?.bloom),
+      group: 'options'
+    },
+    {
+      name: 'vignette',
+      title: 'Vignette',
+      type: 'boolean',
+      description: 'Darkens the frame towards its edges. It rides on the glow.',
+      initialValue: false,
+      hidden: ({ parent }) => !GLOWING.includes(parent?.bloom),
       group: 'options'
     },
     {

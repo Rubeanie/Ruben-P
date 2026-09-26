@@ -18,6 +18,9 @@ export const threeSceneQuery = groq`
     environmentSource == 'cloudinary' => environmentCloudinary.secure_url
   ),
   keyLight,
+  "bloom": coalesce(bloom, 'off'),
+  "grain": coalesce(bloom, 'off') != 'off' && coalesce(grain, false),
+  "vignette": coalesce(bloom, 'off') != 'off' && coalesce(vignette, false),
   orbitControls,
   zoom
 `;
