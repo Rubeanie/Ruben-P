@@ -9,7 +9,7 @@ import { track, turnAt } from '@/lib/hero3d';
 import findCounter from './counter';
 import createFit from './fit';
 
-const { clamp, damp, degToRad, radToDeg, smoothstep } = MathUtils;
+const { clamp, damp, degToRad, smoothstep } = MathUtils;
 const MODEL = '/models/rp-logo.glb';
 const REST_YAW = -0.065;
 const TAU = Math.PI * 2;
@@ -27,10 +27,13 @@ const MARGIN = Math.PI / 3;
 // The rest spin's own speed eases out over early progress while the scroll
 // turn takes over, so the two add up to one continuous turn.
 const EASE_OUT = 0.035;
-// Short enough that the close-up on the counter never clips the mark's walls.
+// Short enough that the move down the counter never clips the mark's walls.
 const NEAR = 0.01;
-// How far past filling the frame the zoom ends, as a ratio of lens widths.
+// How far past filling the frame the approach ends, as a ratio of lens widths.
 const OVERFLOW = 1.5;
+// The counter's section the approach frames, as a share of the mark's depth
+// from its middle (+1 the front).
+const PLANE = -0.3;
 const HOME = [
   { position: [-6, 1, 7], color: 'secondary', intensity: 110, distance: 70 },
   { position: [0, 1, 8], color: 'primary', intensity: 85, distance: 80 },
@@ -59,8 +62,8 @@ function balance(color) {
   );
 }
 
-// Keys on eased progress e. The camera stops short of the mark while the lens
-// narrows until the lit opening overflows the frame, so it never crosses the geometry.
+// Keys on eased progress e. zoom runs the approach down the counter's axis at the
+// fov channel's lens, until the lit opening overflows the frame.
 const CH = ['t', 'aim', 'r', 's', 'fov', 'vig', 'open', 'zoom'];
 const KEYS = [
   [0, 0, 3, 0, 60, 0, 0, 0],
@@ -108,20 +111,22 @@ function shoot(e, hole, view, out) {
     .copy(hole.centre)
     .multiplyScalar(aim)
     .addScaledVector(AXIS, at('s', e));
-  out.pos.copy(out.target).addScaledVector(out.dir, -at('r', e) * wide);
   out.fov = at('fov', e);
+  let d = at('r', e) * wide;
   const zoom = at('zoom', e);
   if (zoom > 0) {
-    // The lens at which the far rim of the opening clears the frame's corners
-    // from where the camera stops, then past it; even steps in tan(fov / 2)
-    // read as a steady magnification.
+    // The lens at which the far rim of the opening would clear the frame's
+    // corners, then past it; the camera moves in until PLANE's section takes
+    // the share of the frame that lens gives it. Even steps in the ratio read
+    // as a steady approach.
     const stop = at('r', 1) * wide;
     const fill =
       hole.radius / ((stop + hole.depth) * Math.hypot(1, view.aspect));
-    const from = Math.log(Math.tan(degToRad(out.fov / 2)));
-    const to = Math.log(fill / OVERFLOW);
-    out.fov = radToDeg(2 * Math.atan(Math.exp(from + (to - from) * zoom)));
+    const z = PLANE * hole.depth;
+    d =
+      z + (d - z) * (fill / OVERFLOW / Math.tan(degToRad(out.fov / 2))) ** zoom;
   }
+  out.pos.copy(out.target).addScaledVector(out.dir, -d);
   return out;
 }
 
