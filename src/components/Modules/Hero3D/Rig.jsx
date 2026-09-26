@@ -1,11 +1,11 @@
 'use client';
 
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { Color, MathUtils, Vector3 } from 'three';
 import { useTheme } from '@/components/ThemeContext';
-import { track, turnAt } from '@/lib/hero3d';
+import { blurFilter, track, turnAt } from '@/lib/hero3d';
 import findCounter from './counter';
 import createFit from './fit';
 
@@ -51,6 +51,17 @@ const STREAK_AT = [5, 0.8, -4.5];
 const STREAK = 160;
 // A dim fill of the rest lights through the end of the turn.
 const FILL = 0.25;
+// The counter's lights at their brightest, where the bloom is at full.
+const LIT = 1.3;
+// A CSS blur that breathes in while the lit opening fills the frame.
+const BLUR = [0.7, 0.8, 0.97];
+const BLUR_MAX = 4;
+// Grain time across the whole move, on top of a second per second of rest spin,
+// so the grain only runs while the mark moves.
+const GRAIN_MOVE = 4;
+// 0 before start, up to 1 at peak and back to 0 by end.
+const pulse = (e, [start, peak, end]) =>
+  smoothstep(e, start, peak) * (1 - smoothstep(e, peak, end));
 
 // Intensity scale for a light of this colour: the brightness a mid-grey light
 // would have, capped so a near-black theme colour can't flood.
@@ -132,9 +143,17 @@ function shoot(e, hole, view, out) {
 
 // Scrolling hands the rest spin over to a full turn back to the front, then the
 // camera goes through the counter to the page; progress also drives the beats.
-export default function Rig({ progress, vignette }) {
+// composed: the composer is on, so it dithers the frame instead of the mark.
+export default function Rig({ progress, vignette, stage, composed, levels }) {
   const { nodes, materials } = useGLTF(MODEL);
   const geometry = nodes['RP_-_Logo001'].geometry;
+  // A copy: the loader cache shares the mark's material.
+  const material = useMemo(() => {
+    const copy = materials.Abstract.clone();
+    copy.dithering = !composed;
+    return copy;
+  }, [materials, composed]);
+  useEffect(() => () => material.dispose(), [material]);
   const { colors } = useTheme();
   const counter = useMemo(
     () => findCounter(geometry, [-0.36, 0.18]),
@@ -166,16 +185,24 @@ export default function Rig({ progress, vignette }) {
   const facet = useRef(null);
   const streak = useRef(null);
   // spin: the rest turn, integrated at omega; to: the face the scroll turn
-  // lands on, chosen while the page is at the top; look: the vignette's last
-  // written style.
+  // lands on, chosen while the page is at the top; look and filter: the
+  // vignette's and the stage's last written styles; e: last frame's progress.
   const run = useRef({
     spin: REST_YAW,
     omega: SPIN,
     to: null,
     yaw: null,
     view: {},
-    look: null
+    look: null,
+    filter: '',
+    e: null
   });
+  useEffect(() => {
+    const el = stage.current;
+    return () => {
+      el?.style.removeProperty('filter');
+    };
+  }, [stage]);
   const shot = useMemo(
     () => ({
       pos: new Vector3(),
@@ -258,12 +285,23 @@ export default function Rig({ progress, vignette }) {
       : `opacity: ${at('vig', e).toFixed(3)}; transform: scale(${(1 + at('open', e) * 1.5).toFixed(3)})`;
     if (vignette.current && look !== r.look)
       vignette.current.setAttribute('style', (r.look = look));
+    const filter = composed ? blurFilter(BLUR_MAX * pulse(e, BLUR)) : '';
+    if (stage.current && filter !== r.filter)
+      stage.current.style.setProperty('filter', (r.filter = filter));
+    Object.assign(levels.current, {
+      bloom: clamp(Math.max(at('inside', e), at('behind', e)) / LIT, 0, 1),
+      travel:
+        levels.current.travel +
+        (r.omega * delta) / SPIN +
+        Math.abs(e - (r.e ?? e)) * GRAIN_MOVE
+    });
+    r.e = e;
   });
 
   return (
     <>
       <group ref={group}>
-        <mesh geometry={geometry} material={materials.Abstract} />
+        <mesh geometry={geometry} material={material} />
         {INSIDE.map((z, i) => (
           <pointLight
             key={`in${i}`}

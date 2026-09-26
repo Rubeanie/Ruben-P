@@ -56,3 +56,7 @@ export function turnAt(p) {
   const x = Math.min(1, Math.max(0, p / TURN_END));
   return x * (TURN_START + x * (3 - 2 * TURN_START + x * (TURN_START - 2)));
 }
+
+// A CSS blur of px, or none: blur(0px) still costs a filter layer.
+export const blurFilter = (px) =>
+  px >= 0.05 ? `blur(${px.toFixed(1)}px)` : '';

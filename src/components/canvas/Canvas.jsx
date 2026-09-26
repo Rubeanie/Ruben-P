@@ -5,6 +5,8 @@ import { Canvas as R3FCanvas } from '@react-three/fiber';
 import { PerformanceMonitor, Preload } from '@react-three/drei';
 import { Loading } from '@/components/dom/Loading';
 
+const STEP = 0.05;
+
 // Sentinel rendered inside the Suspense boundary: it only mounts once every
 // suspending child in this boundary has resolved, so it signals "this canvas is
 // loaded" — per instance, with no reliance on three's global loading manager
@@ -23,12 +25,16 @@ export default function Canvas({
   style,
   loader = true,
   onReady,
+  onOverload,
   ...props
 }) {
   const containerRef = useRef(null);
   const [onScreen, setOnScreen] = useState(true);
   const [dpr, setDpr] = useState(0.9);
   const [loaded, setLoaded] = useState(false);
+  // At the 0.5 floor, tracked from the declines themselves: the monitor's
+  // onChange stops firing once the factor reaches 0.
+  const floor = useRef(false);
   const handleReady = useCallback(() => {
     setLoaded(true);
     onReady?.();
@@ -65,11 +71,17 @@ export default function Canvas({
         <PerformanceMonitor
           ms={200}
           iterations={7}
-          step={0.05}
+          step={STEP}
           factor={1}
           onChange={({ factor }) =>
             setDpr(Math.round((0.5 + 0.6 * factor) * 100) / 100)
           }
+          onIncline={() => (floor.current = false)}
+          onDecline={({ factor }) => {
+            if (floor.current) onOverload?.();
+            floor.current = factor < STEP / 2;
+            if (floor.current) setDpr(0.5);
+          }}
         />
       </R3FCanvas>
       {loader && !loaded && (

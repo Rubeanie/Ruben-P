@@ -62,7 +62,14 @@ export const hero3d = {
         }),
       description: 'One for the turn, one for the approach'
     },
-    scrollHintField({ initialValue: false })
+    scrollHintField({ initialValue: false }),
+    {
+      name: 'grain',
+      title: 'Film grain',
+      type: 'boolean',
+      initialValue: true,
+      description: 'A faint moving grain over the mark while it moves'
+    }
   ],
   preview: {
     select: {

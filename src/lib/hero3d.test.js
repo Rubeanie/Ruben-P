@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test';
-import { ease, track, turnAt } from './hero3d';
+import { blurFilter, ease, track, turnAt } from './hero3d';
 
 const keys = [
   [0, 0],
@@ -40,4 +40,11 @@ test('turnAt lands on the face by p 0.5 and stays there', () => {
   expect(turnAt(0)).toBe(0);
   expect(turnAt(0.5)).toBeCloseTo(1, 12);
   expect(turnAt(0.8)).toBeCloseTo(1, 12);
+});
+
+test('blurFilter never writes blur(0px)', () => {
+  expect(blurFilter(0)).toBe('');
+  expect(blurFilter(0.049)).toBe('');
+  expect(blurFilter(0.05)).toBe('blur(0.1px)');
+  expect(blurFilter(4)).toBe('blur(4.0px)');
 });

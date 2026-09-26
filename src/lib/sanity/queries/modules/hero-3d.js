@@ -8,5 +8,6 @@ export const hero3dQuery = groq`
     stage,
     content[]{ ${contentQuery} }
   },
-  "scrollHint": coalesce(scrollHint, false)
+  "scrollHint": coalesce(scrollHint, false),
+  "grain": coalesce(grain, true)
 `;
