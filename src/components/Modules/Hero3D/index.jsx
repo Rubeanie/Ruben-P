@@ -7,12 +7,12 @@ import Stage from './Stage';
 import styles from '@/styles/components/Hero3D.module.scss';
 
 export default function Hero3D(props) {
-  const { content, beats, scrollHint } = props;
+  const { content, beats, scrollHint, grain } = props;
   const id = uid(props);
 
   return (
     <section id={id} className={styles.section}>
-      <Stage />
+      <Stage grain={grain} />
       <div className={styles.copy}>
         <div className={styles.name}>
           <RichText value={content} />

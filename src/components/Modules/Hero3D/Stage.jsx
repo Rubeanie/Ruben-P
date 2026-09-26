@@ -20,7 +20,7 @@ const subscribe = (change) => {
 // A fixed, full-bleed layer behind the page for the whole move: the content
 // after it scrolls up over the canvas, and once the move has run out the layer
 // hides and stops drawing, until the page scrolls back up into it.
-export default function Stage() {
+export default function Stage({ grain }) {
   const ref = useRef(null);
   const vignette = useRef(null);
   const done = useSyncExternalStore(
@@ -54,6 +54,8 @@ export default function Stage() {
         frameloop={done ? 'never' : 'always'}
         progress={progress}
         vignette={vignette}
+        stage={ref}
+        grain={grain}
         onReady={onReady}
       />
       <div ref={vignette} className={styles.vignette} />
