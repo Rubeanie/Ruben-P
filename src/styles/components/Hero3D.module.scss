@@ -145,6 +145,31 @@
   }
 }
 
+// A local shade keeps the approach heading above 3:1 on pale themes (3.71
+// desktop, 3.87 phone at worst). On the lead, so it takes the lead's opacity,
+// blur and rise; the heading stays above it.
+.beat[data-beat='approach'] {
+  .lead {
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      inset: -8em -35% -5em;
+      background: radial-gradient(
+        closest-side,
+        color-mix(in srgb, var(--color-background) 20%, transparent) 40%,
+        transparent
+      );
+    }
+  }
+
+  .heading {
+    z-index: 1;
+  }
+}
+
 @media (max-width: var.$media-mobile-width) {
   // The mark fills the width, so the side column drops below it to the
   // bottom-left.
