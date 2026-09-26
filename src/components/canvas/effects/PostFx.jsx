@@ -9,6 +9,7 @@ import {
   ToneMappingEffect,
   VignetteEffect
 } from 'postprocessing';
+import Backdrop from './Backdrop';
 import Cover from './Cover';
 import Fxaa from './Fxaa';
 import Glow from './Glow';
@@ -95,7 +96,9 @@ export default function PostFx({
   transparent = false,
   vignette,
   grain = 0,
-  grainTime
+  grainTime,
+  backdrop,
+  multisampling = 0
 }) {
   const composer = useRef(null);
   const { smoothing } = bloom;
@@ -119,17 +122,26 @@ export default function PostFx({
       // FXAA first, as it reads its neighbours from the pass input. The vignette
       // before Cover and the grain after it: both keep every channel under alpha.
       effects: [
-        transparent && new Fxaa(),
+        transparent && !multisampling && new Fxaa(),
         halo,
         new Glow(halo, 'wall'),
         new ToneMappingEffect({ mode: toneMapping }),
         transparent && new Glow(halo, 'page'),
+        backdrop && new Backdrop(backdrop),
         shade,
-        transparent && new Cover(),
+        transparent && !backdrop && new Cover(),
         noise
       ].filter(Boolean)
     };
-  }, [smoothing, toneMapping, transparent, vignetted, grain]);
+  }, [
+    smoothing,
+    toneMapping,
+    transparent,
+    backdrop,
+    vignetted,
+    grain,
+    multisampling
+  ]);
   useEffect(
     () => () => chain.effects.forEach((effect) => effect.dispose()),
     [chain]
@@ -146,7 +158,7 @@ export default function PostFx({
   );
 
   return (
-    <EffectComposer ref={composer} multisampling={0}>
+    <EffectComposer ref={composer} multisampling={multisampling}>
       {chain.effects.map((effect, i) => (
         <primitive key={i} object={effect} />
       ))}

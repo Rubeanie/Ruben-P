@@ -33,6 +33,9 @@ export default function ThreeScene(props) {
     environment,
     environmentBackground,
     keyLight,
+    bloom,
+    grain,
+    vignette,
     orbitControls,
     zoom
   } = props;
@@ -57,6 +60,9 @@ export default function ThreeScene(props) {
             environment={stegaClean(environment)}
             environmentBackground={environmentBackground}
             keyLight={keyLight}
+            bloom={stegaClean(bloom)}
+            grain={grain}
+            vignette={vignette}
             orbitControls={orbitControls}
             zoom={zoom}
           />
