@@ -4,5 +4,6 @@ import { ctaQuery } from './cta';
 
 export const calloutQuery = groq`
   content[]{ ${contentQuery} },
-  cta[]{ ${ctaQuery} }
+  cta[]{ ${ctaQuery} },
+  "size": coalesce(size, 'normal')
 `;

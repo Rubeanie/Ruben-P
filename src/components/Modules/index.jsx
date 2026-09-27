@@ -3,6 +3,7 @@ import { createDataAttribute } from 'next-sanity';
 import { draftMode } from 'next/headers';
 import AccordionList from './AccordionList';
 import Breadcrumbs from './Breadcrumbs';
+import Callout from './Callout';
 import CustomHTML from './CustomHTML';
 import PostDetails from './PostDetails';
 import PostFeatured from './PostFeatured';
@@ -24,6 +25,8 @@ const ModuleRenderer = ({ module, page, dataAttribute }) => {
       return <AccordionList {...module} dataAttribute={dataAttribute} />;
     case 'breadcrumbs':
       return <Breadcrumbs {...module} page={page} />;
+    case 'callout':
+      return <Callout {...module} values={page?.values} />;
     case 'custom-html':
       return <CustomHTML {...module} />;
     case 'post-details':
