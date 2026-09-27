@@ -28,6 +28,7 @@
 // The Studio's image heading: the site photo clipped to the glyphs, without the
 // fixed attachment the site uses, which breaks inside the editor's scroll pane.
 .image-heading {
+  padding-block-end: var.$image-text-descender;
   background: url('#{var.$image-background-url}') center / cover no-repeat;
   background-clip: text;
   -webkit-background-clip: text;

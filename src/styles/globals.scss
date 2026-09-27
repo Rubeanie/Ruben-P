@@ -124,6 +124,9 @@ li {
 }
 
 .image-text {
+  // The fill only paints the span's line box and Mont's descenders reach past it;
+  // padding on an inline span grows the painted area without moving the text.
+  padding-block-end: var.$image-text-descender;
   background-image: var.$image-background;
   background-repeat: no-repeat;
   background-position: center center;
