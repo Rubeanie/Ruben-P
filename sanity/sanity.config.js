@@ -9,7 +9,6 @@ import { dashboardTool } from '@sanity/dashboard';
 import { vercelWidget } from 'sanity-plugin-dashboard-widget-vercel';
 import { visionTool } from '@sanity/vision';
 import { media } from 'sanity-plugin-media';
-import { seoMetaFields } from 'sanity-plugin-seo';
 import { inlineSvgInput } from '@focus-reactive/sanity-plugin-inline-svg-input';
 import { codeInput } from '@sanity/code-input';
 import { colorInput } from '@sanity/color-input';
@@ -57,7 +56,6 @@ export default defineConfig({
     cloudinarySchemaPlugin(),
     cloudinaryAssetSourcePlugin(),
     inlineSvgInput(),
-    seoMetaFields(),
     codeInput(),
     colorInput()
   ],
