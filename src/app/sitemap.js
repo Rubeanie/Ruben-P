@@ -2,27 +2,29 @@ import { fetchSanity, groq } from '@/lib/sanity/fetch';
 import { baseUrl } from '@/lib/env';
 import { isPagePath } from '@/lib/slug';
 
-// The home and contact routes, then every indexable CMS page and post. The
+// The contact route, then every indexable CMS page and post (home included). The
 // same tags as the pages themselves, so a publish refreshes the sitemap too.
 export default async function sitemap() {
-  const pages = await fetchSanity(
-    groq`*[
-      _type in ['page', 'page.post'] &&
-      defined(metadata.slug.current) &&
-      !(metadata.slug.current in ['/', '404']) &&
-      metadata.seo.nofollowAttributes != true
-    ]{ 'slug': metadata.slug.current, _updatedAt }`,
-    { tags: ['pages', 'posts'] }
+  const { pages, site } = await fetchSanity(
+    groq`{
+      'pages': *[
+        _type in ['page', 'page.post'] &&
+        defined(metadata.slug.current)
+      ]{ 'slug': metadata.slug.current, 'nofollow': metadata.seo.nofollowAttributes, _updatedAt },
+      'site': *[_type == 'site'][0]{ 'nofollow': seo.nofollowAttributes }
+    }`,
+    { tags: ['pages', 'posts', 'site'] }
   );
+
+  const isIndexable = ({ nofollow }) => (nofollow ?? site?.nofollow) !== true;
+  const isSitemapEntry = (p) =>
+    isIndexable(p) && isPagePath(p.slug) && p.slug !== '/index';
+
   return [
-    { url: baseUrl },
-    { url: `${baseUrl}/contact` },
-    // Malformed and template slugs have no URL to list, and /index is not a page.
-    ...pages
-      .filter(({ slug }) => isPagePath(slug) && slug !== '/index')
-      .map(({ slug, _updatedAt }) => ({
-        url: `${baseUrl}${slug}`,
-        lastModified: _updatedAt
-      }))
+    ...(site?.nofollow !== true ? [{ url: `${baseUrl}/contact` }] : []),
+    ...pages.filter(isSitemapEntry).map(({ slug, _updatedAt }) => ({
+      url: slug === '/' ? baseUrl : `${baseUrl}${slug}`,
+      lastModified: _updatedAt
+    }))
   ];
 }

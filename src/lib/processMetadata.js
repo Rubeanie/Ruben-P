@@ -1,6 +1,7 @@
 import { getSite } from '@/lib/sanity/queries';
 import processUrl from '@/lib/processUrl';
 import { baseUrl } from '@/lib/env';
+import { withDefaults } from '@/lib/metadataDefaults';
 
 const getOpenGraph = ({ _type, description, image, title, siteName, url }) => ({
   _type,
@@ -36,27 +37,27 @@ export async function processMetadata(page) {
   const url = processUrl(page);
 
   const siteKeywords = site.seo?.seoKeywords || [];
+  const pageSeo = page?.metadata.seo || {};
+  const { seoKeywords } = pageSeo;
 
-  const {
-    additionalMetaTags = site.seo?.additionalMetaTags,
-    metaDescription = site.seo?.metaDescription,
-    metaTitle = site.seo?.metaTitle,
-    twitter = site.seo?.twitter,
-    nofollowAttributes = site.seo?.nofollowAttributes,
-    seoKeywords
-  } = page?.metadata.seo || {};
+  // GROQ projects an absent field as null, so withDefaults falls back with `??`.
+  const { additionalMetaTags, metaDescription, metaTitle, nofollowAttributes } =
+    withDefaults(pageSeo, site.seo);
+
+  // Twitter and Open Graph fall back to the site field by field.
+  const twitter = withDefaults(pageSeo.twitter, site.seo?.twitter);
 
   const safeKeywords = Array.isArray(seoKeywords) ? seoKeywords : [];
   const combinedKeywords = [...siteKeywords, ...safeKeywords];
   const tags = additionalMetaTags ? getMetaObjects(additionalMetaTags) : {};
-  const openGraphData = page?.metadata.seo?.openGraph || site.seo?.openGraph;
+  const openGraphData = withDefaults(pageSeo.openGraph, site.seo?.openGraph);
   // Posts rarely get a dedicated share image; the cover stands in, ahead of the site default.
   const withCover =
-    page?.cover?.asset?.url &&
-    !page?.metadata?.seo?.openGraph?.image?.asset?.url
+    page?.cover?.asset?.url && !pageSeo.openGraph?.image?.asset?.url
       ? { ...openGraphData, image: page.cover }
       : openGraphData;
-  const openGraph = withCover ? getOpenGraph(withCover) : undefined;
+  // A share preview always points at the page itself.
+  const openGraph = withCover ? getOpenGraph({ ...withCover, url }) : undefined;
 
   return {
     metadataBase: new URL(baseUrl),

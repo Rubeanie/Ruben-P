@@ -34,8 +34,7 @@ export const seoMetaFields = {
       title: 'Prevent indexing',
       type: 'boolean',
       description:
-        'Asks search engines not to index or follow links (adds noindex, nofollow).',
-      initialValue: false
+        'Asks search engines not to index or follow links (adds noindex, nofollow). On a page, leave it unset to follow Site settings; on Site settings it is the default for every page.'
     },
     {
       name: 'openGraph',
@@ -65,12 +64,8 @@ export const openGraph = {
   title: 'Open Graph',
   type: 'object',
   fields: [
-    {
-      name: 'url',
-      title: 'URL',
-      type: 'url',
-      description: 'Overrides the canonical URL used for this share.'
-    },
+    // og:url is always the page's own address.
+    { name: 'url', type: 'url', hidden: true },
     {
       name: 'image',
       type: 'image',
