@@ -28,7 +28,7 @@ async function autoAncestors(path) {
   if (!paths.length) return [];
 
   const docs = await fetchSanity(breadcrumbAncestorsQuery, {
-    params: { slugs: paths.map((href) => href.slice(1)) },
+    params: { slugs: paths },
     tags: ['pages', 'posts']
   });
 
@@ -36,7 +36,7 @@ async function autoAncestors(path) {
   return paths
     .map((href) => {
       const title = (docs ?? []).find(
-        (doc) => `/${stegaClean(doc.slug)}` === href
+        (doc) => stegaClean(doc.slug) === href
       )?.title;
       return title ? { key: href, label: title, href } : null;
     })

@@ -108,7 +108,7 @@ export const pagePost = {
       group: 'options'
     },
     {
-      ...metadata('portfolio/'),
+      ...metadata('/portfolio/'),
       group: 'seo'
     }
   ],

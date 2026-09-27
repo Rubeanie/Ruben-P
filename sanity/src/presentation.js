@@ -1,4 +1,5 @@
 import { map } from 'rxjs';
+import { isPagePath } from '@/lib/slug';
 
 export const locations = (params, context) => {
   if (['page', 'page.post'].includes(params.type)) {
@@ -10,23 +11,16 @@ export const locations = (params, context) => {
 
     return doc$.pipe(
       map((doc) => {
-        if (
-          !doc ||
-          !doc.metadata ||
-          !doc.metadata.slug ||
-          !doc.metadata.slug.current
-        )
-          return null;
-
         const directory = params.type === 'page.post' ? '/portfolio' : '';
-        const slug = doc.metadata.slug.current;
-        const path = slug === 'index' ? '' : `/${slug}`;
+        // The slug is the path itself; templates preview nowhere.
+        const slug = doc?.metadata?.slug?.current;
+        if (!isPagePath(slug)) return null;
 
         return {
           locations: [
             {
-              title: doc.title || doc.metadata.title || 'untitled',
-              href: [directory, path].filter(Boolean).join('')
+              title: doc.title || doc.metadata?.title || 'untitled',
+              href: `${directory}${slug}`
             }
           ]
         };

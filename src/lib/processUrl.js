@@ -1,5 +1,6 @@
 import { stegaClean } from '@sanity/client/stega';
 import { baseUrl } from '@/lib/env';
+import { isPagePath } from './slug';
 
 const BLOCKED_SCHEMES = new Set([
   'javascript:',
@@ -22,13 +23,20 @@ export function isSafeHref(url) {
   }
 }
 
+// Queries project `"slug": slug.current` (flat string); raw documents nest it.
+// stegaClean strips visual-editing payloads that would corrupt the URL.
+const slugOf = (page) =>
+  stegaClean(page?.metadata?.slug?.current ?? page?.metadata?.slug);
+
 // Resolve a `link` GROQ fragment (internal page reference or external URL) to an href.
 export function resolveLink(link) {
   const { type, external, params, internal } = link ?? {};
   const cleanType = stegaClean(type);
-  if (cleanType === 'internal' && internal?.metadata?.slug) {
-    return processUrl(internal, { base: false, params });
-  }
+  // No safe path for a malformed or template-only slug.
+  if (cleanType === 'internal')
+    return isPagePath(slugOf(internal))
+      ? processUrl(internal, { base: false, params })
+      : null;
   if (cleanType === 'external' && external) {
     const url = stegaClean(external) + (stegaClean(params) || '');
     return isSafeHref(url) ? url : null;
@@ -37,12 +45,8 @@ export function resolveLink(link) {
 }
 
 export default function processUrl(page, { base = true, params } = {}) {
-  // Queries project `"slug": slug.current` (flat string); raw documents nest it.
-  // stegaClean strips visual-editing payloads that would corrupt the URL.
-  const slug = stegaClean(
-    page?.metadata?.slug?.current ?? page?.metadata?.slug
-  );
-  const path = slug === 'index' ? '' : slug;
+  const slug = slugOf(page);
+  const path = isPagePath(slug) ? slug.slice(1) : '';
 
   return `${base ? baseUrl : ''}/${[path, stegaClean(params)].filter(Boolean).join('/')}`;
 }

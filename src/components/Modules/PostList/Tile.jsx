@@ -8,6 +8,7 @@ import { LuStar } from 'react-icons/lu';
 import { imageBuilder } from '@/lib/sanity/image';
 import { shapeSize } from '@/lib/bento';
 import { easeOut, formatDate, reducedMotion } from '@/lib/posts';
+import { isPagePath } from '@/lib/slug';
 import styles from '@/styles/components/PostList.module.scss';
 
 const ZOOM = 1.04;
@@ -169,9 +170,13 @@ export default function Tile({
   const date = publishDate ? formatDate(publishDate) : '';
   const showDate = Boolean(date) && (span === 2 || mobileShape === '2x1');
   const categories = post.categories ?? [];
+  // A malformed or template slug has no safe path; the tile still renders, just without a link.
+  const slug = stegaClean(post.slug);
+  const hasPath = isPagePath(slug);
+  const Wrapper = hasPath ? Link : 'div';
   return (
-    <Link
-      href={`/${stegaClean(post.slug)}`}
+    <Wrapper
+      {...(hasPath && { href: slug })}
       className={styles.tile}
       data-post-id={post._id}
       data-shape={shape}
@@ -253,6 +258,6 @@ export default function Tile({
       {categories.length > 0 && (
         <Dots categories={categories} active={active} />
       )}
-    </Link>
+    </Wrapper>
   );
 }

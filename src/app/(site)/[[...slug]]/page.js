@@ -12,14 +12,16 @@ import { stegaClean } from '@sanity/client/stega';
 import { getRedirect } from '@/lib/redirects';
 import Redirecting from '@/components/Redirecting';
 import { themeFromImage } from '@/lib/imageTheme';
+import { isPagePath } from '@/lib/slug';
 
 export default async function Page({ params }) {
   const { page, path } = await getPage(params);
   if (!page) {
-    if (path) {
+    // The home page is only served at the root, so there's no redirect to check for it.
+    if (path !== '/') {
       // No page: check the CMS redirects. Internal targets redirect natively,
       // external ones get the interstitial.
-      const target = await getRedirect(`/${path}`);
+      const target = await getRedirect(path);
       if (target?.url.startsWith('/'))
         (target.permanent ? permanentRedirect : redirect)(target.url);
       if (target) return <Redirecting url={target.url} label={target.label} />;
@@ -57,27 +59,28 @@ export async function generateStaticParams() {
   const slugs = await client.fetch(
     groq`*[
       _type in ['page', 'page.post'] &&
-      defined(metadata.slug.current) &&
-      !(metadata.slug.current in ['index', '404'])
+      defined(metadata.slug.current)
     ].metadata.slug.current`
   );
 
   return [
-    // the home route is the CMS index page
+    // the home route is the CMS page whose slug is /
     { slug: [] },
-    ...slugs.map((slug) => ({ slug: slug.split('/') }))
+    // Templates and / itself are served through their own routes.
+    ...slugs
+      .filter((slug) => isPagePath(slug) && slug !== '/')
+      .map((slug) => ({ slug: slug.slice(1).split('/') }))
   ];
 }
 
 async function getPage(params) {
   const { slug } = await params;
-  const path = slug?.join('/');
-  const home = !path;
+  const path = '/' + (slug ?? []).join('/');
+  if (!isPagePath(path)) return { page: null, path };
   const page = await fetchSanity(
     groq`*[
       _type in ['page', 'page.post'] &&
-      metadata.slug.current == $slug &&
-      ($home || !(metadata.slug.current in ['index', '404']))
+      metadata.slug.current == $path
     ][0]{
       _type,
       _updatedAt,
@@ -93,7 +96,7 @@ async function getPage(params) {
       ${metadataQuery}
     }`,
     {
-      params: { slug: home ? 'index' : path, home },
+      params: { path },
       tags: ['pages', 'posts', 'authors']
     }
   );

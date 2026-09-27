@@ -1,5 +1,9 @@
 import { IoMdBrowsers, IoMdEyeOff } from 'react-icons/io';
-import { MdHomeFilled, MdQuestionMark } from 'react-icons/md';
+import {
+  MdCallMissedOutgoing,
+  MdHomeFilled,
+  MdQuestionMark
+} from 'react-icons/md';
 import { pageBlock } from '../fragments/page-block';
 import { metadata } from '../fragments/metadata';
 
@@ -65,11 +69,12 @@ export const page = {
     },
     prepare: ({ title, slug, media, noindex }) => ({
       title,
-      subtitle: slug && (slug === 'index' ? '/' : `/${slug}`),
+      subtitle: slug,
       media:
         media ||
-        (slug === 'index' && MdHomeFilled) ||
+        (slug === '/' && MdHomeFilled) ||
         (slug === '404' && MdQuestionMark) ||
+        (slug === 'redirect' && MdCallMissedOutgoing) ||
         (noindex && IoMdEyeOff)
     })
   }

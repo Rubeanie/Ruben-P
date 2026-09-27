@@ -33,6 +33,8 @@ export const link = {
           type: 'page.post'
         }
       ],
+      // Template pages (404, redirect) have no path to link to.
+      options: { filter: 'string::startsWith(metadata.slug.current, "/")' },
       hidden: ({ parent }) => parent?.type !== 'internal'
     },
     {
@@ -70,7 +72,7 @@ export const link = {
         title: label || title,
         subtitle: [
           _type === 'page.post' ? '/portfolio' : null,
-          external || (slug && (slug === 'index' ? '/' : `/${slug}`)),
+          external || slug,
           params
         ]
           .filter(Boolean)
