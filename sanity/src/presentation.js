@@ -11,7 +11,6 @@ export const locations = (params, context) => {
 
     return doc$.pipe(
       map((doc) => {
-        const directory = params.type === 'page.post' ? '/portfolio' : '';
         // The slug is the path itself; templates preview nowhere.
         const slug = doc?.metadata?.slug?.current;
         if (!isPagePath(slug)) return null;
@@ -20,7 +19,7 @@ export const locations = (params, context) => {
           locations: [
             {
               title: doc.title || doc.metadata?.title || 'untitled',
-              href: `${directory}${slug}`
+              href: slug
             }
           ]
         };

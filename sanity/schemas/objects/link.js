@@ -61,22 +61,15 @@ export const link = {
   preview: {
     select: {
       label: 'label',
-      _type: 'internal._type',
       title: 'internal.title',
       slug: 'internal.metadata.slug.current',
       external: 'external',
       params: 'params'
     },
-    prepare({ label, _type, title, slug, external, params }) {
+    prepare({ label, title, slug, external, params }) {
       return {
         title: label || title,
-        subtitle: [
-          _type === 'page.post' ? '/portfolio' : null,
-          external || slug,
-          params
-        ]
-          .filter(Boolean)
-          .join('')
+        subtitle: [external || slug, params].filter(Boolean).join('')
       };
     }
   }
