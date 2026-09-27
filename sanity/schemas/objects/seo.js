@@ -64,8 +64,6 @@ export const openGraph = {
   title: 'Open Graph',
   type: 'object',
   fields: [
-    // og:url is always the page's own address.
-    { name: 'url', type: 'url', hidden: true },
     {
       name: 'image',
       type: 'image',

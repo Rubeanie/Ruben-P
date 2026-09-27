@@ -74,10 +74,7 @@ export async function processMetadata(page) {
     },
     openGraph,
     alternates: {
-      canonical: url || '',
-      types: {
-        'application/rss+xml': '/blog/rss.xml'
-      }
+      canonical: url || ''
     },
     keywords: combinedKeywords.join(', '),
     other: tags

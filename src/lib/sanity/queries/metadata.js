@@ -16,7 +16,9 @@ const imageFieldsQuery = groq`
     height,
     width,
   },
-  asset->{...}
+  asset->{
+    url
+  }
 `;
 
 const metaAttributesQuery = groq`
@@ -32,7 +34,6 @@ const metaAttributesQuery = groq`
 const openGraphQuery = groq`
   _type,
   siteName,
-  url,
   description,
   title,
   image{
