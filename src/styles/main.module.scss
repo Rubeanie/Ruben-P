@@ -25,7 +25,7 @@ main {
     padding-top: unset;
   }
 
-  // Per-page CMS option: clears the floating navbar on pages without a hero
+  // Clears the floating navbar on pages that don't open with a hero
   .nav-pad {
     padding-top: var.$navbar-height;
   }

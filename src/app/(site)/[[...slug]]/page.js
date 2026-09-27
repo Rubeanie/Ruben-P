@@ -28,8 +28,10 @@ export default async function Page({ params }) {
     }
     notFound();
   }
+  // Heroes clear the floating navbar themselves; anything else needs the padding.
+  const opensWithHero = page.modules?.[0]?._type?.startsWith('hero');
   return (
-    <div className={page.navPadding ? 'nav-pad' : undefined}>
+    <div className={opensWithHero ? undefined : 'nav-pad'}>
       <Modules modules={page?.modules} page={page} />
       {page._type === 'page.post' && <ArticleJsonLd page={page} />}
     </div>
@@ -90,8 +92,6 @@ async function getPage(params) {
         count(authors) > 0 => authors[]->{ ${authorQuery} },
         [*[_type == 'site'][0].author->{ ${authorQuery} }]
       )),
-      // initialValue only applies to new docs, so older pages default here
-      "navPadding": coalesce(navPadding, true),
       modules[]{ ${modulesQuery} },
       ${metadataQuery}
     }`,
