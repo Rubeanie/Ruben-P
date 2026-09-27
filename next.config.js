@@ -24,6 +24,10 @@ const nextConfig = {
   },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')]
+  },
+  async redirects() {
+    // Next otherwise serves the home page at /index too, as a second URL for it.
+    return [{ source: '/index', destination: '/', permanent: true }];
   }
 };
 
