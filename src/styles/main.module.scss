@@ -25,6 +25,11 @@ main {
     padding-top: unset;
   }
 
+  // 44px tap target, like every text link.
+  .hero-no-padding .column p a {
+    @include var.touch-target;
+  }
+
   // Clears the floating navbar on pages that don't open with a hero
   .nav-pad {
     padding-top: var.$navbar-height;

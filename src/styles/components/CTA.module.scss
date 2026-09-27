@@ -16,9 +16,16 @@
     transform 0.12s var.$ease-out,
     background-color 0.15s ease,
     opacity 0.15s ease,
-    filter 0.2s ease;
+    --candy-lift 0.2s var.$ease-out;
+}
 
-  // Press is not hover: a tap has to answer on touch too.
+.action {
+  @include var.candy;
+}
+
+// Press is not hover: a tap has to answer on touch too (44px+ solid surfaces only).
+.action,
+.ghost {
   &:active {
     transform: scale(0.97);
   }
@@ -30,10 +37,6 @@
   }
 }
 
-.action {
-  @include var.candy;
-}
-
 // Glass chip for the secondary button beside a candy action.
 .outline {
   background: rgba(255, 255, 255, 0.06);
@@ -41,6 +44,10 @@
     inset 0 0 0 1px rgba(255, 255, 255, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(12px) saturate(150%);
+
+  &:active {
+    background: rgba(255, 255, 255, 0.1);
+  }
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
@@ -68,4 +75,8 @@
   padding: 0;
   border-radius: 0;
   @include var.text-link;
+
+  &:active {
+    text-decoration-color: currentColor;
+  }
 }

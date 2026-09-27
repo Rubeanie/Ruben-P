@@ -83,9 +83,12 @@
       }
     }
 
-    // extra inset so the line-art logo doesn't sit crammed against the edge
+    // padding grows the 40px logo to a 44px target; the negative margin keeps its visual spot.
     > a:first-of-type {
-      margin-inline-start: 0.9rem;
+      padding: 2px;
+      margin-block: -2px;
+      margin-inline-end: -2px;
+      margin-inline-start: calc(0.9rem - 2px);
     }
 
     .links {
@@ -221,10 +224,10 @@
         height: 3px;
         border-radius: 9em;
         background: var.$color-primary;
-        // closing: uncross first, then spread
+        // closing: uncross first, then spread; plain ease-out, $ease-out snaps each short phase
         transition:
-          translate 0.15s var.$ease-out 0.15s,
-          rotate 0.15s var.$ease-out;
+          translate 0.15s ease-out 0.15s,
+          rotate 0.15s ease-out;
       }
 
       &::before {
@@ -271,7 +274,7 @@
   @include var.candy;
   transition:
     transform 0.12s var.$ease-out,
-    filter 0.2s ease;
+    --candy-lift 0.2s var.$ease-out;
 
   &:active {
     transform: scale(0.97);

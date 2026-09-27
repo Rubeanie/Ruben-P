@@ -34,6 +34,12 @@ $theme-color-properties: (
   }
 }
 
+@property --candy-lift {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
 html {
   transition:
     --color-primary var.$theme-transition,
