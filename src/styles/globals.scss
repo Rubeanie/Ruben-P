@@ -128,6 +128,8 @@ li {
   // padding on an inline span grows the painted area without moving the text.
   padding-block-end: var.$image-text-descender;
   background-image: var.$image-background;
+  // Clipped to the letters like the photo, so they stay readable if the photo fails to load.
+  background-color: var.$color-primary;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -158,7 +160,16 @@ li {
   }
 }
 
-@media (prefers-contrast: more) {
+// Both a request for higher contrast and Windows' forced-colors mode keep
+// background images, so the photo would override the chosen palette.
+@media (prefers-contrast: more), (forced-colors: active) {
+  .image-text {
+    @include image-text-flat;
+  }
+}
+
+// iOS cannot paint a fixed background, on iPads and landscape phones too.
+@supports (-webkit-touch-callout: none) {
   .image-text {
     @include image-text-flat;
   }
