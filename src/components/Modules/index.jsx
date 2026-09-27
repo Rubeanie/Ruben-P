@@ -81,7 +81,7 @@ export async function Modules({ modules, page }) {
     createDataAttribute({ baseUrl: '/admin', id: page._id, type: 'page' });
   return (
     <>
-      {modules.map((module) => {
+      {(modules ?? []).map((module) => {
         const scoped = sanity
           ? sanity.scope(`modules[_key=="${module._key}"]`)
           : undefined;

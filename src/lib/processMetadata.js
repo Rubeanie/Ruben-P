@@ -21,7 +21,7 @@ const getMetaObjects = (tags) =>
 const resolveImage = (image) => image?.asset?.url ?? '';
 
 const getMetaAttribute = (attrs) =>
-  attrs?.reduce(
+  attrs?.filter(Boolean).reduce(
     (obj, i) => ({
       ...obj,
       [i?.attributeKey]:
@@ -37,7 +37,7 @@ export async function processMetadata(page) {
   const url = processUrl(page);
 
   const siteKeywords = site.seo?.seoKeywords || [];
-  const pageSeo = page?.metadata.seo || {};
+  const pageSeo = page?.metadata?.seo || {};
   const { seoKeywords } = pageSeo;
 
   // GROQ projects an absent field as null, so withDefaults falls back with `??`.

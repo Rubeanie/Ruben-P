@@ -1,7 +1,7 @@
 import { groq } from '../../fetch';
 
 export const themesQuery = groq`
-  "themes": themes[]->{
+  "themes": array::compact(themes[]->{
     "styles": styles[]{
       "title": title,
       "image": coalesce(image.derived[0].secure_url, image.secure_url),
@@ -11,5 +11,5 @@ export const themesQuery = groq`
       "textColor": textColor.hex,
       "message": message
     }
-  }.styles[]
+  }.styles[])
 `;

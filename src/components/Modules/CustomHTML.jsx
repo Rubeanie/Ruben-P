@@ -7,27 +7,27 @@ import { useEffect, useRef } from 'react';
 export default function CustomHTML({ className, html, ...props }) {
   const ref = useRef(null);
   const injectedRef = useRef(false);
+  const code = html?.code;
 
-  // Inject the script fragment once. The ref flag makes any re-run — StrictMode's
-  // double-invoke or an html.code change — a no-op, so the script runs exactly once.
+  // Inject the script fragment once; the ref flag makes any re-run a no-op.
   useEffect(() => {
     if (injectedRef.current) return;
-    if (!html.code || !html.code.includes('<script')) return;
+    if (!code || !code.includes('<script')) return;
     injectedRef.current = true;
     const parsed = document
       .createRange()
-      .createContextualFragment(stegaClean(html.code));
+      .createContextualFragment(stegaClean(code));
     ref.current?.appendChild(parsed);
-  }, [html.code]);
+  }, [code]);
 
-  if (!html.code) return null;
+  if (!code) return null;
 
-  if (!html.code.includes('<script'))
+  if (!code.includes('<script'))
     return (
       <section
         id={uid(props)}
         className={stegaClean(className)}
-        dangerouslySetInnerHTML={{ __html: stegaClean(html.code) }}
+        dangerouslySetInnerHTML={{ __html: stegaClean(code) }}
       />
     );
 
