@@ -53,13 +53,20 @@ export const hero3d = {
           }
         }
       ],
-      validation: (Rule) =>
+      validation: (Rule) => [
         Rule.max(2).custom((beats) => {
           const stages = (beats ?? []).map((beat) => beat.stage);
           return stages.length === new Set(stages).size
             ? true
             : 'Only one beat per stage';
         }),
+        Rule.custom((beats) =>
+          !beats?.length ||
+          beats.some((beat) => getBlockText(beat.content).trim())
+            ? true
+            : 'Both beats are empty; the hero will have nothing to say'
+        ).warning()
+      ],
       description: 'One for the turn, one for the approach'
     },
     scrollHintField({ initialValue: false }),
