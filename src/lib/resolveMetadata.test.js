@@ -70,7 +70,7 @@ test('Twitter spells out what Next would copy from Open Graph', () => {
     images: [{ url: 'https://cdn.example/site.jpg' }],
     creator: '@site',
     site: '@publisher',
-    card: 'summary'
+    card: 'summary_large_image'
   });
 });
 

@@ -73,8 +73,10 @@ export function resolveMetadata(page, site) {
       images: openGraph?.images ?? [],
       creator: twitter?.handle || twitter?.creator,
       site: twitter?.site,
-      // Next settles an unset card before it copies the Open Graph image over, so it ships summary.
-      card: twitter?.cardType || 'summary'
+      // Unset means the large card when there is an image; Next alone would ship summary.
+      card:
+        twitter?.cardType ||
+        (openGraph?.images?.length ? 'summary_large_image' : 'summary')
     },
     robots: {
       index: !nofollowAttributes,
