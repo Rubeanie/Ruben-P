@@ -28,6 +28,12 @@ export function isSafeHref(url) {
 const slugOf = (page) =>
   stegaClean(page?.metadata?.slug?.current ?? page?.metadata?.slug);
 
+// Params are only ever a query or fragment; anything else would change the path.
+const suffixOf = (params) => {
+  const clean = stegaClean(params);
+  return /^[?#]/.test(clean ?? '') ? clean : '';
+};
+
 // Resolve a `link` GROQ fragment (internal page reference or external URL) to an href.
 export function resolveLink(link) {
   const { type, external, params, internal } = link ?? {};
@@ -38,7 +44,7 @@ export function resolveLink(link) {
       ? processUrl(internal, { base: false, params })
       : null;
   if (cleanType === 'external' && external) {
-    const url = stegaClean(external) + (stegaClean(params) || '');
+    const url = stegaClean(external) + suffixOf(params);
     return isSafeHref(url) ? url : null;
   }
   return null;
@@ -48,5 +54,5 @@ export default function processUrl(page, { base = true, params } = {}) {
   const slug = slugOf(page);
   const path = isPagePath(slug) ? slug.slice(1) : '';
 
-  return `${base ? baseUrl : ''}/${[path, stegaClean(params)].filter(Boolean).join('/')}`;
+  return `${base ? baseUrl : ''}/${path}${suffixOf(params)}`;
 }

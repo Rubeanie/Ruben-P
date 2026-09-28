@@ -55,6 +55,10 @@ export const link = {
       title: 'URL parameters',
       placeholder: 'e.g. #jump-link or ?foo=bar',
       type: 'string',
+      validation: (Rule) =>
+        Rule.regex(/^[?#]/, { name: 'query or fragment' }).error(
+          'Start with ? or #.'
+        ),
       hidden: ({ parent }) => !parent?.type
     }
   ],

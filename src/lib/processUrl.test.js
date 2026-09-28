@@ -62,3 +62,28 @@ test('resolveLink returns null for an internal template slug', () => {
     })
   ).toBe(null);
 });
+
+test.each([
+  ['/about', '#team', '/about#team'],
+  ['/about', '?x=1', '/about?x=1'],
+  ['/', '#top', '/#top'],
+  ['/', '/evil.example.com', '/'],
+  ['/about', 'sub', '/about']
+])('resolveLink(%p + %p) is %p', (slug, params, expected) => {
+  expect(
+    resolveLink({
+      type: 'internal',
+      params,
+      internal: { metadata: { slug: { current: slug } } }
+    })
+  ).toBe(expected);
+});
+
+test('resolveLink appends only a query or fragment to an external link', () => {
+  expect(
+    resolveLink({ type: 'external', external: 'https://x.dev', params: '#a' })
+  ).toBe('https://x.dev#a');
+  expect(
+    resolveLink({ type: 'external', external: 'https://x.dev', params: 'b' })
+  ).toBe('https://x.dev');
+});
