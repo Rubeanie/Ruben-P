@@ -87,7 +87,11 @@ export async function Modules({ modules, page }) {
   const sanity =
     isEnabled &&
     page?._id &&
-    createDataAttribute({ baseUrl: '/admin', id: page._id, type: 'page' });
+    createDataAttribute({
+      baseUrl: '/admin',
+      id: page._id,
+      type: page._type
+    });
   return (
     <>
       {(modules ?? []).map((module) => {
