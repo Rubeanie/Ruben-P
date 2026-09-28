@@ -1,21 +1,13 @@
 import { unstable_cache } from 'next/cache';
-import { clampContrast, deriveThemeColorsFromPalette } from './themes';
-
-function getRendition(url) {
-  const parsed = new URL(url);
-
-  if (parsed.hostname === 'cdn.sanity.io') {
-    parsed.searchParams.set('w', '800');
-    parsed.searchParams.set('fm', 'jpg');
-    parsed.searchParams.set('q', '80');
-  }
-
-  return parsed.toString();
-}
+import {
+  clampContrast,
+  deriveThemeColorsFromPalette,
+  themeRendition
+} from './themes';
 
 const cachedThemeFromImage = unstable_cache(
   async (url) => {
-    const rendition = getRendition(url);
+    const rendition = themeRendition(url);
     const res = await fetch(rendition, { cache: 'force-cache' });
     const buffer = Buffer.from(await res.arrayBuffer());
     const { Vibrant } = await import('node-vibrant/node');

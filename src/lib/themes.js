@@ -176,6 +176,19 @@ function getSwatchHex(palette, names) {
   return null;
 }
 
+// The server and the Studio analyse the same small JPG of a hero photo.
+export function themeRendition(url) {
+  const parsed = new URL(url);
+
+  if (parsed.hostname === 'cdn.sanity.io') {
+    parsed.searchParams.set('w', '800');
+    parsed.searchParams.set('fm', 'jpg');
+    parsed.searchParams.set('q', '80');
+  }
+
+  return parsed.toString();
+}
+
 export function deriveThemeColorsFromPalette(palette) {
   const baseHex = getSwatchHex(palette, BASE_SWATCHES);
 

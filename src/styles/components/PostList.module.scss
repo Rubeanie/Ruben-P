@@ -18,14 +18,6 @@ $star-clear-big: $star-size + var.$space-4 + var.$space-1;
 $ring:
   inset 0 1px 0 rgba(255, 255, 255, 0.14),
   var.$hairline;
-// A long title stops at N lines so it can never fill a small tile.
-@mixin clamp($lines) {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: $lines;
-  overflow: hidden;
-}
-
 // The band the copy sits on: the picture stays bright and softens under the text.
 @mixin blur-band {
   content: '';
@@ -366,12 +358,12 @@ $ring:
 }
 
 .tile[data-shape='1x1'] .title {
-  @include clamp(2);
+  @include var.clamp(2);
 }
 
 .tile[data-shape='2x1'] .title,
 .tile[data-shape='1x2'] .title {
-  @include clamp(3);
+  @include var.clamp(3);
   font-size: var.$p3-size;
 }
 
@@ -478,7 +470,7 @@ $ring:
   }
 
   .title {
-    @include clamp(2);
+    @include var.clamp(2);
     padding-inline-end: var(--star-clear);
   }
 
@@ -788,12 +780,12 @@ $ring:
   }
 
   .grid .tile[data-mobile-shape='1x1'] .title {
-    @include clamp(2);
+    @include var.clamp(2);
     font-size: var.$p4-size;
   }
 
   .grid .tile[data-mobile-shape='2x1'] .title {
-    @include clamp(3);
+    @include var.clamp(3);
     font-size: var.$p3-size;
   }
 

@@ -117,6 +117,14 @@
     }
   }
 }
+// Stops text at N lines; a long title can never fill a small tile or card.
+@mixin clamp($lines) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines;
+  overflow: hidden;
+}
+
 // Visually hidden, still read out.
 @mixin sr-only {
   position: absolute;

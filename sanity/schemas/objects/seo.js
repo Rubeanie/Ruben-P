@@ -106,7 +106,15 @@ export const twitter = {
       name: 'cardType',
       title: 'Card type',
       type: 'string',
-      description: 'Twitter card layout, e.g. summary or summary_large_image.'
+      description:
+        'How X, Discord and Slack show the share image. Leave unset to follow Site settings.',
+      options: {
+        list: [
+          { title: 'Summary (small image)', value: 'summary' },
+          { title: 'Summary with large image', value: 'summary_large_image' }
+        ],
+        layout: 'radio'
+      }
     },
     {
       name: 'creator',

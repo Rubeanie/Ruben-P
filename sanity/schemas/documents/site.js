@@ -1,4 +1,5 @@
 import { MdWeb } from 'react-icons/md';
+import { SharePreviewInput } from '../../src/components/SharePreview/SharePreviewInput';
 
 export const site = {
   name: 'site',
@@ -71,7 +72,8 @@ export const site = {
       name: 'seo',
       title: 'Default SEO',
       type: 'seoMetaFields',
-      group: 'seo'
+      group: 'seo',
+      components: { input: SharePreviewInput }
     }
   ],
   preview: {
