@@ -28,3 +28,25 @@ export async function themeFromImage(url) {
     return null;
   }
 }
+
+const THEME_COLOR_KEYS = {
+  primaryColor: 'primary',
+  secondaryColor: 'secondary',
+  backgroundColor: 'background',
+  textColor: 'text'
+};
+
+export const themeHasAllColors = (style) =>
+  Object.keys(THEME_COLOR_KEYS).every((key) => style[key]);
+
+// A manually set colour wins for its own field; the photo-derived palette only fills the rest.
+export const fillThemeColors = (style, colors) =>
+  colors
+    ? Object.entries(THEME_COLOR_KEYS).reduce(
+        (filled, [key, paletteKey]) => ({
+          ...filled,
+          [key]: style[key] || colors[paletteKey]
+        }),
+        { ...style }
+      )
+    : style;
