@@ -16,10 +16,14 @@ const Scene = dynamic(() => import('@/components/canvas/Scene'), {
 // Defer the scene (chunk, GLB, HDRI/PMREM, GPU uploads) until it nears the
 // viewport, so off-screen scenes don't all load at once and jank scrolling. The
 // frame reserves the box, so mounting late causes no layout shift.
+// A model that never resolves (bad host, blocked CORS, huge file) would spin forever.
+const LOAD_TIMEOUT = 20000;
+
 export default function SceneCanvas(props) {
   const ref = useRef(null);
   const [active, setActive] = useState(false);
   const [ready, setReady] = useState(false);
+  const [timedOut, setTimedOut] = useState(false);
   // Stable: Canvas's ready sentinel runs an effect keyed on this callback.
   const handleReady = useCallback(() => setReady(true), []);
 
@@ -41,6 +45,12 @@ export default function SceneCanvas(props) {
     return () => observer.disconnect();
   }, [active]);
 
+  useEffect(() => {
+    if (!active || ready) return undefined;
+    const timeout = setTimeout(() => setTimedOut(true), LOAD_TIMEOUT);
+    return () => clearTimeout(timeout);
+  }, [active, ready]);
+
   return (
     <>
       <div
@@ -49,11 +59,16 @@ export default function SceneCanvas(props) {
         data-loaded={ready ? '' : undefined}>
         {active && <Scene {...props} onReady={handleReady} />}
       </div>
-      {!ready && (
-        <div className={styles.loading}>
-          <Loading />
-        </div>
-      )}
+      {!ready &&
+        (timedOut ? (
+          <div className={styles.error}>
+            <p>The 3D model could not be loaded.</p>
+          </div>
+        ) : (
+          <div className={styles.loading}>
+            <Loading />
+          </div>
+        ))}
     </>
   );
 }

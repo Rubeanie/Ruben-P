@@ -33,6 +33,21 @@
   pointer-events: none;
 }
 
+.error {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-inline: var.$space-2;
+
+  p {
+    margin: 0;
+    opacity: var.$muted-strong;
+  }
+}
+
 .canvas {
   position: absolute;
   inset: 0;

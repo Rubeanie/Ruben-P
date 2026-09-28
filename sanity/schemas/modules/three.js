@@ -1,8 +1,12 @@
 import { IoMdCube } from 'react-icons/io';
+import { apiVersion } from '@/lib/env';
 import { blockLayoutFields } from '../fragments/fields/block-layout';
 
 // Grain and vignette ride on the glow's composer, so they only exist with it.
 const GLOWING = ['quiet', 'medium'];
+
+// A bigger GLB is still valid, just slow on a phone connection.
+const MAX_MODEL_BYTES = 10 * 1024 * 1024;
 
 export const threeJs = {
   name: 'three.js',
@@ -33,6 +37,17 @@ export const threeJs = {
       description: 'Upload a GLB file',
       options: { accept: '.glb,model/gltf-binary' },
       hidden: ({ parent }) => parent?.modelSource !== 'file',
+      validation: (Rule) =>
+        Rule.custom(async (file, context) => {
+          if (!file?.asset?._ref) return true;
+          const client = context.getClient({ apiVersion });
+          const size = await client.fetch(`*[_id == $id][0].size`, {
+            id: file.asset._ref
+          });
+          return !size || size <= MAX_MODEL_BYTES
+            ? true
+            : `This file is ${(size / 1024 / 1024).toFixed(1)} MB. Large models are slow to load on a phone connection.`;
+        }).warning(),
       group: 'content'
     },
     {
