@@ -10,9 +10,6 @@ export const DEFAULT_THEME_COLORS = {
 export const DEFAULT_THEME_URL =
   'https://res.cloudinary.com/ruben-p/image/upload/f_avif,q_30,c_limit,w_800/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq.webp';
 
-// The browser bar colour while no hero sets one.
-export const SITE_BAR_COLOR = '#121212';
-
 export const DEFAULT_THEME = {
   url: DEFAULT_THEME_URL,
   colors: DEFAULT_THEME_COLORS,
@@ -147,6 +144,12 @@ function getThemeImageUrl(url) {
   return `url('${url}')`;
 }
 
+// Android Chrome and desktop tab strips tint from this meta; iOS 26 samples the page instead.
+export function setBarColor(value) {
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta && value) meta.content = value;
+}
+
 export function applyThemeToDocument(theme) {
   if (typeof document === 'undefined' || !theme?.colors) {
     return;
@@ -157,6 +160,10 @@ export function applyThemeToDocument(theme) {
     // the page's own theme, published so a hero can blend back to it
     document.documentElement.style.setProperty(`--page-${key}`, value);
   });
+
+  // A hero in charge keeps its own bar colour until it hands back.
+  if (!document.querySelector('[data-hero-theme="on"]'))
+    setBarColor(theme.colors.background);
 
   document.documentElement.style.setProperty(
     '--image-background',

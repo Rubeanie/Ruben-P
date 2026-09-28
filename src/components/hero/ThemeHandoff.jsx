@@ -1,15 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { useTheme } from '@/components/ThemeContext';
-import { SITE_BAR_COLOR } from '@/lib/themes';
+import { setBarColor } from '@/lib/themes';
 import ThemeStyle from './ThemeStyle';
-
-// Android Chrome tints its bars from this meta only.
-function setBarColor(value) {
-  const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta && value) meta.content = value;
-}
 
 const pageBackground = () =>
   getComputedStyle(document.documentElement)
@@ -29,13 +22,7 @@ export default function ThemeHandoff({
   children
 }) {
   const ref = useRef(null);
-  const page = useTheme().colors;
   const heroBackground = colors?.background;
-
-  // The page theme can resolve after the flip.
-  useEffect(() => {
-    if (ref.current.dataset.heroTheme === 'off') setBarColor(pageBackground());
-  }, [page]);
 
   useEffect(() => {
     if (!heroBackground) return;
@@ -58,7 +45,7 @@ export default function ThemeHandoff({
     return () => {
       observer.disconnect();
       delete root.dataset.heroSettled;
-      setBarColor(SITE_BAR_COLOR);
+      setBarColor(pageBackground());
     };
   }, [line, heroBackground]);
 

@@ -3,7 +3,7 @@ import { Spinner, Stack, Text } from '@sanity/ui';
 import { getPublishedId, useDocumentStore, useFormValue } from 'sanity';
 import { heroThemeImage } from '@/lib/resolveMetadata';
 import {
-  SITE_BAR_COLOR,
+  DEFAULT_THEME_COLORS,
   clampContrast,
   deriveThemeColorsFromPalette,
   themeRendition
@@ -81,7 +81,11 @@ export function SharePreviewInput(props) {
   const preview =
     shown &&
     site.value &&
-    sharePreviewOf(shown, site.value, heroColor ?? SITE_BAR_COLOR);
+    sharePreviewOf(
+      shown,
+      site.value,
+      heroColor ?? DEFAULT_THEME_COLORS.background
+    );
 
   return (
     <Stack space={5}>

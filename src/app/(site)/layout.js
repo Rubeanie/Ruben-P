@@ -14,7 +14,7 @@ import { ServiceWorkerRegister } from '@/components/ServiceWorkerRegister';
 import { baseUrl } from '@/lib/env';
 import { stegaClean } from '@sanity/client/stega';
 import { sanitizeSvg } from '@/lib/sanitizeSvg';
-import { SITE_BAR_COLOR } from '@/lib/themes';
+import { DEFAULT_THEME_COLORS } from '@/lib/themes';
 
 export const metadata = {
   metadataBase: new URL(baseUrl),
@@ -40,7 +40,7 @@ export const viewport = {
   initialScale: 1,
   //  maximumScale: 1,
   //  userScalable: 'no',
-  themeColor: SITE_BAR_COLOR,
+  themeColor: DEFAULT_THEME_COLORS.background,
   colorScheme: 'dark',
   viewportFit: 'cover',
   interactiveWidget: 'overlays-content'
