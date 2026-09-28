@@ -70,7 +70,7 @@ export const imageBlock = {
       name: 'placeholder',
       type: 'string',
       options: {
-        list: ['blur', 'pixelate', 'vectorize', 'predominant']
+        list: ['none', 'blur']
       },
       initialValue: 'blur',
       hidden: ({ parent }) => parent?.imageType !== 'cloudinary.asset',
