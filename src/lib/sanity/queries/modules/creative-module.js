@@ -1,37 +1,19 @@
 import { groq } from '../../fetch';
 import { contentQuery } from '../fragments/content';
 import { imageBlockQuery } from '../fragments/image-block';
-import { ctaQuery } from './cta';
+import { linkQuery } from '../fragments/link';
 
 export const creativeModuleQuery = groq`
-  modules {
-    colSpan,
-    subModules[]{
-      _type,
+  columns[]{
+    _key,
+    blocks[]{
       _key,
-      _type == 'ctas' => {
-        ctas[]{ ${ctaQuery} }
-      },
-      _type == 'icon' => {
-        alt,
-        icon,
-        size
-      },
-      _type == 'image' => {
-        ${imageBlockQuery}
-      },
-      _type == 'richtext' => {
-        content[]{ ${contentQuery} }
-      },
-      _type == 'custom-html' => {
-        uid,
-        className,
-        html
-      }
+      _type,
+      _type == 'icon' => { icon },
+      _type == 'heading' => { text },
+      _type == 'copy' => { content[]{ ${contentQuery} } },
+      _type == 'imageBlock' => { ${imageBlockQuery} },
+      _type == 'link' => { ${linkQuery} }
     }
-  },
-  columns,
-  bordered,
-  textAlign,
-  alignItems
+  }
 `;

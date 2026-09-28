@@ -4,6 +4,7 @@ import { draftMode } from 'next/headers';
 import AccordionList from './AccordionList';
 import Breadcrumbs from './Breadcrumbs';
 import Callout from './Callout';
+import CreativeModule from './CreativeModule';
 import CustomHTML from './CustomHTML';
 import PostDetails from './PostDetails';
 import PostFeatured from './PostFeatured';
@@ -27,6 +28,14 @@ const ModuleRenderer = ({ module, page, dataAttribute }) => {
       return <Breadcrumbs {...module} page={page} />;
     case 'callout':
       return <Callout {...module} values={page?.values} />;
+    case 'creative-module':
+      return (
+        <CreativeModule
+          {...module}
+          values={page?.values}
+          dataAttribute={dataAttribute}
+        />
+      );
     case 'custom-html':
       return <CustomHTML {...module} />;
     case 'post-details':

@@ -30,7 +30,11 @@ function resolveAsset({ imageType, image, cloudinaryAsset }) {
   };
 }
 
-export default function ImageBlock({ value, sanity }) {
+export default function ImageBlock({
+  value,
+  sanity,
+  sizes = '(max-width: 43.75rem) 100vw, 65rem'
+}) {
   const resolved = resolveAsset(value ?? {});
   if (!resolved) return null;
 
@@ -49,7 +53,7 @@ export default function ImageBlock({ value, sanity }) {
         width={width || FALLBACK_WIDTH}
         height={height || FALLBACK_HEIGHT}
         alt={stegaClean(alt) || ''}
-        sizes='(max-width: 43.75rem) 100vw, 65rem'
+        sizes={sizes}
         loading={stegaClean(loading) || 'lazy'}
         placeholder={blur ? 'blur' : 'empty'}
         blurDataURL={blur ? blurDataURL : undefined}
