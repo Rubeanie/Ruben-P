@@ -39,24 +39,127 @@ test('meta title and description fall back to Site settings field by field', () 
   expect(m.description).toBe('Site description');
 });
 
-test('Open Graph falls back to Site settings per field, then to the resolved meta fields', () => {
+test("the head title falls back to the document's own title before Site settings", () => {
   const m = resolveMetadata(
-    pageWith({ metaTitle: 'Page title', openGraph: { title: null } }),
+    pageWith({ metaTitle: null }, { title: 'About' }),
     site
   );
-  // The site's Open Graph title wins over the page's own meta title.
-  expect(m.openGraph.title).toBe('Site OG title');
-  // Neither side has an Open Graph description, so the resolved meta description stands in.
-  expect(m.openGraph.description).toBe('Site description');
+  expect(m.title).toBe('About');
+});
+
+test('the head title falls to Site settings when the document has no title of its own', () => {
+  const m = resolveMetadata(pageWith({ metaTitle: null }), site);
+  expect(m.title).toBe('Site title');
+});
+
+test("Open Graph title prefers the page's own Open Graph title over everything else", () => {
+  const m = resolveMetadata(
+    pageWith(
+      { openGraph: { title: 'Page OG title' }, metaTitle: 'Page meta title' },
+      { title: 'Page title' }
+    ),
+    site
+  );
+  expect(m.openGraph.title).toBe('Page OG title');
+});
+
+test('Open Graph title falls back to the page meta title before the page title or Site settings', () => {
+  const m = resolveMetadata(
+    pageWith(
+      { metaTitle: 'Page meta title', openGraph: { title: null } },
+      { title: 'Page title' }
+    ),
+    site
+  );
+  // The page's own meta title wins over its own title and the site's Open Graph title.
+  expect(m.openGraph.title).toBe('Page meta title');
   expect(m.openGraph.siteName).toBe('Site name');
 });
 
-test('Open Graph title comes from the meta title when no Open Graph title exists anywhere', () => {
+test("Open Graph title falls back to the page's own title before Site settings", () => {
+  const m = resolveMetadata(
+    pageWith(
+      { metaTitle: null, openGraph: { title: null } },
+      { title: 'Page title' }
+    ),
+    site
+  );
+  expect(m.openGraph.title).toBe('Page title');
+});
+
+test("the site's Open Graph title wins when the page has no title of its own", () => {
+  const m = resolveMetadata(
+    pageWith({ metaTitle: null, openGraph: { title: null } }),
+    site
+  );
+  expect(m.openGraph.title).toBe('Site OG title');
+});
+
+test('Open Graph title falls all the way to the Site settings meta title when nothing else is set', () => {
   const bareSite = {
     seo: { ...site.seo, openGraph: { ...site.seo.openGraph, title: null } }
   };
-  const m = resolveMetadata(pageWith({ metaTitle: 'Page title' }), bareSite);
-  expect(m.openGraph.title).toBe('Page title');
+  const m = resolveMetadata(
+    pageWith({ metaTitle: null, openGraph: { title: null } }),
+    bareSite
+  );
+  expect(m.openGraph.title).toBe('Site title');
+});
+
+test("Open Graph description prefers the page's own Open Graph description over everything else", () => {
+  const siteWithOgDescription = {
+    seo: {
+      ...site.seo,
+      openGraph: { ...site.seo.openGraph, description: 'Site OG description' }
+    }
+  };
+  const m = resolveMetadata(
+    pageWith({
+      openGraph: { description: 'Page OG description' },
+      metaDescription: 'Page meta description'
+    }),
+    siteWithOgDescription
+  );
+  expect(m.openGraph.description).toBe('Page OG description');
+});
+
+test('Open Graph description falls back to the page meta description before Site settings', () => {
+  const siteWithOgDescription = {
+    seo: {
+      ...site.seo,
+      openGraph: { ...site.seo.openGraph, description: 'Site OG description' }
+    }
+  };
+  const m = resolveMetadata(
+    pageWith({
+      metaDescription: 'Page meta description',
+      openGraph: { description: null }
+    }),
+    siteWithOgDescription
+  );
+  expect(m.openGraph.description).toBe('Page meta description');
+});
+
+test("Site settings' Open Graph description wins when the page has none of its own", () => {
+  const siteWithOgDescription = {
+    seo: {
+      ...site.seo,
+      openGraph: { ...site.seo.openGraph, description: 'Site OG description' }
+    }
+  };
+  const m = resolveMetadata(
+    pageWith({ metaDescription: null, openGraph: { description: null } }),
+    siteWithOgDescription
+  );
+  expect(m.openGraph.description).toBe('Site OG description');
+});
+
+test('Open Graph description falls all the way to the Site settings meta description when nothing else is set', () => {
+  const m = resolveMetadata(
+    pageWith({ metaDescription: null, openGraph: { description: null } }),
+    site
+  );
+  expect(m.openGraph.description).toBe('Site description');
 });
 
 test('Twitter spells out what Next would copy from Open Graph', () => {

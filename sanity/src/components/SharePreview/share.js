@@ -45,6 +45,7 @@ function sourcesOf(page, site, tags) {
   return {
     title: pick(tags.title, [
       [p.metaTitle, 'page', 'Meta title'],
+      [page?.title, 'page', 'Page title'],
       [s.metaTitle, 'site', 'Site settings']
     ]),
     description: pick(tags.description, [
@@ -53,14 +54,15 @@ function sourcesOf(page, site, tags) {
     ]),
     ogTitle: pick(tags.ogTitle, [
       [p.openGraph?.title, 'page', 'Open Graph title'],
-      [s.openGraph?.title, 'site', 'Site settings'],
       [p.metaTitle, 'page', 'Meta title'],
+      [page?.title, 'page', 'Page title'],
+      [s.openGraph?.title, 'site', 'Site settings'],
       [s.metaTitle, 'site', 'Site settings, meta title']
     ]),
     ogDescription: pick(tags.ogDescription, [
       [p.openGraph?.description, 'page', 'Open Graph description'],
-      [s.openGraph?.description, 'site', 'Site settings'],
       [p.metaDescription, 'page', 'Meta description'],
+      [s.openGraph?.description, 'site', 'Site settings'],
       [s.metaDescription, 'site', 'Site settings, meta description']
     ]),
     ogImage: pick(tags.ogImage, [

@@ -1,3 +1,4 @@
+import { stegaClean } from '@sanity/client/stega';
 import processUrl, { slugOf } from '@/lib/processUrl';
 import { isPagePath } from '@/lib/slug';
 import { baseUrl } from '@/lib/env';
@@ -45,11 +46,13 @@ export function resolveMetadata(page, site) {
   const siteKeywords = site?.seo?.seoKeywords || [];
   const pageSeo = page?.metadata?.seo || {};
   const { seoKeywords } = pageSeo;
+  // The document's own title, e.g. "About"; stands between its meta title and the site's.
+  const pageTitle = stegaClean(page?.title) || '';
 
   // GROQ projects an absent field as null, so withDefaults falls back with `??`.
-  const { additionalMetaTags, metaDescription, metaTitle, nofollowAttributes } =
+  const { additionalMetaTags, metaDescription, nofollowAttributes } =
     withDefaults(pageSeo, site?.seo);
-  const title = metaTitle || '';
+  const title = pageSeo.metaTitle || pageTitle || site?.seo?.metaTitle || '';
   const description = metaDescription || '';
 
   // Twitter and Open Graph fall back to the site field by field.
@@ -66,8 +69,22 @@ export function resolveMetadata(page, site) {
 
   // A share preview always points at the page itself.
   const openGraph = og && {
-    title: og.title || title || undefined,
-    description: og.description || description || undefined,
+    // Own Open Graph title, then own meta title, then the document's own title,
+    // before either falls to the site's.
+    title:
+      pageSeo.openGraph?.title ||
+      pageSeo.metaTitle ||
+      pageTitle ||
+      site?.seo?.openGraph?.title ||
+      title ||
+      undefined,
+    // Same order as the title, one level shallower: no document-level description exists.
+    description:
+      pageSeo.openGraph?.description ||
+      pageSeo.metaDescription ||
+      site?.seo?.openGraph?.description ||
+      description ||
+      undefined,
     siteName: og.siteName,
     url,
     images
