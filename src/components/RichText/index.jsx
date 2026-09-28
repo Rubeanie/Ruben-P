@@ -1,4 +1,6 @@
 import { PortableText } from '@portabletext/react';
+import { stegaClean } from '@sanity/client/stega';
+import { isSafeHref } from '@/lib/processUrl';
 import DynamicValue from './DynamicValue';
 import ImageBlock from './ImageBlock';
 import YouTube from './YouTube';
@@ -10,8 +12,15 @@ const span = (className) => {
   return Mark;
 };
 
+// The Studio's url rule stops bad schemes at entry; this holds on the site too.
+const Link = ({ value, children }) => {
+  const href = stegaClean(value?.href);
+  return href && isSafeHref(href) ? <a href={href}>{children}</a> : children;
+};
+
 const components = {
   marks: {
+    link: Link,
     imgHeading: span('image-text'),
     dlig: span(styles.dlig),
     ss01: span(styles.ss01)
