@@ -1,4 +1,4 @@
-import { groq } from '../../fetch';
+import groq from 'groq';
 
 export const categoryQuery = groq`
   _id,

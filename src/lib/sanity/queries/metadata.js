@@ -1,4 +1,4 @@
-import { groq } from '../fetch';
+import groq from 'groq';
 
 const imageFieldsQuery = groq`
   _type,

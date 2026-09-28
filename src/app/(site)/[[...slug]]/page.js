@@ -3,10 +3,11 @@ import { fetchSanity, groq } from '@/lib/sanity/fetch';
 import { metadataQuery } from '@/lib/sanity/queries/metadata';
 import { modulesQuery } from '@/lib/sanity/queries/modules';
 import { authorQuery } from '@/lib/sanity/queries/fragments/author';
-import { postCardQuery } from '@/lib/sanity/queries/posts';
+import { postCardQuery } from '@/lib/sanity/queries/fragments/post-card';
 import { notFound, permanentRedirect, redirect } from 'next/navigation';
 import { Modules } from '@/components/Modules';
-import { processMetadata } from '@/lib/processMetadata';
+import { getSite } from '@/lib/sanity/queries';
+import { heroThemeImage, resolveMetadata } from '@/lib/resolveMetadata';
 import processUrl, { resolveLink } from '@/lib/processUrl';
 import { stegaClean } from '@sanity/client/stega';
 import { getRedirect } from '@/lib/redirects';
@@ -42,16 +43,13 @@ export async function generateMetadata({ params }) {
   const { page } = await getPage(params);
   // redirects and 404s are handled by the page component
   if (!page) return {};
-  return processMetadata(page);
+  return resolveMetadata(page, await getSite());
 }
 
 // First paint of the browser bars in the hero's colour; the handoff takes over after.
 export async function generateViewport({ params }) {
   const { page } = await getPage(params);
-  const hero = page?.modules?.[0];
-  const url =
-    (hero?._type === 'hero' && hero.bgImage?.asset?.url) ||
-    (hero?._type === 'hero.saas' && hero.image?.asset?.url);
+  const url = heroThemeImage(page);
   if (!url) return {};
   const colors = await themeFromImage(url);
   return colors ? { themeColor: colors.background } : {};
