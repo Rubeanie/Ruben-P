@@ -22,6 +22,11 @@ const SITE_DRAFT = {
   fetch: "defined(*[_type == 'site' && _id in path('drafts.**')][0]._id)",
   listen: "*[_type == 'site']"
 };
+// The generated card is drawn from the published page, so it needs one to exist.
+const PUBLISHED = {
+  fetch: 'defined(*[_id == $id][0]._id)',
+  listen: '*[_id == $id]'
+};
 const NO_PARAMS = {};
 
 function useListen(store, query, params, perspective, skip) {
@@ -74,6 +79,7 @@ export function SharePreviewInput(props) {
     isSite ? 'drafts' : 'published'
   );
   const siteDraft = useListen(store, SITE_DRAFT, NO_PARAMS, 'raw', isSite);
+  const published = useListen(store, PUBLISHED, params, 'raw', isSite);
   // A document not saved yet has nothing of its own either.
   const shown = isSite || page.value === null ? {} : page.value;
   const heroColor = useHeroBarColor(heroThemeImage(shown));
@@ -84,7 +90,8 @@ export function SharePreviewInput(props) {
     sharePreviewOf(
       shown,
       site.value,
-      heroColor ?? DEFAULT_THEME_COLORS.background
+      heroColor ?? DEFAULT_THEME_COLORS.background,
+      { published: published.value === true }
     );
 
   return (

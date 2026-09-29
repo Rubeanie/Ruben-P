@@ -95,6 +95,13 @@ export default function SharePreview({ preview }) {
           <Text size={1} muted>
             {limitLine(tab, preview)}
           </Text>
+          {preview.generated && (
+            <Text size={1} muted>
+              {preview.generated === 'published'
+                ? 'The generated card shows the published page.'
+                : 'Generated card appears after publishing.'}
+            </Text>
+          )}
           <Legend />
         </Stack>
       </TabPanel>

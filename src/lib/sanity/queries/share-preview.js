@@ -16,10 +16,7 @@ export const sharePageQuery = groq`*[_id == $id][0]{
   ${postCardQuery},
   "modules": modules[0...1]{ _type, bgImage{ asset->{ url } }, image{ asset->{ url } } },
   ${metadataQuery},
-  "shareImages": [
-    metadata.seo.openGraph.image.asset->{ ${assetFacts} },
-    cover.asset->{ ${assetFacts} }
-  ]
+  "shareImages": [metadata.seo.openGraph.image.asset->{ ${assetFacts} }]
 }`;
 
 export const shareSiteQuery = groq`*[_type == 'site'][0]{

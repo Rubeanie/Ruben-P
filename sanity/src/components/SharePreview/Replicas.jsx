@@ -27,7 +27,7 @@ function Img({ src, className }) {
 export function Legend() {
   const items = [
     ['site', 'From Site settings'],
-    ['cover', 'Post cover'],
+    ['generated', 'Generated card'],
     ['missing', 'Missing']
   ];
   return (
@@ -125,7 +125,7 @@ function X({ d }) {
     return (
       <div className={`${styles.x} ${styles.xSmall}`}>
         <Src s={sources.ogImage}>
-          <Img className={styles.xThumb} src={tags.twitterImage} />
+          <Img className={styles.xThumb} src={d.image} />
         </Src>
         <div className={styles.xText}>
           <div className={styles.xDim}>{host}</div>
@@ -143,7 +143,7 @@ function X({ d }) {
       <div className={styles.x}>
         <div className={styles.xLarge}>
           <Src s={sources.ogImage}>
-            <Img className={styles.cover} src={tags.twitterImage} />
+            <Img className={styles.cover} src={d.image} />
           </Src>
           <span className={styles.xOverlay}>
             <Src s={sources.ogTitle}>{clipChars(tags.twitterTitle, 70)}</Src>
@@ -164,7 +164,7 @@ function Facebook({ d }) {
       {layout !== 'none' && (
         <div className={small ? styles.fbThumb : styles.fbImage}>
           <Src s={sources.ogImage}>
-            <Img className={styles.cover} src={tags.ogImage} />
+            <Img className={styles.cover} src={d.image} />
           </Src>
         </div>
       )}
@@ -188,7 +188,7 @@ function LinkedIn({ d }) {
       {layoutFor('linkedin', tags, images) !== 'none' && (
         <div className={styles.liThumb}>
           <Src s={sources.ogImage}>
-            <Img className={styles.cover} src={tags.ogImage} />
+            <Img className={styles.cover} src={d.image} />
           </Src>
         </div>
       )}
@@ -212,7 +212,7 @@ function WhatsApp({ d }) {
           {tags.ogImage && (
             <div className={small ? styles.waThumb : styles.waImage}>
               <Src s={sources.ogImage}>
-                <Img className={styles.cover} src={tags.ogImage} />
+                <Img className={styles.cover} src={d.image} />
               </Src>
             </div>
           )}
@@ -278,14 +278,14 @@ function Discord({ d }) {
             {thumb && (
               <div className={styles.dcThumb}>
                 <Src s={sources.ogImage}>
-                  <Img src={tags.ogImage} />
+                  <Img src={d.image} />
                 </Src>
               </div>
             )}
             {tags.ogImage && large && (
               <div className={styles.dcImage}>
                 <Src s={sources.ogImage}>
-                  <Img src={tags.ogImage} />
+                  <Img src={d.image} />
                 </Src>
               </div>
             )}
@@ -333,7 +333,7 @@ function Slack({ d }) {
             {layout === 'small' && (
               <div className={styles.slThumb}>
                 <Src s={sources.ogImage}>
-                  <Img src={tags.ogImage} />
+                  <Img src={d.image} />
                 </Src>
               </div>
             )}
@@ -341,7 +341,7 @@ function Slack({ d }) {
           {layout === 'large' && (
             <div className={styles.slImage}>
               <Src s={sources.ogImage}>
-                <Img src={tags.ogImage} />
+                <Img src={d.image} />
               </Src>
             </div>
           )}
@@ -367,7 +367,7 @@ function IMessage({ d }) {
         ) : (
           <div className={styles.imImage} style={{ aspectRatio: ratio }}>
             <Src s={sources.ogImage}>
-              <Img className={styles.cover} src={tags.ogImage} />
+              <Img className={styles.cover} src={d.image} />
             </Src>
           </div>
         )}

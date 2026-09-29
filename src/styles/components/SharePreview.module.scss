@@ -31,7 +31,7 @@ $sys:
   &[data-kind='site'] {
     --mark: 224 163 58;
   }
-  &[data-kind='cover'] {
+  &[data-kind='generated'] {
     --mark: 90 169 255;
     --mark-outline: 0.75;
   }
@@ -46,7 +46,7 @@ $sys:
   &:has(img) {
     display: contents;
   }
-  &:is([data-kind='site'], [data-kind='cover']) img {
+  &:is([data-kind='site'], [data-kind='generated']) img {
     outline: 1.5px dotted rgb(var(--mark) / var(--mark-outline));
     outline-offset: -1.5px;
   }
