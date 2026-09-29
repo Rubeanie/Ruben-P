@@ -1,6 +1,7 @@
 import groq from 'groq';
 import { metadataQuery, seoQuery } from './metadata';
 import { postCardQuery } from './fragments/post-card';
+import { sharePhotosQuery } from './share-image';
 
 const assetFacts = groq`
   url,
@@ -16,6 +17,7 @@ export const sharePageQuery = groq`*[_id == $id][0]{
   ${postCardQuery},
   "modules": modules[0...1]{ _type, bgImage{ asset->{ url } }, image{ asset->{ url } } },
   ${metadataQuery},
+  ${sharePhotosQuery},
   "shareImages": [metadata.seo.openGraph.image.asset->{ ${assetFacts} }]
 }`;
 

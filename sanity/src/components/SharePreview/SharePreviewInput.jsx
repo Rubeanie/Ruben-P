@@ -14,6 +14,7 @@ import {
   shareSiteQuery
 } from '@/lib/sanity/queries/share-preview';
 import { sharePreviewOf } from './share';
+import { ringColour, sharePhoto } from '@/lib/shareImage/colours';
 
 // Listeners see raw documents, so the page one watches its draft id as well.
 const PAGE = { fetch: sharePageQuery, listen: '*[_id in [$id, $draft]]' };
@@ -42,8 +43,8 @@ function useListen(store, query, params, perspective, skip) {
   return state;
 }
 
-// The server's hero colour rule run in the browser: same rendition, palette and maths.
-function useHeroBarColor(url) {
+// The server's hero theme rule run in the browser: same rendition, palette and maths.
+function useHeroTheme(url) {
   const [derived, setDerived] = useState({});
   useEffect(() => {
     if (!url) return;
@@ -52,16 +53,15 @@ function useHeroBarColor(url) {
       .then(({ Vibrant }) => Vibrant.from(themeRendition(url)).getPalette())
       .then((palette) => {
         const colors = deriveThemeColorsFromPalette(palette);
-        if (live && colors)
-          setDerived({ url, color: clampContrast(colors).background });
+        if (live && colors) setDerived({ url, theme: clampContrast(colors) });
       })
-      // A failed analysis leaves the site bar colour, as it does on the site.
+      // A failed analysis leaves the site theme, as it does on the site.
       .catch(() => {});
     return () => {
       live = false;
     };
   }, [url]);
-  return url && derived.url === url ? derived.color : null;
+  return url && derived.url === url ? derived.theme : null;
 }
 
 // Sits above the SEO fields; Site settings preview a page that sets nothing of its own.
@@ -82,7 +82,7 @@ export function SharePreviewInput(props) {
   const published = useListen(store, PUBLISHED, params, 'raw', isSite);
   // A document not saved yet has nothing of its own either.
   const shown = isSite || page.value === null ? {} : page.value;
-  const heroColor = useHeroBarColor(heroThemeImage(shown));
+  const heroTheme = useHeroTheme(heroThemeImage(shown));
   const error = page.error || site.error;
   const preview =
     shown &&
@@ -90,7 +90,8 @@ export function SharePreviewInput(props) {
     sharePreviewOf(
       shown,
       site.value,
-      heroColor ?? DEFAULT_THEME_COLORS.background,
+      // Discord's bar: the share card's ring, as its crawler is served.
+      ringColour(sharePhoto(shown), heroTheme ?? DEFAULT_THEME_COLORS),
       { published: published.value === true }
     );
 

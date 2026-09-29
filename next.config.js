@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 const path = require('path');
+const { DISCORD_SEGMENT } = require('./src/lib/shareImage/discord.cjs');
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled:
@@ -26,8 +27,32 @@ const nextConfig = {
     includePaths: [path.join(__dirname, 'styles')]
   },
   async redirects() {
-    // Next otherwise serves the home page at /index too, as a second URL for it.
-    return [{ source: '/index', destination: '/', permanent: true }];
+    return [
+      // Next otherwise serves the home page at /index too, as a second URL for it.
+      { source: '/index', destination: '/', permanent: true },
+      // The Discord variant below is only reached by the rewrite, which runs after
+      // redirects; asked for directly it goes back to the page itself.
+      { source: `/${DISCORD_SEGMENT}`, destination: '/', permanent: false },
+      {
+        source: `/${DISCORD_SEGMENT}/:path+`,
+        destination: '/:path+',
+        permanent: false
+      }
+    ];
+  },
+  async rewrites() {
+    // Discord colours its embed bar from theme-color, so its crawler gets the
+    // page variant whose theme-color is the share card's ring. Files, the card
+    // route and the Studio are left alone.
+    return {
+      beforeFiles: [
+        {
+          source: '/:path((?!og(?:/|$)|api/|admin|_next/)[^.]*)',
+          has: [{ type: 'header', key: 'user-agent', value: '.*Discordbot.*' }],
+          destination: `/${DISCORD_SEGMENT}/:path`
+        }
+      ]
+    };
   }
 };
 

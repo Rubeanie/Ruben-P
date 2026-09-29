@@ -14,7 +14,8 @@ import { getRedirect } from '@/lib/redirects';
 import Redirecting from '@/components/Redirecting';
 import { themeFromImage } from '@/lib/imageTheme';
 import { isPagePath } from '@/lib/slug';
-import { getVanitySocial } from '@/lib/shareImage/data';
+import { getShareCard, getVanitySocial } from '@/lib/shareImage/data';
+import { DISCORD_SEGMENT } from '@/lib/shareImage/discord.cjs';
 
 export default async function Page({ params }) {
   const { page, path } = await getPage(params);
@@ -61,7 +62,11 @@ export async function generateMetadata({ params }) {
 
 // First paint of the browser bars in the hero's colour; the handoff takes over after.
 export async function generateViewport({ params }) {
-  const { page } = await getPage(params);
+  const { page, path, discord } = await getPage(params);
+  if (discord) {
+    const card = isPagePath(path) && (await getShareCard(path));
+    return card ? { themeColor: card.ring } : {};
+  }
   const url = heroThemeImage(page);
   if (!url) return {};
   const colors = await themeFromImage(url);
@@ -87,9 +92,10 @@ export async function generateStaticParams() {
 }
 
 async function getPage(params) {
-  const { slug } = await params;
-  const path = '/' + (slug ?? []).join('/');
-  if (!isPagePath(path)) return { page: null, path };
+  const { slug = [] } = await params;
+  const discord = slug[0] === DISCORD_SEGMENT;
+  const path = '/' + slug.slice(discord ? 1 : 0).join('/');
+  if (!isPagePath(path)) return { page: null, path, discord };
   const page = await fetchSanity(
     groq`*[
       _type in ['page', 'page.post'] &&
@@ -111,7 +117,7 @@ async function getPage(params) {
       tags: ['pages', 'posts', 'authors']
     }
   );
-  return { page, path };
+  return { page, path, discord };
 }
 
 // Search engines read the byline from here; the page itself has no fixed header.
