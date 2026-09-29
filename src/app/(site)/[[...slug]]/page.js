@@ -14,6 +14,7 @@ import { getRedirect } from '@/lib/redirects';
 import Redirecting from '@/components/Redirecting';
 import { themeFromImage } from '@/lib/imageTheme';
 import { isPagePath } from '@/lib/slug';
+import { getVanitySocial } from '@/lib/shareImage/data';
 
 export default async function Page({ params }) {
   const { page, path } = await getPage(params);
@@ -40,10 +41,22 @@ export default async function Page({ params }) {
 }
 
 export async function generateMetadata({ params }) {
-  const { page } = await getPage(params);
-  // redirects and 404s are handled by the page component
-  if (!page) return {};
-  return resolveMetadata(page, await getSite());
+  const { page, path } = await getPage(params);
+  if (page) return resolveMetadata(page, await getSite());
+  // Redirects and 404s are handled by the page component; a social's vanity
+  // path still shares its own card on the way to the profile.
+  const social = isPagePath(path) && (await getVanitySocial(path));
+  if (!social) return {};
+  const { openGraph, twitter } = resolveMetadata(
+    {
+      metadata: {
+        slug: path,
+        seo: { metaTitle: social.title, metaDescription: social.username }
+      }
+    },
+    await getSite()
+  );
+  return { openGraph, twitter };
 }
 
 // First paint of the browser bars in the hero's colour; the handoff takes over after.

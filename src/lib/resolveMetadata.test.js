@@ -67,7 +67,7 @@ test('Twitter spells out what Next would copy from Open Graph', () => {
   expect(m.twitter).toEqual({
     title: 'Page OG',
     description: 'Site description',
-    images: [{ url: 'https://cdn.example/site.jpg' }],
+    images: m.openGraph.images,
     creator: '@site',
     site: '@publisher',
     card: 'summary_large_image'
@@ -85,14 +85,27 @@ test('a set card type ships as is; a handle beats the creator', () => {
   expect(m.twitter.creator).toBe('@me');
 });
 
-test('a post cover is the share image ahead of the site default', () => {
+test('a page gets its generated card, sized, ahead of the cover and the site default', () => {
   const post = pageWith({}, { cover: img('https://cdn.example/cover.gif') });
-  expect(resolveMetadata(post, site).openGraph.images).toEqual([
-    { url: 'https://cdn.example/cover.gif' }
+  const m = resolveMetadata(post, site);
+  expect(m.openGraph.images).toEqual([
+    {
+      url: `${baseUrl}/og/about`,
+      width: 1200,
+      height: 630,
+      type: 'image/jpeg'
+    }
   ]);
+  expect(m.twitter.images).toEqual(m.openGraph.images);
+  expect(m.twitter.card).toBe('summary_large_image');
 });
 
-test("the page's own share image beats the post cover", () => {
+test('the home card sits at the bare route', () => {
+  const home = resolveMetadata({ metadata: { slug: '/', seo: {} } }, site);
+  expect(home.openGraph.images[0].url).toBe(`${baseUrl}/og`);
+});
+
+test("the page's own share image beats the generated card, untouched", () => {
   const post = pageWith(
     { openGraph: { image: img('https://cdn.example/own.jpg') } },
     { cover: img('https://cdn.example/cover.gif') }
@@ -102,12 +115,23 @@ test("the page's own share image beats the post cover", () => {
   ]);
 });
 
-test('no share image anywhere ships no image rather than an empty one', () => {
-  const m = resolveMetadata(pageWith({}), {
-    seo: { ...site.seo, openGraph: { title: 'T' } }
+test('a page with no open graph anywhere still ships its card', () => {
+  const m = resolveMetadata(pageWith({ metaTitle: 'Page title' }), {
+    seo: { metaDescription: 'D' }
   });
-  expect(m.openGraph.images).toEqual([]);
-  expect(m.twitter.images).toEqual([]);
+  expect(m.openGraph).toMatchObject({ title: 'Page title', description: 'D' });
+  expect(m.openGraph.images).toHaveLength(1);
+});
+
+test('without an address there is no card, so the site default stands', () => {
+  const m = resolveMetadata({ metadata: { seo: {} } }, site);
+  expect(m.openGraph.images).toEqual([{ url: 'https://cdn.example/site.jpg' }]);
+  const none = resolveMetadata(
+    { metadata: { slug: '404', seo: {} } },
+    { seo: { ...site.seo, openGraph: { title: 'T' } } }
+  );
+  expect(none.openGraph.images).toEqual([]);
+  expect(none.twitter.images).toEqual([]);
 });
 
 test('og:url and canonical are the page address, a bare origin for home', () => {
@@ -133,9 +157,12 @@ test('noindex follows the page when set, Site settings otherwise', () => {
 });
 
 test('no Open Graph anywhere ships none, and Twitter takes the meta fields', () => {
-  const m = resolveMetadata(pageWith({ metaTitle: 'Page title' }), {
-    seo: { metaDescription: 'D' }
-  });
+  const m = resolveMetadata(
+    { metadata: { seo: { metaTitle: 'Page title' } } },
+    {
+      seo: { metaDescription: 'D' }
+    }
+  );
   expect(m.openGraph).toBeUndefined();
   expect(m.twitter).toMatchObject({
     title: 'Page title',

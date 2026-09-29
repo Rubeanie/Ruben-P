@@ -59,6 +59,9 @@ function luminance(hex) {
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 
+// The two ink tokens in _variables.scss, for text drawn outside the stylesheet (the share card).
+export const INKS = { dark: '#121212', light: '#ffffff' };
+
 // Contrast-ratio terms (luminance + 0.05) of the two ink tokens in _variables.scss:
 // $color-on-primary (#121212) for the dark ink, $color-on-dark (#fff) for the light ink.
 const DARK_INK = 0.0556;

@@ -11,7 +11,8 @@ const TAGS = [
   'authors',
   '404',
   'redirect-page',
-  'redirects'
+  'redirects',
+  'socials'
 ];
 
 // Sanity webhook target. Live updates only revalidate while a visitor has the

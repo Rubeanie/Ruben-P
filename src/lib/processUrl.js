@@ -25,7 +25,7 @@ export function isSafeHref(url) {
 
 // Queries project `"slug": slug.current` (flat string); raw documents nest it.
 // stegaClean strips visual-editing payloads that would corrupt the URL.
-const slugOf = (page) =>
+export const slugOf = (page) =>
   stegaClean(page?.metadata?.slug?.current ?? page?.metadata?.slug);
 
 // Params are only ever a query or fragment; anything else would change the path.

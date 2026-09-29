@@ -1,6 +1,9 @@
-import processUrl from '@/lib/processUrl';
+import processUrl, { slugOf } from '@/lib/processUrl';
+import { isPagePath } from '@/lib/slug';
 import { baseUrl } from '@/lib/env';
 import { withDefaults } from '@/lib/metadataDefaults';
+import { SHARE_IMAGE } from '@/lib/shareImage/layout';
+import { shareImageUrl } from '@/lib/shareImage/url';
 
 const getMetaObjects = (tags) =>
   tags.reduce((mergedObject, tag) => {
@@ -25,6 +28,15 @@ const getMetaAttribute = (attrs) =>
 // Next drops the trailing slash of a bare origin; doing it here keeps the object equal to the head.
 const bare = (url) => url.replace(/^(https?:\/\/[^/]+)\/$/, '$1');
 
+// A hand-set share image wins; any other page gets its generated card, which draws its cover or hero.
+function shareImages(pageSeo, og, path) {
+  const handSet = pageSeo.openGraph?.image?.asset?.url;
+  if (handSet) return [{ url: handSet }];
+  if (isPagePath(path)) return [{ url: shareImageUrl(path), ...SHARE_IMAGE }];
+  if (og?.image?.asset?.url) return [{ url: og.image.asset.url }];
+  return [];
+}
+
 // Every tag is spelled out, including what Next would otherwise inherit, so the Studio
 // preview can read the returned object as the page's head.
 export function resolveMetadata(page, site) {
@@ -46,13 +58,11 @@ export function resolveMetadata(page, site) {
   const safeKeywords = Array.isArray(seoKeywords) ? seoKeywords : [];
   const combinedKeywords = [...siteKeywords, ...safeKeywords];
   const tags = additionalMetaTags ? getMetaObjects(additionalMetaTags) : {};
-  const openGraphData = withDefaults(pageSeo.openGraph, site?.seo?.openGraph);
-  // Posts rarely get a dedicated share image; the cover stands in, ahead of the site default.
-  const og =
-    page?.cover?.asset?.url && !pageSeo.openGraph?.image?.asset?.url
-      ? { ...openGraphData, image: page.cover }
-      : openGraphData;
-  const images = og?.image?.asset?.url ? [{ url: og.image.asset.url }] : [];
+  const path = slugOf(page);
+  let og = withDefaults(pageSeo.openGraph, site?.seo?.openGraph);
+  // A page's card ships even when neither the page nor the site sets any Open Graph.
+  if (!og && isPagePath(path)) og = {};
+  const images = shareImages(pageSeo, og, path);
 
   // A share preview always points at the page itself.
   const openGraph = og && {
