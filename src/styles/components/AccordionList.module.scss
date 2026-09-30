@@ -63,7 +63,7 @@ $hairline: color-mix(in srgb, #fff 15%, transparent);
   border-radius: calc(var.$common-border-radius - var.$space-2);
   cursor: pointer;
   list-style: none;
-  transition: background-color 0.12s var.$ease-out;
+  transition: background-color 0.2s var.$ease-out;
 
   &::-webkit-details-marker {
     display: none;
@@ -71,7 +71,8 @@ $hairline: color-mix(in srgb, #fff 15%, transparent);
 
   // Rows are text, so the press tints instead of scaling.
   &:active {
-    background-color: rgba(255, 255, 255, 0.06);
+    background-color: var.$press-tint;
+    transition-duration: 0s;
   }
 }
 

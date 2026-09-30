@@ -17,6 +17,8 @@ $plate-neutral: color-mix(in srgb, var(--color-primary) 10%, $color-plate-dark);
 // Hairline ring on plates and media frames, brighter than the glass edge but never a border.
 $hairline-color: rgba(255, 255, 255, 0.08);
 $hairline: inset 0 0 0 1px $hairline-color;
+// The white wash a pressed row or plate takes on glass.
+$press-tint: rgba(255, 255, 255, 0.06);
 // The featured mark, a gold that reads on both a light and a dark photo.
 $color-star: #f6c85f;
 // Inline alert: border/ink/surface, both severities.
