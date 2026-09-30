@@ -1,5 +1,11 @@
 import '@/styles/globals.scss';
-import { mont, figtree, jetbrainsMono } from '@/styles/fonts';
+import {
+  mont,
+  figtree,
+  jetbrainsMono,
+  montCritical,
+  figtreeItalic
+} from '@/styles/fonts';
 import Signature from '@/components/Signature';
 import { Suspense } from 'react';
 import Navbar from '@/components/Navbar';
@@ -52,7 +58,7 @@ export default async function RootLayout({ children }) {
   return (
     <html
       lang='en'
-      className={`${mont.variable} ${figtree.variable} ${jetbrainsMono.variable}`}>
+      className={`${mont.variable} ${figtree.variable} ${jetbrainsMono.variable} ${montCritical.variable} ${figtreeItalic.variable}`}>
       <head>
         <link
           rel='preload'
