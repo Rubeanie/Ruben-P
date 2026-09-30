@@ -36,3 +36,14 @@
   color: transparent;
   filter: brightness(1.15) contrast(0.6) saturate(1.5);
 }
+
+// The separator picker's preview: the band's glyph at a readable size, on a
+// fixed line so the dot's zero line-height and the icons' lift don't shift tiles.
+.separator-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1;
+}

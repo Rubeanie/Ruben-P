@@ -3,8 +3,11 @@ import { contentQuery } from './content';
 import { linkQuery } from './link';
 
 export const announcementQuery = groq`
+  _id,
   content[]{ ${contentQuery} },
-  cta { ${linkQuery} },
+  link { ${linkQuery} },
+  marquee,
+  separator,
   start,
   end
 `;

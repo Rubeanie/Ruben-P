@@ -16,7 +16,7 @@ main {
     justify-content: center;
     padding: var.$padding-safe;
     padding-top: var.$navbar-height;
-    min-height: 100lvh;
+    min-height: calc(100lvh - var(--announce-height));
     transition: min-height 0.2s ease;
   }
 

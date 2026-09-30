@@ -34,6 +34,27 @@ $theme-color-properties: (
   }
 }
 
+// The announcement band's height, and how much of it is still on screen (the
+// navbar pill rides under it). Both stay zero when there is no band.
+@property --announce-height {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --announce-offset {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
+// How far the page has scrolled into the band, capped at its height.
+@property --announce-scrolled {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
 @property --candy-lift {
   syntax: '<number>';
   inherits: false;
@@ -41,11 +62,7 @@ $theme-color-properties: (
 }
 
 html {
-  transition:
-    --color-primary var.$theme-transition,
-    --color-secondary var.$theme-transition,
-    --color-background var.$theme-transition,
-    --color-text var.$theme-transition;
+  transition: var.$theme-transitions;
 }
 
 // Fragment links glide; Next keeps route changes instant (data-scroll-behavior on html).

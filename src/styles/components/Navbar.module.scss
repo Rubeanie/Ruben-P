@@ -1,6 +1,7 @@
 @use '../abstracts/index' as var;
 
-// Published for anything that must clear the pill: the bento's morph clip and its search blur read it.
+// Published for anything fixed to the viewport that must clear the pill (the bento's
+// morph clip and its search blur); a live announcement band above the pill counts.
 @property --nav-clearance {
   syntax: '<length>';
   inherits: true;
@@ -8,20 +9,24 @@
 }
 
 :global(html) {
-  --nav-clearance: calc(#{var.$nav-float-gap} + #{var.$nav-bar-height});
+  --nav-clearance: calc(
+    #{var.$nav-float-gap} + #{var.$nav-bar-height} + var(--announce-offset)
+  );
 }
 
 // Docked, the pill sits flush to the top.
 :global(html):has(.nav[data-compact='true']) {
-  --nav-clearance: #{var.$nav-bar-height};
+  --nav-clearance: calc(#{var.$nav-bar-height} + var(--announce-offset));
 }
 
 .nav {
   position: fixed;
-  z-index: 10;
+  z-index: var.$nav-z;
   top: 0;
   width: 100%;
   padding: var.$nav-float-gap var.$nav-float-gap 0; // floats the pill off the edges
+  // rides under the announcement band until it scrolls away
+  translate: 0 var(--announce-offset);
   transition: padding 0.3s var.$ease-out;
 
   .container {
@@ -330,7 +335,7 @@ html[data-nav-dropdown='true'] {
       backdrop-filter 0s;
 
     .dropdown {
-      height: calc(100lvh - #{var.$nav-bar-height});
+      height: calc(100lvh - #{var.$nav-bar-height} - var(--announce-offset));
 
       a {
         opacity: 1;

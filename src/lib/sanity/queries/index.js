@@ -2,6 +2,7 @@ import { fetchSanity, groq } from '../fetch';
 import { navigationQuery } from './navigation';
 import { seoQuery } from './metadata';
 import { themesQuery } from './fragments/themes';
+import { announcementQuery } from './fragments/announcement';
 import {
   themeFromImage,
   themeHasAllColors,
@@ -16,6 +17,7 @@ export async function getSite() {
 				logo,
 				headerMenu->{ ${navigationQuery} },
 				footerMenu->{ ${navigationQuery} },
+				"announcements": array::compact(announcements[]->{ ${announcementQuery} }),
         ${seoQuery}
 			}
 		`,

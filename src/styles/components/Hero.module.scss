@@ -20,7 +20,8 @@ $blend-end: 28lvh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  height: 100lvh;
+  // the band's share of the first screen, until it scrolls away and the screen pins
+  height: calc(100lvh - var(--announce-offset));
   padding: var.$hero-top var.$hero-pad var.$space-6;
   text-align: start;
 }
@@ -51,7 +52,7 @@ $blend-end: 28lvh;
 }
 
 $card: inset(
-  calc(var(--nav-clearance) + #{var.$space-4}) #{var.$hero-pad}
+  calc(#{var.$nav-clearance-flow} + #{var.$space-4}) #{var.$hero-pad}
     var(--card-bottom) round #{var.$common-border-radius}
 );
 
@@ -136,12 +137,12 @@ $card: inset(
 // No photo: the copy on the page ground, nothing to pin.
 .hero:not([data-hero-theme]) {
   height: auto;
-  min-height: 100svh;
+  min-height: calc(100svh - var(--announce-height));
 
   .stick {
     position: relative;
     height: auto;
-    min-height: 100svh;
+    min-height: calc(100svh - var(--announce-height));
   }
 }
 

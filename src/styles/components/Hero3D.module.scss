@@ -55,8 +55,8 @@
   position: relative;
   display: grid;
   place-items: center;
-  height: 100lvh;
-  padding: var(--nav-clearance) var.$hero-pad;
+  height: calc(100lvh - var(--announce-height));
+  padding: var.$nav-clearance-flow var.$hero-pad;
 }
 
 .name {
