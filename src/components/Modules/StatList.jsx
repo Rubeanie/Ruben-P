@@ -1,8 +1,14 @@
 import { stegaClean } from '@sanity/client/stega';
 import CountUp from '@/components/CountUp';
+import uid from '@/lib/uid';
 import styles from '@/styles/components/StatList.module.scss';
 
-export default function StatList({ stats, textAlign, dataAttribute }) {
+export default function StatList({
+  stats,
+  textAlign,
+  dataAttribute,
+  ...props
+}) {
   // Absent Sanity arrays project as null, bypassing the `= []` param default.
   const visibleStats = (stats ?? []).filter(
     ({ value, subValue, text }) => value || subValue || text
@@ -13,6 +19,7 @@ export default function StatList({ stats, textAlign, dataAttribute }) {
 
   return (
     <section
+      id={uid(props)}
       className={styles.statList}
       data-align={align === 'center' ? undefined : align}>
       <div className={styles.stats} data-count-row>

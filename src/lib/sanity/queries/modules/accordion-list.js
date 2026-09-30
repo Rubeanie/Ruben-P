@@ -8,6 +8,5 @@ export const accordionListQuery = groq`
     open
   },
   layout,
-  multiple,
-  uid
+  multiple
 `;

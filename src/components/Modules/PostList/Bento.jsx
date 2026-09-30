@@ -59,7 +59,7 @@ function updateSearch(mutate) {
   for (const callback of listeners) callback();
 }
 
-export default function Bento({ posts, filters }) {
+export default function Bento({ id, posts, filters }) {
   const search = useSyncExternalStore(subscribe, getSearch, getServerSearch);
   const params = new URLSearchParams(search);
   const categories = (filters ?? []).map((c) => ({
@@ -219,7 +219,7 @@ export default function Bento({ posts, filters }) {
   };
 
   return (
-    <section ref={list} className={styles.list}>
+    <section ref={list} id={id} className={styles.list}>
       {filters && (
         <Filters
           categories={categories}

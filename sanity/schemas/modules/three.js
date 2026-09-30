@@ -1,6 +1,7 @@
 import { IoMdCube } from 'react-icons/io';
 import { apiVersion } from '@/lib/env';
 import { blockLayoutFields } from '../fragments/fields/block-layout';
+import { uidField } from '../fragments/fields/uid';
 
 // Grain and vignette ride on the glow's composer, so they only exist with it.
 const GLOWING = ['quiet', 'medium'];
@@ -253,7 +254,8 @@ export const threeJs = {
       description: 'Enable zoom',
       hidden: ({ parent }) => parent.orbitControls === false,
       group: 'options'
-    }
+    },
+    uidField({ group: 'options' })
   ],
   preview: {
     select: {

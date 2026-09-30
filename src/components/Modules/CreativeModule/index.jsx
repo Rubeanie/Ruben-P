@@ -3,6 +3,7 @@ import CTA from '@/components/CTA';
 import RichText from '@/components/RichText';
 import ImageBlock from '@/components/RichText/ImageBlock';
 import { resolveLink } from '@/lib/processUrl';
+import uid from '@/lib/uid';
 import { creativeIcons } from './icons';
 import styles from '@/styles/components/CreativeModule.module.scss';
 
@@ -51,12 +52,17 @@ function Block({ block, values, sanity }) {
   }
 }
 
-export default function CreativeModule({ columns, values, dataAttribute }) {
+export default function CreativeModule({
+  columns,
+  values,
+  dataAttribute,
+  ...props
+}) {
   const filled = (columns ?? []).filter(({ blocks }) => blocks?.length);
   if (!filled.length) return null;
 
   return (
-    <section className={styles.creative}>
+    <section id={uid(props)} className={styles.creative}>
       {/* Safari drops list semantics under list-style: none. */}
       <ul className={styles.grid} role='list'>
         {filled.map(({ _key, blocks }) => {

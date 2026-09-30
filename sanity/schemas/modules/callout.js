@@ -1,6 +1,7 @@
 import { MdSmartButton } from 'react-icons/md';
 import { getBlockText } from '@sanity/src/utils';
 import { richBlock } from '../fragments/text-block';
+import { uidField } from '../fragments/fields/uid';
 
 export const callout = {
   name: 'callout',
@@ -40,7 +41,8 @@ export const callout = {
         direction: 'horizontal'
       },
       initialValue: 'normal'
-    }
+    },
+    uidField()
   ],
   preview: {
     select: {

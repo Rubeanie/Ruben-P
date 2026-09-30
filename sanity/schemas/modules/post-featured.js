@@ -1,4 +1,5 @@
 import { MdStar } from 'react-icons/md';
+import { uidField } from '../fragments/fields/uid';
 
 export const postFeatured = {
   name: 'post-featured',
@@ -13,7 +14,8 @@ export const postFeatured = {
         'Posts in the row. On a post page the row shows related posts instead.',
       initialValue: 4,
       validation: (Rule) => Rule.required().integer().min(1).max(4)
-    }
+    },
+    uidField()
   ],
   preview: {
     select: { limit: 'limit' },

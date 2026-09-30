@@ -2,14 +2,15 @@ import Link from 'next/link';
 import { stegaClean } from '@sanity/client/stega';
 import Skill from '@/components/Skill';
 import { resolveLink } from '@/lib/processUrl';
+import uid from '@/lib/uid';
 import { sanitizeSvg } from '@/lib/sanitizeSvg';
 import styles from '@/styles/components/Skill.module.scss';
 
-export default function SkillList({ skills }) {
+export default function SkillList({ skills, ...props }) {
   if (!skills?.length) return null;
 
   return (
-    <section className={styles.list}>
+    <section id={uid(props)} className={styles.list}>
       {skills.map(({ _key, title, logo, baseColor, url }) => {
         const href = resolveLink(url);
         // Skill sites open in a new tab; an internal page stays in this one.

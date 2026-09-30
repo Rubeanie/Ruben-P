@@ -20,6 +20,7 @@ import { customHtmlQuery } from './custom-html';
 export const modulesQuery = groq`
   _type,
   _key,
+  uid,
   _type == 'hero' => { ${heroQuery} },
   _type == 'hero.saas' => { ${heroSaasQuery} },
   _type == 'hero.split' => { ${heroSplitQuery} },

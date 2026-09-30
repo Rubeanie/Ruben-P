@@ -8,10 +8,20 @@ export const uid = {
   title: 'Unique Identifier',
   description: 'Used for anchor/jump links (HTML `id` attribute).',
   type: 'string',
-  validation: (Rule) =>
+  validation: (Rule) => [
     Rule.regex(/^[a-zA-Z0-9-]+$/g).error(
       'Must not contain spaces or special characters'
     ),
+    Rule.custom((value, { document, path }) => {
+      const key = path[path.indexOf('modules') + 1]?._key;
+      const taken = document?.modules?.some(
+        (module) => module._key !== key && module.uid === value
+      );
+      return value && taken
+        ? 'Another module on this page uses this id.'
+        : true;
+    }).warning()
+  ],
   components: {
     input: ({ elementProps, path }) => {
       const indexOfModule = path.indexOf('modules');

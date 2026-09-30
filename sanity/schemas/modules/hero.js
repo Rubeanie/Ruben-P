@@ -2,6 +2,7 @@ import { MdVrpano } from 'react-icons/md';
 import { getBlockText } from '@sanity/src/utils';
 import { textBlock } from '../fragments/text-block';
 import { scrollHintField } from '../fragments/fields/scroll-hint';
+import { uidField } from '../fragments/fields/uid';
 
 export const hero = {
   name: 'hero',
@@ -63,7 +64,8 @@ export const hero = {
       },
       group: 'image'
     },
-    scrollHintField({ initialValue: true, group: 'options' })
+    scrollHintField({ initialValue: true, group: 'options' }),
+    uidField({ group: 'options' })
   ],
   preview: {
     select: {

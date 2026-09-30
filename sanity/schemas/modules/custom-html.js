@@ -1,4 +1,5 @@
 import { MdCode } from 'react-icons/md';
+import { uidField } from '../fragments/fields/uid';
 
 export const customHtml = {
   name: 'custom-html',
@@ -6,11 +7,7 @@ export const customHtml = {
   icon: MdCode,
   type: 'object',
   fields: [
-    {
-      name: 'uid',
-      title: 'Unique ID',
-      type: 'uid'
-    },
+    uidField(),
     {
       name: 'className',
       type: 'string'

@@ -1,6 +1,7 @@
 import { MdArticle } from 'react-icons/md';
 import { getBlockText } from '@sanity/src/utils';
 import { textBlock } from '../fragments/text-block';
+import { uidField } from '../fragments/fields/uid';
 
 export const richtextModule = {
   name: 'richtext-module',
@@ -24,7 +25,8 @@ export const richtextModule = {
         layout: 'radio'
       },
       initialValue: 'start'
-    }
+    },
+    uidField()
   ],
   preview: {
     select: {

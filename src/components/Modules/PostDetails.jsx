@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { stegaClean } from '@sanity/client/stega';
 import { imageBuilder } from '@/lib/sanity/image';
 import { resolveLink } from '@/lib/processUrl';
+import uid from '@/lib/uid';
 import { formatDate, initials, inkFor, sameDay } from '@/lib/posts';
 import styles from '@/styles/components/PostDetails.module.scss';
 
@@ -56,7 +57,8 @@ export default function PostDetails({
   published,
   edited,
   categories: showCategories,
-  page
+  page,
+  ...props
 }) {
   if (page?._type !== 'page.post') return null;
 
@@ -79,6 +81,7 @@ export default function PostDetails({
 
   return (
     <section
+      id={uid(props)}
       className={`${styles.details} ${authors.length ? styles.withAuthors : ''}`}>
       {authors.length > 0 && (
         <div className={styles.discs}>

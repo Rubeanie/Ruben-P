@@ -2,6 +2,7 @@ import { MdPhotoSizeSelectActual } from 'react-icons/md';
 import { getBlockText } from '@sanity/src/utils';
 import { textBlock } from '../fragments/text-block';
 import { scrollHintField } from '../fragments/fields/scroll-hint';
+import { uidField } from '../fragments/fields/uid';
 
 export const heroSaas = {
   name: 'hero.saas',
@@ -47,7 +48,8 @@ export const heroSaas = {
       validation: (Rule) => Rule.required(),
       group: 'image'
     },
-    scrollHintField({ initialValue: true, group: 'options' })
+    scrollHintField({ initialValue: true, group: 'options' }),
+    uidField({ group: 'options' })
   ],
   preview: {
     select: {

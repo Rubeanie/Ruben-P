@@ -2,12 +2,13 @@ import Link from 'next/link';
 import { stegaClean } from '@sanity/client/stega';
 import Social from '@/components/Social';
 import { resolveLink } from '@/lib/processUrl';
+import uid from '@/lib/uid';
 import { sanitizeSvg } from '@/lib/sanitizeSvg';
 import styles from '@/styles/components/Social.module.scss';
 
-export default function SocialList({ socials = [], maxColumns = 2 }) {
+export default function SocialList({ socials = [], maxColumns = 2, ...props }) {
   return (
-    <section>
+    <section id={uid(props)}>
       {socials?.length > 0 && (
         <div className={styles.list} style={{ '--max-cols': maxColumns }}>
           {/* a reference still being picked in the Studio dereferences to null */}

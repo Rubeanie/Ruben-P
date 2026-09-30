@@ -1,6 +1,7 @@
 import { MdExtension, MdViewColumn } from 'react-icons/md';
 import { count } from '@sanity/src/utils';
 import { blocks, blockTitles } from './blocks';
+import { uidField } from '../../fragments/fields/uid';
 
 const column = {
   name: 'column',
@@ -37,7 +38,8 @@ export const creativeModule = {
       type: 'array',
       of: [column],
       validation: (Rule) => Rule.required().min(1)
-    }
+    },
+    uidField()
   ],
   preview: {
     select: { columns: 'columns' },

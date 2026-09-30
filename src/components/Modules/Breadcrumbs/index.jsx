@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { stegaClean } from '@sanity/client/stega';
 import { baseUrl } from '@/lib/env';
 import { resolveLink } from '@/lib/processUrl';
+import uid from '@/lib/uid';
 import { ancestorPaths, pagePath } from '@/lib/breadcrumbs';
 import { fetchSanity } from '@/lib/sanity/fetch';
 import { getSite } from '@/lib/sanity/queries';
@@ -51,7 +52,12 @@ function isDuplicate(href, path) {
   return normalised === '/' || normalised === path;
 }
 
-export default async function Breadcrumbs({ crumbs = [], mode, page }) {
+export default async function Breadcrumbs({
+  crumbs = [],
+  mode,
+  page,
+  ...props
+}) {
   const path = pagePath(page);
   // the home page is the start of every trail, so it never shows one
   if (!path || path === '/') return null;
@@ -91,7 +97,7 @@ export default async function Breadcrumbs({ crumbs = [], mode, page }) {
   };
 
   return (
-    <nav aria-label='Breadcrumb' className={styles.nav}>
+    <nav id={uid(props)} aria-label='Breadcrumb' className={styles.nav}>
       <Trail>
         {items.map((item) => {
           const isCurrent = item.key === 'current';

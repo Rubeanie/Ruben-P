@@ -1,4 +1,5 @@
 import { MdPersonOutline } from 'react-icons/md';
+import { uidField } from '../fragments/fields/uid';
 
 const PARTS = [
   { name: 'authors', title: 'Authors' },
@@ -12,12 +13,15 @@ export const postDetails = {
   title: 'Post details',
   type: 'object',
   icon: MdPersonOutline,
-  fields: PARTS.map(({ name, title }) => ({
-    name,
-    title,
-    type: 'boolean',
-    initialValue: true
-  })),
+  fields: [
+    ...PARTS.map(({ name, title }) => ({
+      name,
+      title,
+      type: 'boolean',
+      initialValue: true
+    })),
+    uidField()
+  ],
   preview: {
     select: {
       authors: 'authors',

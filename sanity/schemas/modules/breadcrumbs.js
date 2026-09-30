@@ -1,5 +1,6 @@
 import { count } from '@sanity/src/utils';
 import { MdLinearScale } from 'react-icons/md';
+import { uidField } from '../fragments/fields/uid';
 
 export const breadcrumbs = {
   name: 'breadcrumbs',
@@ -24,7 +25,8 @@ export const breadcrumbs = {
       of: [{ type: 'link', initialValue: { type: 'internal' } }],
       hidden: ({ parent }) => (parent?.mode ?? 'auto') === 'auto',
       description: 'Home and the current page are added automatically.'
-    }
+    },
+    uidField()
   ],
   preview: {
     select: {

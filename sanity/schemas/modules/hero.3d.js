@@ -2,6 +2,7 @@ import { Md3dRotation } from 'react-icons/md';
 import { getBlockText } from '@sanity/src/utils';
 import { textBlock } from '../fragments/text-block';
 import { scrollHintField } from '../fragments/fields/scroll-hint';
+import { uidField } from '../fragments/fields/uid';
 
 export const hero3d = {
   name: 'hero.3d',
@@ -76,7 +77,8 @@ export const hero3d = {
       type: 'boolean',
       initialValue: true,
       description: 'A faint moving grain over the mark while it moves'
-    }
+    },
+    uidField()
   ],
   preview: {
     select: {

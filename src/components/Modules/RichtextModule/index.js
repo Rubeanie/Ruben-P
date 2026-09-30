@@ -1,5 +1,6 @@
 import { stegaClean } from '@sanity/client/stega';
 import RichText from '@/components/RichText';
+import uid from '@/lib/uid';
 import styles from '@/styles/components/RichText.module.scss';
 
 export default function RichtextModule({
@@ -7,11 +8,13 @@ export default function RichtextModule({
   align,
   values,
   dataAttribute,
-  isFirstModule
+  isFirstModule,
+  ...props
 }) {
   return (
     // Documents written before the field existed have no `align`; undefined is start.
     <div
+      id={uid(props)}
       className={styles.richtext}
       data-align={stegaClean(align) === 'center' ? 'center' : undefined}>
       <RichText

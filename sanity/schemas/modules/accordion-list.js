@@ -1,5 +1,6 @@
 import { getBlockText } from '@sanity/src/utils';
 import { MdQuestionMark } from 'react-icons/md';
+import { uidField } from '../fragments/fields/uid';
 
 export const accordionList = {
   name: 'accordion-list',
@@ -63,12 +64,7 @@ export const accordionList = {
       initialValue: false,
       group: 'options'
     },
-    {
-      name: 'uid',
-      title: 'Unique Identifier',
-      type: 'uid',
-      group: 'options'
-    }
+    uidField({ group: 'options' })
   ],
   preview: {
     select: {

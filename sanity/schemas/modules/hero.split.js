@@ -2,6 +2,7 @@ import { MdArtTrack } from 'react-icons/md';
 import { getBlockText } from '@sanity/src/utils';
 import { textBlock } from '../fragments/text-block';
 import { scrollHintField } from '../fragments/fields/scroll-hint';
+import { uidField } from '../fragments/fields/uid';
 
 export const heroSplit = {
   name: 'hero.split',
@@ -56,7 +57,8 @@ export const heroSplit = {
       ],
       group: 'image'
     },
-    scrollHintField({ initialValue: false, group: 'options' })
+    scrollHintField({ initialValue: false, group: 'options' }),
+    uidField({ group: 'options' })
   ],
   preview: {
     select: {

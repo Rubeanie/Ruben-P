@@ -1,4 +1,5 @@
 import { MdAccountCircle } from 'react-icons/md';
+import { uidField } from '../fragments/fields/uid';
 
 export const socialList = {
   name: 'social-list',
@@ -19,7 +20,8 @@ export const socialList = {
         'Upper limit — narrow screens show fewer columns as space runs out',
       initialValue: 2,
       validation: (Rule) => Rule.required().integer().min(1).max(4)
-    }
+    },
+    uidField()
   ],
   preview: {
     select: {

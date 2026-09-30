@@ -1,6 +1,7 @@
 import { IoMdStats } from 'react-icons/io';
 import { textAlign } from '../fragments/fields/alignment';
 import { count } from '@sanity/src/utils';
+import { uidField } from '../fragments/fields/uid';
 
 export const statList = {
   name: 'stat-list',
@@ -49,7 +50,8 @@ export const statList = {
     {
       ...textAlign,
       group: 'options'
-    }
+    },
+    uidField({ group: 'options' })
   ],
   preview: {
     select: {
