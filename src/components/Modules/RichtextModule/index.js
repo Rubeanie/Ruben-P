@@ -6,7 +6,8 @@ export default function RichtextModule({
   content,
   align,
   values,
-  dataAttribute
+  dataAttribute,
+  isFirstModule
 }) {
   return (
     // Documents written before the field existed have no `align`; undefined is start.
@@ -17,6 +18,7 @@ export default function RichtextModule({
         value={content}
         values={values}
         dataAttribute={dataAttribute?.scope('content')}
+        isFirstModule={isFirstModule}
       />
     </div>
   );

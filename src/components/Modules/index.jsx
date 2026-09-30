@@ -20,7 +20,7 @@ import StatList from './StatList';
 import ThreeScene from './ThreeScene';
 import ErrorBoundary from '../ErrorBoundary';
 
-const ModuleRenderer = ({ module, page, dataAttribute }) => {
+const ModuleRenderer = ({ module, page, dataAttribute, isFirstModule }) => {
   switch (module._type) {
     case 'accordion-list':
       return <AccordionList {...module} dataAttribute={dataAttribute} />;
@@ -58,6 +58,7 @@ const ModuleRenderer = ({ module, page, dataAttribute }) => {
           {...module}
           values={page?.values}
           dataAttribute={dataAttribute}
+          isFirstModule={isFirstModule}
         />
       );
     case 'skill-list':
@@ -94,7 +95,7 @@ export async function Modules({ modules, page }) {
     });
   return (
     <>
-      {(modules ?? []).map((module) => {
+      {(modules ?? []).map((module, index) => {
         const scoped = sanity
           ? sanity.scope(`modules[_key=="${module._key}"]`)
           : undefined;
@@ -114,6 +115,7 @@ export async function Modules({ modules, page }) {
               module={module}
               page={page}
               dataAttribute={scoped}
+              isFirstModule={index === 0}
             />
           </ErrorBoundary>
         );

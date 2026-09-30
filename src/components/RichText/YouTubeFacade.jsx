@@ -15,7 +15,8 @@ export default function YouTubeFacade({
   start,
   size,
   align,
-  sanity
+  sanity,
+  priority = false
 }) {
   const [active, setActive] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -42,7 +43,7 @@ export default function YouTubeFacade({
             alt=''
             fill
             sizes='(max-width: 43.75rem) 100vw, 65rem'
-            priority={false}
+            priority={priority}
           />
           <button
             ref={button}

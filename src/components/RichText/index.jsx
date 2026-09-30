@@ -38,7 +38,12 @@ const blockPath = (dataAttribute, props) =>
     ? dataAttribute.scope(`[_key=="${props.value._key}"]`).toString()
     : undefined;
 
-export default function RichText({ value, values, dataAttribute }) {
+export default function RichText({
+  value,
+  values,
+  dataAttribute,
+  isFirstModule
+}) {
   if (!value) return null;
   return (
     <PortableText
@@ -51,7 +56,11 @@ export default function RichText({ value, values, dataAttribute }) {
             <ImageBlock {...props} sanity={blockPath(dataAttribute, props)} />
           ),
           youtube: (props) => (
-            <YouTube {...props} sanity={blockPath(dataAttribute, props)} />
+            <YouTube
+              {...props}
+              sanity={blockPath(dataAttribute, props)}
+              priority={isFirstModule && props.index === 0}
+            />
           ),
           code: (props) => (
             <Code {...props} sanity={blockPath(dataAttribute, props)} />
