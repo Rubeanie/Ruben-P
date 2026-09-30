@@ -58,12 +58,6 @@ $row-radius: calc(#{var.$common-border-radius} - #{var.$space-2});
   padding: 0;
   list-style: none;
 
-  ol {
-    margin: 0;
-    padding: 0 0 0 var.$space-3;
-    list-style: none;
-  }
-
   // The hit area is padding, not leading; the tint overhangs the text by the
   // summary's inset, so it is concentric with the plate.
   a {
@@ -108,6 +102,13 @@ $row-radius: calc(#{var.$common-border-radius} - #{var.$space-2});
   }
 }
 
+.outline ol,
+.list ol {
+  margin: 0;
+  padding: 0 0 0 var.$space-3;
+  list-style: none;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .summary:hover,
   .outline a:hover {
@@ -130,5 +131,190 @@ $row-radius: calc(#{var.$common-border-radius} - #{var.$space-2});
 
   .details[open] > .summary svg {
     rotate: none;
+  }
+}
+
+/* Wide screens: the outline in the prose margin, and the wide column capped
+   on the page after it so nothing runs under the rail */
+
+$rail-gap: var.$space-4;
+$rail-min: 10rem;
+$rail-max: 16rem;
+// The prose column, both gutters and the narrowest rail with its gap on each side.
+$rail-from: var.$measure + 2 * var.$inline-pad-max + 2 * ($rail-min + $rail-gap);
+$track-pad: 0.875rem;
+
+.margin {
+  display: none;
+}
+
+@media (min-width: $rail-from) {
+  .phone {
+    display: none;
+  }
+
+  // What the wide column leaves, held between the readable minimum and the
+  // cap. Percentages resolve against the content column wherever it is read.
+  :global(main):has(.toc) {
+    --rail: clamp(
+      #{$rail-min},
+      (100% - #{var.$measure-wide}) / 2 - #{$rail-gap},
+      #{$rail-max}
+    );
+    --cap: min(#{var.$measure-wide}, 100% - 2 * (var(--rail) + #{$rail-gap}));
+  }
+
+  // A width, not a max-width, so a module narrower than the cap keeps its own.
+  // Draft mode wraps each module, so there the wrapper is the sibling.
+  :global(main) :is(.toc, :global([data-sanity]):has(> .toc)) ~ * {
+    width: min(100%, var(--cap));
+    margin-inline: auto;
+  }
+
+  // The page's height over the content column, so the rail can stick the
+  // whole way down; only the rail itself takes the pointer.
+  .margin {
+    display: block;
+    position: absolute;
+    inset-block: 0;
+    inset-inline: var.$inline-pad;
+    pointer-events: none;
+  }
+}
+
+.rail {
+  position: sticky;
+  // Where the page's content starts, so it sticks from the first frame and
+  // never travels; the navbar docking does not move it either.
+  inset-block-start: calc(#{var.$navbar-height} + #{var.$space-3});
+  width: var(--rail);
+  max-height: calc(
+    100dvh - #{var.$navbar-height} - #{var.$space-3 + var.$space-5}
+  );
+  margin-inline-start: calc(50% + var(--cap) / 2 + #{$rail-gap});
+  // Only an outline taller than that scrolls, with no visible bar; the
+  // current link is kept in view from script.
+  overflow-y: auto;
+  scrollbar-width: none;
+  // Room for the focus ring inside the scroller.
+  padding: var.$space-1;
+  font-family: var.$p-font;
+  font-size: var.$p5-size;
+  line-height: var.$lh-small;
+  text-align: start;
+  pointer-events: auto;
+  transition:
+    opacity 0.2s var.$ease-out,
+    visibility 0.2s;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &[data-hidden] {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.label {
+  margin: 0 0 var.$space-2;
+  font-size: var.$p5-size;
+  font-weight: 600;
+  color: color-mix(
+    in srgb,
+    var(--color-text) #{var.$muted * 100%},
+    transparent
+  );
+  text-align: start;
+}
+
+.track {
+  position: relative;
+  // The line in mid-fill never adds scrollable height.
+  overflow-y: clip;
+  padding-inline-start: $track-pad;
+  border-inline-start: 1px solid
+    color-mix(in srgb, var(--color-text) 12%, transparent);
+}
+
+// The progress line: a 1px bar scaled to the reading position.
+.mark {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: -1.5px;
+  width: 2px;
+  height: 1px;
+  background: var.$color-primary;
+  transform: scaleY(0);
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: var.$touch-target;
+    padding-block: var.$space-1;
+    color: color-mix(
+      in srgb,
+      var(--color-text) #{var.$muted-strong * 100%},
+      transparent
+    );
+    text-align: start;
+    text-decoration: none;
+    transition: color 0.3s var.$ease-out;
+
+    // A mouse needs no 44px row; touch keeps it.
+    @media (pointer: fine) {
+      min-height: 2rem;
+    }
+
+    &[data-level='3'] {
+      color: color-mix(
+        in srgb,
+        var(--color-text) #{var.$muted * 100%},
+        transparent
+      );
+    }
+
+    &[aria-current] {
+      color: var.$color-text;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    a:hover {
+      color: var.$color-text;
+    }
+  }
+}
+
+// Only the current section opens its subsections.
+.sub {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s var.$ease-out;
+
+  > ol {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  &[data-open] {
+    grid-template-rows: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sub,
+  .list a {
+    transition: none;
   }
 }

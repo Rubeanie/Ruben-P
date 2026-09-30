@@ -1,3 +1,6 @@
+// Headings become current as they cross this line, a share of the view height.
+export const READ_LINE = 0.3;
+
 // Scroll positions at which each heading becomes current. Normally that is
 // when it reaches a line 30% down the view. The outline is finished once the
 // footer starts to show (the bottom of the page when there is none), so the
@@ -5,7 +8,7 @@
 // Positions are in document coordinates, so they hold until the layout changes.
 export function knots(els) {
   const vh = innerHeight;
-  const line = vh * 0.3;
+  const line = vh * READ_LINE;
   const max = Math.max(0, document.documentElement.scrollHeight - vh);
   const footer = document.querySelector('footer');
   const done = footer
