@@ -23,7 +23,7 @@ function Block({ block, values, sanity }) {
     }
     case 'heading':
       return block.text ? (
-        <h3 className={styles.heading} {...edit}>
+        <h3 id={block.anchor} className={styles.heading} {...edit}>
           {block.text}
         </h3>
       ) : null;

@@ -47,7 +47,7 @@ export default function AccordionList({
                   {...(sanity && { 'data-sanity': sanity })}>
                   <summary className={styles.summary}>
                     {/* A heading per question lets screen readers jump through the list. */}
-                    <h3 className={styles.question}>
+                    <h3 id={item.anchor} className={styles.question}>
                       <span>{item.summary}</span>
                       <LuChevronDown
                         className={styles.chevron}

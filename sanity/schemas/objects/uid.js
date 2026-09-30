@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Box, Button, Flex, Text, TextInput } from '@sanity/ui';
 import { MdCheck, MdContentCopy } from 'react-icons/md';
+import { FIXED_IDS, moduleIds } from '@/lib/anchors';
 
 export const uid = {
   name: 'uid',
@@ -12,13 +13,13 @@ export const uid = {
     Rule.regex(/^[a-zA-Z0-9-]+$/g).error(
       'Must not contain spaces or special characters'
     ),
+    // The same ids the site reserves before it names the headings.
     Rule.custom((value, { document, path }) => {
       const key = path[path.indexOf('modules') + 1]?._key;
-      const taken = document?.modules?.some(
-        (module) => module._key !== key && module.uid === value
-      );
-      return value && taken
-        ? 'Another module on this page uses this id.'
+      const others = document?.modules?.filter((module) => module._key !== key);
+      const taken = [...FIXED_IDS, ...moduleIds(others)];
+      return value && taken.includes(value)
+        ? 'This id is already used on the page.'
         : true;
     }).warning()
   ],

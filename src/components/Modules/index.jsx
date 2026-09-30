@@ -19,6 +19,7 @@ import SocialList from './SocialList';
 import StatList from './StatList';
 import ThreeScene from './ThreeScene';
 import ErrorBoundary from '../ErrorBoundary';
+import { anchors } from '@/lib/anchors';
 
 const ModuleRenderer = ({ module, page, dataAttribute, isFirstModule }) => {
   switch (module._type) {
@@ -81,7 +82,8 @@ const ModuleRenderer = ({ module, page, dataAttribute, isFirstModule }) => {
   }
 };
 
-export async function Modules({ modules, page }) {
+export async function Modules({ modules: fetched, page }) {
+  const { modules } = anchors(fetched);
   // In the Presentation tool each module gets a wrapper it can be opened from;
   // production markup stays untouched.
   const { isEnabled } = await draftMode();

@@ -58,6 +58,7 @@ export default async function RootLayout({ children }) {
   return (
     <html
       lang='en'
+      data-scroll-behavior='smooth'
       className={`${mont.variable} ${figtree.variable} ${jetbrainsMono.variable} ${montCritical.variable} ${figtreeItalic.variable}`}>
       <head>
         <link

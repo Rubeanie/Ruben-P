@@ -18,7 +18,20 @@ const Link = ({ value, children }) => {
   return href && isSafeHref(href) ? <a href={href}>{children}</a> : children;
 };
 
+// Ids come from the page's anchors pass, so they are unique across modules.
+const heading = (Tag) => {
+  const Heading = ({ value, children }) => (
+    <Tag id={value.anchor}>{children}</Tag>
+  );
+  return Heading;
+};
+
 const components = {
+  block: {
+    h1: heading('h1'),
+    h2: heading('h2'),
+    h3: heading('h3')
+  },
   marks: {
     link: Link,
     imgHeading: span('image-text'),

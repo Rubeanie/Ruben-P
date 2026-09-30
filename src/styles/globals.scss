@@ -48,6 +48,18 @@ html {
     --color-text var.$theme-transition;
 }
 
+// Fragment links glide; Next keeps route changes instant (data-scroll-behavior on html).
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+// Zero specificity, so a component's own margin (the scroll hint target) wins.
+:where([id]) {
+  scroll-margin-top: calc(var(--nav-clearance) + #{var.$space-4});
+}
+
 html,
 body {
   margin: 0;
