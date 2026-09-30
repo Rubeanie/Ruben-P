@@ -1,6 +1,7 @@
 import { MdEdit } from 'react-icons/md';
 import { pageBlock } from '../fragments/page-block';
 import { metadata } from '../fragments/metadata';
+import { headingLinksField } from '../fragments/fields/heading-links';
 
 // Module types that carry a heading of their own.
 const HEADED = new Set([
@@ -90,6 +91,7 @@ export const pagePost = {
       group: 'options',
       initialValue: false
     },
+    headingLinksField({ group: 'options' }),
     {
       name: 'tableOfContents',
       type: 'boolean',

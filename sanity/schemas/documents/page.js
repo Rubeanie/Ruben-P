@@ -6,6 +6,7 @@ import {
 } from 'react-icons/md';
 import { pageBlock } from '../fragments/page-block';
 import { metadata } from '../fragments/metadata';
+import { headingLinksField } from '../fragments/fields/heading-links';
 
 export const page = {
   name: 'page',
@@ -29,6 +30,7 @@ export const page = {
       group: 'content',
       ...pageBlock
     },
+    headingLinksField({ group: 'options' }),
     {
       name: 'tableOfContents',
       type: 'boolean',

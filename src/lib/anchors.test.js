@@ -127,3 +127,34 @@ test('fixed page ids and module key fallbacks are reserved', () => {
     'k9-end-2'
   ]);
 });
+
+test('copy links go on prose h2s and h3s only, when the page asks', () => {
+  const page = [
+    rich('a', block('h1', 'Title'), block('h2', 'Two'), block('h3', 'Three')),
+    {
+      _type: 'creative-module',
+      _key: 'c',
+      columns: [{ _key: 'col', blocks: [{ _type: 'heading', text: 'Fast' }] }]
+    },
+    {
+      _type: 'accordion-list',
+      _key: 'faq',
+      items: [{ _key: 'q', summary: 'Why?', content: [block('h2', 'Because')] }]
+    }
+  ];
+  const linked = (modules) => [
+    ...modules[0].content.map((b) => b.anchorLink ?? false),
+    modules[1].columns[0].blocks[0].anchorLink ?? false,
+    modules[2].items[0].anchorLink ?? false,
+    modules[2].items[0].content[0].anchorLink ?? false
+  ];
+  expect(linked(anchors(page).modules)).toEqual(Array(6).fill(false));
+  expect(linked(anchors(page, { links: true }).modules)).toEqual([
+    false,
+    true,
+    true,
+    false,
+    false,
+    false
+  ]);
+});

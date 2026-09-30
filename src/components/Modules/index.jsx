@@ -83,7 +83,7 @@ const ModuleRenderer = ({ module, page, dataAttribute, isFirstModule }) => {
 };
 
 export async function Modules({ modules: fetched, page }) {
-  const { modules } = anchors(fetched);
+  const { modules } = anchors(fetched, { links: page?.headingLinks });
   // In the Presentation tool each module gets a wrapper it can be opened from;
   // production markup stays untouched.
   const { isEnabled } = await draftMode();

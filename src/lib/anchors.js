@@ -40,29 +40,30 @@ const textOf = (block) =>
 // Gives every heading on the page an id from its text, in document order.
 // Fixed and module ids are reserved first, so a heading that repeats one
 // takes a suffix instead. Each entry is tagged with where it sits: prose,
-// a Creative column or an accordion.
-export function anchors(modules) {
+// a Creative column or an accordion. With `links`, prose h2s and h3s also
+// carry a copy link.
+export function anchors(modules, { links = false } = {}) {
   const next = slugger([...FIXED_IDS, ...moduleIds(modules)]);
   const headings = [];
 
   const marked = modules?.map((module) => {
     const moduleId = uid(module);
-    const mark = (node, text, level, kind) => {
+    const mark = (node, text, level, kind, link = false) => {
       const id = next(text);
       headings.push({ id, text: stegaClean(text), level, kind, moduleId });
-      return { ...node, anchor: id };
+      return { ...node, anchor: id, ...(link && { anchorLink: true }) };
     };
-    const blocks = (list, kind) =>
-      list?.map((block) =>
-        block._type === 'block' && HEADING.test(block.style)
-          ? mark(block, textOf(block), Number(block.style[1]), kind)
-          : block
-      );
+    const blocks = (list, kind, link = false) =>
+      list?.map((block) => {
+        if (block._type !== 'block' || !HEADING.test(block.style)) return block;
+        const level = Number(block.style[1]);
+        return mark(block, textOf(block), level, kind, link && level > 1);
+      });
 
     switch (module._type) {
       case 'richtext-module':
       case 'callout':
-        return { ...module, content: blocks(module.content, 'prose') };
+        return { ...module, content: blocks(module.content, 'prose', links) };
       case 'creative-module':
         return {
           ...module,

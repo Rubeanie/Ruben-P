@@ -1,10 +1,11 @@
-import { PortableText } from '@portabletext/react';
+import { PortableText, toPlainText } from '@portabletext/react';
 import { stegaClean } from '@sanity/client/stega';
 import { isSafeHref } from '@/lib/processUrl';
 import DynamicValue from './DynamicValue';
 import ImageBlock from './ImageBlock';
 import YouTube from './YouTube';
 import Code from './Code';
+import HeadingLink from './HeadingLink';
 import styles from '@/styles/components/RichText.module.scss';
 
 const span = (className) => {
@@ -21,8 +22,14 @@ const Link = ({ value, children }) => {
 // Ids come from the page's anchors pass, so they are unique across modules.
 const heading = (Tag, size) => {
   const Heading = ({ value, children }) => (
-    <Tag id={value.anchor} data-size={size}>
+    <Tag
+      id={value.anchor}
+      data-size={size}
+      className={value.anchorLink ? styles.linked : undefined}>
       {children}
+      {value.anchorLink && (
+        <HeadingLink id={value.anchor} label={stegaClean(toPlainText(value))} />
+      )}
     </Tag>
   );
   return Heading;

@@ -103,6 +103,7 @@ async function getPage(params) {
     ][0]{
       _type,
       _updatedAt,
+      headingLinks,
       ${postCardQuery},
       // Posts that name no authors credit the site's default one; compact drops a missing default.
       "authors": array::compact(select(
