@@ -1,4 +1,6 @@
+import Color from 'color';
 import { IoMdColorFill } from 'react-icons/io';
+import { INKS } from '@/lib/posts';
 import {
   ThemeColorGeneratorInput,
   ThemeStyleInput
@@ -52,7 +54,15 @@ export const style = {
       fieldset: 'themeColors',
       options: {
         disableAlpha: true
-      }
+      },
+      // Buttons, chips and the announcement draw dark text on the primary.
+      validation: (Rule) =>
+        Rule.custom(
+          (value) =>
+            !value?.hex ||
+            Color(value.hex).contrast(Color(INKS.dark)) >= 4.5 ||
+            'Too dark for the dark text drawn on it (under 4.5:1).'
+        ).warning()
     },
     {
       name: 'secondaryColor',
