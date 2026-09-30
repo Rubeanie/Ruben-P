@@ -93,23 +93,6 @@ export const pagePost = {
     },
     headingLinksField({ group: 'options' }),
     {
-      name: 'tableOfContents',
-      type: 'boolean',
-      initialValue: false,
-      group: 'options'
-    },
-    {
-      name: 'tocPosition',
-      type: 'string',
-      options: {
-        list: ['left', 'right'],
-        layout: 'radio'
-      },
-      hidden: ({ parent }) => !parent?.tableOfContents,
-      initialValue: 'right',
-      group: 'options'
-    },
-    {
       ...metadata('/portfolio/'),
       group: 'seo'
     }
