@@ -17,11 +17,19 @@ import RichtextModule from './RichtextModule';
 import SkillList from './SkillList';
 import SocialList from './SocialList';
 import StatList from './StatList';
+import TableOfContents from './TableOfContents';
 import ThreeScene from './ThreeScene';
 import ErrorBoundary from '../ErrorBoundary';
 import { anchors } from '@/lib/anchors';
+import { tocEntries } from '@/lib/toc';
 
-const ModuleRenderer = ({ module, page, dataAttribute, isFirstModule }) => {
+const ModuleRenderer = ({
+  module,
+  page,
+  dataAttribute,
+  isFirstModule,
+  entries
+}) => {
   switch (module._type) {
     case 'accordion-list':
       return <AccordionList {...module} dataAttribute={dataAttribute} />;
@@ -68,6 +76,8 @@ const ModuleRenderer = ({ module, page, dataAttribute, isFirstModule }) => {
       return <SocialList {...module} />;
     case 'stat-list':
       return <StatList {...module} dataAttribute={dataAttribute} />;
+    case 'table-of-contents':
+      return <TableOfContents {...module} entries={entries} />;
     case 'three.js':
       return <ThreeScene {...module} />;
     default:
@@ -83,7 +93,7 @@ const ModuleRenderer = ({ module, page, dataAttribute, isFirstModule }) => {
 };
 
 export async function Modules({ modules: fetched, page }) {
-  const { modules } = anchors(fetched, { links: page?.headingLinks });
+  const { modules, headings } = anchors(fetched, { links: page?.headingLinks });
   // In the Presentation tool each module gets a wrapper it can be opened from;
   // production markup stays untouched.
   const { isEnabled } = await draftMode();
@@ -118,6 +128,11 @@ export async function Modules({ modules: fetched, page }) {
               page={page}
               dataAttribute={scoped}
               isFirstModule={index === 0}
+              entries={
+                module._type === 'table-of-contents'
+                  ? tocEntries(headings, modules.slice(index + 1))
+                  : undefined
+              }
             />
           </ErrorBoundary>
         );

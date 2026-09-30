@@ -1,5 +1,11 @@
+import { tocCount } from '@/lib/toc';
+
 export const pageBlock = {
   type: 'array',
+  validation: (Rule) =>
+    Rule.custom((modules) =>
+      tocCount(modules) > 1 ? 'A page takes one table of contents.' : true
+    ),
   of: [
     { type: 'accordion-list' },
     { type: 'breadcrumbs' },
@@ -16,6 +22,7 @@ export const pageBlock = {
     { type: 'skill-list' },
     { type: 'social-list' },
     { type: 'stat-list' },
+    { type: 'table-of-contents' },
     { type: 'three.js' }
   ],
   options: {

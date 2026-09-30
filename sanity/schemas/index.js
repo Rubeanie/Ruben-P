@@ -28,6 +28,7 @@ import { richtextModule } from './modules/richtext-module';
 import { skillList } from './modules/skill-list';
 import { socialList } from './modules/social-list';
 import { statList } from './modules/stat-list';
+import { tableOfContents } from './modules/table-of-contents';
 import { threeJs } from './modules/three';
 
 // objects
@@ -75,6 +76,7 @@ export const schemaTypes = [
   skillList,
   socialList,
   statList,
+  tableOfContents,
   threeJs,
 
   // objects

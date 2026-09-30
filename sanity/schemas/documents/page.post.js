@@ -49,12 +49,14 @@ export const pagePost = {
       ...pageBlock,
       // Post details read post fields, so plain pages never offer the module.
       of: [...pageBlock.of, { type: 'post-details' }],
-      validation: (Rule) =>
+      validation: (Rule) => [
+        pageBlock.validation(Rule),
         Rule.custom((modules) =>
           (modules ?? []).some((module) => HEADED.has(module._type))
             ? true
             : 'A post needs one heading: add a hero or a rich text block with a heading'
-        ).warning(),
+        ).warning()
+      ],
       group: 'content'
     },
     {
