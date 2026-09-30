@@ -1,4 +1,8 @@
 import { IoMdLink } from 'react-icons/io';
+import { apiVersion } from '@/lib/env';
+import { decodeFragment } from '@/lib/anchors';
+import { LinkInput } from '@sanity/src/components/LinkInput';
+import { splitParams, targetAnchors } from '@sanity/src/utils';
 
 export const link = {
   name: 'link',
@@ -7,6 +11,7 @@ export const link = {
   options: {
     columns: 2
   },
+  components: { input: LinkInput },
   fields: [
     {
       name: 'label',
@@ -55,10 +60,26 @@ export const link = {
       title: 'URL parameters',
       placeholder: 'e.g. #jump-link or ?foo=bar',
       type: 'string',
-      validation: (Rule) =>
+      validation: (Rule) => [
         Rule.regex(/^[?#]/, { name: 'query or fragment' }).error(
           'Start with ? or #.'
         ),
+        Rule.custom(async (params, { parent, getClient }) => {
+          const { fragment } = splitParams(params);
+          const ref = parent?.type === 'internal' && parent.internal?._ref;
+          if (!fragment || !ref) return true;
+          const id = decodeFragment(fragment);
+          if (id === null) return `#${fragment} is not a valid fragment.`;
+          // The live page: a heading that exists only in a draft misses.
+          const target = await targetAnchors(
+            getClient({ apiVersion }),
+            ref,
+            'published'
+          );
+          if (!target || target.ids.has(id)) return true;
+          return `No heading #${fragment} on ${target.title}. The link opens the page at the top.`;
+        }).warning()
+      ],
       hidden: ({ parent }) => !parent?.type
     }
   ],

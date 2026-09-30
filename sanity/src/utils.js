@@ -1,3 +1,5 @@
+import { FIXED_IDS, anchors, moduleIds } from '@/lib/anchors';
+
 export const singleton = (S, id, title) =>
   S.listItem()
     .id(id)
@@ -28,3 +30,33 @@ export function getBlockText(block, lineBreakChar = '↵ ') {
 export function count(arr, singular = 'item', plural) {
   return `${arr?.length || 0} ${arr?.length === 1 ? singular : plural || singular + 's'}`;
 }
+
+// A page's anchors: its headings for the picker, every id a link can target
+// for the validator. Drafts for picking, published for what is live.
+export async function targetAnchors(client, ref, perspective) {
+  const page = await client.fetch(
+    '*[_id == $id][0]{ title, modules }',
+    { id: ref },
+    { perspective }
+  );
+  if (!page) return null;
+  const { headings } = anchors(page.modules);
+  return {
+    title: page.title,
+    headings,
+    ids: new Set([
+      ...FIXED_IDS,
+      ...moduleIds(page.modules),
+      ...headings.map((h) => h.id)
+    ])
+  };
+}
+
+// Params hold an optional query and an optional fragment: ?a=b#section.
+export const splitParams = (params) => {
+  const text = params ?? '';
+  const hash = text.indexOf('#');
+  return hash < 0
+    ? { query: text, fragment: '' }
+    : { query: text.slice(0, hash), fragment: text.slice(hash + 1) };
+};

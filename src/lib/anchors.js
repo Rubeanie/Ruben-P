@@ -90,3 +90,12 @@ export function anchors(modules, { links = false } = {}) {
   });
   return { modules: marked, headings };
 }
+
+// A fragment as the browser matches it against ids; null when malformed.
+export function decodeFragment(fragment) {
+  try {
+    return decodeURIComponent(fragment);
+  } catch {
+    return null;
+  }
+}

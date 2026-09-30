@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test';
-import { anchors, slugify } from './anchors';
+import { anchors, decodeFragment, slugify } from './anchors';
 
 const block = (style, text) => ({
   _type: 'block',
@@ -157,4 +157,10 @@ test('copy links go on prose h2s and h3s only, when the page asks', () => {
     false,
     false
   ]);
+});
+
+test('decodeFragment decodes, and returns null for a malformed escape', () => {
+  expect(decodeFragment('caf%C3%A9')).toBe('café');
+  expect(decodeFragment('process')).toBe('process');
+  expect(decodeFragment('100%')).toBeNull();
 });
