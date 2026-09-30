@@ -15,6 +15,7 @@ import { categorySlug } from '@/lib/posts';
 import Filters from './Filters';
 import Tile from './Tile';
 import useBentoMorph from './useBentoMorph';
+import accordion from '@/styles/components/AccordionList.module.scss';
 import styles from '@/styles/components/PostList.module.scss';
 
 const PAGE_SIZE = 12;
@@ -253,7 +254,7 @@ export default function Bento({ id, posts, filters }) {
             className={styles.empty}
             style={{ viewTransitionName: 'post-empty' }}>
             <p>No projects match.</p>
-            <button type='button' className={styles.loadMore} onClick={clear}>
+            <button type='button' className={styles.clear} onClick={clear}>
               Clear filters
               <LuX strokeWidth={1.75} aria-hidden='true' />
             </button>
@@ -264,10 +265,15 @@ export default function Bento({ id, posts, filters }) {
         <div
           className={styles.loadMoreRow}
           style={{ viewTransitionName: 'post-load-more' }}>
-          <button type='button' className={styles.loadMore} onClick={loadMore}>
-            Load more
+          <button
+            type='button'
+            className={`${accordion.plate} ${styles.loadMore}`}
+            onClick={loadMore}>
+            <span className={styles.loadMoreLabel}>
+              Load more
+              <span className={styles.loadMoreCount}>{remaining} left</span>
+            </span>
             <LuChevronDown strokeWidth={1.75} aria-hidden='true' />
-            <span className={styles.loadMoreCount}>{remaining} left</span>
           </button>
         </div>
       )}

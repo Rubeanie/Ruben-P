@@ -692,7 +692,7 @@ $ring:
   }
 }
 
-/* Load more: one unlabelled control under the grid */
+/* Load more: one unlabelled control under the grid, on the accordion's plate */
 
 .loadMoreRow {
   display: flex;
@@ -700,36 +700,74 @@ $ring:
   margin-block-start: var.$block-gap;
 }
 
-.loadMore {
+.loadMore,
+.clear {
   @include var.touch-target;
   @include var.focus-ring;
   justify-content: center;
   gap: var.$space-2;
+  // The text sits 1rem in, where the accordion's summary text sits in its plate.
   padding: var.$space-2 var.$space-3;
   border: 0;
-  border-radius: var.$button-radius;
-  background: transparent;
-  color: var.$color-text;
   font-family: var.$p-font;
   font-weight: 600;
   font-size: var.$p4-size;
   cursor: pointer;
-  transition: background-color 0.15s var.$ease-out;
-
-  &:active {
-    background: rgba(255, 255, 255, 0.1);
-  }
+  -webkit-tap-highlight-color: transparent;
 
   svg {
+    flex: none;
     inline-size: var.$space-3;
     block-size: var.$space-3;
   }
+}
+
+// The plate's top highlight and the press tint share one inset shadow list,
+// so the tint takes the plate's own shape. Doubled to beat the plate's shadow.
+$plate-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+
+.loadMore.loadMore {
+  box-shadow:
+    $plate-highlight,
+    inset 0 0 0 100vmax transparent;
+  transition: box-shadow 0.2s var.$ease-out;
+
+  &:active {
+    box-shadow:
+      $plate-highlight,
+      inset 0 0 0 100vmax var.$press-tint;
+    transition-duration: 0s;
+  }
+
+  // Phones: the grid's width, the label on the left edge and the chevron on the right.
+  @media (max-width: var.$media-mobile-width) {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+.loadMoreLabel {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var.$space-2;
 }
 
 .loadMoreCount {
   font-weight: 400;
   font-size: var.$p5-size;
   opacity: var.$muted;
+}
+
+// Clearing the filters stays a quiet text control inside the empty state.
+.clear {
+  border-radius: var.$button-radius;
+  background: transparent;
+  color: var.$color-text;
+  transition: background-color 0.15s var.$ease-out;
+
+  &:active {
+    background: rgba(255, 255, 255, 0.1);
+  }
 }
 
 /* Hover is desktop-only; touch fires it on tap */
@@ -749,8 +787,14 @@ $ring:
     opacity: 1;
   }
 
-  .loadMore:hover {
-    background: rgba(255, 255, 255, 0.06);
+  .loadMore.loadMore:hover {
+    box-shadow:
+      $plate-highlight,
+      inset 0 0 0 100vmax var.$press-tint;
+  }
+
+  .clear:hover {
+    background: var.$press-tint;
   }
 }
 
