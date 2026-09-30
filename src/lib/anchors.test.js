@@ -27,13 +27,19 @@ test.each([
 
 test('headings are unique across the page, in document order', () => {
   const { headings } = anchors([
-    rich('a', block('h2', 'Overview'), block('normal', 'Copy')),
+    rich(
+      'a',
+      block('h1Large', 'Title'),
+      block('h2', 'Overview'),
+      block('normal', 'Copy')
+    ),
     rich('b', block('h3', 'Overview'), block('h2', 'Overview 2'))
   ]);
-  expect(headings.map((h) => h.id)).toEqual([
-    'overview',
-    'overview-2',
-    'overview-2-2'
+  expect(headings.map((h) => [h.id, h.level])).toEqual([
+    ['title', 1],
+    ['overview', 2],
+    ['overview-2', 3],
+    ['overview-2-2', 2]
   ]);
 });
 

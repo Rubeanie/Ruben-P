@@ -93,6 +93,8 @@ $h2-size: clamp(1.75rem, 1.2rem + 1.6vw, 2.33rem);
 // Same slope the hero has always had (115px at 1440, 153px cap); the floor stops
 // phones at 40px instead of 37px.
 $h1-size: clamp(2.5rem, 0.54rem + 7.41vw, 9.56rem);
+// Heading 1 inside an article: one and a half h2s, still clearly above them.
+$h1-article-size: calc(#{$h2-size} * 1.5);
 
 /* Muted text: 0.7 is the contrast floor measured on every CMS theme */
 $muted: 0.7;

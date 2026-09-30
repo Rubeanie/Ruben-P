@@ -32,7 +32,7 @@ function slugger(taken) {
   };
 }
 
-const HEADING = /^h[1-3]$/;
+const HEADING = /^(h[1-3]|h1Large)$/;
 
 const textOf = (block) =>
   (block.children ?? []).map((child) => child.text ?? '').join('');
