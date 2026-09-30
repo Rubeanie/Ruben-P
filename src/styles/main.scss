@@ -36,32 +36,32 @@ main {
   }
 
   .alert {
-    margin-block: 0.5rem;
+    margin-block: var.$space-2;
 
     &.error {
       position: relative;
       padding-top: 0.75rem;
       padding-bottom: 0.75rem;
-      padding-left: 1rem;
-      padding-right: 1rem;
+      padding-left: var.$space-3;
+      padding-right: var.$space-3;
       border-radius: 0.25rem;
       border-width: 1px;
-      border-color: #f87171;
-      color: #b91c1c;
-      background-color: #fee2e2;
+      border-color: var.$color-error;
+      color: var.$color-error-ink;
+      background-color: var.$color-error-surface;
     }
 
     &.warning {
       position: relative;
       padding-top: 0.75rem;
       padding-bottom: 0.75rem;
-      padding-left: 1rem;
-      padding-right: 1rem;
+      padding-left: var.$space-3;
+      padding-right: var.$space-3;
       border-radius: 0.25rem;
       border-width: 1px;
-      border-color: #fbbf24;
-      color: #b45309;
-      background-color: #fef3c7;
+      border-color: var.$color-warning;
+      color: var.$color-warning-ink;
+      background-color: var.$color-warning-surface;
     }
 
     span {
