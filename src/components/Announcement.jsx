@@ -2,7 +2,7 @@ import { PortableText } from '@portabletext/react';
 import { stegaClean } from '@sanity/client/stega';
 import { createDataAttribute } from 'next-sanity';
 import { draftMode } from 'next/headers';
-import { dismissKey } from '@/lib/announcement';
+import { DISMISS_MS, dismissKey } from '@/lib/announcement';
 import { resolveLink } from '@/lib/processUrl';
 import DynamicValue from './RichText/DynamicValue';
 import AnnouncementBand from './AnnouncementBand';
@@ -23,11 +23,12 @@ const components = {
   types: { dynamicValue: DynamicValue }
 };
 
-// Runs before the band paints: a dismissed or expired band is hidden with no flash.
+// Runs before the band paints: a recently dismissed or expired band is hidden
+// with no flash. Mirrors isDismissed, which cannot be imported into a string.
 // The attribute holds the id, so the band can clear it for a different announcement.
 const json = (value) => JSON.stringify(value).replace(/</g, '\\u003c');
 const gate = (id, end) =>
-  `(function(i,k,e){var h=e&&Date.now()>=e;try{h=h||localStorage.getItem(k)}catch(_){}if(h)document.documentElement.setAttribute('data-announcement-hidden',i)})(${json(id)},${json(dismissKey(id))},${end})`;
+  `(function(i,k,e,d){var n=Date.now(),h=e&&n>=e;try{h=h||n-Number(localStorage.getItem(k))<d}catch(_){}if(h)document.documentElement.setAttribute('data-announcement-hidden',i)})(${json(id)},${json(dismissKey(id))},${end},${DISMISS_MS})`;
 
 export default async function Announcement({ announcement, logo }) {
   if (!announcement) return null;

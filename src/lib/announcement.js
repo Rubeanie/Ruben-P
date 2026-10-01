@@ -40,6 +40,12 @@ const time = (value) => Date.parse(stegaClean(value));
 // Where a dismissal is stored, read by the inline gate and the band alike.
 export const dismissKey = (id) => `announcement-dismissed:${id}`;
 
+// A dismissal lasts a few days, then the band comes back. It stores when it was
+// dismissed; anything older, or unreadable, has lapsed.
+export const DISMISS_MS = 3 * 24 * 60 * 60 * 1000;
+export const isDismissed = (stored, now = Date.now()) =>
+  now - Number(stored) < DISMISS_MS;
+
 // Picked at render, so a start passing waits for a publish; the inline gate covers `end`.
 // The first announcement whose schedule contains now; either bound is optional.
 export function liveAnnouncement(announcements, now = Date.now()) {

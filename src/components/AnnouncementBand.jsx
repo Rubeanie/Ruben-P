@@ -9,7 +9,7 @@ import {
 } from 'react';
 import Link from 'next/link';
 import { LuX } from 'react-icons/lu';
-import { dismissKey } from '@/lib/announcement';
+import { dismissKey, isDismissed } from '@/lib/announcement';
 import AnnouncementSeparator from './AnnouncementSeparator';
 import styles from '@/styles/components/Announcement.module.scss';
 
@@ -29,7 +29,7 @@ const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
 const isHidden = (key, end) => {
   if (end && Date.now() >= end) return true;
   try {
-    return !!localStorage.getItem(key);
+    return isDismissed(localStorage.getItem(key));
   } catch {
     return false;
   }
@@ -276,7 +276,7 @@ export default function AnnouncementBand({
     const band = bandRef.current;
     const finish = () => {
       try {
-        localStorage.setItem(dismissKey(id), '1');
+        localStorage.setItem(dismissKey(id), String(Date.now()));
       } catch {}
       setGone(true);
     };

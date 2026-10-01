@@ -1,5 +1,10 @@
 import { expect, test } from 'bun:test';
-import { dismissKey, liveAnnouncement } from './announcement';
+import {
+  DISMISS_MS,
+  dismissKey,
+  isDismissed,
+  liveAnnouncement
+} from './announcement';
 import { GLYPHS } from '../components/AnnouncementSeparator';
 import { announcement } from '../../sanity/schemas/documents/announcement';
 
@@ -57,4 +62,14 @@ test('every separator the Studio offers has a glyph', () => {
   expect(values.length).toBeGreaterThan(0);
   for (const value of values) expect(GLYPHS[value]).toBeDefined();
   expect(values).toContain(field.initialValue);
+});
+
+test('a dismissal lapses after a few days', () => {
+  const now = 1_000_000_000_000;
+  expect(isDismissed(String(now - 1000), now)).toBe(true);
+  expect(isDismissed(String(now - DISMISS_MS), now)).toBe(false);
+  // The old flag ('1') and missing or junk values count as lapsed.
+  expect(isDismissed('1', now)).toBe(false);
+  expect(isDismissed(null, now)).toBe(false);
+  expect(isDismissed('x', now)).toBe(false);
 });
