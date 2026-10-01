@@ -37,6 +37,15 @@ export const seoMetaFields = {
         'Asks search engines not to index or follow links (adds noindex, nofollow). On a page, leave it unset to follow Site settings; on Site settings it is the default for every page.'
     },
     {
+      name: 'priority',
+      title: 'Sitemap priority',
+      type: 'number',
+      hidden: ({ document }) => document?._type === 'site',
+      validation: (Rule) => Rule.min(0).max(1).precision(1),
+      description:
+        'Leave empty for the default: home 1.0, then 0.2 less for each level down (0.8, 0.6, 0.4, never below 0.2); posts 0.6.'
+    },
+    {
       name: 'openGraph',
       type: 'openGraph',
       description:
