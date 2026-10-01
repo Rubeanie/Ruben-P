@@ -74,6 +74,22 @@ export const site = {
       type: 'seoMetaFields',
       group: 'seo',
       components: { input: SharePreviewInput }
+    },
+    {
+      name: 'robotsDisallow',
+      title: 'Blocked paths',
+      type: 'array',
+      of: [{ type: 'string' }],
+      group: 'seo',
+      initialValue: ['/admin', '/api'],
+      validation: (Rule) =>
+        Rule.custom((paths) =>
+          (paths ?? []).every((path) => path?.startsWith('/'))
+            ? true
+            : 'Every path must start with /'
+        ),
+      description:
+        "Paths crawlers are asked to skip. Pages with Prevent indexing must stay crawlable so search engines can read their noindex; don't list them here."
     }
   ],
   preview: {
