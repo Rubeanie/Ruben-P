@@ -3,6 +3,7 @@ import {
   LuAward,
   LuCake,
   LuCandyCane,
+  LuConstruction,
   LuCrown,
   LuFlower2,
   LuGhost,
@@ -16,8 +17,10 @@ import {
   LuStar,
   LuSun,
   LuTreePine,
+  LuTriangleAlert,
   LuTrophy,
-  LuWorm
+  LuWorm,
+  LuWrench
 } from 'react-icons/lu';
 import styles from '@/styles/components/Announcement.module.scss';
 
@@ -130,6 +133,9 @@ export const GLYPHS = {
   award: LuAward,
   crown: LuCrown,
   worm: LuWorm,
+  barrier: LuConstruction,
+  wrench: LuWrench,
+  warning: LuTriangleAlert,
   infinity: LuInfinity,
   spiral: drawn(24, spiral()),
   curl: drawn(

@@ -26,6 +26,9 @@ export const SEPARATORS = [
   { title: 'Award', value: 'award' },
   { title: 'Crown', value: 'crown' },
   { title: 'Worm', value: 'worm' },
+  { title: 'Barrier', value: 'barrier' },
+  { title: 'Wrench', value: 'wrench' },
+  { title: 'Warning', value: 'warning' },
   { title: 'Infinity', value: 'infinity' },
   { title: 'Spiral', value: 'spiral' },
   { title: 'Curl', value: 'curl' }
