@@ -189,7 +189,10 @@ $lift: -0.035em;
 }
 
 .band[data-mode='static'] .copy {
-  overflow: hidden;
+  // The trimmed box ends at the cap line and baseline, so only the inline axis
+  // clips. A clip is no scroll container, so the flex item needs its own floor.
+  min-width: 0;
+  overflow: clip visible;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
