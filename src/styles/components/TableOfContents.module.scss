@@ -195,7 +195,7 @@ $track-pad: 0.875rem;
   // Only an outline taller than that scrolls, with no visible bar; the
   // current link is kept in view from script.
   overflow-y: auto;
-  scrollbar-width: none;
+  @include var.hidden-scrollbar;
   // Room for the focus ring inside the scroller.
   padding: var.$space-1;
   font-family: var.$p-font;
@@ -206,10 +206,6 @@ $track-pad: 0.875rem;
   transition:
     opacity 0.2s var.$ease-out,
     visibility 0.2s;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 
   &[data-hidden] {
     opacity: 0;

@@ -107,14 +107,18 @@
   min-height: 2.75rem;
 }
 
+@mixin hidden-scrollbar {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 // Overlay scrollbars only: a standard one would sit under the content as a second line.
 @mixin hidden-touch-scrollbar {
   @media (hover: none) and (pointer: coarse) {
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    @include hidden-scrollbar;
   }
 }
 // Stops text at N lines; a long title can never fill a small tile or card.

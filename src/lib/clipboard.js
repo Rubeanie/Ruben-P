@@ -1,6 +1,7 @@
 // The async clipboard only exists in secure contexts; plain http on the LAN
 // still gets a copy through a selection.
 function copyBySelection(text) {
+  const focused = document.activeElement;
   const area = document.createElement('textarea');
   area.value = text;
   area.setAttribute('readonly', '');
@@ -10,6 +11,8 @@ function copyBySelection(text) {
   area.select();
   const ok = document.execCommand('copy');
   area.remove();
+  // Selecting the field took focus; a keyboard user stays on the button they pressed.
+  focused?.focus();
   if (!ok) throw new Error('copy failed');
 }
 

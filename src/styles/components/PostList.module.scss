@@ -479,7 +479,17 @@ $ring:
   }
 }
 
-/* Filters: the search capsule leads the chips */
+/* Filters: the search capsule leads the chips, the feed capsule trails them */
+
+// The trailing fade at its widest; Filters.jsx writes the raw scroll left, so it narrows to nothing at the end.
+$fade: 48px;
+$plate: rgba(var.$color-plate-dark, 0.7);
+
+@property --feed-cut {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
 
 .filters {
   display: flex;
@@ -497,15 +507,33 @@ $ring:
   gap: var.$space-2;
   overflow-x: auto;
   // No scroll snap: it fought the scroll-into-view of a selected chip (measured).
-  @include var.hidden-touch-scrollbar;
   overscroll-behavior-x: contain;
   // The chips' 44px hit bands overflow the line; this keeps them inside the scroller instead of clipped.
   padding-block: $hit-inset;
   margin-block: -$hit-inset;
+  // Keeps the doubled gap before the feed capsule, which sits at the row end.
+  margin-inline-end: var.$space-2;
+  // No scrollbar for a mouse either: the trailing fade already says there is more.
+  @include var.hidden-scrollbar;
 
-  &[data-more] {
-    mask-image: linear-gradient(to right, #000 calc(100% - 3rem), transparent);
-  }
+  // The fade closes as the strip ends; the feed pill cuts the end away under itself, with the fade ahead of the cut.
+  mask-image: linear-gradient(
+    to right,
+    #000
+      calc(
+        100% - var(--feed-cut) - min(
+            #{$fade},
+            max(var(--chips-fade, 0px), var(--feed-cut))
+          )
+      ),
+    transparent calc(100% - var(--feed-cut))
+  );
+  transition: --feed-cut 0.25s var.$ease-out;
+}
+
+// The pill reaches past the 16px gap by its words and their padding.
+.filters:has(.feed[data-copied]) .chips {
+  --feed-cut: calc(var(--copied-width) + #{var.$space-3});
 }
 
 .filters .search {
@@ -561,7 +589,7 @@ $ring:
   max-inline-size: 100%;
   block-size: $capsule-height;
   border-radius: var.$radius-pill;
-  background: rgba(var.$color-plate-dark, 0.7);
+  background: $plate;
   color: var.$color-on-dark;
   box-shadow: inset 0 0 0 1px
     color-mix(in srgb, var.$color-on-dark 45%, transparent);
@@ -673,6 +701,117 @@ $ring:
 
 .search[data-filled] .searchClear {
   opacity: var.$muted;
+}
+
+// The search capsule's twin. Its own box stays 28px; the plate is the pill, which grows leftward over the strip's end, so nothing reflows.
+.feed {
+  @include var.focus-ring(3px);
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  // The glyph keeps the end cap's centre while the capsule grows on phones.
+  justify-content: flex-end;
+  inline-size: $capsule-height;
+  block-size: $capsule-height;
+  // At the row end, so with no chips the pill grows into empty room, not over the search.
+  margin-inline-start: auto;
+  padding: 0 $glyph-start 0 0;
+  border: 0;
+  border-radius: var.$radius-pill;
+  background: none;
+  color: var.$color-on-dark;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  --pill: calc(var(--copied-width) + #{var.$space-3 + $capsule-height});
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -$hit-inset;
+  }
+}
+
+.feedPill {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  inline-size: $capsule-height;
+  padding-inline-end: $capsule-height;
+  overflow: hidden;
+  border-radius: inherit;
+  background: $plate;
+  box-shadow: inset 0 0 0 1px
+    color-mix(in srgb, var.$color-on-dark 45%, transparent);
+  pointer-events: none;
+  // The search capsule's own open and close.
+  transition:
+    inline-size 0.25s var.$ease-out,
+    background-color 0.15s var.$ease-out;
+
+  [data-copied] > & {
+    inline-size: var(--pill);
+  }
+
+  // Under 44px tall, so the press answers with tint, never scale.
+  .feed:active > & {
+    background-color: color-mix(in srgb, $plate, #fff 10%);
+    transition-duration: 0.25s, 0s;
+  }
+}
+
+.feedSaid {
+  flex: none;
+  font-family: var.$p-font;
+  font-weight: 600;
+  font-size: var.$p5-size;
+  letter-spacing: var.$track-small;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0;
+  // Out quickly on the close, in once the edge has moved.
+  transition: opacity 0.12s var.$ease-out;
+
+  [data-copied] & {
+    opacity: 1;
+    transition-delay: 0.08s;
+  }
+}
+
+// Both glyphs share one cell, so the way back is a cross-fade; the check itself lands at once.
+.feedGlyphs {
+  position: relative;
+  display: grid;
+
+  svg {
+    grid-area: 1 / 1;
+    inline-size: $glyph;
+    block-size: $glyph;
+    transition: opacity 0.2s var.$ease-out;
+  }
+
+  svg:first-child {
+    opacity: var.$muted;
+  }
+
+  // Coloured at rest too, so it keeps its colour while it fades out; it leaves with the words, ahead of the feed glyph's return.
+  svg:last-child {
+    opacity: 0;
+    color: var.$color-primary;
+    transition-duration: 0.12s;
+  }
+
+  [data-copied] & svg {
+    opacity: 0;
+    transition: none;
+  }
+
+  [data-copied] & svg:last-child {
+    opacity: 1;
+  }
 }
 
 /* Empty state: bare copy, one unit tall so the grid keeps its height */
@@ -787,6 +926,14 @@ $plate-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.14);
     opacity: 1;
   }
 
+  .feed:hover > .feedPill {
+    background-color: color-mix(
+      in srgb,
+      rgba(var.$color-plate-dark, 0.7),
+      #fff 6%
+    );
+  }
+
   .loadMore.loadMore:hover {
     box-shadow:
       $plate-highlight,
@@ -843,16 +990,34 @@ $plate-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.14);
     display: none;
   }
 
-  // The search is a full-width field on its own row; the chip line under it bleeds to the viewport edge like the related row.
+  // The search fills its row beside the feed capsule; the chip line under them bleeds to the viewport edge like the related row.
   .filters {
-    flex-direction: column;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
   }
 
   .filters .search {
     inline-size: 100%;
     margin-inline-end: 0;
     transition: none;
+  }
+
+  // The pill shares the row with the search instead of covering it: the capsule itself grows, and the field gives up the room.
+  .feed {
+    grid-row: 1;
+    grid-column: 2;
+    margin-inline-start: 0;
+    transition: inline-size 0.25s var.$ease-out;
+
+    &[data-copied] {
+      inline-size: var(--pill);
+    }
+  }
+
+  .feedPill,
+  [data-copied] > .feedPill {
+    inline-size: 100%;
   }
 
   .search .searchInput {
@@ -866,14 +1031,13 @@ $plate-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.14);
   }
 
   .chips {
-    // In a column the basis would become a height.
-    flex: 0 0 auto;
+    grid-column: 1 / -1;
     margin-inline: calc(-1 * var.$inline-pad);
     padding-inline: var.$inline-pad;
   }
 
   // The strip runs off the viewport edge like the related row; no fade there.
-  .chips[data-more] {
+  .chips {
     mask-image: none;
   }
 }
@@ -883,9 +1047,17 @@ $plate-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.14);
     transform: none;
   }
 
-  // The capsule snaps open instead of growing.
-  .search {
+  // The capsules snap open instead of growing; the feed's words still fade.
+  .search,
+  .feed,
+  .feedPill,
+  .chips {
     transition: none;
+  }
+
+  // The edge it waited for no longer moves.
+  [data-copied] .feedSaid {
+    transition-delay: 0s;
   }
 
   .img {

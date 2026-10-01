@@ -5,6 +5,7 @@ import { stegaClean } from '@sanity/client/stega';
 import { LuSearch, LuX } from 'react-icons/lu';
 import { inkFor } from '@/lib/posts';
 import styles from '@/styles/components/PostList.module.scss';
+import CopyFeed from './CopyFeed';
 
 // One scrolling line of chips in a fixed order; the selected chip fills in place.
 function ChipRow({ categories, value, onChange }) {
@@ -24,9 +25,9 @@ function ChipRow({ categories, value, onChange }) {
   useEffect(() => {
     const el = row.current;
     const more = () =>
-      el.toggleAttribute(
-        'data-more',
-        el.scrollLeft + el.clientWidth < el.scrollWidth - 1
+      el.style.setProperty(
+        '--chips-fade',
+        `${el.scrollWidth - el.clientWidth - el.scrollLeft}px`
       );
     more();
     el.addEventListener('scroll', more, { passive: true });
@@ -151,6 +152,7 @@ export default function Filters({
           onChange={onCategory}
         />
       )}
+      <CopyFeed />
     </div>
   );
 }
