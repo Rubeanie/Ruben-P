@@ -2,6 +2,7 @@ import { stegaClean } from '@sanity/client/stega';
 
 // The Studio's separator options; the band's glyph table is keyed by the same values.
 export const SEPARATORS = [
+  { title: 'None', value: 'none' },
   { title: 'Dot', value: 'dot' },
   { title: 'Slash', value: 'slash' },
   { title: 'Double slash', value: 'doubleSlash' },

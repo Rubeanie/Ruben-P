@@ -303,6 +303,20 @@ export default function AnnouncementBand({
 
   if (!shown) return null;
 
+  const sep = (
+    <span className={styles.sep} aria-hidden='true'>
+      <AnnouncementSeparator name={separator} logo={logo} />
+    </span>
+  );
+  const none = separator === 'none';
+  // the static band, and what is measured against the column for overflow
+  const still = (
+    <>
+      {!none && sep}
+      <span className={styles.copy}>{text}</span>
+      {!none && sep}
+    </>
+  );
   const content =
     mode === 'marquee' ? (
       <span className={styles.track} ref={trackRef}>
@@ -313,14 +327,12 @@ export default function AnnouncementBand({
             ref={i === 0 ? unitRef : undefined}
             aria-hidden={i > 0 || undefined}>
             <span className={styles.copy}>{text}</span>
-            <span className={styles.sep} aria-hidden='true'>
-              <AnnouncementSeparator name={separator} logo={logo} />
-            </span>
+            {sep}
           </span>
         ))}
       </span>
     ) : (
-      <span className={styles.copy}>{text}</span>
+      still
     );
   const viewport = (
     <span className={styles.viewport} ref={viewportRef}>
@@ -339,7 +351,7 @@ export default function AnnouncementBand({
       inert={dismissing}
       {...(sanity && { 'data-sanity': sanity })}>
       <span className={styles.measure} aria-hidden='true' inert>
-        <span ref={measureRef}>{text}</span>
+        <span ref={measureRef}>{still}</span>
       </span>
       {href ? (
         <Link className={styles.body} href={href}>

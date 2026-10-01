@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Card, Grid, Stack, Text } from '@sanity/ui';
+import { LuMegaphone } from 'react-icons/lu';
 import { set, useClient } from 'sanity';
 import { apiVersion } from '@/lib/env';
 import { SEPARATORS } from '@/lib/announcement';
@@ -45,10 +46,19 @@ function LogoMedia() {
   return logo ? <AnnouncementSeparator name='logo' logo={logo} /> : null;
 }
 
+// No separator shows as a plain announcement.
+const Megaphone = () => <LuMegaphone strokeWidth={2.25} />;
+
 export function SeparatorMedia({ name }) {
   return (
     <span className='separator-tile' aria-hidden='true'>
-      {name === 'logo' ? <LogoMedia /> : <AnnouncementSeparator name={name} />}
+      {name === 'none' ? (
+        <Megaphone />
+      ) : name === 'logo' ? (
+        <LogoMedia />
+      ) : (
+        <AnnouncementSeparator name={name} />
+      )}
     </span>
   );
 }
@@ -128,8 +138,12 @@ export function SeparatorInput({
             __unstable_focusRing>
             <Stack space={3}>
               <span className='separator-tile' aria-hidden='true'>
-                {glyph && (
-                  <AnnouncementSeparator name={separator.value} logo={logo} />
+                {separator.value === 'none' ? (
+                  <Megaphone />
+                ) : (
+                  glyph && (
+                    <AnnouncementSeparator name={separator.value} logo={logo} />
+                  )
                 )}
               </span>
               <Text size={0} align='center' muted={!selected}>

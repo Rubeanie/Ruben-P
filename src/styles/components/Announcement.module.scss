@@ -124,7 +124,8 @@ $lift: -0.035em;
 
   // its own width follows the text, so an edit resizes it and re-runs the check
   > span {
-    display: block;
+    display: flex;
+    column-gap: $gap;
     width: max-content;
   }
 }
@@ -180,6 +181,7 @@ $lift: -0.035em;
   min-width: 0;
   height: 100%;
   overflow: hidden;
+  column-gap: $gap;
   padding-inline: $gap;
 }
 
@@ -220,10 +222,20 @@ $lift: -0.035em;
   white-space: nowrap;
 }
 
+// Static, the viewport's column gap spaces the separators from the text.
 .sep {
   display: flex;
+  flex: none;
   align-items: center;
+}
+
+.unit > .sep {
   padding-inline: $gap;
+
+  // No separator: the copies are one gap apart.
+  &:empty {
+    padding-inline: $gap * 0.5;
+  }
 }
 
 .glyph {

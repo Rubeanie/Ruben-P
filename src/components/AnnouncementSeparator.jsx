@@ -107,8 +107,9 @@ const drawn = (w, pts) => {
   };
 };
 
-// A character in the band's face, the CMS logo, or a line icon.
+// A character in the band's face, the CMS logo, a line icon, or nothing.
 export const GLYPHS = {
+  none: null,
   dot: '·',
   slash: '/',
   doubleSlash: '//',
@@ -145,8 +146,10 @@ export const GLYPHS = {
 };
 
 export default function AnnouncementSeparator({ name, logo }) {
-  const key = GLYPHS[name] ? name : 'dot';
+  // unset or unknown is the dot
+  const key = Object.hasOwn(GLYPHS, name) ? name : 'dot';
   const glyph = GLYPHS[key];
+  if (!glyph) return null;
   if (glyph === 'logo')
     return (
       <span
