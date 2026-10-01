@@ -39,7 +39,9 @@ export default async function Announcement({ announcement, logo }) {
     createDataAttribute({
       baseUrl: '/admin',
       id,
-      type: 'announcement'
+      type: 'announcement',
+      // The attribute needs a field; clicking the band opens its text.
+      path: 'content'
     }).toString();
 
   return (
