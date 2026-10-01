@@ -6,12 +6,23 @@ export const threeSceneQuery = groq`
     modelSource == 'url' => modelUrl,
     modelSource == 'cloudinary' => modelCloudinary.secure_url
   ),
+  "loadOnClick": coalesce(loadOnClick, false),
+  loadOnClick == true => {
+    "poster": select(
+      posterSource == 'cloudinary' => posterCloudinary.secure_url,
+      poster.asset->url
+    ),
+    "modelBytes": select(
+      modelSource == 'file' => modelFile.asset->size,
+      modelSource == 'cloudinary' => modelCloudinary.bytes
+    )
+  },
   lights { hex },
   background { hex },
   aspectRatio, size, align, caption, source,
   environmentSource,
   environmentPreset,
-  environmentBackground,
+  "environmentBackground": environmentSource != 'theme' && environmentBackground == true,
   "environment": select(
     environmentSource == 'file' => environmentFile.asset->url,
     environmentSource == 'url' => environmentUrl,

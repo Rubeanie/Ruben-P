@@ -70,6 +70,38 @@ export const threeJs = {
       group: 'content'
     },
     {
+      name: 'posterSource',
+      title: 'Poster source',
+      type: 'string',
+      description:
+        'Shown softly blurred until the visitor loads the model. Generate it from the scene, or use your own image.',
+      options: {
+        list: [
+          { title: 'Image', value: 'image' },
+          { title: 'Cloudinary', value: 'cloudinary' }
+        ],
+        layout: 'radio'
+      },
+      initialValue: 'image',
+      hidden: ({ parent }) => !parent?.loadOnClick,
+      group: 'content'
+    },
+    {
+      name: 'poster',
+      type: 'image',
+      hidden: ({ parent }) =>
+        !parent?.loadOnClick || parent?.posterSource === 'cloudinary',
+      group: 'content'
+    },
+    {
+      name: 'posterCloudinary',
+      title: 'Cloudinary poster',
+      type: 'cloudinary.asset',
+      hidden: ({ parent }) =>
+        !parent?.loadOnClick || parent?.posterSource !== 'cloudinary',
+      group: 'content'
+    },
+    {
       name: 'lights',
       title: 'Ambient light',
       type: 'color',
@@ -121,7 +153,7 @@ export const threeJs = {
       options: {
         list: [
           { title: 'Preset', value: 'preset' },
-          { title: 'Theme image', value: 'theme' },
+          { title: 'Page photo (reflections)', value: 'theme' },
           { title: 'File upload', value: 'file' },
           { title: 'URL', value: 'url' },
           { title: 'Cloudinary', value: 'cloudinary' }
@@ -196,7 +228,9 @@ export const threeJs = {
       description:
         'Render the HDRI as the visible backdrop (overrides the background colour).',
       initialValue: false,
-      hidden: ({ parent }) => !parent?.environmentSource,
+      // The page photo reflects only: a backdrop of it would hide the page.
+      hidden: ({ parent }) =>
+        !parent?.environmentSource || parent.environmentSource === 'theme',
       group: 'options'
     },
     {
@@ -239,6 +273,15 @@ export const threeJs = {
       description: 'Darkens the frame towards its edges. It rides on the glow.',
       initialValue: false,
       hidden: ({ parent }) => !GLOWING.includes(parent?.bloom),
+      group: 'options'
+    },
+    {
+      name: 'loadOnClick',
+      title: 'Load on click',
+      type: 'boolean',
+      description:
+        'Shows a poster and loads the model only when the visitor asks. For heavy models.',
+      initialValue: false,
       group: 'options'
     },
     {

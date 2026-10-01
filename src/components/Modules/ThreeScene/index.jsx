@@ -2,17 +2,9 @@ import { stegaClean } from '@sanity/client/stega';
 import FigureCaption from '@/components/RichText/FigureCaption';
 import { blockLayout } from '@/components/RichText/layout';
 import uid from '@/lib/uid';
+import { aspectOf } from './aspects';
 import SceneCanvas from './SceneCanvas';
 import styles from '@/styles/components/ThreeScene.module.scss';
-
-// Fixed lookup rather than parsing the string: the schema offers these four and
-// an unknown value should not reach CSS.
-const ASPECTS = {
-  '16:9': '16 / 9',
-  '4:3': '4 / 3',
-  '1:1': '1 / 1',
-  '21:9': '21 / 9'
-};
 
 // Server component: the query resolves the chosen model source to a single URL,
 // which this passes to the client island. Only the WebGL canvas is client-side
@@ -37,11 +29,15 @@ export default function ThreeScene(props) {
     grain,
     vignette,
     orbitControls,
-    zoom
+    zoom,
+    loadOnClick,
+    poster,
+    modelBytes
   } = props;
 
   const layout = blockLayout(stegaClean(size), stegaClean(align));
-  const aspect = ASPECTS[stegaClean(aspectRatio)] || ASPECTS['16:9'];
+  const aspect = aspectOf(stegaClean(aspectRatio));
+  const cleanModel = stegaClean(model);
 
   return (
     <div className={styles.column}>
@@ -50,9 +46,13 @@ export default function ThreeScene(props) {
         className={styles.figure}
         {...layout}
         style={{ '--aspect': aspect }}>
-        <div className={styles.frame}>
+        {/* Takes focus from the load button when the scene replaces it. */}
+        <div className={styles.frame} tabIndex={loadOnClick ? -1 : undefined}>
+          {/* A live edit can swap the model or the facade on a mounted scene;
+              a fresh instance keeps the old load state from carrying over. */}
           <SceneCanvas
-            model={stegaClean(model)}
+            key={`${cleanModel}|${!!loadOnClick}`}
+            model={cleanModel}
             background={stegaClean(background?.hex)}
             lights={stegaClean(lights?.hex)}
             environmentSource={stegaClean(environmentSource)}
@@ -65,6 +65,10 @@ export default function ThreeScene(props) {
             vignette={vignette}
             orbitControls={orbitControls}
             zoom={zoom}
+            loadOnClick={loadOnClick}
+            poster={stegaClean(poster)}
+            modelBytes={modelBytes}
+            label={stegaClean(caption)}
           />
         </div>
         <FigureCaption caption={caption} source={source} />
