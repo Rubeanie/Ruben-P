@@ -29,7 +29,8 @@ export default function Scene({
   vignette,
   orbitControls,
   zoom,
-  onReady
+  onReady,
+  ...canvasProps
 }) {
   // Once frames still run slow at the lowest density, the glow stays off.
   const [shed, setShed] = useState(false);
@@ -47,7 +48,8 @@ export default function Scene({
       style={style}
       loader={false}
       onReady={onReady}
-      onOverload={() => setShed(true)}>
+      onOverload={() => setShed(true)}
+      {...canvasProps}>
       {model && <Model url={model} />}
       {/* Key light for form: flat image environments light too evenly. */}
       {keyLight && <directionalLight position={[3, 4, 5]} intensity={1.2} />}

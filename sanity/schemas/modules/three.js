@@ -2,6 +2,7 @@ import { IoMdCube } from 'react-icons/io';
 import { apiVersion } from '@/lib/env';
 import { blockLayoutFields } from '../fragments/fields/block-layout';
 import { uidField } from '../fragments/fields/uid';
+import PosterInput from './three/PosterInput';
 
 // Grain and vignette ride on the glow's composer, so they only exist with it.
 const GLOWING = ['quiet', 'medium'];
@@ -89,6 +90,7 @@ export const threeJs = {
     {
       name: 'poster',
       type: 'image',
+      components: { input: PosterInput },
       hidden: ({ parent }) =>
         !parent?.loadOnClick || parent?.posterSource === 'cloudinary',
       group: 'content'
