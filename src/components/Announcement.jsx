@@ -56,7 +56,12 @@ export default async function Announcement({ announcement, logo }) {
         id={id}
         end={end}
         text={
-          <PortableText value={announcement.content} components={components} />
+          // The band is one edit target (its data-sanity); per-copy stega would
+          // give every marquee copy an overlay box, off-screen ones included.
+          <PortableText
+            value={stegaClean(announcement.content)}
+            components={components}
+          />
         }
         href={resolveLink(announcement.link)}
         separator={stegaClean(announcement.separator)}
