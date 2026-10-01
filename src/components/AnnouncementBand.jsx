@@ -319,7 +319,9 @@ export default function AnnouncementBand({
   );
   const content =
     mode === 'marquee' ? (
-      <span className={styles.track} ref={trackRef}>
+      // Keyed so the static row never reuses this node and inherits the
+      // transform the loop writes onto it.
+      <span key='track' className={styles.track} ref={trackRef}>
         {Array.from({ length: copies }, (_, i) => (
           <span
             key={i}
