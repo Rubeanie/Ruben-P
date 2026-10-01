@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import { aspectOf } from '@/components/Modules/ThreeScene/aspects';
 import { ThemeContext } from '@/components/ThemeContext';
+import { DEFAULT_THEME_URL, loadThemeImage } from '@/lib/themes';
 
 const WIDTH = 1600;
 const LOAD_TIMEOUT = 20000;
@@ -11,14 +12,23 @@ const SETTLE_S = 1.2;
 const STILL_FRAMES = 20;
 
 // A theme environment follows the visitor's page, unknown here: it reflects a
-// flat grey instead, brightness-normalised the same way the site does a theme.
-function neutralTheme() {
+// grey with a hint of the default theme photo, brightness-normalised the same
+// way the site does a theme.
+const THEME_HINT = 0.3;
+
+async function neutralTheme() {
   const canvas = document.createElement('canvas');
-  canvas.width = 2;
-  canvas.height = 1;
+  canvas.width = 512;
+  canvas.height = 256;
   const ctx = canvas.getContext('2d');
   ctx.fillStyle = '#777';
-  ctx.fillRect(0, 0, 2, 1);
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  try {
+    ctx.globalAlpha = THEME_HINT;
+    ctx.drawImage(await loadThemeImage(DEFAULT_THEME_URL), 0, 0, 512, 256);
+  } catch {
+    // Grey alone still reads as neutral.
+  }
   return { theme: { url: canvas.toDataURL() } };
 }
 
@@ -49,6 +59,7 @@ export default async function snapshotScene({ aspectRatio, ...scene }) {
   document.body.appendChild(container);
   const root = createRoot(container);
 
+  const theme = await neutralTheme();
   const deadline = Date.now() + LOAD_TIMEOUT;
   const failed = new Error('The 3D model could not be loaded.');
 
@@ -58,7 +69,7 @@ export default async function snapshotScene({ aspectRatio, ...scene }) {
     await new Promise((resolve, reject) => {
       const timeout = setTimeout(() => reject(failed), LOAD_TIMEOUT);
       root.render(
-        <ThemeContext.Provider value={neutralTheme()}>
+        <ThemeContext.Provider value={theme}>
           <Scene
             {...scene}
             orbitControls={false}
