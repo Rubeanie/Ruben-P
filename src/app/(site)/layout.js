@@ -23,6 +23,7 @@ import { stegaClean } from '@sanity/client/stega';
 import { sanitizeSvg } from '@/lib/sanitizeSvg';
 import { DEFAULT_THEME_COLORS } from '@/lib/themes';
 import { liveAnnouncement } from '@/lib/announcement';
+import { feedTypes } from '@/lib/resolveMetadata';
 
 export const metadata = {
   metadataBase: new URL(baseUrl),
@@ -38,6 +39,7 @@ export const metadata = {
     'Developer'
   ],
   authors: [{ name: 'Ruben Panzich', url: 'https://www.ruben-p.com' }],
+  alternates: { types: feedTypes },
   other: {
     'darkreader-lock': true
   }

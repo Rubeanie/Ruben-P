@@ -2,9 +2,13 @@ import { stegaClean } from '@sanity/client/stega';
 import processUrl, { slugOf } from '@/lib/processUrl';
 import { isPagePath } from '@/lib/slug';
 import { baseUrl } from '@/lib/env';
+import { FEED_PATH } from '@/lib/feed';
 import { withDefaults } from '@/lib/metadataDefaults';
 import { SHARE_IMAGE } from '@/lib/shareImage/layout';
 import { shareImageUrl } from '@/lib/shareImage/url';
+
+// The RSS feed, advertised in every page head.
+export const feedTypes = { 'application/rss+xml': FEED_PATH };
 
 const getMetaObjects = (tags) =>
   tags.reduce((mergedObject, tag) => {
@@ -111,7 +115,8 @@ export function resolveMetadata(page, site) {
     },
     openGraph,
     alternates: {
-      canonical: url
+      canonical: url,
+      types: feedTypes
     },
     keywords: combinedKeywords.join(', '),
     other: tags
