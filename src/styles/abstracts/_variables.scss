@@ -145,6 +145,9 @@ $block-gap: clamp(2rem, 1.25rem + 1.5vw, 2.75rem);
 $inline-pad-max: 2rem;
 $inline-pad: clamp(1rem, 4vw, $inline-pad-max);
 
+// The loader's largest size, wherever it sits.
+$loader-size: 31.25rem;
+
 /* Tiles: Apple Newsroom grid gap, 24px on phones to 36px at 1440 */
 $tile-gap: clamp(1.5rem, 2.5vw, 2.25rem);
 

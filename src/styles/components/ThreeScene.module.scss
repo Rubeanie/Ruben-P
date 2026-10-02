@@ -29,7 +29,7 @@
 }
 
 // Holds the loader over the plate until the scene is ready. It is the size
-// container the logo measures itself against (70cqw / 70cqh).
+// container the loader measures itself against, so it never outgrows the frame.
 .loading {
   position: absolute;
   inset: 0;
@@ -38,6 +38,7 @@
   justify-content: center;
   container-type: size;
   pointer-events: none;
+  --loader-size: min(70cqw, #{var.$loader-size});
 }
 
 .error {

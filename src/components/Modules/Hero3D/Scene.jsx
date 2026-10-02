@@ -60,7 +60,6 @@ export default function Scene({
   return (
     <Canvas
       className={styles.fill}
-      loader={false}
       onReady={onReady}
       frameloop={frameloop}
       gl={GL}

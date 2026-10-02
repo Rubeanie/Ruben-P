@@ -46,7 +46,6 @@ export default function Scene({
     <Canvas
       className={styles.gl}
       style={style}
-      loader={false}
       onReady={onReady}
       onOverload={() => setShed(true)}
       {...canvasProps}>
@@ -54,7 +53,7 @@ export default function Scene({
       {/* Key light for form: flat image environments light too evenly. */}
       {keyLight && <directionalLight position={[3, 4, 5]} intensity={1.2} />}
       {/* Own Suspense so the HDRI loads independently of the model: the model
-          (gated by Canvas's boundary + the loader) shows as soon as it's ready
+          (gated by Canvas's boundary) shows as soon as it's ready
           instead of waiting on the environment. */}
       <Suspense fallback={null}>
         <SceneEnvironment

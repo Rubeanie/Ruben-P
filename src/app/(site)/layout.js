@@ -12,6 +12,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Announcement from '@/components/Announcement';
 import { ThemeProvider } from '@/components/ThemeContext';
+import { SiteLogo } from '@/components/SiteLogo';
 import { getSite, getThemes } from '@/lib/sanity/queries';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -95,7 +96,9 @@ export default async function RootLayout({ children }) {
           <Suspense>
             <Navbar menu={site.headerMenu} logo={logo} />
           </Suspense>
-          <main>{children}</main>
+          <main>
+            <SiteLogo logo={logo}>{children}</SiteLogo>
+          </main>
           <Footer menu={site.footerMenu} logo={logo} />
           <Analytics />
           <SpeedInsights />

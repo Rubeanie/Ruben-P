@@ -21,7 +21,7 @@ export const site = {
       name: 'logo',
       type: 'inlineSvg',
       group: 'general',
-      description: 'Site mark for the navbar and footer.',
+      description: 'Site mark for the navbar, footer and loader.',
       validation: (Rule) => Rule.required()
     },
     {

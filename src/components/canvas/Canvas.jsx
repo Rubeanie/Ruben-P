@@ -1,9 +1,8 @@
 'use client';
 
-import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas as R3FCanvas } from '@react-three/fiber';
 import { PerformanceMonitor, Preload } from '@react-three/drei';
-import { Loading } from '@/components/dom/Loading';
 
 const STEP = 0.05;
 
@@ -14,7 +13,7 @@ const STEP = 0.05;
 // inner Suspense (e.g. the environment) load independently and don't gate it.
 function Ready({ onReady }) {
   useEffect(() => {
-    onReady();
+    onReady?.();
   }, [onReady]);
   return null;
 }
@@ -23,7 +22,6 @@ export default function Canvas({
   children,
   className,
   style,
-  loader = true,
   onReady,
   onOverload,
   ...props
@@ -31,14 +29,9 @@ export default function Canvas({
   const containerRef = useRef(null);
   const [onScreen, setOnScreen] = useState(true);
   const [dpr, setDpr] = useState(0.9);
-  const [loaded, setLoaded] = useState(false);
   // At the 0.5 floor, tracked from the declines themselves: the monitor's
   // onChange stops firing once the factor reaches 0.
   const floor = useRef(false);
-  const handleReady = useCallback(() => {
-    setLoaded(true);
-    onReady?.();
-  }, [onReady]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -65,7 +58,7 @@ export default function Canvas({
         {...props}>
         <Suspense fallback={null}>
           {children}
-          <Ready onReady={handleReady} />
+          <Ready onReady={onReady} />
         </Suspense>
         <Preload all />
         <PerformanceMonitor
@@ -84,19 +77,6 @@ export default function Canvas({
           }}
         />
       </R3FCanvas>
-      {loader && !loaded && (
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            pointerEvents: 'none'
-          }}>
-          <Loading />
-        </div>
-      )}
     </div>
   );
 }
