@@ -16,6 +16,7 @@ import Hero3D from './Hero3D';
 import RichtextModule from './RichtextModule';
 import SkillList from './SkillList';
 import SocialList from './SocialList';
+import Spacer from './Spacer';
 import StatList from './StatList';
 import TableOfContents from './TableOfContents';
 import ThreeScene from './ThreeScene';
@@ -74,6 +75,8 @@ const ModuleRenderer = ({
       return <SkillList {...module} />;
     case 'social-list':
       return <SocialList {...module} />;
+    case 'spacer':
+      return <Spacer {...module} />;
     case 'stat-list':
       return <StatList {...module} dataAttribute={dataAttribute} />;
     case 'table-of-contents':

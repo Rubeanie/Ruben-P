@@ -12,6 +12,7 @@ import { socialListQuery } from './social-list';
 import { postListQuery } from './post-list';
 import { postDetailsQuery } from './post-details';
 import { postFeaturedQuery } from './post-featured';
+import { spacerQuery } from './spacer';
 import { threeSceneQuery } from './three-scene';
 import { creativeModuleQuery } from './creative-module';
 import { breadcrumbsQuery } from './breadcrumbs';
@@ -34,6 +35,7 @@ export const modulesQuery = groq`
   _type == 'post-list' => { ${postListQuery} },
   _type == 'post-details' => { ${postDetailsQuery} },
   _type == 'post-featured' => { ${postFeaturedQuery} },
+  _type == 'spacer' => { ${spacerQuery} },
   _type == 'three.js' => { ${threeSceneQuery} },
   _type == 'creative-module' => { ${creativeModuleQuery} },
   _type == 'breadcrumbs' => { ${breadcrumbsQuery} },

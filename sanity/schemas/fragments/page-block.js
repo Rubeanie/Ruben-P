@@ -21,6 +21,7 @@ export const pageBlock = {
     { type: 'richtext-module' },
     { type: 'skill-list' },
     { type: 'social-list' },
+    { type: 'spacer' },
     { type: 'stat-list' },
     { type: 'table-of-contents' },
     { type: 'three.js' }

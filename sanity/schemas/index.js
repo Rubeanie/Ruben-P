@@ -27,6 +27,7 @@ import { postFeatured } from './modules/post-featured';
 import { richtextModule } from './modules/richtext-module';
 import { skillList } from './modules/skill-list';
 import { socialList } from './modules/social-list';
+import { spacer } from './modules/spacer';
 import { statList } from './modules/stat-list';
 import { tableOfContents } from './modules/table-of-contents';
 import { threeJs } from './modules/three';
@@ -75,6 +76,7 @@ export const schemaTypes = [
   richtextModule,
   skillList,
   socialList,
+  spacer,
   statList,
   tableOfContents,
   threeJs,
