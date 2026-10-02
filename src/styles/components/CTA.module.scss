@@ -46,17 +46,17 @@
   backdrop-filter: blur(12px) saturate(150%);
 
   &:active {
-    background: rgba(255, 255, 255, 0.1);
+    background: var.$chip-lit;
   }
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: var.$chip-lit;
     }
   }
 
   @include var.solid-fallback {
-    background: rgba(255, 255, 255, 0.12);
+    background: var.$chip-lit-solid;
     backdrop-filter: none;
   }
 }

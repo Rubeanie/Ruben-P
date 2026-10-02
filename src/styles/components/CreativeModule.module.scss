@@ -78,7 +78,7 @@ $glyph-size: 1.75rem;
   margin-block: calc((1lh - #{var.$touch-target}) / 2);
 }
 
-// Rhythm: a heading holds on to its copy, an image gets the larger step.
+// Rhythm: a heading holds on to its copy, an image or a control gets the larger step.
 .column > * + * {
   margin-block-start: var.$space-3;
 }
@@ -88,7 +88,9 @@ $glyph-size: 1.75rem;
 }
 
 .column > figure + *,
-.column > * + figure {
+.column > * + figure,
+.column > .control + *,
+.column > * + .control {
   margin-block-start: var.$space-4;
 }
 

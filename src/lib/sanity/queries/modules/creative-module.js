@@ -13,7 +13,9 @@ export const creativeModuleQuery = groq`
       _type == 'heading' => { text },
       _type == 'copy' => { content[]{ ${contentQuery} } },
       _type == 'imageBlock' => { ${imageBlockQuery} },
-      _type == 'link' => { ${linkQuery} }
+      _type == 'link' => { ${linkQuery} },
+      _type == 'themeCycle' => { label },
+      _type == 'themeImage' => { label }
     }
   }
 `;

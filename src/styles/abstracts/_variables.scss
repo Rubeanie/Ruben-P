@@ -10,6 +10,9 @@ $image-background-url: 'https://res.cloudinary.com/ruben-p/image/upload/f_avif,q
 $image-text-descender: 0.1em;
 $color-on-primary: #121212;
 $color-on-dark: #fff;
+// Glass chip lit by hover or busy, and its stand-in when glass is off.
+$chip-lit: rgba(255, 255, 255, 0.1);
+$chip-lit-solid: rgba(255, 255, 255, 0.12);
 // Dark plate under chips and capsules that sit over photos.
 $color-plate-dark: #0a0e1a;
 // The plate a cover or a scene sits on before it paints.

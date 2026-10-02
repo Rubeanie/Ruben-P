@@ -10,18 +10,13 @@ import {
 import Link from 'next/link';
 import { LuX } from 'react-icons/lu';
 import { dismissKey, isDismissed } from '@/lib/announcement';
+import { rateTween, stepRate } from '@/lib/rate';
 import AnnouncementSeparator from './AnnouncementSeparator';
 import styles from '@/styles/components/Announcement.module.scss';
 
 const SPEED = 48; // px per second
 const HOLD_MS = 1000; // still after mount, so the first words can be read
-const STOP_MS = 400;
-const RESUME_MS = 800;
 const HYSTERESIS = 8; // px; stops flapping at the fit boundary
-
-const easeOutCubic = (p) => 1 - (1 - p) ** 3;
-// velocity leaves and reaches its target with zero acceleration
-const easeInOut = (p) => p * p * (3 - 2 * p);
 
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
 
@@ -170,10 +165,9 @@ export default function AnnouncementBand({
       const dt = last ? Math.min(now - last, 100) : 0;
       last = now;
       if (tweening) {
-        const { from, to, t0, ms, curve } = tweening;
-        const p = Math.min(1, (now - t0) / ms);
-        rateRef.current = from + (to - from) * curve(p);
-        if (p === 1) tweening = null;
+        const [rate, done] = stepRate(tweening, now);
+        rateRef.current = rate;
+        if (done) tweening = null;
       }
       const w = widthRef.current;
       if (w) {
@@ -190,13 +184,8 @@ export default function AnnouncementBand({
     };
     const tween = () => {
       const stop = held || hovered || focused;
-      const to = stop ? 0 : 1;
-      const from = rateRef.current;
-      // a partial change takes its share of the time
-      const ms = (stop ? STOP_MS : RESUME_MS) * Math.abs(to - from);
-      const curve = stop ? easeOutCubic : easeInOut;
-      tweening = ms ? { from, to, t0: performance.now(), ms, curve } : null;
-      if (!ms) rateRef.current = to;
+      tweening = rateTween(rateRef.current, !stop, performance.now());
+      if (!tweening) rateRef.current = stop ? 0 : 1;
       run();
     };
     // off screen the loop sleeps; a tween resumes with the time it had left

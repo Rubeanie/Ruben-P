@@ -1,4 +1,10 @@
-import { MdNotes, MdStars, MdTitle } from 'react-icons/md';
+import {
+  MdAddPhotoAlternate,
+  MdNotes,
+  MdPalette,
+  MdStars,
+  MdTitle
+} from 'react-icons/md';
 import { getBlockText } from '@sanity/src/utils';
 import { imageBlock } from '../../fragments/image-block';
 import { richBlock } from '../../fragments/text-block';
@@ -84,12 +90,62 @@ const copy = {
   }
 };
 
+const themeControl = ({ name, title, icon, label, description }) => ({
+  name,
+  title,
+  type: 'object',
+  icon,
+  fields: [
+    {
+      name: 'label',
+      type: 'string',
+      description,
+      initialValue: label,
+      validation: (Rule) => Rule.required()
+    }
+  ],
+  preview: {
+    select: { label: 'label' },
+    prepare({ label }) {
+      return { title: label, subtitle: title };
+    }
+  }
+});
+
+const themeCycle = themeControl({
+  name: 'themeCycle',
+  title: 'Next theme button',
+  icon: MdPalette,
+  label: 'Next theme',
+  description:
+    'The button’s text. Pressing it steps to the next theme, changing the colours only on the visitor’s device.'
+});
+
+const themeImage = themeControl({
+  name: 'themeImage',
+  title: 'Photo theme drop zone',
+  icon: MdAddPhotoAlternate,
+  label: 'Choose a photo',
+  description:
+    'The drop zone’s title. A photo picked or dropped there sets the colours only on the visitor’s device; it is never uploaded.'
+});
+
 export const blockTitles = {
   icon: 'Icon',
   heading: 'Heading',
   copy: 'Text',
   imageBlock: 'Image',
-  link: 'Link'
+  link: 'Link',
+  themeCycle: themeCycle.title,
+  themeImage: themeImage.title
 };
 
-export const blocks = [icon, heading, copy, imageBlock, { type: 'link' }];
+export const blocks = [
+  icon,
+  heading,
+  copy,
+  imageBlock,
+  { type: 'link' },
+  themeCycle,
+  themeImage
+];

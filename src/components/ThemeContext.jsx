@@ -14,6 +14,7 @@ import {
   applyThemeToDocument,
   DEFAULT_THEME,
   getThemeCacheKey,
+  nextThemeAfter,
   normalizeThemeDefinition,
   pickRandomTheme,
   resolveThemeDefinition
@@ -24,6 +25,7 @@ export const ThemeContext = createContext({
   colors: DEFAULT_THEME.colors,
   overrideTheme: () => {},
   restartTheme: () => {},
+  nextTheme: () => {},
   isResolving: false
 });
 
@@ -92,6 +94,14 @@ export function ThemeProvider({ children, initialThemes }) {
     }
   }, [availableThemes, requestTheme, theme.url]);
 
+  const nextTheme = useCallback(() => {
+    const next = nextThemeAfter(availableThemes, theme.url);
+
+    if (next) {
+      requestTheme(next);
+    }
+  }, [availableThemes, requestTheme, theme.url]);
+
   useEffect(() => {
     if (hasRequestedInitialTheme.current || availableThemes.length === 0) {
       return;
@@ -143,6 +153,15 @@ export function ThemeProvider({ children, initialThemes }) {
     applyThemeToDocument(theme);
   }, [theme]);
 
+  // A visitor's photo is an object URL; once another theme replaces it, nothing reads it again.
+  const themeUrl = theme.url;
+  useEffect(
+    () => () => {
+      if (themeUrl?.startsWith('blob:')) URL.revokeObjectURL(themeUrl);
+    },
+    [themeUrl]
+  );
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.overrideTheme = overrideTheme;
@@ -164,6 +183,7 @@ export function ThemeProvider({ children, initialThemes }) {
         colors: theme.colors,
         overrideTheme,
         restartTheme,
+        nextTheme,
         isResolving
       }}>
       {children}

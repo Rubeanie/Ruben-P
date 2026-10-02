@@ -127,6 +127,13 @@ export function pickRandomTheme(themes, currentUrl) {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
+// Steps through the list in order; an unknown or missing current starts at the top.
+export function nextThemeAfter(themes, currentUrl) {
+  if (!themes?.length) return null;
+  const index = themes.findIndex((theme) => theme.url === currentUrl);
+  return themes[(index + 1) % themes.length];
+}
+
 export function getThemeCacheKey(theme) {
   const normalizedTheme = normalizeThemeDefinition(theme);
 

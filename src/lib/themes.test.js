@@ -1,6 +1,10 @@
 import { expect, test } from 'bun:test';
 import Color from 'color';
-import { clampContrast, deriveThemeColorsFromPalette } from './themes';
+import {
+  clampContrast,
+  deriveThemeColorsFromPalette,
+  nextThemeAfter
+} from './themes';
 
 const palette = {
   DarkMuted: { hex: '#2b3a55' },
@@ -49,4 +53,14 @@ test('clampContrast leaves already-passing colors unchanged', () => {
 
   expect(clamped.primary).toBe(Color(colors.primary).hex());
   expect(clamped.text).toBe(Color(colors.text).hex());
+});
+
+test('nextThemeAfter steps in list order, wraps, and starts at the first', () => {
+  const themes = [{ url: 'a' }, { url: 'b' }, { url: 'c' }];
+
+  expect(nextThemeAfter(themes, 'a')).toBe(themes[1]);
+  expect(nextThemeAfter(themes, 'c')).toBe(themes[0]);
+  expect(nextThemeAfter(themes, 'blob:photo')).toBe(themes[0]);
+  expect(nextThemeAfter(themes, undefined)).toBe(themes[0]);
+  expect(nextThemeAfter([], 'a')).toBe(null);
 });

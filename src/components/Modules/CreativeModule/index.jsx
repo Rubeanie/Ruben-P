@@ -5,6 +5,8 @@ import ImageBlock from '@/components/RichText/ImageBlock';
 import { resolveLink } from '@/lib/processUrl';
 import uid from '@/lib/uid';
 import { creativeIcons } from './icons';
+import ThemeCycle from './ThemeCycle';
+import ThemeImage from './ThemeImage';
 import styles from '@/styles/components/CreativeModule.module.scss';
 
 function Block({ block, values, sanity }) {
@@ -45,6 +47,18 @@ function Block({ block, values, sanity }) {
       return resolveLink(block) ? (
         <div className={styles.link} {...edit}>
           <CTA link={block} variant='link' />
+        </div>
+      ) : null;
+    case 'themeCycle':
+      return block.label ? (
+        <div className={styles.control} {...edit}>
+          <ThemeCycle label={block.label} />
+        </div>
+      ) : null;
+    case 'themeImage':
+      return block.label ? (
+        <div className={styles.control} {...edit}>
+          <ThemeImage label={block.label} />
         </div>
       ) : null;
     default:
