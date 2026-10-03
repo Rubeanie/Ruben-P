@@ -14,7 +14,8 @@
 .frame {
   position: relative;
   aspect-ratio: var(--aspect, 16 / 9);
-  overflow: hidden;
+  // Clip, not hidden: a scroll container would pin the play disc's view timeline.
+  overflow: clip;
   border-radius: var.$common-border-radius;
   // A faint frosted plate: a scene lit by the page's theme belongs on the page,
   // and a solid slab cut it off. The blur keeps photo detail from behind the model.
