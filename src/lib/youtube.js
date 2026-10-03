@@ -49,7 +49,7 @@ export function getYouTubeStart(url) {
 export const IFRAME_ALLOW =
   'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
 
-export function embedSrc(id, { controls, start, autoplay, mute } = {}) {
+export function embedSrc(id, { controls, start, autoplay, mute, api } = {}) {
   const params = new URLSearchParams({
     playsinline: '1',
     rel: '0',
@@ -59,5 +59,68 @@ export function embedSrc(id, { controls, start, autoplay, mute } = {}) {
   // Browsers only honour autoplay without a gesture when the player is muted.
   if (mute) params.set('mute', '1');
   if (start) params.set('start', String(start));
+  if (api) {
+    params.set('enablejsapi', '1');
+    params.set('origin', window.location.origin);
+  }
   return `https://www.youtube-nocookie.com/embed/${id}?${params}`;
+}
+
+// iOS Safari does not carry a tap into a freshly created cross-origin iframe,
+// so autoplay=1 stalls on YouTube's own play button. Driving the player through
+// the IFrame API from the page keeps the gesture. Desktop Safari and iPadOS
+// (which reports as a Mac) take the same route.
+export function isApple() {
+  const { vendor, platform, maxTouchPoints } = navigator;
+  return (
+    vendor.includes('Apple') || (platform === 'MacIntel' && maxTouchPoints > 1)
+  );
+}
+
+// Touch-only Apple devices build the player ahead of the tap, so the tap lands
+// inside its frame. A pointer that hovers keeps the tap-to-load route.
+export function prebuildsPlayer() {
+  return isApple() && matchMedia('(hover: none)').matches;
+}
+
+let playerApi = null;
+
+// One script load shared by every video on the page.
+export function loadPlayerApi() {
+  if (window.YT?.Player) return Promise.resolve(window.YT);
+  playerApi ??= new Promise((resolve, reject) => {
+    const previous = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => {
+      resolve(window.YT);
+      previous?.();
+    };
+    const script = document.createElement('script');
+    script.src = 'https://www.youtube.com/iframe_api';
+    script.onerror = () => {
+      playerApi = null;
+      script.remove();
+      reject(new Error('YouTube player API failed to load'));
+    };
+    document.head.append(script);
+  });
+  return playerApi;
+}
+
+// Safari's requestIdleCallback support is patchy, so settle for a short timeout
+// once the page has finished loading.
+export function whenIdle(callback) {
+  if ('requestIdleCallback' in window) {
+    const handle = requestIdleCallback(callback);
+    return () => cancelIdleCallback(handle);
+  }
+  let handle;
+  const run = () => {
+    handle = setTimeout(callback, 200);
+  };
+  if (document.readyState === 'complete') run();
+  else window.addEventListener('load', run, { once: true });
+  return () => {
+    clearTimeout(handle);
+    window.removeEventListener('load', run);
+  };
 }

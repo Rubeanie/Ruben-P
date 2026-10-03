@@ -71,6 +71,7 @@ export default async function YouTube({ value, sanity, priority = false }) {
 
   return (
     <YouTubeFacade
+      key={`${id}:${start}`}
       id={id}
       title={title}
       thumb={thumb}
