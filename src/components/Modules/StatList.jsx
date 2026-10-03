@@ -21,6 +21,7 @@ export default function StatList({
     <section
       id={uid(props)}
       className={styles.statList}
+      data-reveal-skip
       data-align={align === 'center' ? undefined : align}>
       <div className={styles.stats} data-count-row>
         {visibleStats.map(({ _key, value, subValue, text }) => {

@@ -31,7 +31,7 @@ export default function Outline({ id, entries }) {
   );
 
   return (
-    <div id={id} ref={block} className={styles.toc}>
+    <div id={id} ref={block} className={styles.toc} data-reveal-skip>
       {/* Closed while you read, so it shows the whole outline and never changes
           shape; only the current mark follows the page. */}
       <div className={`${accordion.plate} ${styles.phone}`}>

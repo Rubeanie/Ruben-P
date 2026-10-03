@@ -11,7 +11,7 @@ export default function Hero3D(props) {
   const id = uid(props);
 
   return (
-    <section id={id} className={styles.section}>
+    <section id={id} className={styles.section} data-reveal-skip>
       <Stage grain={grain} />
       <div className={styles.copy}>
         <div className={styles.name}>

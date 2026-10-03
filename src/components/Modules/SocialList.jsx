@@ -10,7 +10,10 @@ export default function SocialList({ socials = [], maxColumns = 2, ...props }) {
   return (
     <section id={uid(props)}>
       {socials?.length > 0 && (
-        <div className={styles.list} style={{ '--max-cols': maxColumns }}>
+        <div
+          className={styles.list}
+          style={{ '--max-cols': maxColumns }}
+          data-reveal-children='items'>
           {/* a reference still being picked in the Studio dereferences to null */}
           {socials
             .filter(Boolean)

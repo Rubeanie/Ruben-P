@@ -10,7 +10,10 @@ export default function SkillList({ skills, ...props }) {
   if (!skills?.length) return null;
 
   return (
-    <section id={uid(props)} className={styles.list}>
+    <section
+      id={uid(props)}
+      className={styles.list}
+      data-reveal-children='items'>
       {skills.map(({ _key, title, logo, baseColor, url }) => {
         const href = resolveLink(url);
         // Skill sites open in a new tab; an internal page stays in this one.

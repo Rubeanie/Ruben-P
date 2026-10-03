@@ -12,6 +12,7 @@ export default function HeroSplit(props) {
     <section
       id={id}
       className={styles.hero}
+      data-reveal-skip
       data-image-right={image?.onRight ? true : undefined}>
       <Copy
         pretitle={pretitle}

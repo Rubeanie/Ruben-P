@@ -16,6 +16,7 @@ export default function RichtextModule({
     <div
       id={uid(props)}
       className={styles.richtext}
+      data-reveal-children='blocks'
       data-align={stegaClean(align) === 'center' ? 'center' : undefined}>
       <RichText
         value={content}

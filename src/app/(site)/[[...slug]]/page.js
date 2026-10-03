@@ -12,6 +12,7 @@ import processUrl, { resolveLink } from '@/lib/processUrl';
 import { stegaClean } from '@sanity/client/stega';
 import { getRedirect } from '@/lib/redirects';
 import Redirecting from '@/components/Redirecting';
+import Reveal from '@/components/Reveal';
 import { themeFromImage } from '@/lib/imageTheme';
 import { isPagePath } from '@/lib/slug';
 import { getShareCard, getVanitySocial } from '@/lib/shareImage/data';
@@ -34,8 +35,11 @@ export default async function Page({ params }) {
   // Heroes clear the floating navbar themselves; anything else needs the padding.
   const opensWithHero = page.modules?.[0]?._type?.startsWith('hero');
   return (
-    <div className={opensWithHero ? undefined : 'nav-pad'}>
+    <div
+      className={opensWithHero ? undefined : 'nav-pad'}
+      data-reveal={page.animateModules || undefined}>
       <Modules modules={page?.modules} page={page} />
+      {page.animateModules && <Reveal />}
       {page._type === 'page.post' && <ArticleJsonLd page={page} />}
     </div>
   );
@@ -104,6 +108,7 @@ async function getPage(params) {
       _type,
       _updatedAt,
       headingLinks,
+      animateModules,
       ${postCardQuery},
       // Posts that name no authors credit the site's default one; compact drops a missing default.
       "authors": array::compact(select(

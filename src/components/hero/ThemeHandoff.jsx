@@ -56,7 +56,8 @@ export default function ThemeHandoff({
         ref={ref}
         id={id}
         className={className}
-        data-hero-theme={colors ? 'on' : undefined}>
+        data-hero-theme={colors ? 'on' : undefined}
+        data-reveal-skip>
         {children}
       </section>
     </>

@@ -7,6 +7,7 @@ import {
 import { pageBlock } from '../fragments/page-block';
 import { metadata } from '../fragments/metadata';
 import { headingLinksField } from '../fragments/fields/heading-links';
+import { animateModulesField } from '../fragments/fields/animate-modules';
 
 export const page = {
   name: 'page',
@@ -31,6 +32,7 @@ export const page = {
       ...pageBlock
     },
     headingLinksField({ group: 'options' }),
+    animateModulesField,
     {
       ...metadata(),
       group: 'seo'
