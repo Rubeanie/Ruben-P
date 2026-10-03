@@ -153,6 +153,12 @@ $track-pad: 0.875rem;
     display: none;
   }
 
+  // Only the rail shows here, out of the flow, so the empty block must not
+  // leave a module gap behind.
+  .toc {
+    margin-block: 0;
+  }
+
   // What the wide column leaves, held between the readable minimum and the
   // cap. Percentages resolve against the content column wherever it is read.
   :global(main):has(.toc) {
