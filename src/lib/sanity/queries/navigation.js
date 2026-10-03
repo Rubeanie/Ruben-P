@@ -3,7 +3,7 @@ import { linkQuery } from './fragments/link';
 
 export const navigationQuery = groq`
   title,
-  logoLink{ ${linkQuery} },
+  leadLink{ ${linkQuery} },
   items[]{ ${linkQuery} },
   cta{ ${linkQuery} }
 `;

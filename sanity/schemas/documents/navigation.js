@@ -12,10 +12,10 @@ export const navigation = {
       validation: (Rule) => Rule.required()
     },
     {
-      name: 'logoLink',
-      title: 'Logo link',
+      name: 'leadLink',
+      title: 'Lead link',
       description:
-        'Where the brand icon links. Its label only shows in the dropdown menu.',
+        "Where this menu's lead element goes: the logo in the navbar. Its label only shows in the navbar's dropdown.",
       type: 'link'
     },
     {

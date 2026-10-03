@@ -14,8 +14,8 @@ const Navbar = ({ menu, logo }) => {
       label: item.label,
       href: resolveLink(item)
     };
-  // The bar shows the logo link as an icon; the dropdown lists it by label first.
-  const home = toLink(menu?.logoLink);
+  // The bar shows the lead link on the logo; the dropdown lists it by label first.
+  const lead = toLink(menu?.leadLink);
   // The optional call to action renders as a button after the links.
   const cta = toLink(menu?.cta);
   const links = [
@@ -84,7 +84,7 @@ const Navbar = ({ menu, logo }) => {
   return (
     <nav className={styles.nav} data-compact={compact || undefined}>
       <div className={styles.container}>
-        <Link href={home?.href ?? '/'} title={home?.label} onClick={close}>
+        <Link href={lead?.href ?? '/'} title={lead?.label} onClick={close}>
           <Logo svg={logo} />
         </Link>
         <div className={styles.links} ref={linksRef} inert={compact}>
@@ -110,7 +110,7 @@ const Navbar = ({ menu, logo }) => {
         )}
         <div id='nav-menu' className={styles.dropdown} inert={!open}>
           <div className={styles.menu}>
-            {[home, ...links]
+            {[lead, ...links]
               .filter((link) => link?.href)
               .map((link, i) => (
                 <Link
