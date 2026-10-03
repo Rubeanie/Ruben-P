@@ -185,11 +185,15 @@ $track-pad: 0.875rem;
 .rail {
   position: sticky;
   // Where the page's content starts, so it sticks from the first frame and
-  // never travels; the navbar docking does not move it either.
-  inset-block-start: calc(#{var.$navbar-height} + #{var.$space-3});
+  // never travels; the navbar docking does not move it either. A live
+  // announcement band pushes the pill down, and the rail with it.
+  inset-block-start: calc(
+    #{var.$navbar-height} + var(--announce-offset) + #{var.$space-3}
+  );
   width: var(--rail);
   max-height: calc(
-    100dvh - #{var.$navbar-height} - #{var.$space-3 + var.$space-5}
+    100dvh - #{var.$navbar-height} - var(--announce-offset) - #{var.$space-3} -
+      #{var.$space-5}
   );
   margin-inline-start: calc(50% + var(--cap) / 2 + #{$rail-gap});
   // Only an outline taller than that scrolls, with no visible bar; the
