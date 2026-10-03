@@ -9,7 +9,8 @@ import SceneEnvironment from '@/components/canvas/SceneEnvironment';
 import PostFx, { BLOOM, GRAIN } from '@/components/canvas/effects/PostFx';
 import styles from '@/styles/components/ThreeScene.module.scss';
 
-const VIGNETTE = 0.3;
+const GRAIN_LEVELS = { light: GRAIN, strong: GRAIN * 2 };
+const VIGNETTE_LEVELS = { light: 0.4, strong: 0.75 };
 // The canvas's own antialiasing, which a composer bypasses.
 const SAMPLES = 4;
 
@@ -32,10 +33,12 @@ export default function Scene({
   onReady,
   ...canvasProps
 }) {
-  // Once frames still run slow at the lowest density, the glow stays off.
+  // Once frames still run slow at the lowest density, the composer, so glow, grain and vignette, stays off.
   const [shed, setShed] = useState(false);
   const glow = BLOOM[bloom];
-  const composed = glow !== undefined && !shed;
+  const grainAmount = GRAIN_LEVELS[grain];
+  const vignetteAmount = VIGNETTE_LEVELS[vignette];
+  const composed = (glow || grainAmount || vignetteAmount) && !shed;
   const transparent = !(environmentSource && environmentBackground);
   // Re-enable pointer events for interactive orbit (Canvas defaults to none).
   const style = {
@@ -77,8 +80,8 @@ export default function Scene({
           transparent={transparent}
           backdrop={transparent ? background : undefined}
           bloom={glow}
-          vignette={vignette ? VIGNETTE : undefined}
-          grain={grain ? GRAIN : 0}
+          vignette={vignetteAmount}
+          grain={grainAmount}
           multisampling={SAMPLES}
         />
       )}

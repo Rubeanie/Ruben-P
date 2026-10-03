@@ -29,7 +29,6 @@ export default function PosterInput(props) {
   const generate = async () => {
     setBusy(true);
     try {
-      const glowing = scene.bloom && scene.bloom !== 'off';
       const blob = await snapshotScene({
         model: await resolve('model'),
         background: scene.background?.hex,
@@ -40,8 +39,8 @@ export default function PosterInput(props) {
         environmentBackground: !themed && scene.environmentBackground,
         keyLight: scene.keyLight,
         bloom: scene.bloom || 'off',
-        grain: glowing && !!scene.grain,
-        vignette: glowing && !!scene.vignette,
+        grain: scene.grain === true ? 'light' : scene.grain,
+        vignette: scene.vignette === true ? 'light' : scene.vignette,
         aspectRatio: scene.aspectRatio
       });
       const ext = blob.type.split('/')[1];

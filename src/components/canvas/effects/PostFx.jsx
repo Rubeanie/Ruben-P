@@ -63,10 +63,12 @@ const read = (value) => (typeof value === 'function' ? value() : value);
 // Outside the component: the compiler's lint rejects mutating the memoized chain
 // from the frame callback.
 function update(chain, bloom, vignette, grainTime, frozen, composer) {
-  const level = read(bloom.level) ?? 1;
-  chain.bloom.intensity = bloom.intensity * level;
-  chain.bloom.luminanceMaterial.threshold =
-    bloom.threshold + (1 - level) * LIFT;
+  if (chain.bloom) {
+    const level = read(bloom.level) ?? 1;
+    chain.bloom.intensity = bloom.intensity * level;
+    chain.bloom.luminanceMaterial.threshold =
+      bloom.threshold + (1 - level) * LIFT;
+  }
   if (chain.vignette) chain.vignette.blendMode.opacity.value = read(vignette);
   if (chain.grain) {
     chain.grain.time = grainTime;
@@ -87,8 +89,8 @@ const subscribe = (change) => {
 export const useReducedMotion = () =>
   useSyncExternalStore(subscribe, () => matchMedia(REDUCED).matches);
 
-// Bloom as light before tone mapping, then an optional vignette and grain;
-// bloom.level (0 to 1) and vignette may be functions, read every frame, and
+// Optional bloom as light before tone mapping, then an optional vignette and
+// grain; bloom.level (0 to 1) and vignette may be functions, read every frame, and
 // grainTime gives the grain its time in seconds in place of the clock.
 export default function PostFx({
   bloom,
@@ -101,16 +103,19 @@ export default function PostFx({
   multisampling = 0
 }) {
   const composer = useRef(null);
-  const { smoothing } = bloom;
+  const smoothing = bloom?.smoothing;
+  const bloomed = bloom !== undefined;
   const vignetted = vignette !== undefined;
   const chain = useMemo(() => {
-    const halo = new ScaledBloom({
-      blendFunction: BlendFunction.SKIP,
-      mipmapBlur: true,
-      levels: LEVELS,
-      radius: RADIUS,
-      luminanceSmoothing: smoothing
-    });
+    const halo = bloomed
+      ? new ScaledBloom({
+          blendFunction: BlendFunction.SKIP,
+          mipmapBlur: true,
+          levels: LEVELS,
+          radius: RADIUS,
+          luminanceSmoothing: smoothing
+        })
+      : null;
     const shade = vignetted
       ? new VignetteEffect({ offset: 0.35, darkness: 0.6 })
       : null;
@@ -124,9 +129,9 @@ export default function PostFx({
       effects: [
         transparent && !multisampling && new Fxaa(),
         halo,
-        new Glow(halo, 'wall'),
+        halo && new Glow(halo, 'wall'),
         new ToneMappingEffect({ mode: toneMapping }),
-        transparent && new Glow(halo, 'page'),
+        halo && transparent && new Glow(halo, 'page'),
         backdrop && new Backdrop(backdrop),
         shade,
         transparent && !backdrop && new Cover(),
@@ -134,6 +139,7 @@ export default function PostFx({
       ].filter(Boolean)
     };
   }, [
+    bloomed,
     smoothing,
     toneMapping,
     transparent,

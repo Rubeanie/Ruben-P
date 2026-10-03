@@ -4,8 +4,14 @@ import { blockLayoutFields } from '../fragments/fields/block-layout';
 import { uidField } from '../fragments/fields/uid';
 import PosterInput from './three/PosterInput';
 
-// Grain and vignette ride on the glow's composer, so they only exist with it.
-const GLOWING = ['quiet', 'medium'];
+const LEVEL_OPTIONS = {
+  list: [
+    { title: 'Off', value: 'off' },
+    { title: 'Light', value: 'light' },
+    { title: 'Strong', value: 'strong' }
+  ],
+  layout: 'radio'
+};
 
 // A bigger GLB is still valid, just slow on a phone connection.
 const MAX_MODEL_BYTES = 10 * 1024 * 1024;
@@ -262,19 +268,20 @@ export const threeJs = {
     {
       name: 'grain',
       title: 'Film grain',
-      type: 'boolean',
-      description: 'Fine monochrome grain. It rides on the glow.',
-      initialValue: false,
-      hidden: ({ parent }) => !GLOWING.includes(parent?.bloom),
+      type: 'string',
+      description:
+        'Fine grain that moves like film. It holds still when motion is reduced.',
+      options: LEVEL_OPTIONS,
+      initialValue: 'off',
       group: 'options'
     },
     {
       name: 'vignette',
       title: 'Vignette',
-      type: 'boolean',
-      description: 'Darkens the frame towards its edges. It rides on the glow.',
-      initialValue: false,
-      hidden: ({ parent }) => !GLOWING.includes(parent?.bloom),
+      type: 'string',
+      description: 'Darkens the frame towards its edges.',
+      options: LEVEL_OPTIONS,
+      initialValue: 'off',
       group: 'options'
     },
     {

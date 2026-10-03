@@ -61,8 +61,8 @@ export default function ThreeScene(props) {
             environmentBackground={environmentBackground}
             keyLight={keyLight}
             bloom={stegaClean(bloom)}
-            grain={grain}
-            vignette={vignette}
+            grain={stegaClean(grain)}
+            vignette={stegaClean(vignette)}
             orbitControls={orbitControls}
             zoom={zoom}
             loadOnClick={loadOnClick}

@@ -30,8 +30,8 @@ export const threeSceneQuery = groq`
   ),
   keyLight,
   "bloom": coalesce(bloom, 'off'),
-  "grain": coalesce(bloom, 'off') != 'off' && coalesce(grain, false),
-  "vignette": coalesce(bloom, 'off') != 'off' && coalesce(vignette, false),
+  "grain": select(grain == true => 'light', grain),
+  "vignette": select(vignette == true => 'light', vignette),
   orbitControls,
   zoom
 `;
