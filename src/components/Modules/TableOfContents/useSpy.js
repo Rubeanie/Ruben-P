@@ -43,8 +43,13 @@ export function useSpy(entries, { block, nav, track, mark }) {
     const ids = entries.map((entry) => entry.id);
     const els = ids.map((id) => document.getElementById(id));
     if (els.some((el) => !el)) return;
+    // React clears refs before this effect's cleanup runs, so a scroll in
+    // between must not reach for them.
+    const [blockEl, navEl, trackEl, markEl] = [block, nav, track, mark].map(
+      (ref) => ref.current
+    );
     const links = ids.map((id) =>
-      track.current.querySelector(`a[href="#${CSS.escape(id)}"]`)
+      trackEl.querySelector(`a[href="#${CSS.escape(id)}"]`)
     );
     let cache = null;
     const frame = () => {
@@ -53,11 +58,9 @@ export function useSpy(entries, { block, nav, track, mark }) {
       setActive(ids[index] ?? null);
       // The rail arrives when the block reaches the reading line, the same
       // line the headings switch at, so a block at the top shows at once.
-      setShown(
-        block.current.getBoundingClientRect().top < innerHeight * READ_LINE
-      );
+      setShown(blockEl.getBoundingClientRect().top < innerHeight * READ_LINE);
 
-      const box = track.current.getBoundingClientRect();
+      const box = trackEl.getBoundingClientRect();
       if (!box.height) return;
       // The line is scroll-linked, so it has no transition; its marks are the
       // links' live positions.
@@ -68,11 +71,11 @@ export function useSpy(entries, { block, nav, track, mark }) {
       const y = fillAt(scrollY, cache, marks, box.height);
       // Never past the end of the track, so the rail cannot grow a scrollbar.
       const fill = Math.min(box.height, Math.max(0, y));
-      mark.current.style.transform = `scaleY(${fill})`;
-      keepInView(nav.current, links[index], index === links.length - 1);
+      markEl.style.transform = `scaleY(${fill})`;
+      keepInView(navEl, links[index], index === links.length - 1);
     };
-    const sections = track.current.querySelectorAll('[data-sub]');
-    return follow(frame, () => (cache = null), [track.current, ...sections]);
+    const sections = trackEl.querySelectorAll('[data-sub]');
+    return follow(frame, () => (cache = null), [trackEl, ...sections]);
   }, [key]); // eslint-disable-line react-hooks/exhaustive-deps
   return { active, shown };
 }
