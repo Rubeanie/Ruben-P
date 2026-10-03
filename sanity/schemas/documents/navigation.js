@@ -26,7 +26,7 @@ export const navigation = {
     {
       name: 'cta',
       title: 'Call to action',
-      description: 'Optional link shown as a button at the end of the bar.',
+      description: 'Navbar only: an optional button at the end of the bar.',
       type: 'link'
     }
   ],
