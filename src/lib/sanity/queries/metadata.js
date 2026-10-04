@@ -53,7 +53,7 @@ const seoFieldsQuery = groq`
   _type,
   metaTitle,
   nofollowAttributes,
-  seoKeywords,
+  focusKeyphrase,
   metaDescription,
   openGraph{
     ${openGraphQuery}

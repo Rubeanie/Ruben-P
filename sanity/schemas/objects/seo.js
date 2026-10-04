@@ -1,5 +1,6 @@
 import { MdLabel, MdCode } from 'react-icons/md';
 import { SeoFeedbackInput } from '../../src/components/SeoFeedback/SeoFeedbackInput';
+import { DESCRIPTION_LENGTH, TITLE_LENGTH } from '@/lib/studioReviewLimits';
 
 export const seoMetaFields = {
   name: 'seoMetaFields',
@@ -19,25 +20,13 @@ export const seoMetaFields = {
       name: 'metaTitle',
       title: 'Meta title',
       type: 'string',
-      description:
-        'The title used in search results and browser tabs. Recommended length: 50-60 characters.'
+      description: `The title used in search results and browser tabs. Recommended length: ${TITLE_LENGTH.join('-')} characters.`
     },
     {
       name: 'metaDescription',
       title: 'Meta description',
       type: 'string',
-      description:
-        'The summary shown under the title in search results. Recommended length: 100-160 characters.'
-    },
-    {
-      name: 'seoKeywords',
-      title: 'Additional keywords',
-      type: 'array',
-      of: [{ type: 'string' }],
-      options: {
-        layout: 'tags'
-      },
-      description: 'Extra keywords for this page, added to the site defaults.'
+      description: `The summary shown under the title in search results. Recommended length: ${DESCRIPTION_LENGTH.join('-')} characters.`
     },
     {
       name: 'nofollowAttributes',
@@ -74,7 +63,14 @@ export const seoMetaFields = {
       description: 'Extra meta tags to add to the page head.'
     },
     // Left over from the old SEO plugin on a few pages; kept hidden so the Studio doesn't flag it.
-    { name: 'seoStatus', type: 'string', hidden: true }
+    { name: 'seoStatus', type: 'string', hidden: true },
+    // The keywords tag now comes from the focus keyphrase; old lists stay hidden.
+    {
+      name: 'seoKeywords',
+      type: 'array',
+      of: [{ type: 'string' }],
+      hidden: true
+    }
   ]
 };
 

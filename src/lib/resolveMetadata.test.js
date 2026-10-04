@@ -275,10 +275,17 @@ test('no Open Graph anywhere ships none, and Twitter takes the meta fields', () 
   });
 });
 
-test('keywords add the page to the site ones', () => {
+test('keywords are the focus keyphrase alone', () => {
   expect(
-    resolveMetadata(pageWith({ seoKeywords: ['page'] }), site).keywords
-  ).toBe('site, page');
+    resolveMetadata(
+      pageWith({
+        focusKeyphrase: 'night car photography',
+        seoKeywords: ['old']
+      }),
+      site
+    ).keywords
+  ).toBe('night car photography');
+  expect(resolveMetadata(pageWith({}), site).keywords).toBeUndefined();
 });
 
 test('heroThemeImage reads only the first hero or glass hero photo', () => {

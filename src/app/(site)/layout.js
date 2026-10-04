@@ -28,17 +28,6 @@ import { feedTypes } from '@/lib/resolveMetadata';
 
 export const metadata = {
   metadataBase: new URL(baseUrl),
-  keywords: [
-    'Ruben',
-    'Panzich',
-    'Rubeanie',
-    'Portfolio',
-    'About',
-    'Links',
-    'Contact',
-    'Artist',
-    'Developer'
-  ],
   authors: [{ name: 'Ruben Panzich', url: 'https://www.ruben-p.com' }],
   alternates: { types: feedTypes },
   other: {

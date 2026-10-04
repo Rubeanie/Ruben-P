@@ -47,9 +47,7 @@ function shareImages(pageSeo, og, path) {
 export function resolveMetadata(page, site) {
   const url = bare(processUrl(page));
 
-  const siteKeywords = site?.seo?.seoKeywords || [];
   const pageSeo = page?.metadata?.seo || {};
-  const { seoKeywords } = pageSeo;
   // The document's own title, e.g. "About"; stands between its meta title and the site's.
   const pageTitle = stegaClean(page?.title) || '';
 
@@ -62,8 +60,6 @@ export function resolveMetadata(page, site) {
   // Twitter and Open Graph fall back to the site field by field.
   const twitter = withDefaults(pageSeo.twitter, site?.seo?.twitter);
 
-  const safeKeywords = Array.isArray(seoKeywords) ? seoKeywords : [];
-  const combinedKeywords = [...siteKeywords, ...safeKeywords];
   const tags = additionalMetaTags ? getMetaObjects(additionalMetaTags) : {};
   const path = slugOf(page);
   let og = withDefaults(pageSeo.openGraph, site?.seo?.openGraph);
@@ -118,7 +114,8 @@ export function resolveMetadata(page, site) {
       canonical: url,
       types: feedTypes
     },
-    keywords: combinedKeywords.join(', '),
+    // The page's one focus keyphrase; Google ignores the tag, others may glance at it.
+    keywords: stegaClean(pageSeo.focusKeyphrase) || undefined,
     other: tags
   };
 }
