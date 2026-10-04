@@ -4,6 +4,7 @@ export const imageQuery = groq`
   asset->{
     _id,
     url,
+    creditLine,
     metadata {
       dimensions { width, height, aspectRatio },
       lqip

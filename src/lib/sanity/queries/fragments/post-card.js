@@ -16,6 +16,7 @@ export const postCardQuery = groq`
     asset->{
       _id,
       url,
+      creditLine,
       metadata { dimensions { width, height }, palette { dominant { background } } }
     },
     hotspot { x, y, width, height },

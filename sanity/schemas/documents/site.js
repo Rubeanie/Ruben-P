@@ -76,6 +76,33 @@ export const site = {
       components: { input: SharePreviewInput }
     },
     {
+      name: 'alternateName',
+      type: 'string',
+      group: 'seo',
+      description: 'A short name search engines can use for the site'
+    },
+    {
+      name: 'copyrightNotice',
+      type: 'string',
+      group: 'seo',
+      description:
+        "Shown with the site's images in search results. Images are credited to the Default author, and this defaults to their name. For someone else's photo, set its Credit line in Media to just their name: it replaces the author and these rights."
+    },
+    {
+      name: 'license',
+      title: 'License URL',
+      type: 'url',
+      group: 'seo',
+      description: 'Where the terms for reusing the images are published'
+    },
+    {
+      name: 'acquireLicensePage',
+      title: 'Get license page',
+      type: 'url',
+      group: 'seo',
+      description: 'Where someone can ask to use the images'
+    },
+    {
       name: 'robotsDisallow',
       title: 'Blocked paths',
       type: 'array',

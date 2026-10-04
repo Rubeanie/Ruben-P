@@ -21,6 +21,11 @@ export const author = {
       name: 'link',
       type: 'link',
       description: 'Where the name and photo lead'
+    },
+    {
+      name: 'jobTitle',
+      type: 'string',
+      description: 'Shown to search engines, e.g. Web developer'
     }
   ],
   preview: {

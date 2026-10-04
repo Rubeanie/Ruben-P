@@ -3,16 +3,16 @@ import { fetchSanity, groq } from '@/lib/sanity/fetch';
 import { metadataQuery } from '@/lib/sanity/queries/metadata';
 import { modulesQuery } from '@/lib/sanity/queries/modules';
 import { authorQuery } from '@/lib/sanity/queries/fragments/author';
+import { identityQuery } from '@/lib/sanity/queries/identity';
 import { postCardQuery } from '@/lib/sanity/queries/fragments/post-card';
 import { notFound, permanentRedirect, redirect } from 'next/navigation';
 import { Modules } from '@/components/Modules';
 import { getSite } from '@/lib/sanity/queries';
 import { heroThemeImage, resolveMetadata } from '@/lib/resolveMetadata';
-import processUrl, { resolveLink } from '@/lib/processUrl';
-import { stegaClean } from '@sanity/client/stega';
 import { getRedirect } from '@/lib/redirects';
 import Redirecting from '@/components/Redirecting';
 import Reveal from '@/components/Reveal';
+import JsonLd from '@/components/JsonLd';
 import { themeFromImage } from '@/lib/imageTheme';
 import { isPagePath } from '@/lib/slug';
 import { getShareCard, getVanitySocial } from '@/lib/shareImage/data';
@@ -40,7 +40,7 @@ export default async function Page({ params }) {
       data-reveal={page.animateModules || undefined}>
       <Modules modules={page?.modules} page={page} />
       {page.animateModules && <Reveal />}
-      {page._type === 'page.post' && <ArticleJsonLd page={page} />}
+      <JsonLd page={page} path={path} />
     </div>
   );
 }
@@ -116,46 +116,13 @@ async function getPage(params) {
         [*[_type == 'site'][0].author->{ ${authorQuery} }]
       )),
       modules[]{ ${modulesQuery} },
+      "identity": *[_type == 'site'][0]{ ${identityQuery} },
       ${metadataQuery}
     }`,
     {
       params: { path },
-      tags: ['pages', 'posts', 'authors']
+      tags: ['pages', 'posts', 'authors', 'site', 'socials']
     }
   );
   return { page, path, discord };
-}
-
-// Search engines read the byline from here; the page itself has no fixed header.
-function ArticleJsonLd({ page }) {
-  const authors = page.authors ?? [];
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: stegaClean(page.title),
-    description: stegaClean(page.summary),
-    datePublished: stegaClean(page.publishDate),
-    dateModified: page._updatedAt,
-    ...(page.cover?.asset?.url && { image: page.cover.asset.url }),
-    ...(authors.length && {
-      author: authors.map((author) => {
-        const url = resolveLink(author.link);
-        return {
-          '@type': 'Person',
-          name: stegaClean(author.name),
-          ...(url?.startsWith('http') && { url })
-        };
-      })
-    }),
-    mainEntityOfPage: processUrl(page)
-  };
-  return (
-    <script
-      type='application/ld+json'
-      // Escape `<` so content containing `</script>` can't break out of the tag.
-      dangerouslySetInnerHTML={{
-        __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c')
-      }}
-    />
-  );
 }
