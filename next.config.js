@@ -26,6 +26,18 @@ const nextConfig = {
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')]
   },
+  async headers() {
+    // No CSP or frame blocking: the Sanity Presentation tool frames the site.
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' }
+        ]
+      }
+    ];
+  },
   async redirects() {
     return [
       // Next otherwise serves the home page at /index too, as a second URL for it.
