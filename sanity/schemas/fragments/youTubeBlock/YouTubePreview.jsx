@@ -1,5 +1,5 @@
 import { MdEdit } from 'react-icons/md';
-import { Button, Flex, Stack, Text } from '@sanity/ui';
+import { Button, Card, Flex, Stack, Text } from '@sanity/ui';
 import { getYouTubeId } from '@/lib/youtube';
 
 export const YouTubePreview = (props) => {
@@ -23,7 +23,22 @@ export const YouTubePreview = (props) => {
             allowFullScreen
           />
         ) : (
-          <Text>Add a YouTube URL</Text>
+          // Holds the video's 16:9 so the block keeps its size before a URL goes in.
+          <Card
+            border
+            radius={2}
+            tone='transparent'
+            style={{
+              aspectRatio: '16 / 9',
+              width: '100%',
+              borderStyle: 'dashed'
+            }}>
+            <Flex height='fill' align='center' justify='center'>
+              <Text muted size={1}>
+                Add a YouTube URL
+              </Text>
+            </Flex>
+          </Card>
         )}
       </Flex>
       <Button
