@@ -4,8 +4,6 @@ import { structureTool } from 'sanity/structure';
 import structure from './src/structure';
 import { presentationTool } from 'sanity/presentation';
 import { locations } from './src/presentation';
-import { dashboardTool } from '@sanity/dashboard';
-import { vercelWidget } from 'sanity-plugin-dashboard-widget-vercel';
 import { visionTool } from '@sanity/vision';
 import { media } from 'sanity-plugin-media';
 import { inlineSvgInput } from '@focus-reactive/sanity-plugin-inline-svg-input';
@@ -46,11 +44,6 @@ export default defineConfig({
     visionTool({
       title: 'GROQ',
       defaultApiVersion: apiVersion
-    }),
-    dashboardTool({
-      name: 'deployment',
-      title: 'Deployment',
-      widgets: [vercelWidget()]
     }),
     media(),
     cloudinarySchemaPlugin(),
