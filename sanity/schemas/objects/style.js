@@ -5,6 +5,7 @@ import {
   ThemeColorGeneratorInput,
   ThemeStyleInput
 } from '../../src/components/ThemeStyleInput';
+import { COLOR_FIELDS } from '../../src/imageColors';
 
 export const style = {
   name: 'style',
@@ -13,6 +14,14 @@ export const style = {
   components: {
     input: ThemeStyleInput
   },
+  // Blank colours are worked out in each visitor's browser; saved ones load instantly.
+  validation: (Rule) =>
+    Rule.custom((value) => {
+      if (!value?.image) return true;
+      const blank = COLOR_FIELDS.filter(({ field }) => !value[field]?.hex);
+      if (!blank.length) return true;
+      return `${blank.length} colour${blank.length > 1 ? 's are' : ' is'} blank, so the site works ${blank.length > 1 ? 'them' : 'it'} out in each visitor's browser. Press Generate missing to save ${blank.length > 1 ? 'them' : 'it'} now.`;
+    }).warning(),
   fieldsets: [
     {
       name: 'themeColors',
