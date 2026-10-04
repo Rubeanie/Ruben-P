@@ -17,5 +17,17 @@ export const postCategory = {
       options: { disableAlpha: true },
       description: 'Tints the active filter chip and the dot before the name'
     }
-  ]
+  ],
+  preview: {
+    select: { title: 'title', color: 'color.hex' },
+    prepare: ({ title, color }) => ({
+      title,
+      media: (
+        <span
+          className='category-swatch'
+          style={{ background: color || 'transparent' }}
+        />
+      )
+    })
+  }
 };

@@ -32,6 +32,15 @@
   width: auto;
 }
 
+// A post category's colour as its list thumbnail; the colour itself is inline.
+.category-swatch {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 30%;
+  box-shadow: inset 0 0 0 1px rgb(128 128 128 / 0.4);
+}
+
 // The Studio's image heading: the site photo clipped to the glyphs, without the
 // fixed attachment the site uses, which breaks inside the editor's scroll pane.
 .image-heading {
