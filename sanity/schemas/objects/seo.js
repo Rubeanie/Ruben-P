@@ -1,10 +1,20 @@
 import { MdLabel, MdCode } from 'react-icons/md';
+import { SeoFeedbackInput } from '../../src/components/SeoFeedback/SeoFeedbackInput';
 
 export const seoMetaFields = {
   name: 'seoMetaFields',
   title: 'SEO',
   type: 'object',
+  components: { input: SeoFeedbackInput },
   fields: [
+    {
+      name: 'focusKeyphrase',
+      title: 'Focus keyphrase',
+      type: 'string',
+      hidden: ({ document }) => document?._type === 'site',
+      description:
+        'The search phrase this page should be found for, like "car photography Melbourne". The panel checks it appears where search engines look.'
+    },
     {
       name: 'metaTitle',
       title: 'Meta title',

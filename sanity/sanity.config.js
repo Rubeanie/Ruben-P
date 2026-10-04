@@ -24,6 +24,8 @@ export default defineConfig({
   projectId,
   dataset,
   basePath: '/admin',
+  // A token login, so the Studio can prove who is asking for AI suggestions.
+  auth: { loginMethod: 'token' },
   icon: StudioLogo,
 
   plugins: [
