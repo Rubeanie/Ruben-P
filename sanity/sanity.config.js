@@ -11,12 +11,14 @@ import { codeInput } from '@sanity/code-input';
 import { colorInput } from '@sanity/color-input';
 import { schemaTypes } from './schemas';
 import { StudioLogo } from './src/components/StudioLogo';
+import { proofreadInspector } from './src/components/Proofread/ProofreadInspector';
 import {
   cloudinarySchemaPlugin,
   cloudinaryAssetSourcePlugin
 } from 'sanity-plugin-cloudinary';
 
 const singletonTypes = ['site'];
+const proofreadTypes = ['page', 'page.post'];
 
 export default defineConfig({
   title: 'CMS',
@@ -85,6 +87,10 @@ export default defineConfig({
               action &&
               ['publish', 'discardChanges', 'restore'].includes(action)
           )
+        : input,
+    inspectors: (input, { documentType }) =>
+      proofreadTypes.includes(documentType)
+        ? [...input, proofreadInspector]
         : input
   }
 });
