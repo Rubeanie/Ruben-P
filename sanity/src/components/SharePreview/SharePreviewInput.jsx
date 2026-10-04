@@ -2,12 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { Spinner, Stack, Text } from '@sanity/ui';
 import { getPublishedId, useDocumentStore, useFormValue } from 'sanity';
 import { heroThemeImage } from '@/lib/resolveMetadata';
-import {
-  DEFAULT_THEME_COLORS,
-  clampContrast,
-  deriveThemeColorsFromPalette,
-  themeRendition
-} from '@/lib/themes';
+import { DEFAULT_THEME_COLORS } from '@/lib/themes';
+import { useImageColors } from '../../imageColors';
 import SharePreview from './SharePreview';
 import {
   sharePageQuery,
@@ -43,27 +39,6 @@ function useListen(store, query, params, perspective, skip) {
   return state;
 }
 
-// The server's hero theme rule run in the browser: same rendition, palette and maths.
-function useHeroTheme(url) {
-  const [derived, setDerived] = useState({});
-  useEffect(() => {
-    if (!url) return;
-    let live = true;
-    import('node-vibrant/browser')
-      .then(({ Vibrant }) => Vibrant.from(themeRendition(url)).getPalette())
-      .then((palette) => {
-        const colors = deriveThemeColorsFromPalette(palette);
-        if (live && colors) setDerived({ url, theme: clampContrast(colors) });
-      })
-      // A failed analysis leaves the site theme, as it does on the site.
-      .catch(() => {});
-    return () => {
-      live = false;
-    };
-  }, [url]);
-  return url && derived.url === url ? derived.theme : null;
-}
-
 // Sits above the SEO fields; Site settings preview a page that sets nothing of its own.
 export function SharePreviewInput(props) {
   const store = useDocumentStore();
@@ -82,7 +57,7 @@ export function SharePreviewInput(props) {
   const published = useListen(store, PUBLISHED, params, 'raw', isSite);
   // A document not saved yet has nothing of its own either.
   const shown = isSite || page.value === null ? {} : page.value;
-  const heroTheme = useHeroTheme(heroThemeImage(shown));
+  const heroTheme = useImageColors(heroThemeImage(shown));
   const error = page.error || site.error;
   const preview =
     shown &&

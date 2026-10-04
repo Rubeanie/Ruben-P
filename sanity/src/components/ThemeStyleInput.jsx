@@ -9,6 +9,7 @@ import {
 } from 'react';
 import Color from 'color';
 import { Button, Flex, Stack, Text } from '@sanity/ui';
+import { ThemePreview } from './ThemePreview';
 import { set, setIfMissing } from 'sanity';
 import { resolveThemeDefinition } from '@/lib/themes';
 
@@ -203,7 +204,10 @@ export function ThemeStyleInput(props) {
         readOnly,
         status
       }}>
-      {renderDefault(props)}
+      <Stack space={4}>
+        <ThemePreview url={imageUrl} value={value} />
+        {renderDefault(props)}
+      </Stack>
     </ThemeStyleContext.Provider>
   );
 }
