@@ -1,48 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import { Card, Grid, Stack, Text } from '@sanity/ui';
 import { LuMegaphone } from 'react-icons/lu';
 import { set, useClient } from 'sanity';
 import { apiVersion } from '@/lib/env';
 import { SEPARATORS } from '@/lib/announcement';
-import { sanitizeSvg } from '@/lib/sanitizeSvg';
+import { useSiteLogo } from '../useSiteLogo';
 import AnnouncementSeparator from '@/components/AnnouncementSeparator';
 
-// Preview rows and the picker share one request; it is dropped soon after it
-// settles, so a logo edit shows up and a failure retries.
-const TTL = 5000;
-const requests = new Map();
-const fetchLogo = (client) => {
-  const { projectId, dataset } = client.config();
-  const key = `${projectId}:${dataset}`;
-  if (!requests.has(key)) {
-    const request = client
-      .fetch(`*[_type == 'site'][0].logo`, {}, { perspective: 'drafts' })
-      .then((svg) => sanitizeSvg(svg) || null);
-    requests.set(key, request);
-    request
-      .catch(() => {})
-      .finally(() => setTimeout(() => requests.delete(key), TTL));
-  }
-  return requests.get(key);
-};
-
-function useSiteLogo() {
-  const client = useClient({ apiVersion });
-  const [logo, setLogo] = useState(null);
-  useEffect(() => {
-    let live = true;
-    fetchLogo(client)
-      .then((svg) => live && setLogo(svg))
-      .catch(() => {});
-    return () => {
-      live = false;
-    };
-  }, [client]);
-  return logo;
-}
-
 function LogoMedia() {
-  const logo = useSiteLogo();
+  const logo = useSiteLogo(useClient({ apiVersion }));
   return logo ? <AnnouncementSeparator name='logo' logo={logo} /> : null;
 }
 
@@ -79,7 +45,7 @@ export function SeparatorInput({
   elementProps
 }) {
   const { id, ref: fieldRef, onFocus, onBlur } = elementProps;
-  const logo = useSiteLogo();
+  const logo = useSiteLogo(useClient({ apiVersion }));
   const tiles = useRef([]);
   const current = Math.max(
     0,

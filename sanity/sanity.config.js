@@ -10,6 +10,7 @@ import { inlineSvgInput } from '@focus-reactive/sanity-plugin-inline-svg-input';
 import { codeInput } from '@sanity/code-input';
 import { colorInput } from '@sanity/color-input';
 import { schemaTypes } from './schemas';
+import { StudioLogo } from './src/components/StudioLogo';
 import {
   cloudinarySchemaPlugin,
   cloudinaryAssetSourcePlugin
@@ -23,6 +24,7 @@ export default defineConfig({
   projectId,
   dataset,
   basePath: '/admin',
+  icon: StudioLogo,
 
   plugins: [
     structureTool({

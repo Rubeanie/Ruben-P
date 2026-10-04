@@ -25,6 +25,13 @@
   }
 }
 
+// The CMS logo, drawn by the Studio navbar and the theme preview.
+.site-logo svg {
+  display: block;
+  height: 100%;
+  width: auto;
+}
+
 // The Studio's image heading: the site photo clipped to the glyphs, without the
 // fixed attachment the site uses, which breaks inside the editor's scroll pane.
 .image-heading {
