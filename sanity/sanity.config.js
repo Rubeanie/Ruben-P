@@ -55,6 +55,12 @@ export default defineConfig({
 
   tasks: { enabled: false },
   scheduledPublishing: { enabled: false },
+  scheduledDrafts: { enabled: false },
+  releases: { enabled: false },
+  announcements: { enabled: false },
+  mediaLibrary: { enabled: false },
+  apps: { canvas: { enabled: false } },
+  advancedVersionControl: { enabled: false },
 
   schema: {
     types: schemaTypes,
@@ -67,6 +73,7 @@ export default defineConfig({
   },
 
   document: {
+    comments: { enabled: false },
     actions: (input, { schemaType }) =>
       singletonTypes.includes(schemaType)
         ? input.filter(
