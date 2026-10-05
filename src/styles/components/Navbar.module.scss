@@ -1,7 +1,17 @@
 @use '../abstracts/index' as var;
 
 $burger-size: 48px;
-// The menu's full-width button: the iOS large button height.
+$burger-end: 0.6rem; // the burger's inset from the bar's edge
+
+// A bar target's corner, concentric with the bar's: the bar's inner radius, less
+// the hairline, plus however far the target overflows the 40px logo row.
+@function concentric($size) {
+  @return calc(
+    #{var.$button-radius} - 1px + (#{$size} - #{var.$nav-logo-size}) / 2
+  );
+}
+
+// The menu button's height: the iOS large button.
 $menu-button-height: 3.125rem;
 
 // Published for anything fixed to the viewport that must clear the pill (the bento's
@@ -94,6 +104,9 @@ $menu-button-height: 3.125rem;
 
     // padding grows the 40px logo to a 44px target; the negative margin keeps its visual spot.
     > a:first-of-type {
+      // above the links row, whose padding overlaps its last 4px
+      position: relative;
+      border-radius: concentric(var.$touch-target);
       padding: 2px;
       margin-block: -2px;
       margin-inline-end: -2px;
@@ -128,6 +141,8 @@ $menu-button-height: 3.125rem;
         // must overflow rather than shrink, or the compact check never fires
         flex: none;
         white-space: nowrap;
+        // for the focus ring: concentric at the link's own line height
+        border-radius: concentric(var.$p2-size * var.$lh-body);
         transition:
           opacity 0.15s ease,
           transform 0.12s var.$ease-out;
@@ -167,11 +182,14 @@ $menu-button-height: 3.125rem;
       transition: height 0.3s var.$ease-out;
 
       // The list hangs from the bar like a page's first module, so it stays put
-      // while the panel grows over it.
+      // while the panel grows over it. One column as wide as the longest row, so
+      // the button can match it; the cap leaves room for the button's overhang.
       .menu {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        display: grid;
+        grid-template-columns: fit-content(calc(100% - 2 * #{var.$space-4}));
+        justify-content: center;
+        justify-items: center;
+        align-content: start;
         gap: 1.75rem;
         height: 100%;
         overflow-y: auto;
@@ -180,12 +198,15 @@ $menu-button-height: 3.125rem;
 
       a {
         opacity: 0;
-        // drift in the same direction the panel grows
-        transform: translateY(-4px);
+        // falls in the same direction the panel grows
+        transform: translateY(-15px);
         @include var.touch-target;
+        // Closing fades the rows together; the drop resets once they're invisible.
+        // The press is its own property, so it never waits on the row's stagger.
         transition:
-          opacity 0.2s ease,
-          transform 0.25s var.$ease-out;
+          opacity 0.15s var.$ease-out,
+          transform 0s 0.15s,
+          scale 0.12s var.$ease-out;
 
         p {
           font-size: var.$p2-size * 1.5;
@@ -205,13 +226,15 @@ $menu-button-height: 3.125rem;
         }
       }
 
-      // Full width, so the one button outweighs the display-size links above it.
+      // The longest link's width and a little more, so it reads as the list's
+      // last row rather than a block of its own.
       .cta {
-        align-self: stretch;
+        justify-self: stretch;
         justify-content: center;
         min-height: $menu-button-height;
         padding: 0 1.3em;
-        margin-top: var.$space-3;
+        margin-block-start: var.$space-3;
+        margin-inline: calc(-1 * #{var.$space-4});
       }
     }
 
@@ -226,11 +249,11 @@ $menu-button-height: 3.125rem;
       display: none; // only in compact mode
       padding: 0;
       border: none;
-      border-radius: 50%;
+      border-radius: concentric($burger-size);
       background: none;
       cursor: pointer;
       // matches the logo's inset; the bars sit 9px inside the button
-      margin-inline-end: 0.6rem;
+      margin-inline-end: $burger-end;
       @include var.focus-ring(0px);
 
       &::before,
@@ -357,14 +380,28 @@ html[data-nav-dropdown='true'] {
       a {
         opacity: 1;
         transform: none;
+        // plain ease-out: $ease-out lands most of the 15px in 90ms and reads as no motion
+        transition:
+          opacity 0.3s ease-out,
+          transform 0.3s ease-out,
+          scale 0.12s var.$ease-out;
+        // Stagger only on the way in; exit fades together. Capped at the fifth
+        // row so a longer CMS menu keeps the four-row timing.
+        transition-delay:
+          calc(40ms + min(var(--i), 4) * 50ms),
+          calc(40ms + min(var(--i), 4) * 50ms), 0s;
 
-        // stagger only on the way in; exit fades together
-        transition-delay: calc(var(--i) * 40ms);
-
-        // The open rule's transform: none outranks the plain press below.
         &:active {
-          transform: scale(0.97);
-          transition-delay: 0s;
+          scale: 0.97;
+        }
+
+        // one cross-fade for the whole menu
+        @media (prefers-reduced-motion: reduce) {
+          transition: opacity 0.2s ease;
+
+          &:active {
+            scale: none;
+          }
         }
       }
     }
