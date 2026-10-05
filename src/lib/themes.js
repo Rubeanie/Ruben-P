@@ -1,3 +1,5 @@
+import { CLOUDINARY_CHAIN } from './imageLoader';
+
 export const DEFAULT_THEME_COLORS = {
   primary: '#ed5f68',
   secondary: '#33456d',
@@ -111,9 +113,14 @@ export function applyThemeToDocument(theme) {
   if (!document.querySelector('[data-hero-theme="on"]'))
     setBarColor(theme.colors.background);
 
+  const url = theme.url || DEFAULT_THEME_URL;
   document.documentElement.style.setProperty(
     '--image-background',
-    getThemeImageUrl(theme.url || DEFAULT_THEME_URL)
+    getThemeImageUrl(landscapeRendition(url))
+  );
+  document.documentElement.style.setProperty(
+    '--image-background-portrait',
+    getThemeImageUrl(portraitRendition(url))
   );
 }
 
@@ -130,9 +137,14 @@ export const LAST_THEME_KEY = 'last-theme';
 // runs; the colour fade that starts is finished.
 const json = (value) => JSON.stringify(value).replace(/</g, '\\u003c');
 export const themeGate = (themes) =>
-  `(function(t,k,u,g){var e=document.documentElement,s=e.style,l,a=[],b=[];try{l=localStorage.getItem(k)}catch(_){}t.forEach(function(p,i){if(p.colors){a.push(i);if(p.url!==l)b.push(i)}});b=b.length?b:a;if(!b.length)return;var i=b[Math.floor(Math.random()*b.length)],c=t[i].colors,m=document.querySelector('meta[name="theme-color"]');for(var n in c){s.setProperty('--color-'+n,c[n]);s.setProperty('--page-'+n,c[n])}s.setProperty('--image-background',"url('"+(t[i].url||u)+"')");if(m&&m.content===g){var f=m.cloneNode();f.content=c.background;f.setAttribute('data-gate','');m.before(f)}e.dataset.theme=i;e.getAnimations().forEach(function(a){if(a.transitionProperty)a.finish()})})(${json(
-    themes.map(({ url, colors }) => ({ url, colors }))
-  )},${json(LAST_THEME_KEY)},${json(DEFAULT_THEME_URL)},${json(DEFAULT_THEME_COLORS.background)})`;
+  `(function(t,k,g){var e=document.documentElement,s=e.style,l,a=[],b=[];try{l=localStorage.getItem(k)}catch(_){}t.forEach(function(p,i){if(p.colors){a.push(i);if(p.url!==l)b.push(i)}});b=b.length?b:a;if(!b.length)return;var i=b[Math.floor(Math.random()*b.length)],c=t[i].colors,m=document.querySelector('meta[name="theme-color"]');for(var n in c){s.setProperty('--color-'+n,c[n]);s.setProperty('--page-'+n,c[n])}s.setProperty('--image-background',"url('"+t[i].w+"')");s.setProperty('--image-background-portrait',"url('"+t[i].p+"')");if(m&&m.content===g){var f=m.cloneNode();f.content=c.background;f.setAttribute('data-gate','');m.before(f)}e.dataset.theme=i;e.getAnimations().forEach(function(a){if(a.transitionProperty)a.finish()})})(${json(
+    themes.map(({ url, colors }) => ({
+      url,
+      colors,
+      w: landscapeRendition(url || DEFAULT_THEME_URL),
+      p: portraitRendition(url || DEFAULT_THEME_URL)
+    }))
+  )},${json(LAST_THEME_KEY)},${json(DEFAULT_THEME_COLORS.background)})`;
 
 // The server and the Studio analyse the same small JPG of a hero photo.
 export function themeRendition(url) {
@@ -149,6 +161,72 @@ export function themeRendition(url) {
       CLOUDINARY_CHAIN,
       '/image/upload/$1w_800,f_jpg,q_80/$2'
     );
+  }
+
+  return parsed.toString();
+}
+
+// On a screen 3:4 or narrower, `cover` shows only the middle 3:4 of a wider
+// photo, at full height. A crop to that slice paints the same pixels for less;
+// globals.scss swaps it in under the same query. Other hosts keep the original.
+export const PORTRAIT_QUERY = '(max-aspect-ratio: 3/4)';
+
+// Sized for the screen that paints it: no wider than a big desktop shows,
+// in the best format the browser takes. Other hosts keep the original.
+export function landscapeRendition(url) {
+  let parsed;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return url;
+  }
+
+  if (parsed.hostname === 'res.cloudinary.com') {
+    parsed.pathname = parsed.pathname.replace(
+      CLOUDINARY_CHAIN,
+      '/image/upload/$1c_limit,w_1920,f_auto,q_auto/$2'
+    );
+  } else if (parsed.hostname === 'cdn.sanity.io') {
+    parsed.searchParams.set('w', '1920');
+    parsed.searchParams.set('auto', 'format');
+    parsed.searchParams.set('q', '75');
+    parsed.searchParams.set('fit', 'max');
+  }
+
+  return parsed.toString();
+}
+
+export function portraitRendition(url) {
+  let parsed;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return url;
+  }
+
+  if (parsed.hostname === 'res.cloudinary.com') {
+    // Last before the version, like themeRendition; a taller photo is left
+    // whole. g_auto lets Cloudinary find the subject, and a focal point set
+    // in the Media Library overrides it.
+    parsed.pathname = parsed.pathname.replace(
+      CLOUDINARY_CHAIN,
+      '/image/upload/$1if_ar_gt_0.75/c_fill,ar_3:4,g_auto/if_end/c_limit,h_1600,f_auto,q_auto/$2'
+    );
+  } else if (parsed.hostname === 'cdn.sanity.io') {
+    const [, width, height] =
+      parsed.pathname.match(/-(\d+)x(\d+)\.\w+$/)?.map(Number) ?? [];
+    const slice = Math.round((height * 3) / 4);
+    if (slice < width && !parsed.searchParams.has('rect'))
+      parsed.searchParams.set(
+        'rect',
+        `${Math.floor((width - slice) / 2)},0,${slice},${height}`
+      );
+    parsed.searchParams.set('h', '1600');
+    parsed.searchParams.set('auto', 'format');
+    parsed.searchParams.set('q', '75');
+    parsed.searchParams.set('fit', 'max');
+  } else {
+    return url;
   }
 
   return parsed.toString();
@@ -184,7 +262,12 @@ export async function resolveThemeDefinition(theme) {
       : null;
   }
 
-  await loadThemeImage(normalizedTheme.url);
+  // Warm the rendition the stylesheet will pick, so the swap doesn't flash.
+  await loadThemeImage(
+    matchMedia(PORTRAIT_QUERY).matches
+      ? portraitRendition(normalizedTheme.url)
+      : landscapeRendition(normalizedTheme.url)
+  );
 
   if (!normalizedTheme.colors) {
     throw new Error(

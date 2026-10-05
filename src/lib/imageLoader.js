@@ -1,4 +1,4 @@
-const CLOUDINARY_CHAIN = /\/image\/upload\/((?:[^/]+\/)*?)(v\d+\/)/;
+export const CLOUDINARY_CHAIN = /\/image\/upload\/((?:[^/]+\/)*?)(v\d+\/)/;
 
 function sanityLoader({ src, width, quality }) {
   const url = new URL(src);

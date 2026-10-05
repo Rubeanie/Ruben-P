@@ -1,5 +1,11 @@
 import { expect, test } from 'bun:test';
-import { nextThemeAfter, themeRendition } from './themes';
+import {
+  landscapeRendition,
+  nextThemeAfter,
+  portraitRendition,
+  themeGate,
+  themeRendition
+} from './themes';
 
 test('nextThemeAfter steps in list order, wraps, and starts at the first', () => {
   const themes = [{ url: 'a' }, { url: 'b' }, { url: 'c' }];
@@ -28,4 +34,71 @@ test('themeRendition shrinks Sanity and Cloudinary photos', () => {
   expect(themeRendition('https://example.com/a.png')).toBe(
     'https://example.com/a.png'
   );
+});
+
+test('landscapeRendition sizes Sanity and Cloudinary photos', () => {
+  expect(
+    landscapeRendition(
+      'https://res.cloudinary.com/c/image/upload/t_x/v12/d/a.avif'
+    )
+  ).toBe(
+    'https://res.cloudinary.com/c/image/upload/t_x/c_limit,w_1920,f_auto,q_auto/v12/d/a.avif'
+  );
+  expect(
+    landscapeRendition('https://cdn.sanity.io/images/p/d/a-10x10.png')
+  ).toBe(
+    'https://cdn.sanity.io/images/p/d/a-10x10.png?w=1920&auto=format&q=75&fit=max'
+  );
+  expect(landscapeRendition('https://example.com/a.png')).toBe(
+    'https://example.com/a.png'
+  );
+});
+
+test('portraitRendition crops wide CDN photos to their middle 3:4', () => {
+  expect(
+    portraitRendition(
+      'https://res.cloudinary.com/c/image/upload/t_auto-optimised/v12/d/a.avif'
+    )
+  ).toBe(
+    'https://res.cloudinary.com/c/image/upload/t_auto-optimised/if_ar_gt_0.75/c_fill,ar_3:4,g_auto/if_end/c_limit,h_1600,f_auto,q_auto/v12/d/a.avif'
+  );
+  expect(
+    portraitRendition('https://cdn.sanity.io/images/p/d/a-1920x1080.jpg?q=90')
+  ).toBe(
+    'https://cdn.sanity.io/images/p/d/a-1920x1080.jpg?q=75&rect=555%2C0%2C810%2C1080&h=1600&auto=format&fit=max'
+  );
+});
+
+test('portraitRendition sizes without cropping when it cannot crop', () => {
+  expect(
+    portraitRendition('https://cdn.sanity.io/images/p/d/a-600x1080.jpg')
+  ).toBe(
+    'https://cdn.sanity.io/images/p/d/a-600x1080.jpg?h=1600&auto=format&q=75&fit=max'
+  );
+  expect(
+    portraitRendition(
+      'https://cdn.sanity.io/images/p/d/a-1920x1080.jpg?rect=0,0,10,10'
+    )
+  ).toBe(
+    'https://cdn.sanity.io/images/p/d/a-1920x1080.jpg?rect=0%2C0%2C10%2C10&h=1600&auto=format&q=75&fit=max'
+  );
+});
+
+test('portraitRendition keeps the original on other hosts', () => {
+  for (const url of [
+    'https://res.cloudinary.com/c/image/upload/a.png',
+    'https://example.com/a-1920x1080.jpg',
+    'blob:https://ruben-p.com/0b7e',
+    'not a url'
+  ]) {
+    expect(portraitRendition(url)).toBe(url);
+  }
+});
+
+test('themeGate hands each theme its portrait crop', () => {
+  const url = 'https://res.cloudinary.com/c/image/upload/v1/a.avif';
+  const gate = themeGate([{ url, colors: { background: '#000' } }]);
+
+  expect(gate).toContain(JSON.stringify(portraitRendition(url)));
+  expect(gate).toContain(JSON.stringify(landscapeRendition(url)));
 });
