@@ -248,7 +248,7 @@ function Discord({ d }) {
       </div>
       <div className={styles.dcMessage}>
         <div className={styles.dcHeader}>
-          <span className={styles.dcAuthor}>Ruben</span>
+          <span className={styles.dcAuthor}>You</span>
           <span className={styles.dcTime}>Today at 9:41 AM</span>
         </div>
         <div className={styles.dcLink}>{tags.url}</div>
@@ -308,7 +308,7 @@ function Slack({ d }) {
       </div>
       <div className={styles.slMessage}>
         <div className={styles.slHeader}>
-          <span className={styles.slAuthor}>Ruben</span>
+          <span className={styles.slAuthor}>You</span>
           <span className={styles.slTime}>9:41 AM</span>
         </div>
         <div className={styles.slLink}>{tags.url}</div>

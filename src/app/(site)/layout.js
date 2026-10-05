@@ -28,6 +28,7 @@ import {
   themeGate
 } from '@/lib/themes';
 import { liveAnnouncement } from '@/lib/announcement';
+import { resolveLink } from '@/lib/processUrl';
 import { feedTypes } from '@/lib/resolveMetadata';
 
 // Runs right after the navbar markup, before first paint: sets the compact state
@@ -36,14 +37,21 @@ import { feedTypes } from '@/lib/resolveMetadata';
 const navGate =
   "var l=document.querySelector('[data-nav-links]');if(l&&l.scrollWidth>l.clientWidth){document.documentElement.setAttribute('data-nav-compact','');l.closest('nav').getAnimations({subtree:true}).forEach(function(a){if(a.transitionProperty)a.finish()})}";
 
-export const metadata = {
-  metadataBase: new URL(baseUrl),
-  authors: [{ name: 'Ruben Panzich', url: 'https://www.ruben-p.com' }],
-  alternates: { types: feedTypes },
-  other: {
-    'darkreader-lock': true
-  }
-};
+export async function generateMetadata() {
+  const { author } = await getSite();
+  const name = stegaClean(author?.name);
+  const link = resolveLink(author?.link);
+  return {
+    metadataBase: new URL(baseUrl),
+    authors: name
+      ? [{ name, url: link ? new URL(link, baseUrl).href : undefined }]
+      : undefined,
+    alternates: { types: feedTypes },
+    other: {
+      'darkreader-lock': true
+    }
+  };
+}
 
 export const viewport = {
   width: 'device-width',
@@ -106,7 +114,11 @@ export default async function RootLayout({ children }) {
           <main>
             <SiteLogo logo={logo}>{children}</SiteLogo>
           </main>
-          <Footer menu={site.footerMenu} logo={logo} />
+          <Footer
+            menu={site.footerMenu}
+            logo={logo}
+            author={stegaClean(site.author?.name)}
+          />
           <Analytics />
           <SpeedInsights />
           <SanityLive />

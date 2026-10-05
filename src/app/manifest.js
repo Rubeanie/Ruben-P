@@ -1,8 +1,13 @@
-export default function manifest() {
+import { stegaClean } from '@sanity/client/stega';
+import { getSite } from '@/lib/sanity/queries';
+
+export default async function manifest() {
+  const site = await getSite();
+  const title = stegaClean(site.title);
   return {
-    name: 'Ruben-P.com',
-    short_name: 'Ruben',
-    description: "Ruben Panzich's website",
+    name: title,
+    short_name: stegaClean(site.alternateName) || title,
+    description: stegaClean(site.seo?.metaDescription),
     start_url: '/',
     display: 'standalone',
     background_color: '#0f182d',

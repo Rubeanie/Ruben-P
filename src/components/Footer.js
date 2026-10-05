@@ -3,7 +3,7 @@ import Logo from '@/components/Logo';
 import { resolveLink } from '@/lib/processUrl';
 import styles from '@/styles/components/Footer.module.scss';
 
-export default function Footer({ menu, logo }) {
+export default function Footer({ menu, logo, author }) {
   const links = (menu?.items ?? [])
     // an item still being added in the Studio can be null
     .filter(Boolean)
@@ -30,7 +30,7 @@ export default function Footer({ menu, logo }) {
           </nav>
         )}
         <p className={styles.copyright}>
-          © {new Date().getFullYear()} Ruben Panzich
+          © {new Date().getFullYear()} {author}
         </p>
       </div>
     </footer>

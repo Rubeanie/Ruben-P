@@ -1,6 +1,7 @@
 import { fetchSanity, groq } from '../fetch';
 import { navigationQuery } from './navigation';
 import { seoQuery } from './metadata';
+import { linkQuery } from './fragments/link';
 import { themesQuery } from './fragments/themes';
 import { announcementQuery } from './fragments/announcement';
 import {
@@ -14,6 +15,8 @@ export async function getSite() {
     groq`
 			*[_type == 'site'][0]{
 				title,
+				alternateName,
+				author->{ _id, name, link { ${linkQuery} } },
 				logo,
 				headerMenu->{ ${navigationQuery} },
 				footerMenu->{ ${navigationQuery} },
