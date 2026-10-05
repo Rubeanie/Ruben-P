@@ -45,9 +45,7 @@ export async function generateMetadata() {
   const link = resolveLink(author?.link);
   return {
     metadataBase: new URL(baseUrl),
-    authors: name
-      ? [{ name, url: link ? new URL(link, baseUrl).href : undefined }]
-      : undefined,
+    authors: [{ name, url: link ? new URL(link, baseUrl).href : undefined }],
     alternates: { types: feedTypes },
     other: {
       'darkreader-lock': true
@@ -119,7 +117,7 @@ export default async function RootLayout({ children }) {
           <Footer
             menu={site.footerMenu}
             logo={logo}
-            author={stegaClean(site.author?.name)}
+            author={site.author?.name}
           />
           <Analytics />
           <SpeedInsights />

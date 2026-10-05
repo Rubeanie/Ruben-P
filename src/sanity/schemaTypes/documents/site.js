@@ -46,7 +46,8 @@ export const site = {
       type: 'reference',
       to: [{ type: 'author' }],
       group: 'general',
-      description: 'Credited on every post that names no authors of its own'
+      description: 'Credited on every post that names no authors of its own',
+      validation: (Rule) => Rule.required()
     },
     {
       name: 'announcements',

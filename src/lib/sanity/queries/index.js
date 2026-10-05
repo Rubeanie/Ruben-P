@@ -16,7 +16,7 @@ export async function getSite() {
 			*[_type == 'site'][0]{
 				title,
 				alternateName,
-				author->{ _id, name, link { ${linkQuery} } },
+				author->{ name, link { ${linkQuery} } },
 				logo,
 				headerMenu->{ ${navigationQuery} },
 				footerMenu->{ ${navigationQuery} },
