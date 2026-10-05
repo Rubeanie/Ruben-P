@@ -139,15 +139,33 @@
   white-space: nowrap;
 }
 
+// The page's first or last module. Draft mode wraps each module in a
+// data-sanity div, and scripts, styles (a themed hero's) and an empty wrapper
+// (a module that rendered nothing) sit among the modules without being one.
+$_not-module: 'script, style, template, [data-sanity]:empty';
+
+@mixin first-module {
+  :not([data-sanity]) > &:nth-child(1 of :not(#{$_not-module})),
+  [data-sanity]:nth-child(1 of :not(#{$_not-module})) > & {
+    @content;
+  }
+}
+
+@mixin last-module {
+  :not([data-sanity]) > &:nth-last-child(1 of :not(#{$_not-module})),
+  [data-sanity]:nth-last-child(1 of :not(#{$_not-module})) > & {
+    @content;
+  }
+}
+
 // A hero is the ground, not an object on it: it runs edge to edge, and as the
-// page's first module (in draft, inside the first wrapper) it cancels main's
-// top padding. Anywhere else it spaces like any module.
+// page's first module it cancels main's top padding. Anywhere else it spaces
+// like any module.
 @mixin hero-ground {
   margin-block: var.$block-gap;
   margin-inline: calc(-1 * #{var.$inline-pad});
 
-  :not(:global([data-sanity])) > &:first-child,
-  :global([data-sanity]):first-child > & {
+  @include first-module {
     margin-block-start: calc(-1 * #{var.$space-3});
   }
 }

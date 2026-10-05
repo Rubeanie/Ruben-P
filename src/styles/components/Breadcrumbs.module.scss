@@ -6,13 +6,11 @@
   margin-block: var.$block-gap calc(#{var.$eyebrow-gap} - #{var.$block-gap});
   // Holds the list's negative margins, so the box is the text line.
   display: flow-root;
-}
 
-// With no module after it (only scripts follow; in draft, its wrapper is the
-// last), the trail keeps the plain gap so the footer clearance holds.
-:not(:global([data-sanity])) > .nav:not(:has(~ :not(script))),
-:global([data-sanity]):not(:has(~ :not(script))) > .nav {
-  margin-block-end: var.$block-gap;
+  // As the last module, the trail keeps the plain gap so the footer clearance holds.
+  @include var.last-module {
+    margin-block-end: var.$block-gap;
+  }
 }
 
 .list {
