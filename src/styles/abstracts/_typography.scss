@@ -9,6 +9,11 @@
   font-variant-ligatures: no-common-ligatures;
 }
 
+// Headings meet their gaps at the cap line and baseline, not at Mont's tall line box.
+@mixin trim-to-ink {
+  text-box: trim-both cap alphabetic;
+}
+
 /* Non-composable (font-feature-settings replaces on override) */
 @mixin ot-ss01 {
   font-feature-settings: 'ss01' 1;

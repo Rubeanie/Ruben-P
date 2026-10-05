@@ -13,4 +13,8 @@
   > :last-child {
     margin-block-end: 0;
   }
+
+  :is(h1, h2, h3) {
+    @include var.trim-to-ink;
+  }
 }

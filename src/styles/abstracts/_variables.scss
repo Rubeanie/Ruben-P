@@ -149,6 +149,13 @@ $first-gap: clamp(2rem, 1.5357rem + 1.9048vw, 3.25rem);
 $last-gap: clamp(3.25rem, 2.6rem + 2.6667vw, 5rem);
 // An eyebrow to the heading it labels: Apple Newsroom's category margin.
 $eyebrow-gap: 1.25rem;
+// Between paragraphs: Newsroom's paragraph margin is 0.6 of its block gap
+// (27 over 44), so a paragraph break reads smaller than a module break.
+$paragraph-gap: calc(#{$block-gap} * 0.6);
+// Above an h1 or h2: Newsroom's subhead sits 8px further than a block (52 over 44).
+$heading-gap: calc(#{$block-gap} + #{$space-2});
+// A heading straight after another: Newsroom's headline to subhead, a paragraph gap and a bit.
+$heading-pair-gap: calc(#{$paragraph-gap} + #{$space-2});
 $inline-pad-max: 2rem;
 $inline-pad: clamp(1rem, 4vw, $inline-pad-max);
 
