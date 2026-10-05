@@ -14,8 +14,8 @@ const VIGNETTE_LEVELS = { light: 0.4, strong: 0.75 };
 // The canvas's own antialiasing, which a composer bypasses.
 const SAMPLES = 4;
 
-// Camera and controls live here rather than in Common: the hero keeps its own
-// set there and the two are free to diverge.
+// Camera and controls live here: the hero keeps its own set and the two are
+// free to diverge.
 export default function Scene({
   model,
   background,

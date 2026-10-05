@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { PerformanceMonitor } from '@react-three/drei';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { PerformanceMonitor, PerspectiveCamera } from '@react-three/drei';
 import { ToneMappingMode } from 'postprocessing';
 import { NeutralToneMapping } from 'three';
 import Canvas from '@/components/canvas/Canvas';
-import Common from '@/components/canvas/Common';
 import PostFx, {
   BLOOM,
   GRAIN,
@@ -33,14 +32,7 @@ const top = () => Math.max(1, Math.min(devicePixelRatio, 2));
 // across pages, rather than flip back on and slow down again.
 let overloaded = false;
 
-export default function Scene({
-  frameloop,
-  progress,
-  vignette,
-  stage,
-  grain,
-  onReady
-}) {
+function Scene({ frameloop, progress, vignette, stage, grain, onReady }) {
   const [max, setMax] = useState(top);
   const [load, setLoad] = useState(1);
   const [shed, setShed] = useState(overloaded);
@@ -89,7 +81,19 @@ export default function Scene({
           grainTime={() => levels.current.travel}
         />
       )}
-      <Common />
+      <PerspectiveCamera makeDefault fov={60} position={[0, 0, 3]} />
     </Canvas>
   );
+}
+
+const noSubscribe = () => () => {};
+
+// Nothing on the server or while hydrating: the canvas only mounts in the browser.
+export default function ClientScene(props) {
+  const client = useSyncExternalStore(
+    noSubscribe,
+    () => true,
+    () => false
+  );
+  return client && <Scene {...props} />;
 }

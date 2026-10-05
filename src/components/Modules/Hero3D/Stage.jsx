@@ -1,12 +1,16 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useSyncExternalStore } from 'react';
+import { preload } from 'react-dom';
 import dynamic from 'next/dynamic';
+import { MODEL } from '@/lib/hero3d';
 import createBeats from './beats';
 import createProgress, { RANGE } from './progress';
 import styles from '@/styles/components/Hero3D.module.scss';
 
-const Scene = dynamic(() => import('./Scene'), { ssr: false });
+// Server-rendered (as nothing, see Scene), so the page's HTML preloads the 3D
+// code at low priority instead of fetching it only after hydration.
+const Scene = dynamic(() => import('./Scene'), { loading: () => null });
 
 const subscribe = (change) => {
   addEventListener('scroll', change, { passive: true });
@@ -21,6 +25,11 @@ const subscribe = (change) => {
 // after it scrolls up over the canvas, and once the move has run out the layer
 // hides and stops drawing, until the page scrolls back up into it.
 export default function Stage({ grain }) {
+  // The model downloads with the page, not after three.js. Asked for here, in
+  // the server render of a client component: from a server component the hint
+  // would also fire whenever a link prefetches this page.
+  if (typeof window === 'undefined')
+    preload(MODEL, { as: 'fetch', crossOrigin: 'anonymous' });
   const ref = useRef(null);
   const vignette = useRef(null);
   const done = useSyncExternalStore(

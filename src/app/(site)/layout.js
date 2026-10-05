@@ -68,19 +68,6 @@ export default async function RootLayout({ children }) {
       data-scroll-behavior='smooth'
       className={`${mont.variable} ${figtree.variable} ${jetbrainsMono.variable} ${montCritical.variable} ${figtreeItalic.variable}`}>
       <head>
-        <link
-          rel='preload'
-          href='https://www.gstatic.com/draco/versioned/decoders/1.5.5/draco_wasm_wrapper.js'
-          as='fetch'
-          crossOrigin='anonymous'
-        />
-        <link
-          rel='preload'
-          href='https://www.gstatic.com/draco/versioned/decoders/1.5.5/draco_decoder.wasm'
-          as='fetch'
-          crossOrigin='anonymous'
-        />
-        <link rel='preconnect' href='https://www.gstatic.com' />
         <link rel='preconnect' href='https://cdn.sanity.io' />
         <link rel='preconnect' href='https://res.cloudinary.com' />
         <script

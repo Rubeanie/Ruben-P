@@ -5,12 +5,11 @@ import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { Color, MathUtils, Vector3 } from 'three';
 import { useTheme } from '@/components/ThemeContext';
-import { blurFilter, track, turnAt } from '@/lib/hero3d';
+import { MODEL, blurFilter, track, turnAt } from '@/lib/hero3d';
 import findCounter from './counter';
 import createFit from './fit';
 
 const { clamp, damp, degToRad, smoothstep } = MathUtils;
-const MODEL = '/models/rp-logo.glb';
 const REST_YAW = -0.065;
 const TAU = Math.PI * 2;
 const Y = new Vector3(0, 1, 0);

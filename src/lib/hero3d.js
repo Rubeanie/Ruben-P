@@ -1,6 +1,8 @@
 // Pure helpers for the Hero (3D) move, shared by the rig and the text beats
 // without pulling in three.js.
 
+export const MODEL = '/models/rp-logo.glb';
+
 // One ease over the whole move; holds come from repeated keys.
 export const ease = (t) => -(Math.cos(Math.PI * t) - 1) / 2;
 
