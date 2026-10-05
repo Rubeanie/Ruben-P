@@ -474,6 +474,7 @@ html[data-nav-dropdown='true'] {
   :global(html[data-nav-scrolled='true']) .nav .container,
   :global(html[data-nav-dropdown='true']) .nav .container {
     backdrop-filter: none;
-    background-color: rgba(0, 0, 0, 0.92);
+    // the theme's ground, so nothing reads through and nothing clashes with it
+    background-color: var.$color-background;
   }
 }
