@@ -1,5 +1,9 @@
 @use '../abstracts/index' as var;
 
+$burger-size: 48px;
+// The menu's full-width button: the iOS large button height.
+$menu-button-height: 3.125rem;
+
 // Published for anything fixed to the viewport that must clear the pill (the bento's
 // morph clip and its search blur); a live announcement band above the pill counts.
 @property --nav-clearance {
@@ -14,9 +18,9 @@
   );
 }
 
-// Docked, the pill sits flush to the top.
+// Docked, the pill sits flush to the top and drops its top border.
 :global(html[data-nav-compact]) {
-  --nav-clearance: calc(#{var.$nav-bar-height} + var(--announce-offset));
+  --nav-clearance: calc(#{var.$nav-bar-height} - 1px + var(--announce-offset));
 }
 
 .nav {
@@ -162,14 +166,16 @@
       // animating height on purpose; there's no transform equivalent
       transition: height 0.3s var.$ease-out;
 
+      // The list hangs from the bar like a page's first module, so it stays put
+      // while the panel grows over it.
       .menu {
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: safe center;
         gap: 1.75rem;
         height: 100%;
         overflow-y: auto;
+        padding: var.$first-gap var.$inline-pad;
       }
 
       a {
@@ -189,9 +195,8 @@
           letter-spacing: var.$track-h2;
         }
 
-        // the button keeps bar-sized text in the panel
         &.cta p {
-          font-size: var.$p2-size;
+          font-size: var.$p1-size;
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -200,8 +205,13 @@
         }
       }
 
+      // Full width, so the one button outweighs the display-size links above it.
       .cta {
-        padding: 0.45em 1.3em;
+        align-self: stretch;
+        justify-content: center;
+        min-height: $menu-button-height;
+        padding: 0 1.3em;
+        margin-top: var.$space-3;
       }
     }
 
@@ -209,8 +219,10 @@
     // so the colour follows a theme change instantly.
     .burger {
       position: relative;
-      width: 48px;
-      height: 48px;
+      width: $burger-size;
+      height: $burger-size;
+      // The target overflows the bar evenly instead of growing it past the logo's height.
+      margin-block: calc((#{var.$nav-logo-size} - #{$burger-size}) / 2);
       display: none; // only in compact mode
       padding: 0;
       border: none;
