@@ -27,11 +27,13 @@
   }
 }
 
-// The CMS logo, drawn by the Studio navbar and the theme preview.
+// The CMS logo, drawn by the Studio navbar and the theme preview. The navbar
+// holds it in a small square, so a wide mark scales down to fit, not clip.
 .site-logo svg {
   display: block;
   height: 100%;
   width: auto;
+  max-width: 100%;
 }
 
 // A post category's colour as its list thumbnail; the colour itself is inline.

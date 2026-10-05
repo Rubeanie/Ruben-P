@@ -1,6 +1,6 @@
 import { useSiteLogo } from '../useSiteLogo';
 
-const box = { display: 'block', height: '1.5em' };
+const box = { display: 'block', height: '1.5em', maxWidth: '100%' };
 
 // The site's own mark, with the static icon until it loads or when unset.
 export function StudioLogo() {
