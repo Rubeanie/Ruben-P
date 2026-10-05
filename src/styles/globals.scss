@@ -153,6 +153,12 @@ h3 {
   margin-block: var.$space-4 var.$space-2;
 }
 
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
 p {
   font-size: var.$body-size;
   line-height: var.$lh-body;
