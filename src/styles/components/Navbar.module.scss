@@ -15,7 +15,7 @@
 }
 
 // Docked, the pill sits flush to the top.
-:global(html):has(.nav[data-compact='true']) {
+:global(html[data-nav-compact]) {
   --nav-clearance: calc(#{var.$nav-bar-height} + var(--announce-offset));
 }
 
@@ -211,6 +211,7 @@
       position: relative;
       width: 48px;
       height: 48px;
+      display: none; // only in compact mode
       padding: 0;
       border: none;
       border-radius: 50%;
@@ -294,13 +295,17 @@
 
 // Compact mode docks the bar: flush to the top and sides, bottom corners only,
 // so opening the menu never moves the toggle.
-.nav[data-compact='true'] {
+:global(html[data-nav-compact]) .nav {
   padding: 0;
 
   .container {
     border-top: none;
     border-inline: none;
     border-radius: 0 0 var.$nav-radius var.$nav-radius;
+
+    .burger {
+      display: block;
+    }
 
     // hidden, not removed: it still has to be measured to leave compact mode
     .links {
@@ -371,7 +376,7 @@ html[data-nav-dropdown='true'] {
 
 // Docked, the top highlight reads as a stray line, so drop it. Sits after the
 // full-glass rule so it wins when the menu is open.
-html .nav[data-compact='true'] .container {
+:global(html[data-nav-compact]) .nav .container {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 

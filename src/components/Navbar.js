@@ -36,12 +36,14 @@ const Navbar = ({ menu, logo }) => {
     setOpen(false);
   }
 
-  // Compact mode when the links overflow their row. Fitting again closes the
-  // menu, which only exists in compact mode.
+  // Compact mode when the links overflow their row, published on <html> for the
+  // styles. The layout's inline script sets it before first paint; this keeps it current. Fitting
+  // again closes the menu, which only exists in compact mode.
   useEffect(() => {
     const links = linksRef.current;
     const observer = new ResizeObserver(() => {
       const overflowing = links.scrollWidth > links.clientWidth;
+      document.documentElement.toggleAttribute('data-nav-compact', overflowing);
       setCompact(overflowing);
       if (!overflowing) setOpen(false);
     });
@@ -82,12 +84,16 @@ const Navbar = ({ menu, logo }) => {
   }, []);
 
   return (
-    <nav className={styles.nav} data-compact={compact || undefined}>
+    <nav className={styles.nav}>
       <div className={styles.container}>
         <Link href={lead?.href ?? '/'} title={lead?.label} onClick={close}>
           <Logo svg={logo} />
         </Link>
-        <div className={styles.links} ref={linksRef} inert={compact}>
+        <div
+          className={styles.links}
+          ref={linksRef}
+          data-nav-links
+          inert={compact}>
           {links.map((link) => (
             <Link
               key={link.key}
@@ -97,17 +103,15 @@ const Navbar = ({ menu, logo }) => {
             </Link>
           ))}
         </div>
-        {compact && (
-          <button
-            ref={toggleRef}
-            type='button'
-            className={styles.burger}
-            aria-expanded={open}
-            aria-controls='nav-menu'
-            aria-label='Show menu'
-            onClick={() => setOpen(!open)}
-          />
-        )}
+        <button
+          ref={toggleRef}
+          type='button'
+          className={styles.burger}
+          aria-expanded={open}
+          aria-controls='nav-menu'
+          aria-label='Show menu'
+          onClick={() => setOpen(!open)}
+        />
         <div id='nav-menu' className={styles.dropdown} inert={!open}>
           <div className={styles.menu}>
             {[lead, ...links]

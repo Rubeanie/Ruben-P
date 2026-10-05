@@ -26,6 +26,13 @@ import { DEFAULT_THEME_COLORS } from '@/lib/themes';
 import { liveAnnouncement } from '@/lib/announcement';
 import { feedTypes } from '@/lib/resolveMetadata';
 
+// Runs right after the navbar markup, before first paint: sets the compact state
+// the Navbar keeps current, so a phone never paints the full bar first. Measuring
+// gives the bar a style to transition from, so the docking it starts is finished
+// (transitions only: the band's scroll-driven pill offset is an animation).
+const navGate =
+  "var l=document.querySelector('[data-nav-links]');if(l&&l.scrollWidth>l.clientWidth){document.documentElement.setAttribute('data-nav-compact','');l.closest('nav').getAnimations({subtree:true}).forEach(function(a){if(a.transitionProperty)a.finish()})}";
+
 export const metadata = {
   metadataBase: new URL(baseUrl),
   authors: [{ name: 'Ruben Panzich', url: 'https://www.ruben-p.com' }],
@@ -82,9 +89,10 @@ export default async function RootLayout({ children }) {
           <Suspense>
             <Signature />
           </Suspense>
-          <Suspense>
-            <Navbar menu={site.headerMenu} logo={logo} />
-          </Suspense>
+          {/* Outside a Suspense boundary: streamed later, the gate would measure
+              a hidden bar and the page would paint without it. */}
+          <Navbar menu={site.headerMenu} logo={logo} />
+          <script dangerouslySetInnerHTML={{ __html: navGate }} />
           <main>
             <SiteLogo logo={logo}>{children}</SiteLogo>
           </main>
