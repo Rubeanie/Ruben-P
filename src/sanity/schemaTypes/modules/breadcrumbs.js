@@ -1,4 +1,4 @@
-import { count } from '@sanity/src/utils';
+import { count } from '@/sanity/utils';
 import { MdLinearScale } from 'react-icons/md';
 import { uidField } from '../fragments/fields/uid';
 

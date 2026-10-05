@@ -4,8 +4,8 @@ import { INKS } from '@/lib/posts';
 import {
   ThemeColorGeneratorInput,
   ThemeStyleInput
-} from '../../src/components/ThemeStyleInput';
-import { COLOR_FIELDS } from '../../src/imageColors';
+} from '../../components/ThemeStyleInput';
+import { COLOR_FIELDS } from '../../imageColors';
 
 export const style = {
   name: 'style',

@@ -1,11 +1,11 @@
 import { IoMdMegaphone } from 'react-icons/io';
-import { getBlockText } from '@sanity/src/utils';
+import { getBlockText } from '@/sanity/utils';
 import { SEPARATORS } from '@/lib/announcement';
 import { richBlock } from '../fragments/text-block';
 import {
   SeparatorInput,
   SeparatorMedia
-} from '@sanity/src/components/SeparatorInput';
+} from '@/sanity/components/SeparatorInput';
 
 // One line of 14px text inside the band's own link: no headings, lists or
 // links, and no marks that need a larger size to read.

@@ -1,8 +1,8 @@
 import { IoMdLink } from 'react-icons/io';
 import { apiVersion } from '@/lib/env';
 import { decodeFragment } from '@/lib/anchors';
-import { LinkInput } from '@sanity/src/components/LinkInput';
-import { splitParams, targetAnchors } from '@sanity/src/utils';
+import { LinkInput } from '@/sanity/components/LinkInput';
+import { splitParams, targetAnchors } from '@/sanity/utils';
 
 export const link = {
   name: 'link',

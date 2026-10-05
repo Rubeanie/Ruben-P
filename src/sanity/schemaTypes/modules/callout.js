@@ -1,5 +1,5 @@
 import { MdSmartButton } from 'react-icons/md';
-import { getBlockText } from '@sanity/src/utils';
+import { getBlockText } from '@/sanity/utils';
 import { richBlock } from '../fragments/text-block';
 import { uidField } from '../fragments/fields/uid';
 

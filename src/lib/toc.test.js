@@ -2,7 +2,7 @@ import { expect, test } from 'bun:test';
 import { anchors } from './anchors';
 import { groupsOf, structureKey, tocCount, tocEntries } from './toc';
 import { currentAt, fillAt } from './tocSpy';
-import { pageBlock } from '../../sanity/schemas/fragments/page-block';
+import { pageBlock } from '@/sanity/schemaTypes/fragments/page-block';
 
 const block = (style, text) => ({
   _type: 'block',

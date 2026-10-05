@@ -1,5 +1,5 @@
 import { slug } from './slug';
-import { SharePreviewInput } from '../../src/components/SharePreview/SharePreviewInput';
+import { SharePreviewInput } from '../../components/SharePreview/SharePreviewInput';
 
 export const metadata = (prefix = '') => {
   return {

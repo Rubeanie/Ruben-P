@@ -1,17 +1,17 @@
 import { defineConfig } from 'sanity';
 import { dataset, projectId, apiVersion } from '@/lib/env';
 import { structureTool } from 'sanity/structure';
-import structure from './src/structure';
+import structure from '@/sanity/structure';
 import { presentationTool } from 'sanity/presentation';
-import { locations } from './src/presentation';
+import { locations } from '@/sanity/presentation';
 import { visionTool } from '@sanity/vision';
 import { media } from 'sanity-plugin-media';
 import { inlineSvgInput } from '@focus-reactive/sanity-plugin-inline-svg-input';
 import { codeInput } from '@sanity/code-input';
 import { colorInput } from '@sanity/color-input';
-import { schemaTypes } from './schemas';
-import { StudioLogo } from './src/components/StudioLogo';
-import { proofreadInspector } from './src/components/Proofread/ProofreadInspector';
+import { schemaTypes } from '@/sanity/schemaTypes';
+import { StudioLogo } from '@/sanity/components/StudioLogo';
+import { proofreadInspector } from '@/sanity/components/Proofread/ProofreadInspector';
 import {
   cloudinarySchemaPlugin,
   cloudinaryAssetSourcePlugin

@@ -1,6 +1,6 @@
 import { MdArticle } from 'react-icons/md';
 import { Heading } from '@sanity/ui';
-import { getBlockText } from '@sanity/src/utils';
+import { getBlockText } from '@/sanity/utils';
 import { richBlock, textBlock } from '../fragments/text-block';
 import { uidField } from '../fragments/fields/uid';
 

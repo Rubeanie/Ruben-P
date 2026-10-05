@@ -1,6 +1,6 @@
 import { IoMdStats } from 'react-icons/io';
 import { textAlign } from '../fragments/fields/alignment';
-import { count } from '@sanity/src/utils';
+import { count } from '@/sanity/utils';
 import { uidField } from '../fragments/fields/uid';
 
 export const statList = {

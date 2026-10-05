@@ -1,5 +1,5 @@
 import { MdWeb } from 'react-icons/md';
-import { SharePreviewInput } from '../../src/components/SharePreview/SharePreviewInput';
+import { SharePreviewInput } from '../../components/SharePreview/SharePreviewInput';
 
 export const site = {
   name: 'site',

@@ -7,8 +7,7 @@
     "resolveJsonModule": true,
     "jsx": "preserve",
     "paths": {
-      "@/*": ["./src/*"],
-      "@sanity/*": ["./sanity/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["**/*.js", "**/*.jsx"],

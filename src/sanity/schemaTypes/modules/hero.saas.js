@@ -1,5 +1,5 @@
 import { MdPhotoSizeSelectActual } from 'react-icons/md';
-import { getBlockText } from '@sanity/src/utils';
+import { getBlockText } from '@/sanity/utils';
 import { textBlock } from '../fragments/text-block';
 import { scrollHintField } from '../fragments/fields/scroll-hint';
 import { uidField } from '../fragments/fields/uid';

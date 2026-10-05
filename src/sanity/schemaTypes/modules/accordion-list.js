@@ -1,4 +1,4 @@
-import { getBlockText } from '@sanity/src/utils';
+import { getBlockText } from '@/sanity/utils';
 import { MdQuestionMark } from 'react-icons/md';
 import { uidField } from '../fragments/fields/uid';
 

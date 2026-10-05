@@ -1,5 +1,5 @@
 import { MdLabel, MdCode } from 'react-icons/md';
-import { SeoFeedbackInput } from '../../src/components/SeoFeedback/SeoFeedbackInput';
+import { SeoFeedbackInput } from '../../components/SeoFeedback/SeoFeedbackInput';
 import { DESCRIPTION_LENGTH, TITLE_LENGTH } from '@/lib/studioReviewLimits';
 
 export const seoMetaFields = {

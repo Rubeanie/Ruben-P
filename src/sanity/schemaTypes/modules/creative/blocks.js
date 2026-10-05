@@ -5,7 +5,7 @@ import {
   MdStars,
   MdTitle
 } from 'react-icons/md';
-import { getBlockText } from '@sanity/src/utils';
+import { getBlockText } from '@/sanity/utils';
 import { imageBlock } from '../../fragments/image-block';
 import { richBlock } from '../../fragments/text-block';
 import { creativeIcons } from '@/components/Modules/CreativeModule/icons';

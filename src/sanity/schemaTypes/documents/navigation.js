@@ -1,5 +1,5 @@
 import { MdAccountTree } from 'react-icons/md';
-import { count } from '@sanity/src/utils';
+import { count } from '@/sanity/utils';
 
 export const navigation = {
   name: 'navigation',

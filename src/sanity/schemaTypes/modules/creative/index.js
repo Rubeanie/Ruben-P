@@ -1,5 +1,5 @@
 import { MdExtension, MdViewColumn } from 'react-icons/md';
-import { count } from '@sanity/src/utils';
+import { count } from '@/sanity/utils';
 import { blocks, blockTitles } from './blocks';
 import { uidField } from '../../fragments/fields/uid';
 

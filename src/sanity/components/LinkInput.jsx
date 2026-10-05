@@ -2,7 +2,7 @@ import { useEffect, useId, useState } from 'react';
 import { Select, Stack, Text } from '@sanity/ui';
 import { set, unset, useClient } from 'sanity';
 import { apiVersion } from '@/lib/env';
-import { splitParams, targetAnchors } from '@sanity/src/utils';
+import { splitParams, targetAnchors } from '@/sanity/utils';
 
 // Refetched on focus, so headings edited on the target page show up.
 function useHeadings(ref) {

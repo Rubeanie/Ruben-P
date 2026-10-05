@@ -1,5 +1,5 @@
 import { IoMdHammer } from 'react-icons/io';
-import { count } from '@sanity/src/utils';
+import { count } from '@/sanity/utils';
 import { uidField } from '../fragments/fields/uid';
 
 export const skillList = {

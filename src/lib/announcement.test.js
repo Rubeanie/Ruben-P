@@ -6,7 +6,7 @@ import {
   liveAnnouncement
 } from './announcement';
 import { GLYPHS } from '../components/AnnouncementSeparator';
-import { announcement } from '../../sanity/schemas/documents/announcement';
+import { announcement } from '@/sanity/schemaTypes/documents/announcement';
 
 const now = Date.parse('2026-10-01T12:00:00Z');
 const before = '2026-09-30T12:00:00Z';
