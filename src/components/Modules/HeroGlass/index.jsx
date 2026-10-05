@@ -31,7 +31,7 @@ export default async function HeroGlass(props) {
           image={image}
           className={styles.photo}
           sizes={coverSizes(ratio, 100, 100, ZOOM)}
-          priority
+          preload
         />
         <Lines
           pretitle={pretitle}

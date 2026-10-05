@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import Image from 'next/image';
+import Image from '@/components/CdnImage';
 import { LuBox, LuRotate3D } from 'react-icons/lu';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Loading } from '@/components/dom/Loading';

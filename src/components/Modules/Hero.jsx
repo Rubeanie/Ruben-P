@@ -33,14 +33,16 @@ export default async function Hero(props) {
           image={bgImage}
           className={styles.photo}
           sizes={`${both ? '(max-width: 43.75rem) 1px, ' : ''}${coverSizes(ratio(bgImage), 100)}`}
-          priority
+          loading='eager'
+          fetchPriority='high'
         />
         {mobile && (
           <Photo
             image={bgImageMobile}
             className={styles.photoMobile}
             sizes={`${both ? '(min-width: 43.75rem) 1px, ' : ''}${coverSizes(ratio(bgImageMobile), 100)}`}
-            priority
+            loading='eager'
+            fetchPriority='high'
           />
         )}
         <Copy

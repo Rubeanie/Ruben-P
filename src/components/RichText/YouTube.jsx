@@ -42,7 +42,7 @@ async function getThumb(id) {
   return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 }
 
-export default async function YouTube({ value, sanity, priority = false }) {
+export default async function YouTube({ value, sanity, preload = false }) {
   const url = stegaClean(value?.url);
   const id = getYouTubeId(url);
   if (!id) return null;
@@ -82,7 +82,7 @@ export default async function YouTube({ value, sanity, priority = false }) {
       size={size}
       align={align}
       sanity={sanity}
-      priority={priority}
+      preload={preload}
     />
   );
 }

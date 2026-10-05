@@ -24,7 +24,7 @@ export default function YouTubeFacade({
   size,
   align,
   sanity,
-  priority = false
+  preload = false
 }) {
   const [active, setActive] = useState(false);
   // 'api' drives the iframe through the IFrame Player API, 'plain' relies on autoplay=1.
@@ -174,7 +174,7 @@ export default function YouTubeFacade({
             alt=''
             fill
             sizes='(max-width: 43.75rem) 100vw, 65rem'
-            priority={priority}
+            preload={preload}
           />
           <button
             ref={button}

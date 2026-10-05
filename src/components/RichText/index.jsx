@@ -82,7 +82,7 @@ export default function RichText({
             <YouTube
               {...props}
               sanity={blockPath(dataAttribute, props)}
-              priority={isFirstModule && props.index === 0}
+              preload={isFirstModule && props.index === 0}
             />
           ),
           code: (props) => (

@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from '@/components/CdnImage';
 import { stegaClean } from '@sanity/client/stega';
 import FigureCaption from './FigureCaption';
 import { blockLayout } from './layout';

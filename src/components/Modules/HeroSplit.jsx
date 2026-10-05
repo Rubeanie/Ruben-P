@@ -24,7 +24,7 @@ export default function HeroSplit(props) {
         image={image}
         className={styles.frame}
         sizes='(max-width: 43.75rem) 100vw, 50vw'
-        priority
+        preload
       />
       {scrollHint && <ScrollHint next={`${id}-end`} align='start' />}
       {scrollHint && <ScrollTarget id={`${id}-end`} />}
