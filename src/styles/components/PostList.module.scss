@@ -148,32 +148,32 @@ $ring:
 
 /* Filter morph: the view transition Bento starts on a chip or search change */
 
-// These pseudo-elements live on the document root, so the page that holds the list is the tightest scope there is.
-:root:has(.list)::view-transition-group(*) {
+// These pseudo-elements live on the document root, so the transition's type is the scope: any other page transition keeps its own look.
+:root:active-view-transition-type(bento)::view-transition-group(*) {
   animation-duration: 0.3s;
   animation-timing-function: var.$ease-out;
 }
 
 // Snapshots keep their own aspect, so a tile that changes shape is sized to its group and clipped there instead of spilling its copy under the cell.
 // Pairs show the new snapshot alone (the default cross-fade shows the picture twice); Chromium does not match :not(:only-child) here, hence pair first and lone second.
-:root:has(.list)::view-transition-old(*),
-:root:has(.list)::view-transition-new(*) {
+:root:active-view-transition-type(bento)::view-transition-old(*),
+:root:active-view-transition-type(bento)::view-transition-new(*) {
   inline-size: 100%;
   block-size: 100%;
   object-fit: cover;
   animation: none;
 }
 
-:root:has(.list)::view-transition-old(*) {
+:root:active-view-transition-type(bento)::view-transition-old(*) {
   opacity: 0;
 }
 
 // Lone snapshots, a tile leaving or arriving, keep their fade.
-:root:has(.list)::view-transition-old(*):only-child {
+:root:active-view-transition-type(bento)::view-transition-old(*):only-child {
   animation: fade-out 0.3s var.$ease-out both;
 }
 
-:root:has(.list)::view-transition-new(*):only-child {
+:root:active-view-transition-type(bento)::view-transition-new(*):only-child {
   animation: fade-in 0.3s var.$ease-out both;
 }
 
@@ -197,20 +197,18 @@ $ring:
   }
 }
 
-:root:has(.list)::view-transition-image-pair(*) {
+:root:active-view-transition-type(bento)::view-transition-image-pair(*) {
   overflow: clip;
   border-radius: var.$common-border-radius;
 }
 
 // Only the named tiles move, so the root is not captured: the page stays live (a shorter result list clamps the scroll, and a root snapshot would ghost the whole page), and the chips repaint live.
-:root:has(.list) {
+:root:active-view-transition-type(bento) {
   view-transition-name: none;
 }
 
-// The pseudo tree inherits from the root, so the site-wide centred text-align would centre each snapshot in its group (iOS WebKit sets no inline start on old/new): start it here.
 // Clipped at the pill's bottom edge (the navbar publishes --nav-clearance) so tiles slide under the navbar; naming the pill would capture its glass without a backdrop.
-:root:has(.list)::view-transition {
-  text-align: start;
+:root:active-view-transition-type(bento)::view-transition {
   clip-path: inset(var(--nav-clearance) 0 0 0);
 }
 .picture {

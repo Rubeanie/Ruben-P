@@ -10,6 +10,9 @@ import {
 import { easeOut, iosWebKit, reducedMotion } from '@/lib/posts';
 import styles from '@/styles/components/PostList.module.scss';
 
+const supportsTypes = () =>
+  Boolean(document.startViewTransition) && 'types' in ViewTransition.prototype;
+
 // A filter re-settles the whole bento, so the browser morphs each named tile
 // to its new cell instead of snapping. flushSync lands the store update inside
 // the callback, where the transition expects the DOM to change.
@@ -130,7 +133,8 @@ export default function useBentoMorph({
       });
     };
     // iOS Safari clips the moving snapshots at the small viewport, so a tile that slides under the toolbar vanishes mid-morph: a plain swap there.
-    if (!document.startViewTransition || reducedMotion() || iosWebKit()) {
+    // The morph's styles match its transition type, so a browser without types gets the plain swap too.
+    if (!supportsTypes() || reducedMotion() || iosWebKit()) {
       commit();
       return;
     }
@@ -230,7 +234,7 @@ export default function useBentoMorph({
           .map(({ line, index }) => ({ line: line.cloneNode(true), index }))
       ])
     );
-    transition.current = document.startViewTransition(() => {
+    const update = () => {
       flushSync(() => {
         setMorphing(true);
         commit();
@@ -333,6 +337,10 @@ export default function useBentoMorph({
           frames: photoFrames(before, after, aspect, position, curve)
         });
       }
+    };
+    transition.current = document.startViewTransition({
+      update,
+      types: ['bento']
     });
     transition.current.ready.then(
       () => {

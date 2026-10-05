@@ -229,6 +229,11 @@ li a {
   @include var.text-link;
 }
 
+// The pseudo tree inherits from the root, so the centred text-align above would centre each snapshot in its group (iOS WebKit sets no inline start on old/new).
+::view-transition {
+  text-align: start;
+}
+
 body {
   position: relative; // added for pseudo-element
   z-index: 0;

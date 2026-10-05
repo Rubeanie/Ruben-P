@@ -218,13 +218,13 @@ $copy-inset: 0.375rem;
 
 @include var.play-facade;
 
-// Material's sharp play triangle, nudged right by a sixth of its width so its
-// centroid, not its box, sits on the disc's centre.
+// Lucide's play triangle, filled so its stroke rounds the corners, nudged right
+// by a sixth of its width so its centroid, not its box, sits on the disc's centre.
 .disc svg {
-  width: 0.94rem;
+  width: 0.96rem;
   height: 1.2rem;
   fill: currentColor;
-  translate: calc(0.94rem / 6) 0;
+  translate: calc(0.96rem / 6) 0;
 }
 
 .scrim {

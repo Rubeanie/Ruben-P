@@ -6,6 +6,7 @@ import { DISMISS_MS, dismissKey } from '@/lib/announcement';
 import { resolveLink } from '@/lib/processUrl';
 import DynamicValue from './RichText/DynamicValue';
 import AnnouncementBand from './AnnouncementBand';
+import AnnouncementSeparator from './AnnouncementSeparator';
 import styles from '@/styles/components/Announcement.module.scss';
 
 const span = (className) => {
@@ -34,6 +35,7 @@ export default async function Announcement({ announcement, logo }) {
   if (!announcement) return null;
   const id = stegaClean(announcement._id);
   const end = Date.parse(stegaClean(announcement.end)) || 0;
+  const name = stegaClean(announcement.separator);
   const { isEnabled } = await draftMode();
   const sanity =
     isEnabled &&
@@ -65,9 +67,12 @@ export default async function Announcement({ announcement, logo }) {
           />
         }
         href={resolveLink(announcement.link)}
-        separator={stegaClean(announcement.separator)}
+        separator={
+          name === 'none' ? null : (
+            <AnnouncementSeparator name={name} logo={logo} />
+          )
+        }
         always={!!stegaClean(announcement.marquee)}
-        logo={logo}
         {...(sanity && { sanity })}
       />
     </>

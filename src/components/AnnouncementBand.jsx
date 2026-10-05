@@ -11,7 +11,6 @@ import Link from 'next/link';
 import { LuX } from 'react-icons/lu';
 import { dismissKey, isDismissed } from '@/lib/announcement';
 import { rateTween, stepRate } from '@/lib/rate';
-import AnnouncementSeparator from './AnnouncementSeparator';
 import styles from '@/styles/components/Announcement.module.scss';
 
 const SPEED = 48; // px per second
@@ -41,7 +40,6 @@ export default function AnnouncementBand({
   href,
   separator,
   always,
-  logo,
   sanity
 }) {
   const bandRef = useRef(null);
@@ -294,10 +292,10 @@ export default function AnnouncementBand({
 
   const sep = (
     <span className={styles.sep} aria-hidden='true'>
-      <AnnouncementSeparator name={separator} logo={logo} />
+      {separator}
     </span>
   );
-  const none = separator === 'none';
+  const none = !separator;
   // the static band, and what is measured against the column for overflow
   const still = (
     <>

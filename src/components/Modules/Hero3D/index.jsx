@@ -3,7 +3,7 @@ import RichText from '@/components/RichText';
 import ScrollHint, { ScrollTarget } from '@/components/hero/ScrollHint';
 import uid from '@/lib/uid';
 import Beat from './Beat';
-import Stage from './Stage';
+import { Stage } from '@/components/lazy';
 import styles from '@/styles/components/Hero3D.module.scss';
 
 export default function Hero3D(props) {

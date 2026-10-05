@@ -5,8 +5,7 @@ import ImageBlock from '@/components/RichText/ImageBlock';
 import { resolveLink } from '@/lib/processUrl';
 import uid from '@/lib/uid';
 import { creativeIcons } from './icons';
-import ThemeCycle from './ThemeCycle';
-import ThemeImage from './ThemeImage';
+import { ThemeCycle, ThemeImage } from '@/components/lazy';
 import styles from '@/styles/components/CreativeModule.module.scss';
 
 function Block({ block, values, sanity }) {

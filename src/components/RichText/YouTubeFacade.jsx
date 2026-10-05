@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { preconnect } from 'react-dom';
 import Image from 'next/image';
-import { MdPlayArrow } from 'react-icons/md';
+import { LuPlay } from 'react-icons/lu';
 import {
   embedSrc,
   IFRAME_ALLOW,
@@ -190,7 +190,7 @@ export default function YouTubeFacade({
               {active ? (
                 <span className={styles.spinner} />
               ) : (
-                <MdPlayArrow viewBox='8 5 11 14' />
+                <LuPlay viewBox='5 2 16 20' />
               )}
             </span>
             <span className={styles.caption} aria-hidden>

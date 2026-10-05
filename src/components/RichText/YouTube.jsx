@@ -5,7 +5,7 @@ import {
   getYouTubeStart,
   IFRAME_ALLOW
 } from '@/lib/youtube';
-import YouTubeFacade from './YouTubeFacade';
+import { YouTubeFacade } from '@/components/lazy';
 import { blockLayout } from './layout';
 import styles from '@/styles/components/RichText.module.scss';
 

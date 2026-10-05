@@ -1,6 +1,6 @@
 import { getPostIndex } from '@/lib/sanity/queries/posts';
 import uid from '@/lib/uid';
-import Bento from './Bento';
+import { Bento } from '@/components/lazy';
 
 // The site's category order, minus any category without a post; a category left off the site list is never a chip.
 function chipCategories(posts, categories) {

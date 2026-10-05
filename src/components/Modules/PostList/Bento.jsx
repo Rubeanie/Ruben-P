@@ -1,13 +1,6 @@
 'use client';
 
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  useSyncExternalStore
-} from 'react';
-import MiniSearch from 'minisearch';
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { stegaClean } from '@sanity/client/stega';
 import { LuChevronDown, LuX } from 'react-icons/lu';
 import { fillPages, phoneShape, tileBands, tileShapes } from '@/lib/bento';
@@ -94,29 +87,42 @@ export default function Bento({ id, posts, filters }) {
   // Index of the first tile a Load more press adds, focused once it exists.
   const landing = useRef(null);
 
-  const index = useMemo(() => {
-    const mini = new MiniSearch({
-      idField: '_id',
-      fields: ['title', 'summary', 'categories'],
-      storeFields: ['_id'],
-      searchOptions: {
-        boost: { title: 3, categories: 0.5 },
-        prefix: true,
-        fuzzy: 0.2
-      }
+  // MiniSearch loads once the search field is focused (so it's there by the
+  // first keystroke's morph) or a query arrives; until then the list stays unfiltered.
+  const [index, setIndex] = useState(null);
+  const [searching, setSearching] = useState(false);
+  const wantsIndex = searching || (text || query).trim() !== '';
+  useEffect(() => {
+    if (!wantsIndex) return;
+    let stale = false;
+    import('minisearch').then(({ default: MiniSearch }) => {
+      if (stale) return;
+      const mini = new MiniSearch({
+        idField: '_id',
+        fields: ['title', 'summary', 'categories'],
+        storeFields: ['_id'],
+        searchOptions: {
+          boost: { title: 3, categories: 0.5 },
+          prefix: true,
+          fuzzy: 0.2
+        }
+      });
+      mini.addAll(
+        posts.map((post) => ({
+          _id: post._id,
+          title: stegaClean(post.title) ?? '',
+          summary: stegaClean(post.summary) ?? '',
+          categories: (post.categories ?? [])
+            .map((c) => stegaClean(c.title))
+            .join(' ')
+        }))
+      );
+      setIndex(mini);
     });
-    mini.addAll(
-      posts.map((post) => ({
-        _id: post._id,
-        title: stegaClean(post.title) ?? '',
-        summary: stegaClean(post.summary) ?? '',
-        categories: (post.categories ?? [])
-          .map((c) => stegaClean(c.title))
-          .join(' ')
-      }))
-    );
-    return mini;
-  }, [posts]);
+    return () => {
+      stale = true;
+    };
+  }, [wantsIndex, posts]);
 
   const select = (params) => {
     const selected = categoryFor(params);
@@ -126,7 +132,7 @@ export default function Bento({ id, posts, filters }) {
         (post.categories ?? []).some((c) => c._id === selected)
       );
     const q = (params.get('q') ?? '').trim();
-    if (q) {
+    if (q && index) {
       const hits = new Set(index.search(q).map((hit) => hit.id));
       result = result.filter((post) => hits.has(post._id));
     }
@@ -220,7 +226,13 @@ export default function Bento({ id, posts, filters }) {
   };
 
   return (
-    <section ref={list} id={id} className={styles.list}>
+    <section
+      ref={list}
+      id={id}
+      className={styles.list}
+      onFocus={(event) =>
+        event.target === searchInput.current && setSearching(true)
+      }>
       {filters && (
         <Filters
           categories={categories}
