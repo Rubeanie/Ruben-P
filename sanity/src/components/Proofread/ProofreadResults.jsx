@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Badge, Box, Button, Card, Flex, Stack, Text } from '@sanity/ui';
+import { RiQuillPenAiFill } from 'react-icons/ri';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import { CopyButton } from '../CopyButton';
 import {
@@ -172,7 +173,11 @@ function Row({ copy, edit, choice, apply, state, run, ai, children }) {
       <Flex align='center' gap={1}>
         <Box flex={1} paddingY={2}>
           <Text size={1}>
-            {ai && <span className='proofread-spark' aria-hidden='true' />}
+            {ai && (
+              <span className='proofread-spark' aria-hidden='true'>
+                <RiQuillPenAiFill />
+              </span>
+            )}
             {children}
           </Text>
         </Box>
@@ -241,7 +246,9 @@ function Fix({ fix, apply }) {
       source={
         better ? (
           <Badge className='proofread-better' fontSize={0}>
-            <span className='proofread-spark' aria-hidden='true' />
+            <span className='proofread-spark' aria-hidden='true'>
+              <RiQuillPenAiFill />
+            </span>
             Better fix
           </Badge>
         ) : (
@@ -356,6 +363,13 @@ export function ProofreadResults({ spelling, wording, order, apply }) {
   const notes = [spelling.error, wording.note].filter(Boolean);
   return (
     <Stack space={4} padding={4}>
+      <svg className='proofread-gradient' aria-hidden='true'>
+        <linearGradient id='proofread-ai-gradient' x1='0' y1='0' x2='1' y2='1'>
+          <stop offset='0' />
+          <stop offset='0.5' />
+          <stop offset='1' />
+        </linearGradient>
+      </svg>
       {notes.map((note) => (
         <Text key={note} size={1} muted>
           {note}

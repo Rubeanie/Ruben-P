@@ -80,16 +80,40 @@ $proofread-ai: $ai-blue, $ai-purple, $ai-pink;
     color.change($ai-pink, $alpha: $pink);
 }
 
+// A span holds the icon: Sanity UI resets the margins of icons inside text.
 .proofread-spark {
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  margin-inline-end: 0.35em;
+  display: inline-flex;
+  padding-inline-end: 0.35em;
   vertical-align: -0.125em;
-  background: linear-gradient(135deg, $proofread-ai);
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1Q12 12 23 12Q12 12 12 23Q12 12 1 12Q12 12 12 1Z'/%3E%3C/svg%3E")
-    center / contain no-repeat;
   animation: proofread-spark 600ms var.$ease-out 150ms both;
+
+  // Outranks Sanity UI's `svg:not([data-sanity-icon])` margins inside text.
+  &#{&} svg:not([data-sanity-icon]) {
+    display: block;
+    width: 1em;
+    height: 1em;
+    margin: 0;
+    // The quill's drawing hugs the top left of its square; this centres it.
+    transform: translate(0.06em, 0.06em);
+    fill: url(#proofread-ai-gradient);
+  }
+}
+
+// The gradient the AI icon is filled with.
+.proofread-gradient {
+  position: absolute;
+  width: 0;
+  height: 0;
+
+  stop:nth-child(1) {
+    stop-color: $ai-blue;
+  }
+  stop:nth-child(2) {
+    stop-color: $ai-purple;
+  }
+  stop:nth-child(3) {
+    stop-color: $ai-pink;
+  }
 }
 
 .proofread-better {
