@@ -139,11 +139,17 @@
   white-space: nowrap;
 }
 
-// A hero is the ground, not an object on it: it cancels main's padding and
-// runs edge to edge. Below it, it spaces like any module.
+// A hero is the ground, not an object on it: it runs edge to edge, and as the
+// page's first module (in draft, inside the first wrapper) it cancels main's
+// top padding. Anywhere else it spaces like any module.
 @mixin hero-ground {
-  margin-block: calc(-1 * #{var.$space-3}) var.$block-gap;
+  margin-block: var.$block-gap;
   margin-inline: calc(-1 * #{var.$inline-pad});
+
+  :not(:global([data-sanity])) > &:first-child,
+  :global([data-sanity]):first-child > & {
+    margin-block-start: calc(-1 * #{var.$space-3});
+  }
 }
 
 // A hero with a scroll hint keeps its bottom edge clear for it, lined up with the copy column.
