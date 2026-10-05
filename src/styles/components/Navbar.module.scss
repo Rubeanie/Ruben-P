@@ -152,6 +152,12 @@ $menu-button-height: 3.125rem;
           opacity 0.15s ease,
           transform 0.12s var.$ease-out;
 
+        // the logo row's height, so it sits the bar's inset off every edge
+        &.cta {
+          min-block-size: var.$nav-logo-size;
+          border-radius: concentric(var.$nav-logo-size);
+        }
+
         @media (hover: hover) and (pointer: fine) {
           &:hover {
             opacity: 0.7;
