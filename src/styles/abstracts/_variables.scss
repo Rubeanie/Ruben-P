@@ -99,7 +99,8 @@ $p2-size: 1.35rem; // lead, nav links
 $p1-size: 1.62rem; // large lead
 // Running copy grows with the screen: 17px on phones to 19px on desktops, the newsroom range.
 $body-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
-$h3-size: $p1-size;
+// 22px on phones, where 26px sat too close to the h2's 28; the large lead size from 808px up.
+$h3-size: clamp(1.375rem, 1.13rem + 0.97vw, #{$p1-size});
 $h2-size: clamp(1.75rem, 1.2rem + 1.6vw, 2.33rem);
 // Same slope the hero has always had (115px at 1440, 153px cap); the floor stops
 // phones at 40px instead of 37px.
