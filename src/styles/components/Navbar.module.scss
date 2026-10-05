@@ -4,7 +4,7 @@ $burger-size: 48px;
 $burger-end: 0.6rem; // the burger's inset from the bar's edge
 
 // A bar target's corner, concentric with the bar's: the bar's inner radius, less
-// the hairline, plus however far the target overflows the 40px logo row.
+// the hairline, plus however far the target overflows the logo row.
 @function concentric($size) {
   @return calc(
     #{var.$button-radius} - #{var.$hairline-width} +
@@ -110,15 +110,16 @@ $menu-button-height: 3.125rem;
       }
     }
 
-    // padding grows the 40px logo to a 44px target; the negative margin keeps its visual spot.
+    // padding grows the logo to a 44px target; the negative margin keeps its visual spot.
     > a:first-of-type {
+      $grow: calc((#{var.$touch-target} - #{var.$nav-logo-size}) / 2);
       // above the links row, whose padding overlaps its last 4px
       position: relative;
       border-radius: concentric(var.$touch-target);
-      padding: 2px;
-      margin-block: -2px;
-      margin-inline-end: -2px;
-      margin-inline-start: calc(0.9rem - 2px);
+      padding: $grow;
+      margin-block: calc(-1 * #{$grow});
+      margin-inline-end: calc(-1 * #{$grow});
+      margin-inline-start: calc(0.9rem - #{$grow});
     }
 
     .links {
