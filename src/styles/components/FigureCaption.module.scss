@@ -20,11 +20,14 @@
   text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
   position: relative;
 
-  // 44px hit area without changing the caption's rhythm.
+  // A full touch target, centred on the text, without changing the caption's rhythm.
   &::before {
     content: '';
     position: absolute;
-    inset: -0.75rem 0;
+    inset-inline: 0;
+    inset-block-start: 50%;
+    block-size: max(100%, #{var.$touch-target});
+    translate: 0 -50%;
   }
 }
 

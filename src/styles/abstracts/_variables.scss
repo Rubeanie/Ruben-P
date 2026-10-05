@@ -55,6 +55,14 @@ $nav-clearance-flow: calc(var(--nav-clearance) - var(--announce-offset));
 /* Buttons: the navbar button and page CTAs share the pill's inner radius */
 $button-radius: $nav-radius - $nav-pad;
 
+// A bar target's corner, concentric with the bar's: the bar's inner radius, less
+// the hairline, plus however far the target overflows the logo row.
+@function concentric($size) {
+  @return calc(
+    #{$button-radius} - #{$hairline-width} + (#{$size} - #{$nav-logo-size}) / 2
+  );
+}
+
 /* Maximum Width of Viewport Content */
 $viewport-max-width: 120rem;
 // Page content shares the navbar's edge; the reading measure keeps prose narrow inside it.

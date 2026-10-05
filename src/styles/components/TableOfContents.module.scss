@@ -28,7 +28,6 @@ $row-radius: calc(#{var.$common-border-radius} - #{var.$space-2});
   font-size: var.$p4-size;
   line-height: var.$lh-small;
   color: var.$color-on-dark;
-  -webkit-tap-highlight-color: transparent;
 
   svg {
     flex: none;
@@ -80,7 +79,6 @@ $row-radius: calc(#{var.$common-border-radius} - #{var.$space-2});
     transition:
       background-color 0.2s var.$ease-out,
       color 0.2s var.$ease-out;
-    -webkit-tap-highlight-color: transparent;
 
     &:active {
       background-color: var.$press-tint;

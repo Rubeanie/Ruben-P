@@ -30,6 +30,7 @@ import { resolveLink } from '@/lib/processUrl';
 import { navLinks } from '@/lib/navLinks';
 import { feedTypes } from '@/lib/resolveMetadata';
 import { navGate } from '@/lib/navGate';
+import skip from '@/styles/components/SkipLink.module.scss';
 
 export async function generateMetadata() {
   const { author } = await getSite();
@@ -84,6 +85,9 @@ export default async function RootLayout({ children }) {
         />
       </head>
       <body>
+        <a href='#main' className={skip.skip}>
+          Skip to content
+        </a>
         <Announcement
           announcement={liveAnnouncement(site.announcements)}
           logo={logo}
@@ -99,7 +103,7 @@ export default async function RootLayout({ children }) {
             <MenuIntent site={site} />
           </Suspense>
           <script dangerouslySetInnerHTML={{ __html: navGate }} />
-          <main>
+          <main id='main'>
             <SiteLogo logo={logo}>{children}</SiteLogo>
           </main>
           <Footer

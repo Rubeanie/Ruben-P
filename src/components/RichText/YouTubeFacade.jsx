@@ -181,7 +181,6 @@ export default function YouTubeFacade({
             ref={button}
             type='button'
             className={styles.play}
-            aria-label={`Play video: ${title}`}
             aria-busy={active}
             onPointerEnter={warm}
             onFocus={warm}
@@ -194,7 +193,8 @@ export default function YouTubeFacade({
                 <LuPlay viewBox='5 2 16 20' />
               )}
             </span>
-            <span className={styles.caption} aria-hidden>
+            <span className={styles.srOnly}>Play video:</span>
+            <span className={styles.caption}>
               <span>{title}</span>
               <span>YouTube</span>
             </span>

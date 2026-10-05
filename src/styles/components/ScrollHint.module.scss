@@ -65,13 +65,14 @@ $loops: calc(var(--loop-wait, var(--hint-delay)) + 500ms);
   }
 }
 
-// The hint's target: the hero's bottom edge, clear of the navbar when jumped to.
+// The hint's target: the hero's bottom edge, landing flush under the navbar
+// (the root's scroll padding) when jumped to.
 .target {
   position: absolute;
   bottom: 0;
   display: block;
   height: 0;
-  scroll-margin-top: var(--nav-clearance);
+  scroll-margin-top: 0;
 }
 
 .word {

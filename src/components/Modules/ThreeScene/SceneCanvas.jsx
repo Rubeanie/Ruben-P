@@ -124,10 +124,8 @@ export default function SceneCanvas({
             ref={button}
             type='button'
             className={styles.play}
-            aria-label={[
-              label ? `Load 3D model: ${label}` : 'Load 3D model',
-              size
-            ]
+            // Starts with the visible label so voice control can say what it sees.
+            aria-label={[label ? `Load model: ${label}` : 'Load model', size]
               .filter(Boolean)
               .join(', ')}
             // Stays busy through the fade so the spinner never turns back into the glyph.

@@ -76,6 +76,10 @@ $column: 11.25rem;
   text-align: left;
 }
 
+.srOnly {
+  @include var.sr-only;
+}
+
 @media (hover: hover) and (pointer: fine) {
   a.card:hover .skill {
     background: color-mix(in srgb, var(--brand) 22%, var.$color-plate-dark);

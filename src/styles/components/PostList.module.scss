@@ -720,7 +720,6 @@ $plate: rgba(var.$color-plate-dark, 0.7);
   background: none;
   color: var.$color-on-dark;
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
   --pill: calc(var(--copied-width) + #{var.$space-3 + $capsule-height});
 
   &::before {
@@ -850,7 +849,6 @@ $plate: rgba(var.$color-plate-dark, 0.7);
   font-weight: 600;
   font-size: var.$p4-size;
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
 
   svg {
     flex: none;

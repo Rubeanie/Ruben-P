@@ -3,15 +3,6 @@
 $burger-size: 48px;
 $burger-end: 0.6rem; // the burger's inset from the bar's edge
 
-// A bar target's corner, concentric with the bar's: the bar's inner radius, less
-// the hairline, plus however far the target overflows the logo row.
-@function concentric($size) {
-  @return calc(
-    #{var.$button-radius} - #{var.$hairline-width} +
-      (#{$size} - #{var.$nav-logo-size}) / 2
-  );
-}
-
 // The menu button's height: the iOS large button.
 $menu-button-height: 3.125rem;
 
@@ -115,7 +106,7 @@ $menu-button-height: 3.125rem;
       $grow: calc((#{var.$touch-target} - #{var.$nav-logo-size}) / 2);
       // above the links row, whose padding overlaps its last 4px
       position: relative;
-      border-radius: concentric(var.$touch-target);
+      border-radius: var.concentric(var.$touch-target);
       padding: $grow;
       margin-block: calc(-1 * #{$grow});
       margin-inline-end: calc(-1 * #{$grow});
@@ -151,7 +142,7 @@ $menu-button-height: 3.125rem;
         flex: none;
         white-space: nowrap;
         // for the focus ring: concentric at the link's own line height
-        border-radius: concentric(var.$p2-size * var.$lh-body);
+        border-radius: var.concentric(var.$p2-size * var.$lh-body);
         transition:
           opacity 0.15s ease,
           transform 0.12s var.$ease-out;
@@ -159,7 +150,7 @@ $menu-button-height: 3.125rem;
         // the logo row's height, so it sits the bar's inset off every edge
         &.cta {
           min-block-size: var.$nav-logo-size;
-          border-radius: concentric(var.$nav-logo-size);
+          border-radius: var.concentric(var.$nav-logo-size);
         }
 
         @media (hover: hover) and (pointer: fine) {
@@ -264,7 +255,7 @@ $menu-button-height: 3.125rem;
       display: none; // only in compact mode
       padding: 0;
       border: none;
-      border-radius: concentric($burger-size);
+      border-radius: var.concentric($burger-size);
       background: none;
       cursor: pointer;
       // matches the logo's inset; the bars sit 9px inside the button

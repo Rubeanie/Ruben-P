@@ -13,8 +13,8 @@ export const slugify = (text) =>
     .replace(/^-+|-+$/g, '') || 'section';
 
 // Ids the page renders outside the modules: #top is Next's link to the top
-// of the page, and the navbar menu.
-export const FIXED_IDS = ['top', 'nav-menu'];
+// of the page, the navbar menu, and the skip link's target.
+export const FIXED_IDS = ['top', 'nav-menu', 'main'];
 
 // Every id a module renders: its own, and the end marker heroes place after it.
 export const moduleIds = (modules) =>

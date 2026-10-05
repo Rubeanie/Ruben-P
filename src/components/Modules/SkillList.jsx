@@ -41,6 +41,9 @@ export default function SkillList({ skills, ...props }) {
             key={_key}
             {...(external && { target: '_blank', rel: 'noopener noreferrer' })}>
             {card}
+            {external && (
+              <span className={styles.srOnly}>, opens in a new tab</span>
+            )}
           </Link>
         ) : (
           <div className={styles.card} key={_key}>

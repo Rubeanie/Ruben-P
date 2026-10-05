@@ -164,3 +164,8 @@ test('decodeFragment decodes, and returns null for a malformed escape', () => {
   expect(decodeFragment('process')).toBe('process');
   expect(decodeFragment('100%')).toBeNull();
 });
+
+test('a heading never takes the skip link target', () => {
+  const { headings } = anchors([rich('a', block('h2', 'Main'))]);
+  expect(headings[0].id).toBe('main-2');
+});

@@ -18,7 +18,7 @@ export default function Trail({ children }) {
       <button
         type='button'
         className={styles.more}
-        aria-label='Show hidden pages'
+        aria-label='Hidden pages'
         aria-expanded={expanded}
         onClick={() => setExpanded((open) => !open)}>
         <span aria-hidden='true'>…</span>

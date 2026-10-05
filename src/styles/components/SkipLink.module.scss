@@ -1,0 +1,54 @@
+@use '../abstracts/index' as var;
+
+// Text is a bare glyph, so it lines up with the logo glyph, not the bar's edge.
+$glyph: calc(#{var.$nav-pad} + 0.9rem);
+
+// Hidden until a keyboard reaches it, then a quiet plate over the navbar's
+// leading end: the bar's height and float gap, so its corners match the bar's.
+.skip {
+  position: fixed;
+  z-index: var.$nav-z + 1;
+  inset-block-start: calc(var(--announce-offset) + #{var.$nav-float-gap});
+  inset-inline-start: var.$nav-float-gap;
+  display: flex;
+  align-items: center;
+  block-size: var.$nav-bar-height;
+  padding-inline: $glyph;
+  border-radius: var.$nav-radius;
+  // Opaque, so the logo under it doesn't ghost through.
+  background: var.$color-plate-dark;
+  box-shadow: var.$hairline;
+  color: var.$color-on-dark;
+  font-family: var.$p-font;
+  font-size: var.$p4-size;
+  font-weight: 600;
+  white-space: nowrap;
+
+  // The ring sits inside the plate, so the plate keeps the bar's outline.
+  &:focus-visible {
+    outline-offset: -3px;
+  }
+
+  &:not(:focus) {
+    @include var.sr-only;
+  }
+}
+
+// Docked, the bar spans the top edge flush, so the plate shrinks to a target
+// sized like the logo's, the same even inset from the bar's top and leading
+// edges, concentric with its corner.
+:global(html[data-nav-compact]) .skip {
+  $inset: calc(
+    #{var.$nav-pad} - (#{var.$touch-target} - #{var.$nav-logo-size}) / 2
+  );
+  inset-block-start: calc(var(--announce-offset) + #{$inset});
+  inset-inline-start: $inset;
+  block-size: var.$touch-target;
+  padding-inline: calc(#{$glyph} - #{$inset});
+  border-radius: var.concentric(var.$touch-target);
+
+  // Repeated: the sizing above beats the base rule's sr-only clip.
+  &:not(:focus) {
+    @include var.sr-only;
+  }
+}

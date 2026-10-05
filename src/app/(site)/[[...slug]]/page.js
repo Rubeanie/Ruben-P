@@ -62,10 +62,15 @@ async function PageIntent({ modules, path }) {
 export async function generateMetadata({ params }) {
   const { page, path } = await getPage(params);
   if (page) return resolveMetadata(page, await getSite());
-  // Redirects and 404s are handled by the page component; a social's vanity
-  // path still shares its own card on the way to the profile.
+  // Redirects are handled by the page component; a social's vanity path still
+  // shares its own card on the way to the profile.
   const social = isPagePath(path) && (await getVanitySocial(path));
-  if (!social) return {};
+  if (!social) {
+    if (path !== '/' && (await getRedirect(path))) return {};
+    // The 404 is rendered in the browser from this payload, so its title has
+    // to come from here: thrown in metadata, Next swaps in not-found.js's.
+    notFound();
+  }
   const { openGraph, twitter } = resolveMetadata(
     {
       metadata: {

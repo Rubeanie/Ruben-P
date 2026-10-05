@@ -93,7 +93,9 @@ export default function PostDetails({
                 className={styles.avatar}
                 data-author={i + 1}
                 href={author.href ?? undefined}
-                aria-label={author.href ? stegaClean(author.name) : undefined}>
+                // The name beside it is the same link and the one tab stop.
+                tabIndex={author.href ? -1 : undefined}
+                aria-hidden={author.href ? 'true' : undefined}>
                 <Disc author={author} />
               </Tag>
             );

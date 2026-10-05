@@ -101,8 +101,11 @@ function SearchField({ value, onChange, inputRef }) {
         ref={inputRef}
         type='search'
         className={styles.searchInput}
-        placeholder='Search'
+        name='q'
+        placeholder='Search…'
         aria-label='Search projects'
+        autoComplete='off'
+        spellCheck={false}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onFocus={() => {

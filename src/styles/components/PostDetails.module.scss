@@ -135,7 +135,7 @@ $cut-left: calc(#{$overlap} - #{$avatar-size} / 2);
   mask-size: calc(#{$avatar-size} * 3) calc(#{$avatar-size} * 3);
   mask-repeat: no-repeat;
   mask-position: calc(-1 * #{$avatar-size}) calc(-1 * #{$avatar-size});
-  // The focus ring sits outside the box and must survive the mask.
+  // Nothing outside the box is masked; the tap area reaches past it.
   mask-clip: no-clip;
   mask-composite: intersect;
 }
@@ -147,7 +147,6 @@ $cut-left: calc(#{$overlap} - #{$avatar-size} / 2);
   border-radius: 50%;
   opacity: $avatar-rest;
   transition: opacity 0.15s var.$ease-out;
-  @include var.focus-ring(2px);
 
   & + & {
     margin-inline-start: -$overlap;
@@ -202,9 +201,8 @@ $cut-left: calc(#{$overlap} - #{$avatar-size} / 2);
       mask-image: none;
     }
 
-    // A focused disc is never recut, or a hover beside it would clip its ring.
     @if $i < $author-count {
-      .discs [data-author='#{$i + 1}']:not(:focus-visible) {
+      .discs [data-author='#{$i + 1}'] {
         &:not(:last-child) {
           @include cuts(cut($cut-left), cut($cut-right));
         }

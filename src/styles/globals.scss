@@ -63,6 +63,8 @@ $theme-color-properties: (
 
 html {
   transition: var.$theme-transitions;
+  // Anchors and focused controls scroll into view below the pill, not under it.
+  scroll-padding-top: var(--nav-clearance);
 }
 
 // Fragment links glide; Next keeps route changes instant (data-scroll-behavior on html).
@@ -72,9 +74,10 @@ html {
   }
 }
 
-// Zero specificity, so a component's own margin (the scroll hint target) wins.
+// Breathing room under the pill for anchor targets. Zero specificity, so a
+// component's own margin (the scroll hint target) wins.
 :where([id]) {
-  scroll-margin-top: calc(var(--nav-clearance) + #{var.$space-4});
+  scroll-margin-top: var.$space-4;
 }
 
 html,
@@ -100,6 +103,13 @@ body {
 a {
   text-decoration: none;
   color: inherit;
+}
+
+// Controls draw their own press states; the grey iOS flash would sit over them.
+a,
+button,
+summary {
+  -webkit-tap-highlight-color: transparent;
 }
 
 * {
