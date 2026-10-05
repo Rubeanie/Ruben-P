@@ -6,6 +6,7 @@ import {
   ThemeStyleInput
 } from '../../components/ThemeStyleInput';
 import { COLOR_FIELDS } from '../../imageColors';
+import { CloudinaryPreview } from '../../components/CloudinaryPreview';
 
 export const style = {
   name: 'style',
@@ -115,19 +116,7 @@ export const style = {
         title: title || 'Untitled Style',
         subtitle,
 
-        media:
-          url !== undefined ? (
-            <img
-              src={url}
-              alt='Style Preview Image'
-              style={{
-                height: '100%',
-                width: 'auto',
-                display: 'block',
-                left: 'unset'
-              }}
-            />
-          ) : null
+        media: url !== undefined ? <CloudinaryPreview url={url} /> : null
       };
     }
   }

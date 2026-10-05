@@ -1,4 +1,5 @@
 import { MdStyle } from 'react-icons/md';
+import { CloudinaryPreview } from '../../components/CloudinaryPreview';
 
 function getStylesSubtitle(styles = []) {
   const styleCount = Array.isArray(styles) ? styles.length : 0;
@@ -33,19 +34,7 @@ export const theme = {
       return {
         title,
         subtitle: getStylesSubtitle(styles),
-        media:
-          url !== undefined ? (
-            <img
-              src={url}
-              alt='Style Preview Image'
-              style={{
-                height: '100%',
-                width: 'auto',
-                display: 'block',
-                left: 'unset'
-              }}
-            />
-          ) : null
+        media: url !== undefined ? <CloudinaryPreview url={url} /> : null
       };
     }
   }

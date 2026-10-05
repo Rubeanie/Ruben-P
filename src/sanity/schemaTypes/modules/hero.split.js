@@ -63,7 +63,7 @@ export const heroSplit = {
   preview: {
     select: {
       content: 'content',
-      media: 'image.asset'
+      media: 'image'
     },
     prepare: ({ content, media }) => ({
       title: getBlockText(content),

@@ -1,5 +1,6 @@
 import { MdImage } from 'react-icons/md';
 import { blockLayoutFields } from './fields/block-layout';
+import { CloudinaryPreview } from '../../components/CloudinaryPreview';
 
 export const imageBlock = {
   name: 'imageBlock',
@@ -92,16 +93,7 @@ export const imageBlock = {
       } else if (type === 'cloudinary.asset' && cloudinary) {
         media = (
           // Sanity Studio preview thumbnail, next/image doesn't run in Studio.
-          <img
-            src={cloudinary}
-            alt={subtitle}
-            style={{
-              height: '100%',
-              width: 'auto',
-              display: 'block',
-              left: 'unset'
-            }}
-          />
+          <CloudinaryPreview url={cloudinary} alt={subtitle} />
         );
       } else {
         media = null;
