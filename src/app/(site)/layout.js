@@ -34,8 +34,10 @@ import { feedTypes } from '@/lib/resolveMetadata';
 // Runs right after the navbar markup, before first paint: sets the compact state
 // the Navbar keeps current, so a phone never paints the full bar first. Measuring
 // gives the bar a style to transition from, so the docking it starts is finished.
+// The band above has just matched too, and WebKit would glide <html>'s
+// --announce-height in from 0, so <html>'s own transitions are finished as well.
 const navGate =
-  "var l=document.querySelector('[data-nav-links]');if(l&&l.scrollWidth>l.clientWidth){document.documentElement.setAttribute('data-nav-compact','');l.closest('nav').getAnimations({subtree:true}).forEach(function(a){if(a.transitionProperty)a.finish()})}";
+  "var d=document.documentElement,l=document.querySelector('[data-nav-links]'),f=function(e,o){e.getAnimations(o).forEach(function(a){if(a.transitionProperty)a.finish()})};if(l&&l.scrollWidth>l.clientWidth){d.setAttribute('data-nav-compact','');f(l.closest('nav'),{subtree:true})}f(d)";
 
 export async function generateMetadata() {
   const { author } = await getSite();
