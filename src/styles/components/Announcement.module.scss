@@ -21,18 +21,9 @@ $lift: -0.035em;
   }
 }
 
-// The pill's own translate on the scroll timeline moves in the same frame as the page.
-@keyframes announce-pill {
-  from {
-    translate: 0 $height;
-  }
-
-  to {
-    translate: 0 0;
-  }
-}
-
 // ---- Page geometry: the navbar pill rides under the band until it scrolls away ----
+// The navbar follows the band in flow; these publish the same offset for the
+// readers fixed to the viewport (--nav-clearance) and first-screen heroes.
 
 :global(html:not([data-announcement-hidden])):has(.band) {
   --announce-height: #{$height};
@@ -41,25 +32,13 @@ $lift: -0.035em;
     0px,
     var(--announce-height) - var(--announce-scrolled)
   );
-  // a dismissed band folds its height and the pill follows it up
+  // a dismissed band folds its height and the clearance follows it up
   transition:
     var.$theme-transitions,
     --announce-height 0.3s var.$ease-out;
 
   @supports (animation-timeline: scroll()) {
     animation: announce-scrolled linear both;
-    animation-timeline: scroll(root);
-    animation-range: 0px $height;
-  }
-}
-
-// Off while the band folds, so the pill's transitioning underlying translate takes over.
-@supports (animation-timeline: scroll()) {
-  :global(html:not([data-announcement-hidden])):has(
-      .band:not([data-dismissing])
-    )
-    :global(body > nav) {
-    animation: announce-pill linear both;
     animation-timeline: scroll(root);
     animation-range: 0px $height;
   }

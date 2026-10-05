@@ -32,8 +32,7 @@ import { feedTypes } from '@/lib/resolveMetadata';
 
 // Runs right after the navbar markup, before first paint: sets the compact state
 // the Navbar keeps current, so a phone never paints the full bar first. Measuring
-// gives the bar a style to transition from, so the docking it starts is finished
-// (transitions only: the band's scroll-driven pill offset is an animation).
+// gives the bar a style to transition from, so the docking it starts is finished.
 const navGate =
   "var l=document.querySelector('[data-nav-links]');if(l&&l.scrollWidth>l.clientWidth){document.documentElement.setAttribute('data-nav-compact','');l.closest('nav').getAnimations({subtree:true}).forEach(function(a){if(a.transitionProperty)a.finish()})}";
 

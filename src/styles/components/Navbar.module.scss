@@ -34,14 +34,19 @@ $menu-button-height: 3.125rem;
 }
 
 .nav {
-  position: fixed;
+  // In flow under the announcement band, so it rides under it (rubber-band
+  // overscroll included) and pins once the band scrolls away. Zero height, the
+  // pill overflowing it, so it takes no room.
+  position: sticky;
   z-index: var.$nav-z;
   top: 0;
   width: 100%;
+  height: 0;
   padding: var.$nav-float-gap var.$nav-float-gap 0; // floats the pill off the edges
-  // rides under the announcement band until it scrolls away
-  translate: 0 var(--announce-offset);
-  transition: padding 0.3s var.$ease-out;
+  margin-block-end: -(var.$nav-float-gap);
+  transition:
+    padding 0.3s var.$ease-out,
+    margin 0.3s var.$ease-out;
 
   .container {
     display: flex;
@@ -332,6 +337,7 @@ $menu-button-height: 3.125rem;
 // so opening the menu never moves the toggle.
 :global(html[data-nav-compact]) .nav {
   padding: 0;
+  margin: 0;
 
   .container {
     border-top: none;
@@ -354,14 +360,17 @@ html[data-nav-dropdown='true'] {
   overflow: hidden;
   width: 100%;
 
+  // clip, not hidden: a scroll container here would unstick the navbar
   body {
-    overflow: hidden;
+    overflow: clip;
     width: 100%;
   }
 }
 
 :global(html[data-nav-dropdown='true']) .nav {
-  padding: 0; // compact mode on desktop drops the float gap too
+  // compact mode on desktop drops the float gap too
+  padding: 0;
+  margin: 0;
 
   .container {
     border-radius: 0;
