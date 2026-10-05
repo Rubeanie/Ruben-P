@@ -51,7 +51,7 @@ export const pagePost = {
       // Post details read post fields, so plain pages never offer the module.
       of: [...pageBlock.of, { type: 'post-details' }],
       validation: (Rule) => [
-        pageBlock.validation(Rule),
+        ...pageBlock.validation(Rule),
         Rule.custom((modules) =>
           (modules ?? []).some((module) => HEADED.has(module._type))
             ? true

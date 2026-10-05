@@ -2,7 +2,10 @@ import { expect, test } from 'bun:test';
 import { anchors } from './anchors';
 import { groupsOf, structureKey, tocCount, tocEntries } from './toc';
 import { currentAt, fillAt } from './tocSpy';
-import { pageBlock } from '@/sanity/schemaTypes/fragments/page-block';
+import {
+  pageBlock,
+  misplacedHeroes
+} from '@/sanity/schemaTypes/fragments/page-block';
 
 const block = (style, text) => ({
   _type: 'block',
@@ -136,8 +139,21 @@ test.each([
   expect(tocCount(modules)).toBe(count);
 });
 
+test('the Studio warns about an opening hero placed after another module', () => {
+  const hero = { _type: 'hero', _key: 'h' };
+  const split = { _type: 'hero.split', _key: 's' };
+  const text = { _type: 'richtext-module', _key: 't' };
+  expect(misplacedHeroes([hero, text, split])).toEqual([]);
+  expect(misplacedHeroes([text, hero, { ...hero, _key: 'h2' }])).toEqual([
+    hero,
+    { ...hero, _key: 'h2' }
+  ]);
+});
+
 test('the Studio refuses a second table of contents on a page', () => {
-  const check = pageBlock.validation({ custom: (fn) => fn });
+  const [check] = pageBlock.validation({
+    custom: (fn) => Object.assign(fn, { warning: () => fn })
+  });
   const toc = { _type: 'table-of-contents' };
   expect(check([toc])).toBe(true);
   expect(check([toc, toc])).toBe('A page takes one table of contents.');
