@@ -46,7 +46,7 @@ $nav-float-gap: 0.75rem;
 $nav-logo-gap: 3rem; // links compact before getting closer than this to the logo
 $nav-logo-size: 2.5rem;
 $nav-bar-height: calc(
-  #{$nav-logo-size} + #{$nav-pad * 2} + 2px
+  #{$nav-logo-size} + #{$nav-pad * 2} + #{$hairline-width * 2}
 ); // logo + inset + hairline borders
 $navbar-height: calc(#{$nav-float-gap * 2} + #{$nav-bar-height});
 // Clearance for things in the page flow: the announcement band already pushes them down.
