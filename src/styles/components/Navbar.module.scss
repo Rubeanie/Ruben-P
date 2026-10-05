@@ -7,7 +7,8 @@ $burger-end: 0.6rem; // the burger's inset from the bar's edge
 // the hairline, plus however far the target overflows the 40px logo row.
 @function concentric($size) {
   @return calc(
-    #{var.$button-radius} - 1px + (#{$size} - #{var.$nav-logo-size}) / 2
+    #{var.$button-radius} - #{var.$hairline-width} +
+      (#{$size} - #{var.$nav-logo-size}) / 2
   );
 }
 
@@ -30,7 +31,9 @@ $menu-button-height: 3.125rem;
 
 // Docked, the pill sits flush to the top and drops its top border.
 :global(html[data-nav-compact]) {
-  --nav-clearance: calc(#{var.$nav-bar-height} - 1px + var(--announce-offset));
+  --nav-clearance: calc(
+    #{var.$nav-bar-height} - #{var.$hairline-width} + var(--announce-offset)
+  );
 }
 
 .nav {
@@ -400,8 +403,8 @@ html[data-nav-dropdown='true'] {
           opacity 0.3s ease-out,
           transform 0.3s ease-out,
           scale 0.12s var.$ease-out;
-        // Stagger only on the way in; exit fades together. Capped at the fifth
-        // row so a longer CMS menu keeps the four-row timing.
+        // Stagger only on the way in; exit fades together. Rows from the fifth
+        // on share the fifth row's delay, so a longer CMS menu stays brief.
         transition-delay:
           calc(40ms + min(var(--i), 4) * 50ms),
           calc(40ms + min(var(--i), 4) * 50ms), 0s;

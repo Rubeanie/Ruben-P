@@ -19,7 +19,8 @@ $color-plate-dark: #0a0e1a;
 $plate-neutral: color-mix(in srgb, var(--color-primary) 10%, $color-plate-dark);
 // Hairline ring on plates and media frames, brighter than the glass edge but never a border.
 $hairline-color: rgba(255, 255, 255, 0.08);
-$hairline: inset 0 0 0 1px $hairline-color;
+$hairline-width: 1px;
+$hairline: inset 0 0 0 $hairline-width $hairline-color;
 // The white wash a pressed row or plate takes on glass.
 $press-tint: rgba(255, 255, 255, 0.06);
 // The featured mark, a gold that reads on both a light and a dark photo.
@@ -97,7 +98,7 @@ $p4-size: 1rem; // small text, footer links, breadcrumbs
 $p3-size: 1.125rem; // body
 $p2-size: 1.35rem; // lead, nav links
 $p1-size: 1.62rem; // large lead
-// Running copy grows with the screen: 17px on phones to 19px on desktops, the newsroom range.
+// Running copy grows with the screen: 17px on phones to 19px on desktops.
 $body-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
 // 22px on phones, where 26px sat too close to the h2's 28; the large lead size from 808px up.
 $h3-size: clamp(1.375rem, 1.13rem + 0.97vw, #{$p1-size});
@@ -108,7 +109,7 @@ $h1-size: clamp(2.5rem, 0.54rem + 7.41vw, 9.56rem);
 // Heading 1 inside an article: one and a half h2s, still clearly above them.
 $h1-article-size: calc(#{$h2-size} * 1.5);
 
-/* Muted text: 0.7 is the contrast floor measured on every CMS theme */
+/* Muted text: 0.7 is the contrast floor on every CMS theme */
 $muted: 0.7;
 $muted-strong: 0.85;
 
@@ -144,18 +145,18 @@ $measure-wide: 61.25rem;
 // Space between modules, and above and below a figure, video or code block:
 // 32px on phones up to 44px on desktop.
 $block-gap: clamp(2rem, 1.25rem + 1.5vw, 2.75rem);
-// The first module's box below the pill and the last one's above the footer:
-// Apple Newsroom's 52/40/32 and 80/64/52, fluid from 390 to 1440.
+// The first module's box below the pill and the last one's above the footer,
+// fluid from 390 to 1440: 52/40/32 and 80/64/52.
 $first-gap: clamp(2rem, 1.5357rem + 1.9048vw, 3.25rem);
 $last-gap: clamp(3.25rem, 2.6rem + 2.6667vw, 5rem);
-// An eyebrow to the heading it labels: Apple Newsroom's category margin.
+// An eyebrow to the heading it labels.
 $eyebrow-gap: 1.25rem;
-// Between paragraphs: Newsroom's paragraph margin is 0.6 of its block gap
-// (27 over 44), so a paragraph break reads smaller than a module break.
+// Between paragraphs: 0.6 of the block gap, so a paragraph break reads smaller
+// than a module break.
 $paragraph-gap: calc(#{$block-gap} * 0.6);
-// Above an h1 or h2: Newsroom's subhead sits 8px further than a block (52 over 44).
+// Above an h1 or h2: a subhead sits one step further than a block.
 $heading-gap: calc(#{$block-gap} + #{$space-2});
-// A heading straight after another: Newsroom's headline to subhead, a paragraph gap and a bit.
+// A heading straight after another: a paragraph gap and a bit.
 $heading-pair-gap: calc(#{$paragraph-gap} + #{$space-2});
 $inline-pad-max: 2rem;
 $inline-pad: clamp(1rem, 4vw, $inline-pad-max);
@@ -163,7 +164,7 @@ $inline-pad: clamp(1rem, 4vw, $inline-pad-max);
 // The loader's largest size, wherever it sits.
 $loader-size: 31.25rem;
 
-/* Tiles: Apple Newsroom grid gap, 24px on phones to 36px at 1440 */
+/* Tiles: grid gap, 24px on phones to 36px at 1440 */
 $tile-gap: clamp(1.5rem, 2.5vw, 2.25rem);
 
 /* Heroes are the page's ground: they clear the navbar and pad themselves */

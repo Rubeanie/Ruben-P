@@ -42,6 +42,8 @@ main {
     );
   }
 
+  $alert-icon: 1.25rem;
+
   // Stands in for a module, so it spaces like one. The social card's plate,
   // tinted with the severity's hue.
   .alert {
@@ -74,10 +76,10 @@ main {
     }
 
     svg {
-      width: 1.25rem;
-      height: 1.25rem;
+      width: $alert-icon;
+      height: $alert-icon;
       // centred on the first line
-      margin-block-start: calc((1lh - 1.25rem) / 2);
+      margin-block-start: calc((1lh - #{$alert-icon}) / 2);
       color: var(--alert-hue);
     }
 
