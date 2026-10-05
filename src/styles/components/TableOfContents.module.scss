@@ -51,20 +51,21 @@ $row-radius: calc(#{var.$common-border-radius} - #{var.$space-2});
   padding-inline: var.$space-3;
 }
 
-// A 4px step keeps the title with its list. At the bottom, the last row's own
-// slack plus 1px leaves its text 12px off the edge, as the summary's is.
+// A 4px step keeps the title with its list. At the bottom the last row sits the
+// rows' inset off the edge, like every row, so its text is its slack plus 8px in.
 .outline {
-  margin-block: var.$space-1 1px;
+  margin-block: var.$space-1 var.$space-2;
   padding: 0;
   list-style: none;
 
   // The hit area is padding, not leading; the tint overhangs the text by the
-  // summary's inset, so it is concentric with the plate.
+  // summary's inset, so it is concentric with the plate. Rows are the touch
+  // target tall, matching the summary's 44px.
   a {
     @include var.focus-ring;
     display: flex;
     align-items: center;
-    min-height: 2.5rem;
+    min-height: var.$touch-target;
     margin-inline: calc(-1 * #{var.$space-2});
     padding: var.$space-1 var.$space-2;
     border-radius: $row-radius;
