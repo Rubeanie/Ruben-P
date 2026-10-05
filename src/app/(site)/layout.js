@@ -22,7 +22,11 @@ import { ServiceWorkerRegister } from '@/components/ServiceWorkerRegister';
 import { baseUrl } from '@/lib/env';
 import { stegaClean } from '@sanity/client/stega';
 import { sanitizeSvg } from '@/lib/sanitizeSvg';
-import { DEFAULT_THEME_COLORS } from '@/lib/themes';
+import {
+  DEFAULT_THEME_COLORS,
+  normalizeThemeDefinition,
+  themeGate
+} from '@/lib/themes';
 import { liveAnnouncement } from '@/lib/announcement';
 import { feedTypes } from '@/lib/resolveMetadata';
 
@@ -79,6 +83,13 @@ export default async function RootLayout({ children }) {
         <link rel='preconnect' href='https://www.gstatic.com' />
         <link rel='preconnect' href='https://cdn.sanity.io' />
         <link rel='preconnect' href='https://res.cloudinary.com' />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: themeGate(
+              themes.map(normalizeThemeDefinition).filter(Boolean)
+            )
+          }}
+        />
       </head>
       <body>
         <Announcement

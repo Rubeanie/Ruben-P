@@ -14,6 +14,7 @@ import {
   applyThemeToDocument,
   DEFAULT_THEME,
   getThemeCacheKey,
+  LAST_THEME_KEY,
   nextThemeAfter,
   normalizeThemeDefinition,
   pickRandomTheme,
@@ -34,11 +35,21 @@ export function ThemeProvider({ children, initialThemes }) {
     () => (initialThemes || []).map(normalizeThemeDefinition).filter(Boolean),
     [initialThemes]
   );
-  const [theme, setTheme] = useState(DEFAULT_THEME);
+  // The layout's inline script painted its pick before hydration: start from it,
+  // with no image wait and no second pick. Nothing renders markup from the theme,
+  // so the server's default can't mismatch.
+  const [theme, setTheme] = useState(() => {
+    const painted =
+      typeof document !== 'undefined' &&
+      availableThemes[document.documentElement.dataset.theme];
+    return painted
+      ? { ...painted, source: 'cms', status: 'ready' }
+      : DEFAULT_THEME;
+  });
   const [requestedTheme, setRequestedTheme] = useState(null);
   const [isResolving, setIsResolving] = useState(false);
   const themeCacheRef = useRef(new Map());
-  const hasRequestedInitialTheme = useRef(false);
+  const hasRequestedInitialTheme = useRef(theme !== DEFAULT_THEME);
 
   const resolveRequestedTheme = useCallback(async (nextTheme) => {
     const cacheKey = getThemeCacheKey(nextTheme);
@@ -149,9 +160,17 @@ export function ThemeProvider({ children, initialThemes }) {
     };
   }, [requestedTheme, resolveRequestedTheme]);
 
+  // The starting default is the stylesheet's; applying it would undo the pick
+  // the head script painted.
   useLayoutEffect(() => {
+    if (theme === DEFAULT_THEME) return;
     applyThemeToDocument(theme);
-  }, [theme]);
+    // only a CMS theme can come back on a reload, never a visitor's photo
+    if (!availableThemes.some(({ url }) => url === theme.url)) return;
+    try {
+      localStorage.setItem(LAST_THEME_KEY, theme.url);
+    } catch {}
+  }, [theme, availableThemes]);
 
   // A visitor's photo is an object URL; once another theme replaces it, nothing reads it again.
   const themeUrl = theme.url;
