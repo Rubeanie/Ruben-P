@@ -23,6 +23,7 @@ import TableOfContents from './TableOfContents';
 import ThreeScene from './ThreeScene';
 import ErrorBoundary from '../ErrorBoundary';
 import { anchors } from '@/lib/anchors';
+import { firstModule } from '@/lib/modules';
 import { tocEntries } from '@/lib/toc';
 
 const ModuleRenderer = ({
@@ -112,6 +113,7 @@ export async function Modules({ modules: fetched, page }) {
       id: page._id,
       type: page._type
     });
+  const first = firstModule(modules);
   return (
     <>
       {(modules ?? []).map((module, index) => {
@@ -135,7 +137,7 @@ export async function Modules({ modules: fetched, page }) {
               module={module}
               page={page}
               dataAttribute={scoped}
-              isFirstModule={index === 0}
+              isFirstModule={module === first}
               entries={
                 module._type === 'table-of-contents'
                   ? tocEntries(headings, modules.slice(index + 1))

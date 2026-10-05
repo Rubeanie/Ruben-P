@@ -37,7 +37,7 @@ export const shareImagePageQuery = groq`*[
     metaDescription,
     openGraph{ title, description }
   },
-  "modules": modules[0...1]{ _type, bgImage{ asset->{ url } }, image{ asset->{ url } } },
+  "modules": modules[0...4]{ _type, html{ code }, bgImage{ asset->{ url } }, image{ asset->{ url } } },
   ${sharePhotosQuery}
 }`;
 

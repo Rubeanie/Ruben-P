@@ -140,9 +140,10 @@
 }
 
 // The page's first or last module. Draft mode wraps each module in a
-// data-sanity div, and scripts, styles (a themed hero's) and an empty wrapper
-// (a module that rendered nothing) sit among the modules without being one.
-$_not-module: 'script, style, template, [data-sanity]:empty';
+// data-sanity div. Scripts, styles (a themed hero's), an embed that draws
+// nothing, and a wrapper that is empty or holds only such an embed sit among
+// the modules without being one.
+$_not-module: 'script, style, template, [data-quiet], [data-sanity]:empty, [data-sanity]:has(> [data-quiet]:only-child)';
 
 @mixin first-module {
   :not([data-sanity]) > &:nth-child(1 of :not(#{$_not-module})),

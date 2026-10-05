@@ -2,6 +2,7 @@ import { stegaClean } from '@sanity/client/stega';
 import processUrl, { slugOf } from '@/lib/processUrl';
 import { isPagePath } from '@/lib/slug';
 import { baseUrl } from '@/lib/env';
+import { firstModule } from '@/lib/modules';
 import { FEED_PATH } from '@/lib/feed';
 import { withDefaults } from '@/lib/metadataDefaults';
 import { SHARE_IMAGE } from '@/lib/shareImage/layout';
@@ -122,7 +123,7 @@ export function resolveMetadata(page, site) {
 
 // Only these two heroes tint the browser bar; the page route and the share preview share the rule.
 export function heroThemeImage(page) {
-  const hero = page?.modules?.[0];
+  const hero = firstModule(page?.modules);
   return (
     (hero?._type === 'hero' && hero.bgImage?.asset?.url) ||
     (hero?._type === 'hero.saas' && hero.image?.asset?.url) ||

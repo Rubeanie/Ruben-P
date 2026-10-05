@@ -5,6 +5,7 @@ import { modulesQuery } from '@/lib/sanity/queries/modules';
 import { authorQuery } from '@/lib/sanity/queries/fragments/author';
 import { identityQuery } from '@/lib/sanity/queries/identity';
 import { postCardQuery } from '@/lib/sanity/queries/fragments/post-card';
+import { firstModule } from '@/lib/modules';
 import { notFound, permanentRedirect, redirect } from 'next/navigation';
 import { Modules } from '@/components/Modules';
 import { getSite } from '@/lib/sanity/queries';
@@ -33,7 +34,7 @@ export default async function Page({ params }) {
     notFound();
   }
   // Heroes clear the floating navbar themselves; anything else needs the padding.
-  const opensWithHero = page.modules?.[0]?._type?.startsWith('hero');
+  const opensWithHero = firstModule(page.modules)?._type?.startsWith('hero');
   return (
     <div
       className={opensWithHero ? undefined : 'nav-pad'}

@@ -2,21 +2,23 @@
 
 // Modules space themselves; the editor's markup keeps its own margins inside,
 // so only the block gap meets the neighbours.
+$silent: 'script, style, template, noscript, link, meta';
+
 .html {
   display: flow-root;
   margin-block: var.$block-gap;
 
-  > :nth-child(1 of :not(script, style, template)) {
+  > :nth-child(1 of :not(#{$silent})) {
     margin-block-start: 0;
   }
 
-  > :nth-last-child(1 of :not(script, style, template)) {
+  > :nth-last-child(1 of :not(#{$silent})) {
     margin-block-end: 0;
   }
 
-  // Nothing visible (empty, or only scripts and styles): no margins and no
-  // formatting context, so the neighbours' gaps collapse through it.
-  &:not(:has(> :not(script, style, template))) {
+  // Draws nothing (the component decides): no margins and no formatting
+  // context, so the neighbours' gaps collapse through it.
+  &[data-quiet] {
     display: block;
     margin-block: 0;
   }
