@@ -55,8 +55,8 @@ const Navbar = ({ menu, logo }) => {
   // Scroll lock, glass state and the footer all read these <html> attributes.
   useEffect(() => {
     document.documentElement.setAttribute('data-nav-dropdown', open);
-    // the open menu covers the page, so keep keyboard focus out of it too
-    for (const el of document.querySelectorAll('main, footer'))
+    // the open menu covers the page and the band, so keep keyboard focus in the nav
+    for (const el of document.querySelectorAll('body > :not(nav, script)'))
       el.toggleAttribute('inert', open);
   }, [open]);
 
