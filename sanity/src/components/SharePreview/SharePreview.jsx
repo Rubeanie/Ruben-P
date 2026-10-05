@@ -1,25 +1,11 @@
 'use client';
 
 import { useEffect, useId, useRef, useState } from 'react';
-import { Lato, Noto_Sans } from 'next/font/google';
 import { Card, Stack, Tab, TabList, TabPanel, Text } from '@sanity/ui';
 import styles from '@/styles/components/SharePreview.module.scss';
+import { lato, notoSans } from '@/styles/fonts/share';
 import { PLATFORMS, limitLine, statusOf } from './platforms';
 import { Legend, REPLICAS } from './Replicas';
-
-// Stand-ins for gg sans and Slack-Lato, which only ship inside those clients.
-const notoSans = Noto_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-noto-sans',
-  preload: false
-});
-const lato = Lato({
-  subsets: ['latin'],
-  weight: ['400', '700', '900'],
-  variable: '--font-lato',
-  preload: false
-});
 
 export default function SharePreview({ preview }) {
   const [tab, setTab] = useState('google');
