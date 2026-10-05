@@ -24,7 +24,6 @@ const Navbar = ({ menu, logo }) => {
   ].filter((link) => link?.href);
   const linksRef = useRef(null);
   const toggleRef = useRef(null);
-  const [compact, setCompact] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const close = () => setOpen(false);
@@ -37,14 +36,13 @@ const Navbar = ({ menu, logo }) => {
   }
 
   // Compact mode when the links overflow their row, published on <html> for the
-  // styles. The layout's inline script sets it before first paint; this keeps it current. Fitting
-  // again closes the menu, which only exists in compact mode.
+  // styles. The layout's inline script sets it before first paint; this keeps
+  // it current. Fitting again closes the menu, which only exists in compact mode.
   useEffect(() => {
     const links = linksRef.current;
     const observer = new ResizeObserver(() => {
       const overflowing = links.scrollWidth > links.clientWidth;
       document.documentElement.toggleAttribute('data-nav-compact', overflowing);
-      setCompact(overflowing);
       if (!overflowing) setOpen(false);
     });
     // the row's own box only changes on resize; the links change with fonts and content
@@ -89,11 +87,7 @@ const Navbar = ({ menu, logo }) => {
         <Link href={lead?.href ?? '/'} title={lead?.label} onClick={close}>
           <Logo svg={logo} />
         </Link>
-        <div
-          className={styles.links}
-          ref={linksRef}
-          data-nav-links
-          inert={compact}>
+        <div className={styles.links} ref={linksRef} data-nav-links>
           {links.map((link) => (
             <Link
               key={link.key}
