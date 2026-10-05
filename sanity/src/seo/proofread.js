@@ -378,6 +378,16 @@ function rangesOf(fix) {
   return ranges;
 }
 
+// Where an AI fix actually changes words, in each place it could sit. A fix
+// quoting a whole sentence to add a full stop changes only the last word.
+function changedRangesOf(fix) {
+  const { before } = wordDiff(fix.original, fix.suggestion ?? '');
+  return rangesOf(fix).map(([at]) => {
+    const from = at + before[0].length;
+    return [from, from + before[1].length];
+  });
+}
+
 // Whether two [from, to) ranges share any characters.
 const overlaps = ([a, b], [c, d]) => a < d && c < b;
 const spanOf = (match) => [match.offset, match.offset + match.length];
@@ -411,10 +421,24 @@ export function distinctFixes(fixes = []) {
   });
 }
 
-// The LanguageTool matches an AI fix covers. The list shows the fix in their
+// Whether a LanguageTool replacement leaves the passage exactly as the AI fix
+// does, so the two would only repeat each other.
+export function sameAsFix(match, replacement, fix) {
+  const ranges = rangesOf(fix);
+  if (ranges.length !== 1) return false;
+  const [from, to] = ranges[0];
+  const byFix = fix.text.slice(0, from) + fix.suggestion + fix.text.slice(to);
+  const byMatch =
+    match.text.slice(0, match.offset) +
+    replacement +
+    match.text.slice(match.offset + match.length);
+  return byFix === byMatch;
+}
+
+// The LanguageTool matches whose words an AI fix changes. The list shows the fix in their
 // place and keeps them beside it, in case the checker had it right.
 export function replacedBy(fix, matches = []) {
-  const ranges = rangesOf(fix);
+  const ranges = changedRangesOf(fix);
   return matches.filter(
     (match) =>
       match.key === fix.key &&
@@ -427,7 +451,10 @@ export function replacedBy(fix, matches = []) {
 export function withoutOverlaps(matches = [], fixes = []) {
   const covered = new Map();
   for (const fix of fixes)
-    covered.set(fix.key, [...(covered.get(fix.key) ?? []), ...rangesOf(fix)]);
+    covered.set(fix.key, [
+      ...(covered.get(fix.key) ?? []),
+      ...changedRangesOf(fix)
+    ]);
   const seen = new Set();
   return matches.filter((match) => {
     const id = matchId(match);

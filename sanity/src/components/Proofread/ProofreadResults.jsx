@@ -6,6 +6,7 @@ import {
   inPageOrder,
   LT_LIMIT_KB,
   matchId,
+  sameAsFix,
   wordDiff
 } from '../../seo/proofread';
 import { fixEdit, matchEdit } from '../../seo/apply';
@@ -129,7 +130,7 @@ function Entry({ label, source, children }) {
 }
 
 // The flagged words inside the sentence around them.
-function InContext({ text, offset, length, compact }) {
+function InContext({ match: { text, offset, length }, compact }) {
   const from = Math.max(0, offset - CONTEXT);
   const to = Math.min(text.length, offset + length + CONTEXT);
   return (
@@ -152,7 +153,7 @@ function Match({ match, apply }) {
       <Text size={1} weight='medium'>
         {match.message}
       </Text>
-      <InContext {...match} />
+      <InContext match={match} />
       <Replacements match={match} apply={apply} state={state} run={run} />
       <Outcome state={state} />
     </Entry>
@@ -190,12 +191,17 @@ function Row({ copy, edit, choice, apply, state, run, ai, children }) {
 }
 
 // One LanguageTool error under a better fix. Its replacements settle only
-// that error; applying the AI fix settles them all.
-function ReplacedMatch({ match, apply, settled }) {
+// that error; applying the AI fix settles them all. One that reads the same as
+// the AI fix is left out.
+function ReplacedMatch({ match, fix, apply, settled }) {
   const [state, run] = useApply(apply);
+  const options = match.replacements.filter(
+    (text) => !sameAsFix(match, text, fix)
+  );
+  if (!options.length) return null;
   return (
     <>
-      {match.replacements.map((text) => (
+      {options.map((text) => (
         <Row
           key={text}
           copy={text}
@@ -266,6 +272,7 @@ function Fix({ fix, apply }) {
             <ReplacedMatch
               key={matchId(match)}
               match={match}
+              fix={fix}
               apply={apply}
               settled={state?.result === 'applied'}
             />
@@ -299,7 +306,7 @@ function IgnoredMatch({ match, apply }) {
   const [state, run] = useApply(apply);
   return (
     <Stack as='li' space={2}>
-      <InContext {...match} compact />
+      <InContext match={match} compact />
       <Text size={0} muted>
         {`“${match.text.slice(match.offset, match.offset + match.length)}”, kept. LanguageTool said: ${match.message}`}
       </Text>

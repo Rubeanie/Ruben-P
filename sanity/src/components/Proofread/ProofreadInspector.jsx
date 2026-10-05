@@ -81,13 +81,20 @@ async function proofread(doc, token) {
   ).catch(() => null);
   const { kept, ignored } = splitDismissed(matches, ai?.dismissals);
   const fixes = distinctFixes(ai?.fixes);
-  // LanguageTool's own repeats out, so a better fix lists each suggestion once.
-  const uniqueMatches = withoutOverlaps(kept);
+  // A flag the AI rewrites itself is bettered, not left as is, even when it
+  // also dismissed it. Repeats go, so a better fix lists each suggestion once.
+  const uniqueMatches = withoutOverlaps(matches);
+  const bettered = (match) =>
+    fixes.some((fix) => replacedBy(fix, [match]).length);
   return {
     phase: 'done',
     order: passages.map((passage) => passage.key),
     spelling: spelling
-      ? { ...spelling, matches: withoutOverlaps(kept, fixes), ignored }
+      ? {
+          ...spelling,
+          matches: withoutOverlaps(kept, fixes),
+          ignored: ignored.filter((match) => !bettered(match))
+        }
       : { error: "LanguageTool didn't answer; try again in a minute." },
     wording: ai
       ? {

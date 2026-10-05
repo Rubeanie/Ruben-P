@@ -9,6 +9,7 @@ import {
   cachedCheck,
   distinctFixes,
   replacedBy,
+  sameAsFix,
   splitDismissed,
   splitPassages,
   withFlags,
@@ -301,6 +302,36 @@ test('a kept flag the AI fixes better shows only the AI fix', () => {
   expect(replacedBy(fixes[0], kept)).toEqual([flag]);
   expect(replacedBy(fixes[0], [{ ...flag, offset: 16 }])).toEqual([]);
   expect(inPageOrder([], fixes, ['a'])).toHaveLength(1);
+});
+
+test('an AI fix only betters the flags whose words it changes', () => {
+  const text = '"I seen him at the servo yesterday.';
+  const seen = { key: 'a', text, offset: 3, length: 4, replacements: ['saw'] };
+  const quote = { ...seen, offset: 0, length: 1, replacements: [] };
+  // Quoting the whole sentence to close the quote leaves "seen" alone.
+  const closing = {
+    key: 'a',
+    text,
+    original: text,
+    suggestion: `${text}"`
+  };
+  expect(replacedBy(closing, [seen, quote])).toEqual([]);
+  expect(withoutOverlaps([seen, quote], [closing])).toEqual([seen, quote]);
+  const saw = { ...closing, original: 'I seen him', suggestion: 'I saw him' };
+  expect(replacedBy(saw, [seen, quote])).toEqual([seen]);
+});
+
+test('a LanguageTool option matching the AI fix is a repeat', () => {
+  const text = 'I seen him at the servo yesterday.';
+  const seen = { key: 'a', text, offset: 2, length: 4 };
+  const fix = {
+    key: 'a',
+    text,
+    original: 'I seen him',
+    suggestion: 'I saw him'
+  };
+  expect(sameAsFix(seen, 'saw', fix)).toBe(true);
+  expect(sameAsFix(seen, 'have seen', fix)).toBe(false);
 });
 
 test('repeated or overlapping AI fixes collapse to the first', () => {
