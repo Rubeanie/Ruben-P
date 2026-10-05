@@ -1,21 +1,12 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { LuChevronDown } from 'react-icons/lu';
 import styles from '@/styles/components/ScrollHint.module.scss';
 
-// Measured 10x6 at a 1.25 stroke; Lucide's 24-box chevron does not scale to it.
+// Lucide's chevron cropped to the measured 10x6 box at a 1.25 stroke.
 const Chevron = () => (
-  <svg
-    viewBox='0 0 10 6'
-    width='10'
-    height='6'
-    fill='none'
-    stroke='currentColor'
-    strokeWidth='1.25'
-    strokeLinecap='round'
-    strokeLinejoin='round'>
-    <path d='M1 1l4 4 4-4' />
-  </svg>
+  <LuChevronDown viewBox='4.5 7.5 15 9' strokeWidth={1.875} />
 );
 
 // Replays the roll once on hover or focus, if it has come to rest.
