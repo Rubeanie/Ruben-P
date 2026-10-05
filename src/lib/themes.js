@@ -152,9 +152,12 @@ function getThemeImageUrl(url) {
 }
 
 // Android Chrome and desktop tab strips tint from this meta; iOS 26 samples the page instead.
+// Only effects call it, so React owns its tag by now and the gate's stand-in goes.
 export function setBarColor(value) {
+  if (!value) return;
+  document.querySelector('meta[name="theme-color"][data-gate]')?.remove();
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta && value) meta.content = value;
+  if (meta) meta.content = value;
 }
 
 export function applyThemeToDocument(theme) {
@@ -185,13 +188,13 @@ export const LAST_THEME_KEY = 'last-theme';
 // with no fade from the defaults. Mirrors applyThemeToDocument, which cannot be
 // imported into a string; the provider adopts the pick from data-theme. The bar
 // colour is left alone when the page set its own (a hero's theme); otherwise it
-// goes in a meta of the gate's own, ahead of React's (browsers read the first):
-// React hydrates a meta by its content, so editing the server one makes React
-// append a second. WebKit can style <html> before this runs; the colour fade
-// that starts is finished.
+// goes in a stand-in meta ahead of React's (browsers read the first) until
+// setBarColor hands over: React hydrates a meta by its content, so editing the
+// server one makes React append a second. WebKit can style <html> before this
+// runs; the colour fade that starts is finished.
 const json = (value) => JSON.stringify(value).replace(/</g, '\\u003c');
 export const themeGate = (themes) =>
-  `(function(t,k,u,g){var e=document.documentElement,s=e.style,l,a=[],b=[];try{l=localStorage.getItem(k)}catch(_){}t.forEach(function(p,i){if(p.colors){a.push(i);if(p.url!==l)b.push(i)}});b=b.length?b:a;if(!b.length)return;var i=b[Math.floor(Math.random()*b.length)],c=t[i].colors,m=document.querySelector('meta[name="theme-color"]');for(var n in c){s.setProperty('--color-'+n,c[n]);s.setProperty('--page-'+n,c[n])}s.setProperty('--image-background',"url('"+(t[i].url||u)+"')");if(m&&m.content===g){var f=m.cloneNode();f.content=c.background;m.before(f)}e.dataset.theme=i;e.getAnimations().forEach(function(a){if(a.transitionProperty)a.finish()})})(${json(
+  `(function(t,k,u,g){var e=document.documentElement,s=e.style,l,a=[],b=[];try{l=localStorage.getItem(k)}catch(_){}t.forEach(function(p,i){if(p.colors){a.push(i);if(p.url!==l)b.push(i)}});b=b.length?b:a;if(!b.length)return;var i=b[Math.floor(Math.random()*b.length)],c=t[i].colors,m=document.querySelector('meta[name="theme-color"]');for(var n in c){s.setProperty('--color-'+n,c[n]);s.setProperty('--page-'+n,c[n])}s.setProperty('--image-background',"url('"+(t[i].url||u)+"')");if(m&&m.content===g){var f=m.cloneNode();f.content=c.background;f.setAttribute('data-gate','');m.before(f)}e.dataset.theme=i;e.getAnimations().forEach(function(a){if(a.transitionProperty)a.finish()})})(${json(
     themes.map(({ url, colors }) => ({ url, colors }))
   )},${json(LAST_THEME_KEY)},${json(DEFAULT_THEME_URL)},${json(DEFAULT_THEME_COLORS.background)})`;
 
