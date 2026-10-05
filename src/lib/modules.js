@@ -10,6 +10,10 @@ export const isQuietHtml = (code) =>
     .replace(SILENT, '')
     .replace(/[ \t\n\r\f]+/g, '');
 
+const draws = (m) => m._type !== 'custom-html' || !isQuietHtml(m.html?.code);
+
 // The module that opens the page; an embed that draws nothing doesn't.
-export const firstModule = (modules) =>
-  modules?.find((m) => m._type !== 'custom-html' || !isQuietHtml(m.html?.code));
+export const firstModule = (modules) => modules?.find(draws);
+
+// Every module that draws something, in page order.
+export const drawnModules = (modules) => modules?.filter(draws) ?? [];

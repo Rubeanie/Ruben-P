@@ -2,6 +2,7 @@ import Image from '@/components/CdnImage';
 import { stegaClean } from '@sanity/client/stega';
 import FigureCaption from './FigureCaption';
 import { blockLayout } from './layout';
+import { PROSE_SIZES, resolveAsset } from '@/lib/imageBlock';
 import styles from '@/styles/components/RichText.module.scss';
 
 // Editors can leave the dimensions off a Cloudinary asset; a 3:2 guess keeps
@@ -9,32 +10,7 @@ import styles from '@/styles/components/RichText.module.scss';
 const FALLBACK_WIDTH = 1200;
 const FALLBACK_HEIGHT = 800;
 
-function resolveAsset({ imageType, image, cloudinaryAsset }) {
-  if (stegaClean(imageType) === 'cloudinary.asset') {
-    const src = cloudinaryAsset?.derived_url || cloudinaryAsset?.secure_url;
-    return src
-      ? {
-          src: stegaClean(src),
-          width: cloudinaryAsset.width,
-          height: cloudinaryAsset.height
-        }
-      : null;
-  }
-  const asset = image?.asset;
-  if (!asset?.url) return null;
-  return {
-    src: stegaClean(asset.url),
-    width: asset.metadata?.dimensions?.width,
-    height: asset.metadata?.dimensions?.height,
-    blurDataURL: asset.metadata?.lqip
-  };
-}
-
-export default function ImageBlock({
-  value,
-  sanity,
-  sizes = '(max-width: 43.75rem) 100vw, 65rem'
-}) {
+export default function ImageBlock({ value, sanity, sizes = PROSE_SIZES }) {
   const resolved = resolveAsset(value ?? {});
   if (!resolved) return null;
 

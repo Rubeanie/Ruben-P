@@ -6,6 +6,7 @@ import { LuBox, LuRotate3D } from 'react-icons/lu';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Loading } from '@/components/dom/Loading';
 import { formatBytes } from '@/lib/formatBytes';
+import { SCENE_POSTER_SIZES } from '@/lib/imageBlock';
 import styles from '@/styles/components/ThreeScene.module.scss';
 
 // Single dynamic boundary for the whole 3D scene, so R3F/three stay out of the
@@ -116,12 +117,7 @@ export default function SceneCanvas({
           {poster && (
             <span className={styles.poster} aria-hidden>
               {/* Blurred, so half the frame's resolution is plenty. */}
-              <Image
-                src={poster}
-                alt=''
-                fill
-                sizes='(max-width: 43.75rem) 50vw, 32rem'
-              />
+              <Image src={poster} alt='' fill sizes={SCENE_POSTER_SIZES} />
             </span>
           )}
           <button

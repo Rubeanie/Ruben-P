@@ -1,3 +1,5 @@
+import { PHONE } from '@/lib/coverSizes';
+
 // Deterministic PRNG (mulberry32): the server and the client must agree on every tile shape.
 export function mulberry32(seed) {
   let a = seed >>> 0;
@@ -119,6 +121,39 @@ export function fillPages(
 
 // Largest first, so a handful of results still fills a block.
 const FILL = ['2x2', '1x2', '2x1', '1x1'];
+
+export const PAGE_SIZE = 12;
+
+// Desktop (four columns) and phone (two) shapes of the first `count` posts.
+export function bentoLayouts(posts, count = PAGE_SIZE) {
+  const shapes = tileShapes(posts).slice(0, count);
+  const featured = (i) => Boolean(posts[i].featured);
+  return {
+    desktop: fillPages(shapes, PAGE_SIZE, 4, featured),
+    mobile: fillPages(shapes.map(phoneShape), PAGE_SIZE, 2, featured, [
+      '2x1',
+      '1x1'
+    ])
+  };
+}
+
+// The tiles on the desktop grid's first row, with the shapes they render at.
+export function firstRow(posts) {
+  const { desktop, mobile } = bentoLayouts(posts);
+  const boxes = denseLayout(desktop);
+  return posts
+    .slice(0, desktop.length)
+    .map((post, i) => ({ post, shape: desktop[i], mobileShape: mobile[i] }))
+    .filter((_, i) => boxes[i].y === 0);
+}
+
+// What a tile's picture renders at: a wide tile is one of four in the row, a
+// grid tile one or two units.
+export function tileSizes({ shape, mobileShape, wide = false }) {
+  if (wide) return `${PHONE} 82vw, 15rem`;
+  const [span] = shapeSize(shape);
+  return `${PHONE} ${mobileShape === '2x1' ? 100 : 50}vw, ${span === 2 ? '31rem' : '15rem'}`;
+}
 
 // Repacks the shortest trailing run until every row is full, so the grid never ends
 // on a hole. Nothing is redrawn: only the tail changes shape, and a locked tile in it

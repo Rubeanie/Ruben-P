@@ -5,8 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { stegaClean } from '@sanity/client/stega';
 import { LuStar } from 'react-icons/lu';
-import { imageBuilder } from '@/lib/sanity/image';
-import { shapeSize } from '@/lib/bento';
+import { coverLoader } from '@/lib/sanity/image';
+import { shapeSize, tileSizes } from '@/lib/bento';
 import { easeOut, formatDate, reducedMotion } from '@/lib/posts';
 import { isPagePath } from '@/lib/slug';
 import styles from '@/styles/components/PostList.module.scss';
@@ -89,10 +89,7 @@ export default function Tile({
   morphing = false
 }) {
   const [span] = shapeSize(shape);
-  // Rendered widths: a wide tile is one of four in the row, a grid tile one or two units.
-  const wanted = wide
-    ? '(max-width: 43.75rem) 82vw, 15rem'
-    : `(max-width: 43.75rem) ${mobileShape === '2x1' ? 100 : 50}vw, ${span === 2 ? '31rem' : '15rem'}`;
+  const wanted = tileSizes({ shape, mobileShape, wide });
   // The browser re-picks a candidate whenever this string changes, so it follows the shape only once the morph has ended.
   const [sizes, setSizes] = useState(wanted);
   if (!morphing && sizes !== wanted) setSizes(wanted);
@@ -152,14 +149,7 @@ export default function Tile({
   const hasCover = Boolean(cover?.asset?.url);
   // One source per post at every shape: the editor's crop applies, the tile frames it in CSS,
   // so a shape change re-clips the same bitmap instead of switching to another crop.
-  const loader = ({ width, quality }) =>
-    imageBuilder
-      .image(cover)
-      .width(width)
-      .fit('max')
-      .auto('format')
-      .quality(quality || 75)
-      .url();
+  const loader = coverLoader(cover);
   // A folded phone tile re-crops the desktop crop in CSS, so the crop follows the editor's hotspot.
   const position = cover?.hotspot
     ? { objectPosition: `${cover.hotspot.x * 100}% ${cover.hotspot.y * 100}%` }

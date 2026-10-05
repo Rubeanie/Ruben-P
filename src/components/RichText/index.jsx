@@ -1,6 +1,7 @@
 import { PortableText, toPlainText } from '@portabletext/react';
 import { stegaClean } from '@sanity/client/stega';
-import { isSafeHref } from '@/lib/processUrl';
+import NextLink from 'next/link';
+import { isInternalHref, isSafeHref } from '@/lib/processUrl';
 import DynamicValue from './DynamicValue';
 import ImageBlock from './ImageBlock';
 import YouTube from './YouTube';
@@ -16,7 +17,10 @@ const span = (className) => {
 // The Studio's url rule stops bad schemes at entry; this holds on the site too.
 const Link = ({ value, children }) => {
   const href = stegaClean(value?.href);
-  return href && isSafeHref(href) ? <a href={href}>{children}</a> : children;
+  if (!href || !isSafeHref(href)) return children;
+  // Internal paths get Next's prefetch and a client navigation instead of a reload.
+  const Anchor = isInternalHref(href) ? NextLink : 'a';
+  return <Anchor href={href}>{children}</Anchor>;
 };
 
 // Ids come from the page's anchors pass, so they are unique across modules.

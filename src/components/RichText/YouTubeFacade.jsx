@@ -12,6 +12,7 @@ import {
   prebuildsPlayer,
   whenIdle
 } from '@/lib/youtube';
+import { PROSE_SIZES } from '@/lib/imageBlock';
 import { blockLayout } from './layout';
 import styles from '@/styles/components/RichText.module.scss';
 
@@ -173,7 +174,7 @@ export default function YouTubeFacade({
             src={thumb}
             alt=''
             fill
-            sizes='(max-width: 43.75rem) 100vw, 65rem'
+            sizes={PROSE_SIZES}
             preload={preload}
           />
           <button

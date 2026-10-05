@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test';
-import { firstModule, isQuietHtml } from './modules';
+import { drawnModules, firstModule, isQuietHtml } from './modules';
 
 test.each([
   ['', true],
@@ -26,4 +26,12 @@ test('firstModule skips embeds that draw nothing', () => {
     firstModule([{ _type: 'custom-html', html: { code: 'Hi' } }, hero])._type
   ).toBe('custom-html');
   expect(firstModule(undefined)).toBeUndefined();
+});
+
+test('drawnModules keeps page order and drops quiet embeds', () => {
+  const quiet = { _type: 'custom-html', html: { code: '<script></script>' } };
+  const hero = { _type: 'hero' };
+  const text = { _type: 'richtext-module' };
+  expect(drawnModules([quiet, hero, quiet, text])).toEqual([hero, text]);
+  expect(drawnModules(undefined)).toEqual([]);
 });

@@ -146,7 +146,7 @@ export function themeRendition(url) {
     // Last in the chain, just before the version, so no named or earlier
     // transform overrides it; Vibrant can't read the AVIF or WebP served otherwise.
     parsed.pathname = parsed.pathname.replace(
-      /\/image\/upload\/((?:[^/]+\/)*?)(v\d+\/)/,
+      CLOUDINARY_CHAIN,
       '/image/upload/$1w_800,f_jpg,q_80/$2'
     );
   }

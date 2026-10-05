@@ -1,14 +1,11 @@
 import { themeFromImage } from '@/lib/imageTheme';
-import { coverSizes } from '@/lib/coverSizes';
+import { heroPhotos } from '@/lib/heroPhotos';
 import uid from '@/lib/uid';
 import GatedPhoto from '@/components/hero/GatedPhoto';
 import ScrollHint, { ScrollTarget } from '@/components/hero/ScrollHint';
 import ThemeHandoff from '@/components/hero/ThemeHandoff';
 import Lines from './Lines';
 import styles from '@/styles/components/HeroGlass.module.scss';
-
-// The settle starts the photo this much larger.
-const ZOOM = 1.12;
 
 // Type straight on the module's own photo, which lends the site its theme and
 // hands it back as the page scrolls.
@@ -17,7 +14,7 @@ export default async function HeroGlass(props) {
   const id = uid(props);
   const url = image?.asset?.url;
   const colors = url ? await themeFromImage(url) : null;
-  const ratio = image?.asset?.metadata?.dimensions?.aspectRatio;
+  const [photo] = heroPhotos(props);
 
   return (
     <ThemeHandoff
@@ -30,7 +27,7 @@ export default async function HeroGlass(props) {
         <GatedPhoto
           image={image}
           className={styles.photo}
-          sizes={coverSizes(ratio, 100, 100, ZOOM)}
+          sizes={photo.sizes}
           preload
         />
         <Lines

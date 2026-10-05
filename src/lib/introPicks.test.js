@@ -1,0 +1,276 @@
+import { expect, test } from 'bun:test';
+import { pageHrefs, picks, splitHref, viewModules } from './introPicks';
+
+const sanity = (id) => `https://cdn.sanity.io/images/p/d/${id}-800x600.jpg`;
+const photo = (id) => ({ asset: { url: sanity(id) } });
+const figure = (id) => ({ _type: 'imageBlock', image: photo(id) });
+const text = (key, ...content) => ({
+  _key: key,
+  _type: 'richtext-module',
+  content
+});
+const h2 = (words) => ({
+  _type: 'block',
+  style: 'h2',
+  children: [{ text: words }]
+});
+const quiet = {
+  _key: 'q',
+  _type: 'custom-html',
+  html: { code: '<script></script>' }
+};
+const video = { _type: 'youtube', url: 'https://youtu.be/dQw4w9WgXcQ' };
+
+test('picks follow the first two drawing modules, skipping quiet embeds', () => {
+  const modules = [
+    quiet,
+    text('a', figure('one')),
+    text('b', figure('two')),
+    text('c', figure('three'))
+  ];
+  const { modules: view } = viewModules(modules);
+  expect(view.map((m) => m._key)).toEqual(['a', 'b', 'c']);
+  expect(picks(view).map((p) => p.src)).toEqual([sanity('one'), sanity('two')]);
+});
+
+test('a hero contributes its photos, a video any block position', () => {
+  const hero = {
+    _type: 'hero.split',
+    image: photo('cover')
+  };
+  const body = text('b', h2('Intro'), { _type: 'block' }, video);
+  expect(picks([hero, body])).toEqual([
+    {
+      kind: 'image',
+      src: sanity('cover'),
+      sizes: '(max-width: 43.75rem) 100vw, 50vw',
+      media: undefined
+    },
+    { kind: 'youtube', id: 'dQw4w9WgXcQ' }
+  ]);
+  expect(picks([text('b', { ...video, autoplay: true })])).toEqual([]);
+});
+
+test('picks are capped at four, a module gives two, repeats count once', () => {
+  const a = text('a', figure('1'), figure('2'), figure('3'));
+  const b = text('b', figure('2'), figure('4'), figure('5'));
+  expect(picks([a, b]).map((p) => p.src)).toEqual(['1', '2', '4'].map(sanity));
+  const hero3d = { _type: 'hero.3d' };
+  expect(picks([hero3d, a]).map((p) => p.kind)).toEqual([
+    'model',
+    'image',
+    'image'
+  ]);
+  const crowd = (key) => text(key, figure(key + 1), figure(key + 2));
+  expect(picks([crowd('x'), crowd('y'), crowd('z')])).toHaveLength(4);
+});
+
+test('creative columns give their images at the column width', () => {
+  const creative = {
+    _type: 'creative-module',
+    columns: [
+      { blocks: [{ _type: 'heading', text: 'Hi' }, figure('left')] },
+      { blocks: [figure('right')] }
+    ]
+  };
+  expect(picks([creative])).toEqual([
+    {
+      kind: 'image',
+      src: sanity('left'),
+      sizes: '(max-width: 43.75rem) 100vw, 30rem'
+    },
+    {
+      kind: 'image',
+      src: sanity('right'),
+      sizes: '(max-width: 43.75rem) 100vw, 30rem'
+    }
+  ]);
+});
+
+test('a tile list gives the first desktop row, covers sized per tile', () => {
+  const posts = Array.from({ length: 9 }, (_, i) => ({
+    _id: `p${i}`,
+    cover: { asset: { url: sanity(`cover${i}`) } }
+  }));
+  const result = picks([{ _type: 'post-list' }], { posts });
+  expect(result.length).toBeGreaterThan(0);
+  expect(result.length).toBeLessThanOrEqual(4);
+  for (const pick of result) {
+    expect(pick.kind).toBe('cover');
+    expect(pick.sizes).toMatch(/^\(max-width: 43.75rem\) \d+vw, (15|31)rem$/);
+  }
+  expect(picks([{ _type: 'post-list' }], { posts: [] })).toEqual([]);
+});
+
+test('a link to a heading shows its module and the next', () => {
+  const modules = [
+    text('a', figure('top')),
+    text('b', h2('Mixtape'), figure('tape')),
+    text('c', figure('after')),
+    text('d', figure('far'))
+  ];
+  const { modules: view, matched } = viewModules(modules, '#mixtape');
+  expect(matched).toBe(true);
+  expect(view.map((m) => m._key)).toEqual(['b', 'c', 'd']);
+  expect(picks(view).map((p) => p.src)).toEqual(['tape', 'after'].map(sanity));
+});
+
+test('a hash can name a module id, and an unknown one falls back to the opening', () => {
+  const modules = [
+    text('a', figure('top')),
+    { ...text('b', figure('mid')), uid: 'team' },
+    text('c', figure('end'))
+  ];
+  expect(viewModules(modules, '#team').modules.map((m) => m._key)).toEqual([
+    'b',
+    'c'
+  ]);
+  const missing = viewModules(modules, '#nope');
+  expect(missing.matched).toBe(false);
+  expect(missing.modules.map((m) => m._key)).toEqual(['a', 'b', 'c']);
+  expect(viewModules(modules, '#%E0%A4%A').matched).toBe(false);
+});
+
+test('splitHref keeps a page path and its fragment, and refuses the rest', () => {
+  expect(splitHref('/about#mixtape')).toEqual({
+    path: '/about',
+    hash: '#mixtape'
+  });
+  expect(splitHref('/about?x=1')).toEqual({ path: '/about', hash: '' });
+  expect(splitHref('/')).toEqual({ path: '/', hash: '' });
+  expect(splitHref('https://example.com/a')).toBeNull();
+  expect(splitHref('//example.com/a')).toBeNull();
+  expect(splitHref('#top')).toBeNull();
+  expect(splitHref(null)).toBeNull();
+});
+
+test('pageHrefs finds CTA, link block and rich-text links, not the current page', () => {
+  const internal = (slug, params) => ({
+    type: 'internal',
+    internal: { metadata: { slug } },
+    ...(params && { params })
+  });
+  const modules = [
+    {
+      _type: 'hero',
+      ctas: [
+        { link: internal('/work') },
+        { link: { type: 'external', external: 'https://example.com' } }
+      ]
+    },
+    {
+      _type: 'richtext-module',
+      content: [
+        {
+          _type: 'block',
+          markDefs: [
+            { _type: 'link', href: '/about#mixtape' },
+            { _type: 'link', href: 'https://example.com' },
+            { _type: 'link', href: '/here' }
+          ]
+        }
+      ]
+    },
+    {
+      _type: 'creative-module',
+      columns: [{ blocks: [{ _type: 'link', ...internal('/work', '#top') }] }]
+    }
+  ];
+  expect(pageHrefs(modules, '/here').sort()).toEqual([
+    '/about#mixtape',
+    '/work',
+    '/work#top'
+  ]);
+});
+
+test('a click-to-load scene gives its poster, a live one nothing', () => {
+  const scene = (extra) => ({
+    _type: 'three.js',
+    poster: sanity('poster'),
+    ...extra
+  });
+  expect(picks([scene({ loadOnClick: true })])).toEqual([
+    {
+      kind: 'image',
+      src: sanity('poster'),
+      sizes: '(max-width: 43.75rem) 50vw, 32rem'
+    }
+  ]);
+  expect(picks([scene({ loadOnClick: false })])).toEqual([]);
+});
+
+test('callout and Creative copy figures count like prose ones', () => {
+  const callout = { _type: 'callout', content: [figure('note')] };
+  const creative = {
+    _type: 'creative-module',
+    columns: [{ blocks: [{ _type: 'copy', content: [figure('inline')] }] }]
+  };
+  expect(picks([callout, creative]).map((p) => p.src)).toEqual(
+    ['note', 'inline'].map(sanity)
+  );
+});
+
+test('featured posts lead the wide row, except under a post', () => {
+  const posts = ['a', 'b', 'c'].map((id) => ({
+    _id: id,
+    featured: id === 'c',
+    cover: { asset: { url: sanity(id) } }
+  }));
+  const featured = { _type: 'post-featured', limit: 2 };
+  const result = picks([featured], { posts });
+  expect(result.map((p) => p.cover.asset.url)).toEqual(['c', 'a'].map(sanity));
+  expect(result[0].sizes).toBe('(max-width: 43.75rem) 82vw, 15rem');
+  expect(picks([featured], { posts, onPost: true })).toEqual([]);
+});
+
+test('picks skip animated GIFs', () => {
+  const gif = {
+    _type: 'imageBlock',
+    image: { asset: { url: sanity('g').replace('.jpg', '.gif') } }
+  };
+  expect(picks([text('a', gif, figure('one'))]).map((p) => p.src)).toEqual([
+    sanity('one')
+  ]);
+});
+
+test('the contents and breadcrumbs leave the opening to the page', () => {
+  const modules = [
+    { _key: 't', _type: 'table-of-contents' },
+    { _key: 'c', _type: 'breadcrumbs' },
+    text('a', figure('one')),
+    text('b', figure('two'))
+  ];
+  expect(viewModules(modules).modules.map((m) => m._key)).toEqual(['a', 'b']);
+});
+
+test('modules without pictures leave the two picks to ones further down', () => {
+  const words = (key) => text(key, h2('Words'), { _type: 'block' });
+  const modules = [
+    words('w1'),
+    { _key: 'acc', _type: 'accordion-list' },
+    text('a', figure('one')),
+    words('w2'),
+    text('b', figure('two')),
+    text('c', figure('three'))
+  ];
+  const { modules: view } = viewModules(modules);
+  expect(view).toHaveLength(5);
+  expect(picks(view).map((p) => p.src)).toEqual(['one', 'two'].map(sanity));
+});
+
+test('the search stops five modules down', () => {
+  const words = (key) => text(key, h2('Words'));
+  const modules = [1, 2, 3, 4, 5].map((n) => words(`w${n}`));
+  modules.push(text('far', figure('far')));
+  expect(picks(viewModules(modules).modules)).toEqual([]);
+});
+
+test('only the opening blocks of a long article count', () => {
+  // As the query returns them: paragraphs and other blocks are bare types.
+  const filler = [h2('Intro'), ...Array(4).fill({ _type: 'block' })];
+  filler.push({ _type: 'code' });
+  expect(picks([text('a', ...filler, figure('deep'))])).toEqual([]);
+  expect(
+    picks([text('a', ...filler.slice(1), figure('near'))]).map((p) => p.src)
+  ).toEqual([sanity('near')]);
+});

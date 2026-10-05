@@ -1,3 +1,4 @@
+import { heroPhotos } from '@/lib/heroPhotos';
 import uid from '@/lib/uid';
 import Copy from '@/components/hero/Copy';
 import Photo from '@/components/hero/Photo';
@@ -7,6 +8,7 @@ import styles from '@/styles/components/HeroSplit.module.scss';
 export default function HeroSplit(props) {
   const { pretitle, content, ctas, image, scrollHint } = props;
   const id = uid(props);
+  const [photo] = heroPhotos(props);
 
   return (
     <section
@@ -23,7 +25,7 @@ export default function HeroSplit(props) {
       <Photo
         image={image}
         className={styles.frame}
-        sizes='(max-width: 43.75rem) 100vw, 50vw'
+        sizes={photo.sizes}
         preload
       />
       {scrollHint && <ScrollHint next={`${id}-end`} align='start' />}

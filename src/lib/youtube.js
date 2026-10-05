@@ -124,3 +124,19 @@ export function whenIdle(callback) {
     window.removeEventListener('load', run);
   };
 }
+
+// YouTube only renders the 1280px poster for some videos; the rest answer 404, so ask first.
+export async function getThumb(id) {
+  const maxres = `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`;
+  try {
+    const response = await fetch(maxres, {
+      method: 'HEAD',
+      cache: 'force-cache',
+      next: { tags: ['pages'] }
+    });
+    if (response.ok) return maxres;
+  } catch {
+    // fall through to the poster every video has
+  }
+  return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+}

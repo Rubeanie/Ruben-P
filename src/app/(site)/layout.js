@@ -14,6 +14,8 @@ import Announcement from '@/components/Announcement';
 import { ThemeProvider } from '@/components/ThemeContext';
 import { SiteLogo } from '@/components/SiteLogo';
 import { getSite, getThemes } from '@/lib/sanity/queries';
+import { introImages, menuHrefs } from '@/lib/introImages';
+import IntentImages from '@/components/IntentImages';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { VisualEditingControls } from '@/components/VisualEditingControls';
@@ -54,6 +56,13 @@ export const viewport = {
   interactiveWidget: 'overlays-content'
 };
 
+// The menu's destinations, warmed when a visitor reaches for a link. Streamed
+// so the lookup never holds up the page.
+async function MenuIntent({ site }) {
+  const hrefs = menuHrefs(site.headerMenu, site.footerMenu);
+  return <IntentImages images={await introImages(hrefs)} />;
+}
+
 export default async function RootLayout({ children }) {
   const [themes, site] = await Promise.all([getThemes(), getSite()]);
   const normalisedThemes = themes.map(normalizeTheme).filter(Boolean);
@@ -86,6 +95,9 @@ export default async function RootLayout({ children }) {
           {/* Outside a Suspense boundary: streamed later, the gate would measure
               a hidden bar and the page would paint without it. */}
           <Navbar {...navLinks(site.headerMenu)} logo={logo} />
+          <Suspense fallback={null}>
+            <MenuIntent site={site} />
+          </Suspense>
           <script dangerouslySetInnerHTML={{ __html: navGate }} />
           <main>
             <SiteLogo logo={logo}>{children}</SiteLogo>

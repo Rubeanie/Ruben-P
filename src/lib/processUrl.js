@@ -56,3 +56,7 @@ export default function processUrl(page, { base = true, params } = {}) {
 
   return `${base ? baseUrl : ''}/${path}${suffixOf(params)}`;
 }
+
+// A site path, not a protocol-relative URL, a hash anchor or another scheme.
+export const isInternalHref = (href) =>
+  href?.startsWith('/') && !href.startsWith('//');

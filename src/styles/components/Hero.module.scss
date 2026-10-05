@@ -26,8 +26,7 @@ $blend-end: 28lvh;
   text-align: start;
 }
 
-.photo,
-.photoMobile {
+.photo {
   position: absolute;
   inset: 0;
   z-index: -2;
@@ -47,8 +46,11 @@ $blend-end: 28lvh;
   }
 }
 
-.photoMobile {
-  display: none;
+// A desktop and mobile pair (Photo's <picture>): each photo's hotspot and blur.
+.photo picture img {
+  object-position: var(--position, 50% 50%);
+  background-image: var(--blur);
+  background-position: var(--position, 50% 50%);
 }
 
 $card: inset(
@@ -71,15 +73,13 @@ $card: inset(
 @supports (animation-timeline: scroll()) {
   @media (prefers-reduced-motion: no-preference) {
     // Shrink, scrim and colour blend all end at --blend-end (ThemeStyle).
-    .photo,
-    .photoMobile {
+    .photo {
       animation: card linear both;
       animation-timeline: scroll(root);
       animation-range: 0 var(--blend-end, #{$blend-end});
     }
 
-    .photo::after,
-    .photoMobile::after {
+    .photo::after {
       animation: scrim-out linear both;
       animation-timeline: scroll(root);
       animation-range: calc(var(--blend-end, #{$blend-end}) * 0.6)
@@ -93,24 +93,20 @@ $card: inset(
 // drive differs.
 @supports not (animation-timeline: scroll()) {
   @media (prefers-reduced-motion: no-preference) {
-    .photo,
-    .photoMobile {
+    .photo {
       transition: clip-path 0.7s var.$ease-in-out;
     }
 
-    .photo::after,
-    .photoMobile::after {
+    .photo::after {
       transition: opacity 0.7s var.$ease-in-out;
     }
 
     .hero[data-hero-theme='off'] {
-      .photo,
-      .photoMobile {
+      .photo {
         clip-path: $card;
       }
 
-      .photo::after,
-      .photoMobile::after {
+      .photo::after {
         opacity: 0;
       }
     }
@@ -119,13 +115,11 @@ $card: inset(
 
 // The settled card from the start.
 @media (prefers-reduced-motion: reduce) {
-  .photo,
-  .photoMobile {
+  .photo {
     clip-path: $card;
   }
 
-  .photo::after,
-  .photoMobile::after {
+  .photo::after {
     opacity: 0;
   }
 }
@@ -162,11 +156,9 @@ $card: inset(
     }
   }
 
-  .stick:has(> .photoMobile) > .photo {
-    display: none;
-  }
-
-  .photoMobile {
-    display: block;
+  .photo picture img {
+    object-position: var(--mobile-position, 50% 50%);
+    background-image: var(--mobile-blur);
+    background-position: var(--mobile-position, 50% 50%);
   }
 }

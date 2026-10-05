@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { stegaClean } from '@sanity/client/stega';
 import { LuChevronDown, LuX } from 'react-icons/lu';
-import { fillPages, phoneShape, tileBands, tileShapes } from '@/lib/bento';
+import { bentoLayouts, PAGE_SIZE, tileBands } from '@/lib/bento';
 import { categorySlug } from '@/lib/posts';
 import Filters from './Filters';
 import Tile from './Tile';
@@ -11,7 +11,6 @@ import useBentoMorph from './useBentoMorph';
 import accordion from '@/styles/components/AccordionList.module.scss';
 import styles from '@/styles/components/PostList.module.scss';
 
-const PAGE_SIZE = 12;
 const DEBOUNCE = 120;
 // How many tiles the URL shows: the first page, or the count Load more has reached.
 const visibleCount = (params) => {
@@ -20,17 +19,6 @@ const visibleCount = (params) => {
     ? requested
     : PAGE_SIZE;
 };
-function layouts(posts, count) {
-  const shapes = tileShapes(posts).slice(0, count);
-  const featured = (i) => Boolean(posts[i].featured);
-  return {
-    desktop: fillPages(shapes, PAGE_SIZE, 4, featured),
-    mobile: fillPages(shapes.map(phoneShape), PAGE_SIZE, 2, featured, [
-      '2x1',
-      '1x1'
-    ])
-  };
-}
 
 // The query string is the filter state: it survives reloads and Back, and the
 // server render (empty snapshot) stays static.
@@ -145,14 +133,14 @@ export default function Bento({ id, posts, filters }) {
   const bands = tileBands(filtered);
 
   const visible = filtered.slice(0, count);
-  const { desktop, mobile } = layouts(filtered, count);
+  const { desktop, mobile } = bentoLayouts(filtered, count);
   const remaining = filtered.length - visible.length;
 
   const { morphing, queue, ownScroll, transition } = useBentoMorph({
     list,
     grid,
     select,
-    fill: (result, p) => layouts(result, visibleCount(p)),
+    fill: (result, p) => bentoLayouts(result, visibleCount(p)),
     onCommit: (q) => {
       committed.current = q;
     },

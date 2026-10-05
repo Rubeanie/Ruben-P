@@ -2,6 +2,7 @@ import { stegaClean } from '@sanity/client/stega';
 import CTA from '@/components/CTA';
 import RichText from '@/components/RichText';
 import ImageBlock from '@/components/RichText/ImageBlock';
+import { CREATIVE_SIZES } from '@/lib/imageBlock';
 import { resolveLink } from '@/lib/processUrl';
 import uid from '@/lib/uid';
 import { creativeIcons } from './icons';
@@ -36,11 +37,7 @@ function Block({ block, values, sanity }) {
       ) : null;
     case 'imageBlock':
       return (
-        <ImageBlock
-          value={block}
-          sanity={sanity}
-          sizes='(max-width: 43.75rem) 100vw, 30rem'
-        />
+        <ImageBlock value={block} sanity={sanity} sizes={CREATIVE_SIZES} />
       );
     case 'link':
       return resolveLink(block) ? (

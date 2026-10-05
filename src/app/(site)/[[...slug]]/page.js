@@ -1,4 +1,4 @@
-import { cache } from 'react';
+import { cache, Suspense } from 'react';
 import client from '@/lib/sanity/client';
 import { fetchSanity, groq } from '@/lib/sanity/fetch';
 import { metadataQuery } from '@/lib/sanity/queries/metadata';
@@ -7,11 +7,14 @@ import { authorQuery } from '@/lib/sanity/queries/fragments/author';
 import { identityQuery } from '@/lib/sanity/queries/identity';
 import { postCardQuery } from '@/lib/sanity/queries/fragments/post-card';
 import { firstModule } from '@/lib/modules';
+import { introImages } from '@/lib/introImages';
+import { pageHrefs } from '@/lib/introPicks';
 import { notFound, permanentRedirect, redirect } from 'next/navigation';
 import { Modules } from '@/components/Modules';
 import { getSite } from '@/lib/sanity/queries';
 import { heroThemeImage, resolveMetadata } from '@/lib/resolveMetadata';
 import { getRedirect } from '@/lib/redirects';
+import IntentImages from '@/components/IntentImages';
 import Redirecting from '@/components/Redirecting';
 import Reveal from '@/components/Reveal';
 import JsonLd from '@/components/JsonLd';
@@ -43,8 +46,17 @@ export default async function Page({ params }) {
       <Modules modules={page?.modules} page={page} />
       {page.animateModules && <Reveal />}
       <JsonLd page={page} path={path} />
+      <Suspense>
+        <PageIntent modules={page.modules} path={path} />
+      </Suspense>
     </div>
   );
+}
+
+// The pages this one's own links lead to, warmed when a visitor reaches for
+// one. Streamed so the lookup never holds up the page.
+async function PageIntent({ modules, path }) {
+  return <IntentImages images={await introImages(pageHrefs(modules, path))} />;
 }
 
 export async function generateMetadata({ params }) {
