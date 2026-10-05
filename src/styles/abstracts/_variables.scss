@@ -24,13 +24,10 @@ $hairline: inset 0 0 0 1px $hairline-color;
 $press-tint: rgba(255, 255, 255, 0.06);
 // The featured mark, a gold that reads on both a light and a dark photo.
 $color-star: #f6c85f;
-// Inline alert: border/ink/surface, both severities.
-$color-error: #f87171;
-$color-error-ink: #b91c1c;
-$color-error-surface: #fee2e2;
-$color-warning: #fbbf24;
-$color-warning-ink: #b45309;
-$color-warning-surface: #fef3c7;
+// Severity hues, never themed so an error reads as one on every theme; both
+// clear 6:1 on the alert plate.
+$color-error: oklch(0.72 0.17 25);
+$color-warning: oklch(0.84 0.15 80);
 
 /* Common Drop Shadow */
 $common-drop-shadow: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.85));

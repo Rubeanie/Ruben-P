@@ -1,6 +1,7 @@
 import React from 'react';
 import { createDataAttribute } from 'next-sanity';
 import { draftMode } from 'next/headers';
+import { LuCircleAlert, LuTriangleAlert } from 'react-icons/lu';
 import AccordionList from './AccordionList';
 import Breadcrumbs from './Breadcrumbs';
 import Callout from './Callout';
@@ -88,8 +89,11 @@ const ModuleRenderer = ({
       // type isn't a throw, just a config mistake , show it inline.
       return (
         <div className='alert error' role='alert'>
-          <strong>Error: </strong>
-          <span>{`Data type mismatch, '${module._type}' does not exist`}</span>
+          <LuCircleAlert aria-hidden='true' />
+          <span>
+            <strong>Error: </strong>
+            {`Data type mismatch, '${module._type}' does not exist`}
+          </span>
         </div>
       );
   }
@@ -119,8 +123,9 @@ export async function Modules({ modules: fetched, page }) {
             key={module._key}
             fallback={
               <div className='alert warning' role='alert'>
-                <strong>Warning: </strong>
+                <LuTriangleAlert aria-hidden='true' />
                 <span>
+                  <strong>Warning: </strong>
                   An error occurred while rendering this module. Please check
                   the module configuration.
                 </span>
