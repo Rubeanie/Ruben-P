@@ -15,8 +15,8 @@ const TAGS = [
   'socials'
 ];
 
-// Sanity webhook target. Live updates only revalidate while a visitor has the
-// site open; this keeps production fresh when nobody does.
+// Sanity webhook target: how a publish reaches the public site (live updates
+// run only in draft mode).
 export async function POST(request) {
   const secret = process.env.SANITY_REVALIDATE_SECRET;
   if (!secret)

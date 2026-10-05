@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import client from '@/lib/sanity/client';
 import { fetchSanity, groq } from '@/lib/sanity/fetch';
 import { metadataQuery } from '@/lib/sanity/queries/metadata';
@@ -101,7 +102,13 @@ async function getPage(params) {
   const discord = slug[0] === DISCORD_SEGMENT;
   const path = '/' + slug.slice(discord ? 1 : 0).join('/');
   if (!isPagePath(path)) return { page: null, path, discord };
-  const page = await fetchSanity(
+  return { page: await loadPage(path), path, discord };
+}
+
+// Once per render: the page, its metadata and its viewport all ask. The query is
+// long enough to go out as a POST, which fetch memoisation skips.
+const loadPage = cache((path) =>
+  fetchSanity(
     groq`*[
       _type in ['page', 'page.post'] &&
       metadata.slug.current == $path
@@ -124,6 +131,5 @@ async function getPage(params) {
       params: { path },
       tags: ['pages', 'posts', 'authors', 'site', 'socials']
     }
-  );
-  return { page, path, discord };
-}
+  )
+);

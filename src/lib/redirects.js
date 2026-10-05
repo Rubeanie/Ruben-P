@@ -21,8 +21,9 @@ export function matchRedirect({ source, destination }, path) {
   return isSafeHref(url) ? url : null;
 }
 
-// The redirect a path should follow, or null. The list is tagged so the
-// publish webhook refreshes it with everything else; the timer is a backstop.
+// The redirect a path should follow, or null. The list is cached until the
+// publish webhook revalidates its tag, so it's read from the API: the CDN can
+// still hold the old list when the webhook lands.
 // Not no-store: that turns the static catch-all route dynamic at request
 // time, which Next rejects with a 500 for paths not built ahead.
 export async function getRedirect(path) {
@@ -31,14 +32,18 @@ export async function getRedirect(path) {
     import('@/lib/sanity/client'),
     import('@/lib/sanity/queries/fragments/link')
   ]);
-  const redirects = await client.fetch(
+  const redirects = await client.withConfig({ useCdn: false }).fetch(
     groq`*[_type == 'redirect']{
       source,
       destination{ ${linkQuery} },
       permanent
     }`,
     {},
-    { perspective: 'published', next: { revalidate: 60, tags: ['redirects'] } }
+    {
+      perspective: 'published',
+      cache: 'force-cache',
+      next: { tags: ['redirects'] }
+    }
   );
 
   for (const { source, destination, permanent } of redirects ?? []) {

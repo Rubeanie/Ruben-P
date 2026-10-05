@@ -6,7 +6,6 @@ import React, {
   useContext,
   useEffect,
   useLayoutEffect,
-  useMemo,
   useRef,
   useState
 } from 'react';
@@ -30,11 +29,7 @@ export const ThemeContext = createContext({
   isResolving: false
 });
 
-export function ThemeProvider({ children, initialThemes }) {
-  const availableThemes = useMemo(
-    () => (initialThemes || []).map(normalizeThemeDefinition).filter(Boolean),
-    [initialThemes]
-  );
+export function ThemeProvider({ children, initialThemes: availableThemes }) {
   // The layout's inline script painted its pick before hydration: start from it,
   // with no image wait and no second pick. Nothing renders markup from the theme,
   // so the server's default can't mismatch.

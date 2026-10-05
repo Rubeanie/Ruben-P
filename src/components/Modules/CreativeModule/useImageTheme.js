@@ -2,11 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/components/ThemeContext';
-import {
-  clampContrast,
-  DEFAULT_THEME,
-  deriveThemeColorsFromPalette
-} from '@/lib/themes';
+import { DEFAULT_THEME } from '@/lib/themes';
 
 const LONG_EDGE = 800;
 const MAX_BYTES = 100 * 1024 * 1024;
@@ -30,7 +26,11 @@ async function themeFromFile(file) {
   }
 
   try {
-    const { Vibrant } = await import('node-vibrant/browser');
+    const [{ Vibrant }, { clampContrast, deriveThemeColorsFromPalette }] =
+      await Promise.all([
+        import('node-vibrant/browser'),
+        import('@/lib/themeColors')
+      ]);
     const palette = await Vibrant.from(img)
       .maxDimension(LONG_EDGE)
       .getPalette();

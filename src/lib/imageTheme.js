@@ -1,14 +1,12 @@
 import { unstable_cache } from 'next/cache';
-import {
-  clampContrast,
-  deriveThemeColorsFromPalette,
-  themeRendition
-} from './themes';
+import { clampContrast, deriveThemeColorsFromPalette } from './themeColors';
+import { themeRendition } from './themes';
 
 const cachedThemeFromImage = unstable_cache(
   async (url) => {
     const rendition = themeRendition(url);
-    const res = await fetch(rendition, { cache: 'force-cache' });
+    // unstable_cache keeps the colours; the photo itself needn't be cached too.
+    const res = await fetch(rendition, { cache: 'no-store' });
     const buffer = Buffer.from(await res.arrayBuffer());
     const { Vibrant } = await import('node-vibrant/node');
     const palette = await Vibrant.from(buffer).getPalette();

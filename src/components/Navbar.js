@@ -4,24 +4,9 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import Logo from '@/components/Logo';
-import { resolveLink } from '@/lib/processUrl';
 import styles from '@/styles/components/Navbar.module.scss';
 
-const Navbar = ({ menu, logo }) => {
-  const toLink = (item) =>
-    item && {
-      key: item._key ?? 'logo',
-      label: item.label,
-      href: resolveLink(item)
-    };
-  // The bar shows the lead link on the logo; the dropdown lists it by label first.
-  const lead = toLink(menu?.leadLink);
-  // The optional call to action renders as a button after the links.
-  const cta = toLink(menu?.cta);
-  const links = [
-    ...(menu?.items ?? []).map(toLink),
-    cta && { ...cta, key: 'cta', cta: true }
-  ].filter((link) => link?.href);
+const Navbar = ({ lead, links, logo }) => {
   const linksRef = useRef(null);
   const toggleRef = useRef(null);
   const [open, setOpen] = useState(false);

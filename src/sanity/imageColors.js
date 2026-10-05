@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
-import {
-  clampContrast,
-  deriveThemeColorsFromPalette,
-  themeRendition
-} from '@/lib/themes';
+import { clampContrast, deriveThemeColorsFromPalette } from '@/lib/themeColors';
+import { themeRendition } from '@/lib/themes';
 
 // A style's colour fields and the theme key each fills.
 export const COLOR_FIELDS = [

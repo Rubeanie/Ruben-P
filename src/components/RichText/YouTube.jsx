@@ -15,7 +15,8 @@ async function getTitle(id) {
   try {
     const response = await fetch(
       `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`,
-      { next: { revalidate: 86400 } }
+      // Refreshed by the publish webhook, like the page around it.
+      { cache: 'force-cache', next: { tags: ['pages'] } }
     );
     if (!response.ok) return fallback;
     const data = await response.json();
@@ -31,7 +32,8 @@ async function getThumb(id) {
   try {
     const response = await fetch(maxres, {
       method: 'HEAD',
-      next: { revalidate: 86400 }
+      cache: 'force-cache',
+      next: { tags: ['pages'] }
     });
     if (response.ok) return maxres;
   } catch {

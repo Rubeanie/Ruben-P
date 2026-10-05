@@ -7,7 +7,7 @@ import { ancestorPaths, pagePath } from '@/lib/breadcrumbs';
 import { fetchSanity } from '@/lib/sanity/fetch';
 import { getSite } from '@/lib/sanity/queries';
 import { breadcrumbAncestorsQuery } from '@/lib/sanity/queries/modules/breadcrumbs';
-import { sanitizeSvg } from '@/lib/sanitizeSvg';
+import { sanitizeLogo } from '@/lib/cachedLogo';
 import Logo from '@/components/Logo';
 import styles from '@/styles/components/Breadcrumbs.module.scss';
 import Trail from './Trail';
@@ -82,7 +82,7 @@ export default async function Breadcrumbs({
   ];
 
   const site = await getSite();
-  const logo = site?.logo ? sanitizeSvg(stegaClean(site.logo)) : null;
+  const logo = site?.logo ? await sanitizeLogo(stegaClean(site.logo)) : null;
 
   const jsonLd = {
     '@context': 'https://schema.org',

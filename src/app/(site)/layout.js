@@ -17,18 +17,15 @@ import { getSite, getThemes } from '@/lib/sanity/queries';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { VisualEditingControls } from '@/components/VisualEditingControls';
-import { SanityLive } from '@/lib/sanity/live';
 import { ServiceWorkerRegister } from '@/components/ServiceWorkerRegister';
 import { baseUrl } from '@/lib/env';
 import { stegaClean } from '@sanity/client/stega';
-import { sanitizeSvg } from '@/lib/sanitizeSvg';
-import {
-  DEFAULT_THEME_COLORS,
-  normalizeThemeDefinition,
-  themeGate
-} from '@/lib/themes';
+import { sanitizeLogo } from '@/lib/cachedLogo';
+import { DEFAULT_THEME_COLORS, themeGate } from '@/lib/themes';
+import { normalizeTheme } from '@/lib/themeColors';
 import { liveAnnouncement } from '@/lib/announcement';
 import { resolveLink } from '@/lib/processUrl';
+import { navLinks } from '@/lib/navLinks';
 import { feedTypes } from '@/lib/resolveMetadata';
 import { navGate } from '@/lib/navGate';
 
@@ -59,7 +56,8 @@ export const viewport = {
 
 export default async function RootLayout({ children }) {
   const [themes, site] = await Promise.all([getThemes(), getSite()]);
-  const logo = sanitizeSvg(stegaClean(site.logo));
+  const normalisedThemes = themes.map(normalizeTheme).filter(Boolean);
+  const logo = await sanitizeLogo(stegaClean(site.logo));
   return (
     // The announcement's inline script may flag <html> before hydration.
     <html
@@ -72,9 +70,7 @@ export default async function RootLayout({ children }) {
         <link rel='preconnect' href='https://res.cloudinary.com' />
         <script
           dangerouslySetInnerHTML={{
-            __html: themeGate(
-              themes.map(normalizeThemeDefinition).filter(Boolean)
-            )
+            __html: themeGate(normalisedThemes)
           }}
         />
       </head>
@@ -83,13 +79,13 @@ export default async function RootLayout({ children }) {
           announcement={liveAnnouncement(site.announcements)}
           logo={logo}
         />
-        <ThemeProvider initialThemes={themes}>
+        <ThemeProvider initialThemes={normalisedThemes}>
           <Suspense>
             <Signature />
           </Suspense>
           {/* Outside a Suspense boundary: streamed later, the gate would measure
               a hidden bar and the page would paint without it. */}
-          <Navbar menu={site.headerMenu} logo={logo} />
+          <Navbar {...navLinks(site.headerMenu)} logo={logo} />
           <script dangerouslySetInnerHTML={{ __html: navGate }} />
           <main>
             <SiteLogo logo={logo}>{children}</SiteLogo>
@@ -101,7 +97,6 @@ export default async function RootLayout({ children }) {
           />
           <Analytics />
           <SpeedInsights />
-          <SanityLive />
           <VisualEditingControls />
           <ServiceWorkerRegister />
         </ThemeProvider>
