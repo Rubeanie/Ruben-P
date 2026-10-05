@@ -8,6 +8,7 @@ export default async function manifest() {
     name: title,
     short_name: stegaClean(site.alternateName) || title,
     description: stegaClean(site.seo?.metaDescription),
+    id: '/',
     start_url: '/',
     display: 'standalone',
     background_color: '#0f182d',
@@ -15,7 +16,7 @@ export default async function manifest() {
     icons: [
       {
         src: '/pwa/PWA-192x192.png',
-        sizes: '  192x192',
+        sizes: '192x192',
         type: 'image/png',
         purpose: 'any'
       },
