@@ -22,9 +22,7 @@ export default function CustomHTML({ className, html, ...props }) {
   }, [code]);
 
   if (!code) return null;
-  const classes = [styles.html, stegaClean(className)]
-    .filter(Boolean)
-    .join(' ');
+  const classes = `${styles.html} ${stegaClean(className) ?? ''}`.trim();
 
   if (!code.includes('<script'))
     return (
