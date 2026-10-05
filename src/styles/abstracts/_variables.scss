@@ -143,8 +143,15 @@ $announce-height: $touch-target - $space-2;
 $measure: 41rem;
 // Figures, video and code break out of the prose measure to this width, 1.5x the copy.
 $measure-wide: 61.25rem;
-// Space above and below a figure, video or code block: 32px on phones up to 44px on desktop.
+// Space between modules, and above and below a figure, video or code block:
+// 32px on phones up to 44px on desktop.
 $block-gap: clamp(2rem, 1.25rem + 1.5vw, 2.75rem);
+// The first module's box below the pill and the last one's above the footer:
+// Apple Newsroom's 52/40/32 and 80/64/52, fluid from 390 to 1440.
+$first-gap: clamp(2rem, 1.5357rem + 1.9048vw, 3.25rem);
+$last-gap: clamp(3.25rem, 2.6rem + 2.6667vw, 5rem);
+// An eyebrow to the heading it labels: Apple Newsroom's category margin.
+$eyebrow-gap: 1.25rem;
 $inline-pad-max: 2rem;
 $inline-pad: clamp(1rem, 4vw, $inline-pad-max);
 

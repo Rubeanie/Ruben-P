@@ -8,7 +8,7 @@ import styles from '@/styles/components/Social.module.scss';
 
 export default function SocialList({ socials = [], maxColumns = 2, ...props }) {
   return (
-    <section id={uid(props)}>
+    <section id={uid(props)} className={styles.socials}>
       {socials?.length > 0 && (
         <div
           className={styles.list}

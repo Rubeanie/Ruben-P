@@ -3,7 +3,9 @@
 main {
   max-width: var.$content-max-width;
   margin: 0 auto;
-  padding: var.$space-3 var.$inline-pad;
+  // The last module's block gap sits inside the bottom padding.
+  padding: var.$space-3 var.$inline-pad
+    calc(#{var.$last-gap} - #{var.$block-gap});
   // Every page fills the viewport, so the footer always starts below the fold.
   min-height: 100lvh;
   position: relative;
@@ -30,13 +32,19 @@ main {
     @include var.touch-target;
   }
 
-  // Clears the floating navbar on pages that don't open with a hero
+  // Clears the navbar, floating or docked, on pages that don't open with a
+  // hero. Padding, not margin, so the first module's block gap stays inside it
+  // and its box lands $first-gap below the bar whatever comes first.
   .nav-pad {
-    padding-top: var.$navbar-height;
+    padding-top: calc(
+      #{var.$nav-clearance-flow} - #{var.$space-3} + #{var.$first-gap} -
+        #{var.$block-gap}
+    );
   }
 
+  // Stands in for a module, so it spaces like one.
   .alert {
-    margin-block: var.$space-2;
+    margin-block: var.$block-gap;
 
     &.error {
       position: relative;

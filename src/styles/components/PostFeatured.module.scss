@@ -5,6 +5,8 @@
   margin-inline: auto;
   // Modules space themselves; sibling margins collapse to one gap.
   margin-block: var.$block-gap;
+  // Holds the phone row's negative margin, which would otherwise shrink the gap.
+  display: flow-root;
 }
 
 // The globals' h2 is the page display size; a row heading is a section heading.

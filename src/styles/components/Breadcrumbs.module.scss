@@ -1,8 +1,18 @@
 @use '../abstracts/index' as var;
 
 .nav {
-  // pulls the following heading up so the trail reads as its eyebrow
-  margin-block: 0 calc(-1 * var.$space-2);
+  // The trail is the next heading's eyebrow: a block gap above, and below a
+  // negative margin that collapses with the next module's gap to $eyebrow-gap.
+  margin-block: var.$block-gap calc(#{var.$eyebrow-gap} - #{var.$block-gap});
+  // Holds the list's negative margins, so the box is the text line.
+  display: flow-root;
+}
+
+// With no module after it (only scripts follow; in draft, its wrapper is the
+// last), the trail keeps the plain gap so the footer clearance holds.
+:not(:global([data-sanity])) > .nav:not(:has(~ :not(script))),
+:global([data-sanity]):not(:has(~ :not(script))) > .nav {
+  margin-block-end: var.$block-gap;
 }
 
 .list {
@@ -13,7 +23,9 @@
   // the 44px targets are the row rhythm; the gap shorthand would add to it
   column-gap: 0.6rem;
   row-gap: 0;
-  margin: 0;
+  // The 44px targets overflow the row evenly instead of adding air around the text.
+  margin-block: calc((1lh - #{var.$touch-target}) / 2);
+  margin-inline: 0;
   padding: 0;
   list-style: none;
   font-family: var.$h-font;

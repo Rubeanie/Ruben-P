@@ -140,9 +140,9 @@
 }
 
 // A hero is the ground, not an object on it: it cancels main's padding and
-// runs edge to edge.
+// runs edge to edge. Below it, it spaces like any module.
 @mixin hero-ground {
-  margin-block-start: calc(-1 * #{var.$space-3});
+  margin-block: calc(-1 * #{var.$space-3}) var.$block-gap;
   margin-inline: calc(-1 * #{var.$inline-pad});
 }
 

@@ -7,6 +7,8 @@ $copy-inset: 0.375rem;
 .richtext {
   max-width: var.$measure-wide;
   margin-inline: auto;
+  // Modules space themselves; sibling margins collapse to one gap.
+  margin-block: var.$block-gap;
   text-align: start;
 
   // Prose and code keep the reading measure; figures and video take the wider column.
@@ -36,8 +38,13 @@ $copy-inset: 0.375rem;
     margin-block: var.$space-5 var.$space-3;
   }
 
+  // The edge blocks' own margins would add to the gap or, like an h2's, outgrow it.
   > :first-child {
     margin-block-start: 0;
+  }
+
+  > :last-child {
+    margin-block-end: 0;
   }
 
   &[data-align='center'] {

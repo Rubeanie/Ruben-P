@@ -6,6 +6,11 @@ $hover-scale: 1.05;
 $zoom-transition: transform 0.25s var.$ease-out;
 $gap: 1.25rem;
 
+// Modules space themselves; sibling margins collapse to one gap.
+.socials {
+  margin-block: var.$block-gap;
+}
+
 // Columns top out at --max-cols (from Sanity) via the max-width and drop as
 // the viewport narrows; min(width, 100%) lets one column shrink on phones.
 .list {

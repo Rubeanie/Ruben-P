@@ -1,0 +1,16 @@
+@use '../abstracts/index' as var;
+
+// Modules space themselves; the editor's markup keeps its own margins inside,
+// so only the block gap meets the neighbours.
+.html {
+  display: flow-root;
+  margin-block: var.$block-gap;
+
+  > :first-child {
+    margin-block-start: 0;
+  }
+
+  > :last-child {
+    margin-block-end: 0;
+  }
+}
