@@ -199,7 +199,7 @@ export default function YouTubeFacade({
           referrerPolicy='strict-origin-when-cross-origin'
           tabIndex={mode === 'api' && !loaded ? -1 : undefined}
           onLoad={mode === 'plain' ? reveal : undefined}
-          data-armed={(mode === 'api' && !ready) || undefined}
+          data-armed={(mode === 'api' && !ready && !loaded) || undefined}
           data-loaded={loaded || ready || undefined}
         />
       )}
