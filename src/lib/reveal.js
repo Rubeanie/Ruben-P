@@ -52,3 +52,16 @@ export function hold(adopt) {
     return [el, kind, el.animate(frame, { fill: 'forwards', id: 'reveal' })];
   });
 }
+
+// Modules that play their own entrance, hidden the same way below the line
+// until they take over. Pre-paint script only, so it may only use globals.
+export function holdEntrances() {
+  const line = innerHeight * 0.9;
+  return [...document.querySelectorAll('[data-reveal] [data-entrance]')]
+    .filter((el) => el.getBoundingClientRect().top > line)
+    .map((el) => [
+      el,
+      'entrance',
+      el.animate({ opacity: 0 }, { fill: 'forwards', id: 'entrance' })
+    ]);
+}

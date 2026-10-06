@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useEffectEvent, useRef, useState } from 'react';
 import { preconnect } from 'react-dom';
 import Image from 'next/image';
 import { LuPlay } from 'react-icons/lu';
@@ -10,6 +10,7 @@ import {
   isApple,
   loadPlayerApi,
   prebuildsPlayer,
+  warmEmbed,
   whenIdle
 } from '@/lib/youtube';
 import { PROSE_SIZES } from '@/lib/imageBlock';
@@ -25,7 +26,16 @@ export default function YouTubeFacade({
   size,
   align,
   sanity,
-  preload = false
+  preload = false,
+  loading,
+  sizes = PROSE_SIZES,
+  className,
+  // Set on a carousel card: `paused` while it is away from the front,
+  // `prebuild` only near it, and `onPlay` claims the carousel's one player.
+  inCarousel = false,
+  paused = false,
+  prebuild = true,
+  onPlay
 }) {
   const [active, setActive] = useState(false);
   // 'api' drives the iframe through the IFrame Player API, 'plain' relies on autoplay=1.
@@ -38,15 +48,20 @@ export default function YouTubeFacade({
   const button = useRef(null);
   const frame = useRef(null);
 
-  // Intent to play is the cheapest moment to open the sockets the embed needs.
-  const warm = () => {
-    preconnect('https://www.youtube-nocookie.com');
-    preconnect('https://www.google.com');
-  };
+  // A player built ahead of a tap goes once its card is no longer near; one
+  // that has played stays until another card takes the carousel's player.
+  if (mode && !prebuild && !loaded && !active) setMode(null);
+  // A plain embed (the API failed to load) can't be paused, so leaving the
+  // front takes it back to its poster.
+  if (inCarousel && paused && mode === 'plain') {
+    setMode(null);
+    setLoaded(false);
+    setActive(false);
+  }
 
   // Phones never hover, so build the player once the video is near the screen.
   useEffect(() => {
-    if (!prebuildsPlayer()) return;
+    if (!prebuildsPlayer() || !prebuild) return;
     let cancelled = false;
     let cancelIdle;
     const observer = new IntersectionObserver(
@@ -54,7 +69,7 @@ export default function YouTubeFacade({
         if (!entry.isIntersecting) return;
         observer.disconnect();
         cancelIdle = whenIdle(() => {
-          warm();
+          warmEmbed();
           preconnect('https://www.youtube.com');
           loadPlayerApi().then(
             () => !cancelled && setMode((current) => current ?? 'api'),
@@ -70,18 +85,20 @@ export default function YouTubeFacade({
       observer.disconnect();
       cancelIdle?.();
     };
-  }, []);
+  }, [prebuild]);
 
   const play = (event) => {
-    if (prebuildsPlayer() && ready) {
+    onPlay?.();
+    if (player.current) {
       // A press on the edge band can't start playback: iOS only plays from a
       // tap inside the frame. The keyboard has no such tap.
-      if (event.detail > 0) return;
+      if (ready && event.detail > 0) return;
       setActive(true);
       return player.current.playVideo();
     }
     setActive(true);
-    if (!isApple()) return setMode('plain');
+    // A carousel player must take a pause at any moment, so it always has the API.
+    if (!inCarousel && !isApple()) return setMode('plain');
     loadPlayerApi().then(
       () => setMode((current) => current ?? 'api'),
       () => setMode((current) => current ?? 'plain')
@@ -95,6 +112,10 @@ export default function YouTubeFacade({
     if (hadFocus) requestAnimationFrame(() => frame.current?.focus());
   };
 
+  // A tap inside a pre-built player starts it without passing through play().
+  const claim = useEffectEvent(() => onPlay?.());
+  const isPaused = useEffectEvent(() => paused);
+
   useEffect(() => {
     if (mode !== 'api') return;
     const { PlayerState } = window.YT;
@@ -102,14 +123,26 @@ export default function YouTubeFacade({
       events: {
         onReady: (event) => {
           player.current = event.target;
-          if (!prebuildsPlayer()) return event.target.playVideo();
-          // A tap before this moment can't play; the next one lands in the frame.
-          setReady(true);
+          if (prebuildsPlayer()) {
+            // A tap before this moment can't play; the next one lands in the frame.
+            setReady(true);
+          } else if (!isPaused()) {
+            return event.target.playVideo();
+          }
+          // Left the front while loading, it waits for the next press.
           setActive(false);
         },
         onStateChange: (event) => {
+          const starting = [PlayerState.BUFFERING, PlayerState.PLAYING];
+          if (starting.includes(event.data) && isPaused()) {
+            event.target.pauseVideo();
+            return setActive(false);
+          }
           if (event.data === PlayerState.BUFFERING) setActive(true);
-          if (event.data === PlayerState.PLAYING) reveal();
+          if (event.data === PlayerState.PLAYING) {
+            claim();
+            reveal();
+          }
         },
         // Nothing more to wait for; let the player show its own play button or error.
         onAutoplayBlocked: reveal,
@@ -127,6 +160,12 @@ export default function YouTubeFacade({
     };
   }, [mode]);
 
+  // Leaving the front pauses; coming back waits for a press on the player.
+  // A player still loading checks on ready instead.
+  useEffect(() => {
+    if (paused) player.current?.pauseVideo();
+  }, [paused]);
+
   // A tap that lands inside the player moves focus into its frame.
   useEffect(() => {
     if (!ready || loaded) return;
@@ -140,7 +179,7 @@ export default function YouTubeFacade({
   return (
     <div
       ref={root}
-      className={styles.video}
+      className={`${styles.video} ${className ?? ''}`.trim()}
       {...blockLayout(size, align)}
       {...(sanity && { 'data-sanity': sanity })}>
       {mode && (
@@ -174,16 +213,17 @@ export default function YouTubeFacade({
             src={thumb}
             alt=''
             fill
-            sizes={PROSE_SIZES}
+            sizes={sizes}
             preload={preload}
+            loading={loading}
           />
           <button
             ref={button}
             type='button'
             className={styles.play}
             aria-busy={active}
-            onPointerEnter={warm}
-            onFocus={warm}
+            onPointerEnter={warmEmbed}
+            onFocus={warmEmbed}
             onClick={play}>
             <span className={styles.scrim} aria-hidden />
             <span className={styles.disc} aria-hidden>

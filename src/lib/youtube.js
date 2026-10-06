@@ -1,3 +1,5 @@
+import { preconnect } from 'react-dom';
+
 // Video ids are 11 characters of the URL-safe alphabet; anything else is a
 // mistyped link rather than a video.
 const ID_PATTERN = /^[A-Za-z0-9_-]{11}$/;
@@ -83,24 +85,49 @@ export function prebuildsPlayer() {
   return isApple() && matchMedia('(hover: none)').matches;
 }
 
+// Intent to play is the cheapest moment to open the sockets the embed needs.
+export function warmEmbed() {
+  preconnect('https://www.youtube-nocookie.com');
+  preconnect('https://www.google.com');
+}
+
 let playerApi = null;
 
-// One script load shared by every video on the page.
+// One script load shared by every video on the page. A script that never
+// readies (blocked, stalled) rejects after a while so callers fall back.
+const PLAYER_API_TIMEOUT = 8000;
+
 export function loadPlayerApi() {
   if (window.YT?.Player) return Promise.resolve(window.YT);
   playerApi ??= new Promise((resolve, reject) => {
     const previous = window.onYouTubeIframeAPIReady;
-    window.onYouTubeIframeAPIReady = () => {
+    const script = document.createElement('script');
+    // Settles once, so a timed-out attempt's late callbacks can't undo a retry.
+    let settled = false;
+    const fail = (message) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      playerApi = null;
+      if (window.onYouTubeIframeAPIReady === ready)
+        window.onYouTubeIframeAPIReady = previous;
+      script.remove();
+      reject(new Error(message));
+    };
+    const ready = () => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
       resolve(window.YT);
       previous?.();
     };
-    const script = document.createElement('script');
+    const timer = setTimeout(
+      () => fail('YouTube player API timed out'),
+      PLAYER_API_TIMEOUT
+    );
+    window.onYouTubeIframeAPIReady = ready;
     script.src = 'https://www.youtube.com/iframe_api';
-    script.onerror = () => {
-      playerApi = null;
-      script.remove();
-      reject(new Error('YouTube player API failed to load'));
-    };
+    script.onerror = () => fail('YouTube player API failed to load');
     document.head.append(script);
   });
   return playerApi;
@@ -139,4 +166,21 @@ export async function getThumb(id) {
     // fall through to the poster every video has
   }
   return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+}
+
+// oEmbed gives the real title for the facade's caption and aria-label.
+export async function getTitle(id) {
+  const fallback = 'YouTube video';
+  try {
+    const response = await fetch(
+      `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`,
+      // Refreshed by the publish webhook, like the page around it.
+      { cache: 'force-cache', next: { tags: ['pages'] } }
+    );
+    if (!response.ok) return fallback;
+    const data = await response.json();
+    return data.title || fallback;
+  } catch {
+    return fallback;
+  }
 }

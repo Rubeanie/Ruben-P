@@ -3,17 +3,11 @@
 import { useEffect } from 'react';
 import { preload } from 'react-dom';
 import { warmHero3D } from '@/components/Modules/Hero3D/warm';
+import { saveData } from '@/lib/saveData';
 
 // href -> what its page shows first, filled by every render that shows its links.
 const known = new Map();
 const started = new Set();
-
-function saveData() {
-  const connection = navigator.connection;
-  return Boolean(
-    connection?.saveData || /(^|-)2g$/.test(connection?.effectiveType)
-  );
-}
 
 // One listener set for the whole page: pointerover and focusin bubble, unlike
 // pointerenter and focus, so links added later need no wiring.

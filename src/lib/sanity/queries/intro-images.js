@@ -1,5 +1,6 @@
 import { groq } from '../fetch';
 import { cloudinaryQuery } from './fragments/cloudinary';
+import { sceneModelQuery, scenePosterQuery } from './fragments/scene';
 
 // Just enough of each linked page to tell what it shows first.
 const photo = groq`asset->{ url, metadata { dimensions { aspectRatio } } }`;
@@ -48,12 +49,17 @@ export const introImagesQuery = groq`*[_type in ['page', 'page.post'] && metadat
         }
       }
     },
-    _type == 'three.js' => {
-      loadOnClick,
-      "poster": select(
-        posterSource == 'cloudinary' => posterCloudinary.secure_url,
-        poster.asset->url
-      )
+    _type == 'three.js' => { loadOnClick, ${scenePosterQuery} },
+    _type == 'media-carousel' => {
+      "loop": coalesce(loop, false),
+      // Every item, as the carousel counts only those it can draw.
+      items[]{
+        _type,
+        url,
+        ${picture},
+        ${sceneModelQuery},
+        ${scenePosterQuery}
+      }
     },
     _type == 'post-featured' => { limit }
   }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useLayoutEffect, useRef, useSyncExternalStore } from 'react';
-import { hold } from '@/lib/reveal';
+import { hold, holdEntrances } from '@/lib/reveal';
 
 // The Sass $ease-out token.
 const EASE_OUT = 'cubic-bezier(0.23, 1, 0.32, 1)';
@@ -9,7 +9,7 @@ const EASE_OUT = 'cubic-bezier(0.23, 1, 0.32, 1)';
 // Runs before first paint on a full load, except one from Back or Forward.
 // If the app never hydrates to take the holds over, everything shows after
 // five seconds.
-const script = `(function(h){setTimeout(function(){h.forEach(function(u){u[2].cancel()})},5000)})(performance.getEntriesByType('navigation')[0]?.type==='back_forward'?[]:(${hold})())`;
+const script = `(function(h){setTimeout(function(){h.forEach(function(u){u[2].cancel()})},5000)})(performance.getEntriesByType('navigation')[0]?.type==='back_forward'?[]:(${hold})().concat((${holdEntrances})()))`;
 
 // Back and Forward bring a page back as it was left, so nothing enters. The
 // next reveal run uses the flag up.

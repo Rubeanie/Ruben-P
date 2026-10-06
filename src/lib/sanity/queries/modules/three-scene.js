@@ -1,22 +1,10 @@
 import { groq } from '../../fetch';
+import { sceneFacadeQuery, sceneModelQuery } from '../fragments/scene';
 
 export const threeSceneQuery = groq`
-  "model": select(
-    modelSource == 'file' => modelFile.asset->url,
-    modelSource == 'url' => modelUrl,
-    modelSource == 'cloudinary' => modelCloudinary.secure_url
-  ),
+  ${sceneModelQuery},
   "loadOnClick": coalesce(loadOnClick, false),
-  loadOnClick == true => {
-    "poster": select(
-      posterSource == 'cloudinary' => posterCloudinary.secure_url,
-      poster.asset->url
-    ),
-    "modelBytes": select(
-      modelSource == 'file' => modelFile.asset->size,
-      modelSource == 'cloudinary' => modelCloudinary.bytes
-    )
-  },
+  loadOnClick == true => { ${sceneFacadeQuery} },
   lights { hex },
   background { hex },
   aspectRatio, size, align, caption, source,

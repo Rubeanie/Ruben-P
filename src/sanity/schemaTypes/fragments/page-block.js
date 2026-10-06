@@ -35,6 +35,7 @@ export const pageBlock = {
     { type: 'hero.saas' },
     { type: 'hero.split' },
     { type: 'hero.3d' },
+    { type: 'media-carousel' },
     { type: 'post-list' },
     { type: 'post-featured' },
     { type: 'richtext-module' },
@@ -49,7 +50,8 @@ export const pageBlock = {
     insertMenu: {
       views: [{ name: 'list' }, { name: 'grid' }],
       groups: [
-        { name: 'hero', of: ['hero', 'hero.saas', 'hero.split', 'hero.3d'] }
+        { name: 'hero', of: ['hero', 'hero.saas', 'hero.split', 'hero.3d'] },
+        { name: 'media', of: ['media-carousel', 'three.js'] }
       ]
     }
   }

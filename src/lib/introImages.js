@@ -7,6 +7,7 @@ import { introImagesQuery } from '@/lib/sanity/queries/intro-images';
 import { coverLoader } from '@/lib/sanity/image';
 import { loaderFor } from '@/lib/imageLoader';
 import { picks, splitHref, viewModules } from '@/lib/introPicks';
+import { railedModules } from '@/lib/toc';
 import { resolveLink } from '@/lib/processUrl';
 import { PROSE_SIZES } from '@/lib/imageBlock';
 import { getThumb } from '@/lib/youtube';
@@ -62,7 +63,10 @@ async function preloadFor(pick) {
         loader: coverLoader(pick.cover)
       });
     case 'youtube':
-      return image({ src: await getThumb(pick.id), sizes: PROSE_SIZES });
+      return image({
+        src: await getThumb(pick.id),
+        sizes: pick.sizes ?? PROSE_SIZES
+      });
     case 'model':
       return { as: 'fetch', href: MODEL, crossOrigin: 'anonymous' };
   }
@@ -114,7 +118,8 @@ async function destinations(hrefs) {
       const tiles = modules.some((module) => module._type.startsWith('post-'));
       const chosen = picks(modules, {
         posts: tiles ? await postList() : [],
-        onPost: page.onPost
+        onPost: page.onPost,
+        railed: railedModules(page.modules)
       });
       if (chosen.length)
         result[key] = {

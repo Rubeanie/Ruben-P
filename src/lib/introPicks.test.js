@@ -1,5 +1,7 @@
 import { expect, test } from 'bun:test';
 import { pageHrefs, picks, splitHref, viewModules } from './introPicks';
+import { carouselSizes } from './carousel';
+import { railedModules } from './toc';
 
 const sanity = (id) => `https://cdn.sanity.io/images/p/d/${id}-800x600.jpg`;
 const photo = (id) => ({ asset: { url: sanity(id) } });
@@ -273,4 +275,91 @@ test('only the opening blocks of a long article count', () => {
   expect(
     picks([text('a', ...filler.slice(1), figure('near'))]).map((p) => p.src)
   ).toEqual([sanity('near')]);
+});
+
+test('a carousel gives its front card: photo, video or scene poster', () => {
+  const image = { _type: 'carouselImage', image: photo('front') };
+  const carousel = (item, count = 6, loop = false) => ({
+    _type: 'media-carousel',
+    loop,
+    items: [item, ...Array(count - 1).fill(image)]
+  });
+  const still =
+    '(prefers-reduced-motion: reduce) and (max-width: 43.75rem) 92vw, (prefers-reduced-motion: reduce) min(61.3rem, (100vw - 4rem) * 1)';
+  const sizes = `${still}, (max-width: 43.75rem) 81vw, min(54rem, (100vw - 4rem) * 0.881)`;
+  expect(picks([carousel(image)])).toEqual([
+    { kind: 'image', src: sanity('front'), sizes }
+  ]);
+  // The front card is wider the fewer cards stand behind it.
+  expect(picks([carousel(image, 3)])[0].sizes).toBe(
+    `${still}, (max-width: 43.75rem) 85vw, min(56rem, (100vw - 4rem) * 0.914)`
+  );
+  expect(picks([carousel(image, 2, true)])[0].sizes).toBe(
+    `${still}, (max-width: 43.75rem) 92vw, min(61rem, (100vw - 4rem) * 0.996)`
+  );
+  expect(picks([carousel({ ...video, _type: 'carouselYouTube' })])).toEqual([
+    { kind: 'youtube', id: 'dQw4w9WgXcQ', sizes }
+  ]);
+  expect(
+    picks([
+      carousel({
+        _type: 'carouselScene',
+        model: '/models/rp-logo.glb',
+        poster: sanity('poster')
+      })
+    ])
+  ).toEqual([
+    {
+      kind: 'image',
+      src: sanity('poster'),
+      sizes: '(max-width: 43.75rem) 50vw, 32rem'
+    }
+  ]);
+  expect(picks([{ _type: 'media-carousel', items: [] }])).toEqual([]);
+});
+
+test('beside a table of contents the carousel sizes for the narrower column', () => {
+  const carousel = {
+    _type: 'media-carousel',
+    items: Array(6).fill({ _type: 'carouselImage', image: photo('front') })
+  };
+  expect(picks([carousel], { railed: new Set([carousel]) })[0].sizes).toBe(
+    '(prefers-reduced-motion: reduce) and (max-width: 43.75rem) 92vw, ' +
+      '(prefers-reduced-motion: reduce) and (min-width: 68rem) min(61.3rem, (100vw - 27rem) * 1), ' +
+      '(prefers-reduced-motion: reduce) min(61.3rem, (100vw - 4rem) * 1), ' +
+      '(max-width: 43.75rem) 81vw, ' +
+      '(min-width: 68rem) min(54rem, (100vw - 27rem) * 0.881), ' +
+      'min(54rem, (100vw - 4rem) * 0.881)'
+  );
+});
+
+test('only a carousel after a table of contents that renders sizes for the rail', () => {
+  const carousel = {
+    _key: 'c',
+    _type: 'media-carousel',
+    items: Array(6).fill({ _type: 'carouselImage', image: photo('front') })
+  };
+  const toc = { _key: 'toc', _type: 'table-of-contents' };
+  const railed = (modules) =>
+    picks([carousel], { railed: railedModules(modules) })[0].sizes.includes(
+      '27rem'
+    );
+  expect(railed([carousel, toc, text('a', h2('Below'))])).toBe(false);
+  expect(railed([toc, text('a', h2('Below')), carousel])).toBe(true);
+  // No headings after it, so the contents draw nothing and leave no rail.
+  expect(railed([text('a', h2('Above')), toc, carousel])).toBe(false);
+});
+
+test('a carousel counts and leads with only the items it can draw', () => {
+  const image = { _type: 'carouselImage', image: photo('front') };
+  const broken = [
+    { _type: 'carouselYouTube', url: 'https://youtu.be/nope' },
+    { _type: 'carouselImage', image: null },
+    { _type: 'carouselScene', model: null, poster: sanity('poster') }
+  ];
+  const [front] = picks([
+    { _type: 'media-carousel', items: [...broken, image, image, image] }
+  ]);
+  expect(front.src).toBe(sanity('front'));
+  expect(front.sizes).toBe(carouselSizes(3, false));
 });

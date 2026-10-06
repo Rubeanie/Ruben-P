@@ -15,8 +15,8 @@ import styles from '@/styles/components/ThreeScene.module.scss';
 // just the JS chunk. The frame's plate and the loader stand in until then.
 // One loader for both: an inline import() here would split into a second chunk
 // group, and the click would fetch the scene's own code again after the warm-up.
-const warm = () => import('@/components/canvas/Scene');
-const Scene = dynamic(() => warm(), { ssr: false });
+export const warmScene = () => import('@/components/canvas/Scene');
+const Scene = dynamic(() => warmScene(), { ssr: false });
 
 // Defer the scene (chunk, GLB, HDRI/PMREM, GPU uploads) until it nears the
 // viewport, so off-screen scenes don't all load at once and jank scrolling. The
@@ -130,8 +130,8 @@ export default function SceneCanvas({
               .join(', ')}
             // Stays busy through the fade so the spinner never turns back into the glyph.
             aria-busy={active}
-            onPointerEnter={warm}
-            onFocus={warm}
+            onPointerEnter={warmScene}
+            onFocus={warmScene}
             onClick={() => setActive(true)}>
             <span className={styles.disc} aria-hidden>
               {active ? (

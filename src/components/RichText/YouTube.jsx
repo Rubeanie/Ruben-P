@@ -2,6 +2,7 @@ import { stegaClean } from '@sanity/client/stega';
 import {
   embedSrc,
   getThumb,
+  getTitle,
   getYouTubeId,
   getYouTubeStart,
   IFRAME_ALLOW
@@ -9,23 +10,6 @@ import {
 import { YouTubeFacade } from '@/components/lazy';
 import { blockLayout } from './layout';
 import styles from '@/styles/components/RichText.module.scss';
-
-// oEmbed gives the real title for the facade's caption and aria-label.
-async function getTitle(id) {
-  const fallback = 'YouTube video';
-  try {
-    const response = await fetch(
-      `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`,
-      // Refreshed by the publish webhook, like the page around it.
-      { cache: 'force-cache', next: { tags: ['pages'] } }
-    );
-    if (!response.ok) return fallback;
-    const data = await response.json();
-    return data.title || fallback;
-  } catch {
-    return fallback;
-  }
-}
 
 export default async function YouTube({ value, sanity, preload = false }) {
   const url = stegaClean(value?.url);

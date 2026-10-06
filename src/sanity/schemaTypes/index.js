@@ -21,6 +21,7 @@ import { hero } from './modules/hero';
 import { heroSaas } from './modules/hero.saas';
 import { heroSplit } from './modules/hero.split';
 import { hero3d } from './modules/hero.3d';
+import { mediaCarousel } from './modules/media-carousel';
 import { postDetails } from './modules/post-details';
 import { postList } from './modules/post-list';
 import { postFeatured } from './modules/post-featured';
@@ -70,6 +71,7 @@ export const schemaTypes = [
   heroSaas,
   heroSplit,
   hero3d,
+  mediaCarousel,
   postDetails,
   postList,
   postFeatured,

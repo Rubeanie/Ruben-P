@@ -33,3 +33,43 @@ test('getYouTubeStart normalises both timestamp forms', () => {
   expect(getYouTubeStart('https://youtu.be/dQw4w9WgXcQ?start=45')).toBe(45);
   expect(getYouTubeStart('https://youtu.be/dQw4w9WgXcQ')).toBe(null);
 });
+
+test('loadPlayerApi gives up on an API that never readies, and a retry survives the old attempt', async () => {
+  const scripts = [];
+  const timers = [];
+  const win = { onYouTubeIframeAPIReady: undefined, YT: {} };
+  const realWindow = globalThis.window;
+  const realDocument = globalThis.document;
+  const realSetTimeout = globalThis.setTimeout;
+  globalThis.window = win;
+  globalThis.document = {
+    createElement: () => {
+      const script = { remove() {} };
+      scripts.push(script);
+      return script;
+    },
+    head: { append() {} }
+  };
+  globalThis.setTimeout = (fn) => timers.push(fn);
+  try {
+    const { loadPlayerApi } = await import('./youtube');
+    const first = loadPlayerApi();
+    const lateReady = win.onYouTubeIframeAPIReady;
+    timers[0]();
+    await expect(first).rejects.toThrow('timed out');
+    expect(win.onYouTubeIframeAPIReady).toBeUndefined();
+
+    const retry = loadPlayerApi();
+    const ready = win.onYouTubeIframeAPIReady;
+    scripts[0].onerror();
+    lateReady();
+    expect(win.onYouTubeIframeAPIReady).toBe(ready);
+    expect(loadPlayerApi()).toBe(retry);
+    ready();
+    expect(await retry).toBe(win.YT);
+  } finally {
+    globalThis.window = realWindow;
+    globalThis.document = realDocument;
+    globalThis.setTimeout = realSetTimeout;
+  }
+});

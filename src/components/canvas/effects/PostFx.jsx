@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { EffectComposer } from '@react-three/postprocessing';
 import {
@@ -15,6 +15,7 @@ import Fxaa from './Fxaa';
 import Glow from './Glow';
 import Grain from './Grain';
 import ditherOutput from './dither';
+import useReducedMotion from '@/lib/useReducedMotion';
 
 export const BLOOM = {
   quiet: { intensity: 0.35, threshold: 0.7, smoothing: 0.6 },
@@ -79,15 +80,6 @@ function update(chain, bloom, vignette, grainTime, frozen, composer) {
   const last = composer?.passes.at(-1);
   if (last?.fullscreenMaterial) ditherOutput(last.fullscreenMaterial);
 }
-
-const REDUCED = '(prefers-reduced-motion: reduce)';
-const subscribe = (change) => {
-  const query = matchMedia(REDUCED);
-  query.addEventListener('change', change);
-  return () => query.removeEventListener('change', change);
-};
-export const useReducedMotion = () =>
-  useSyncExternalStore(subscribe, () => matchMedia(REDUCED).matches);
 
 // Optional bloom as light before tone mapping, then an optional vignette and
 // grain; bloom.level (0 to 1) and vignette may be functions, read every frame, and

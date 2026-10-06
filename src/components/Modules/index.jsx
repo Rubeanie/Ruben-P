@@ -14,6 +14,7 @@ import Hero from './Hero';
 import HeroGlass from './HeroGlass';
 import HeroSplit from './HeroSplit';
 import Hero3D from './Hero3D';
+import MediaCarousel from './MediaCarousel';
 import RichtextModule from './RichtextModule';
 import SkillList from './SkillList';
 import SocialList from './SocialList';
@@ -24,14 +25,15 @@ import ThreeScene from './ThreeScene';
 import ErrorBoundary from '../ErrorBoundary';
 import { anchors } from '@/lib/anchors';
 import { firstModule } from '@/lib/modules';
-import { tocEntries } from '@/lib/toc';
+import { railedModules, tocEntries } from '@/lib/toc';
 
 const ModuleRenderer = ({
   module,
   page,
   dataAttribute,
   isFirstModule,
-  entries
+  entries,
+  besideRail
 }) => {
   switch (module._type) {
     case 'accordion-list':
@@ -64,6 +66,14 @@ const ModuleRenderer = ({
       return <HeroSplit {...module} />;
     case 'hero.3d':
       return <Hero3D {...module} />;
+    case 'media-carousel':
+      return (
+        <MediaCarousel
+          {...module}
+          isFirstModule={isFirstModule}
+          besideRail={besideRail}
+        />
+      );
     case 'richtext-module':
       return (
         <RichtextModule
@@ -114,6 +124,7 @@ export async function Modules({ modules: fetched, page }) {
       type: page._type
     });
   const first = firstModule(modules);
+  const railed = railedModules(modules, headings);
   return (
     <>
       {(modules ?? []).map((module, index) => {
@@ -138,6 +149,7 @@ export async function Modules({ modules: fetched, page }) {
               page={page}
               dataAttribute={scoped}
               isFirstModule={module === first}
+              besideRail={railed.has(module)}
               entries={
                 module._type === 'table-of-contents'
                   ? tocEntries(headings, modules.slice(index + 1))

@@ -19,6 +19,10 @@ export const ThemeImage = dynamic(
 export const Stage = dynamic(() => import('./Modules/Hero3D/Stage'), {
   loading: () => null
 });
+export const MediaCarousel = dynamic(
+  () => import('./Modules/MediaCarousel/Carousel'),
+  { loading: () => null }
+);
 export const YouTubeFacade = dynamic(() => import('./RichText/YouTubeFacade'), {
   loading: () => null
 });

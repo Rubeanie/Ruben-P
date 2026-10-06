@@ -2,12 +2,15 @@ import { stegaClean } from '@sanity/client/stega';
 import { anchors, decodeFragment } from '@/lib/anchors';
 import { firstRow, tileSizes } from '@/lib/bento';
 import { heroPhotos } from '@/lib/heroPhotos';
+import { carouselSizes } from '@/lib/carousel';
+import { renderable } from '@/lib/carouselItems';
 import {
   CREATIVE_SIZES,
   PROSE_SIZES,
   resolveAsset,
   SCENE_POSTER_SIZES
 } from '@/lib/imageBlock';
+import { isGif } from '@/lib/imageLoader';
 import { drawnModules } from '@/lib/modules';
 import { featuredFirst } from '@/lib/posts';
 import { isInternalHref, resolveLink } from '@/lib/processUrl';
@@ -89,6 +92,27 @@ const contentPicks = (content) =>
     .filter(Boolean)
     .slice(0, PER_MODULE);
 
+// The carousel's front card, its first item it can draw; the rest wait behind.
+function carouselPicks(module, { railed }) {
+  const shown = (module.items ?? []).filter(renderable);
+  const item = shown[0];
+  const sizes = carouselSizes(shown.length, module.loop, railed.has(module));
+  switch (stegaClean(item?._type)) {
+    case 'carouselImage':
+      return [imagePick(item, sizes)];
+    case 'carouselYouTube':
+      return [
+        { kind: 'youtube', id: getYouTubeId(stegaClean(item.url)), sizes }
+      ];
+    case 'carouselScene': {
+      const src = stegaClean(item.poster);
+      return src ? [{ kind: 'image', src, sizes: SCENE_POSTER_SIZES }] : [];
+    }
+    default:
+      return [];
+  }
+}
+
 const tileCovers = (rows) =>
   rows
     .filter(({ post }) => post.cover?.asset?.url)
@@ -129,6 +153,7 @@ const PICKS = {
       ? [{ kind: 'image', src, sizes: SCENE_POSTER_SIZES }]
       : [];
   },
+  'media-carousel': carouselPicks,
   'post-list': (module, { posts }) => tileCovers(firstRow(posts)),
   // Under a post the row is its related posts, which need the post itself.
   'post-featured': (module, { posts, onPost }) =>
@@ -148,14 +173,17 @@ const pickKey = (pick) =>
 
 // What a link's destination shows first, in order of appearance, capped.
 // `posts` is the post index, for modules of tiles; `onPost` says the page is
-// a post.
-export function picks(modules, { posts = [], onPost = false } = {}) {
+// a post; `railed` holds the modules beside a table of contents' rail.
+export function picks(
+  modules,
+  { posts = [], onPost = false, railed = new Set() } = {}
+) {
   const seen = new Set();
   return modules
     .map((module) =>
-      (PICKS[module._type]?.(module, { posts, onPost }) ?? [])
+      (PICKS[module._type]?.(module, { posts, onPost, railed }) ?? [])
         // Animated GIFs run to megabytes: too much to fetch on a hover.
-        .filter((pick) => !/\.gif(\?|$)/i.test(pickKey(pick)))
+        .filter((pick) => !isGif(pickKey(pick)))
     )
     .filter((found) => found.length)
     .slice(0, MODULES)

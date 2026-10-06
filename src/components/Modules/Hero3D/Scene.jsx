@@ -5,11 +5,8 @@ import { PerspectiveCamera } from '@react-three/drei';
 import { ToneMappingMode } from 'postprocessing';
 import { NeutralToneMapping } from 'three';
 import Canvas from '@/components/canvas/Canvas';
-import PostFx, {
-  BLOOM,
-  GRAIN,
-  useReducedMotion
-} from '@/components/canvas/effects/PostFx';
+import PostFx, { BLOOM, GRAIN } from '@/components/canvas/effects/PostFx';
+import useReducedMotion from '@/lib/useReducedMotion';
 import Rig from './Rig';
 import styles from '@/styles/components/Hero3D.module.scss';
 

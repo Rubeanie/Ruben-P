@@ -17,6 +17,7 @@ import { threeSceneQuery } from './three-scene';
 import { creativeModuleQuery } from './creative-module';
 import { breadcrumbsQuery } from './breadcrumbs';
 import { customHtmlQuery } from './custom-html';
+import { mediaCarouselQuery } from './media-carousel';
 
 export const modulesQuery = groq`
   _type,
@@ -40,4 +41,5 @@ export const modulesQuery = groq`
   _type == 'creative-module' => { ${creativeModuleQuery} },
   _type == 'breadcrumbs' => { ${breadcrumbsQuery} },
   _type == 'custom-html' => { ${customHtmlQuery} },
+  _type == 'media-carousel' => { ${mediaCarouselQuery} },
 `;

@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { loaderFor } from './imageLoader';
+import { loaderFor, stillFrame } from './imageLoader';
 
 const load = (src, width, quality) => loaderFor(src)({ src, width, quality });
 
@@ -50,4 +50,16 @@ describe('loaderFor', () => {
     expect(loaderFor('/images/a.jpg')).toBeUndefined();
     expect(loaderFor({ src: '/a.jpg', width: 1, height: 1 })).toBeUndefined();
   });
+});
+
+test('stillFrame asks each CDN for the first frame', () => {
+  expect(stillFrame('https://cdn.sanity.io/images/p/d/a-640x360.gif')).toBe(
+    'https://cdn.sanity.io/images/p/d/a-640x360.gif?frame=1'
+  );
+  expect(stillFrame('https://cdn.sanity.io/images/p/d/a.gif?dl=1')).toBe(
+    'https://cdn.sanity.io/images/p/d/a.gif?dl=1&frame=1'
+  );
+  expect(
+    stillFrame('https://res.cloudinary.com/demo/image/upload/v1/kittens.gif')
+  ).toBe('https://res.cloudinary.com/demo/image/upload/pg_1/v1/kittens.gif');
 });

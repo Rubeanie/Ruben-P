@@ -29,3 +29,14 @@ export function loaderFor(src) {
   )
     return cloudinaryLoader;
 }
+
+export const isGif = (src) => /\.gif(\?|$)/i.test(src);
+
+// An animated image's first frame, a few KB in place of the whole animation:
+// Sanity takes frame=1, Cloudinary pg_1.
+export function stillFrame(src) {
+  if (src.startsWith('https://res.cloudinary.com/')) {
+    return src.replace('/image/upload/', '/image/upload/pg_1/');
+  }
+  return `${src}${src.includes('?') ? '&' : '?'}frame=1`;
+}
