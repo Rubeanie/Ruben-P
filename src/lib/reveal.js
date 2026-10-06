@@ -2,8 +2,9 @@
 // down the viewport) until Reveal plays them in; the same line decides both.
 // It is also inlined as the pre-paint script, so it may only use globals.
 // With `adopt` it takes over the holds that script made instead of measuring.
-// Returns [element, kind, hold] in reading order.
-export function hold(adopt) {
+// `edge` moves the line, as a share of the viewport. Returns [element, kind,
+// hold] in reading order.
+export function hold(adopt, edge = 0.9) {
   const root = document.querySelector('[data-reveal]');
   if (!root?.animate) return [];
   const group = '[data-reveal-children]';
@@ -30,7 +31,7 @@ export function hold(adopt) {
     }
   }
 
-  const line = innerHeight * 0.9;
+  const line = innerHeight * edge;
   const held = adopt
     ? units.filter(([el]) => el.getAnimations().some((a) => a.id === 'reveal'))
     : units.filter(([el]) => {
@@ -47,7 +48,11 @@ export function hold(adopt) {
   };
   // A held animation rather than an attribute: hydration would flag one.
   return held.map(([el, kind]) => {
-    for (const a of el.getAnimations()) if (a.id === 'reveal') a.cancel();
+    const prior = el.getAnimations().find((a) => a.id === 'reveal');
+    // The script measuring again keeps its hold. Reveal takes over with its
+    // own, which the script's five-second fallback can't cancel.
+    if (prior && !adopt) return [el, kind, prior];
+    prior?.cancel();
     const frame = { opacity: 0, ...(!still && moves[kind]) };
     return [el, kind, el.animate(frame, { fill: 'forwards', id: 'reveal' })];
   });
@@ -55,13 +60,17 @@ export function hold(adopt) {
 
 // Modules that play their own entrance, hidden the same way below the line
 // until they take over. Pre-paint script only, so it may only use globals.
-export function holdEntrances() {
-  const line = innerHeight * 0.9;
+export function holdEntrances(edge = 0.9) {
+  const line = innerHeight * edge;
   return [...document.querySelectorAll('[data-reveal] [data-entrance]')]
     .filter((el) => el.getBoundingClientRect().top > line)
-    .map((el) => [
-      el,
-      'entrance',
-      el.animate({ opacity: 0 }, { fill: 'forwards', id: 'entrance' })
-    ]);
+    .map((el) => {
+      const prior = el.getAnimations().find((a) => a.id === 'entrance');
+      const frame = { opacity: 0 };
+      return [
+        el,
+        'entrance',
+        prior ?? el.animate(frame, { fill: 'forwards', id: 'entrance' })
+      ];
+    });
 }

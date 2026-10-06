@@ -7,9 +7,11 @@ import { hold, holdEntrances } from '@/lib/reveal';
 const EASE_OUT = 'cubic-bezier(0.23, 1, 0.32, 1)';
 
 // Runs before first paint on a full load, except one from Back or Forward.
-// If the app never hydrates to take the holds over, everything shows after
-// five seconds.
-const script = `(function(h){setTimeout(function(){h.forEach(function(u){u[2].cancel()})},5000)})(performance.getEntriesByType('navigation')[0]?.type==='back_forward'?[]:(${hold})().concat((${holdEntrances})()))`;
+// Lazy modules stream in after it and push down what follows, so it measures
+// again on every change until Reveal takes over: up to the first paint at the
+// usual line, after it only below the screen, where nothing has been seen.
+// If the app never hydrates, everything shows after five seconds.
+const script = `(function(f){if(performance.getEntriesByType('navigation')[0]?.type==='back_forward')return;var h=f(.9),o=new MutationObserver(function(){h=h.concat(f(performance.getEntriesByType('paint').length?1:.9))});self.__revealWatch=o;o.observe(document.body,{childList:true,subtree:true});setTimeout(function(){o.disconnect();h.forEach(function(u){u[2].cancel()})},5000)})(function(e){return(${hold})(!1,e).concat((${holdEntrances})(e))})`;
 
 // Back and Forward bring a page back as it was left, so nothing enters. The
 // next reveal run uses the flag up.
@@ -112,6 +114,8 @@ export default function Reveal() {
     };
 
     const start = () => {
+      // From here Reveal owns the holds, so the pre-paint script stops adding.
+      if (adopt.current) window.__revealWatch?.disconnect();
       const pending = hold(adopt.current);
       if (!pending.length) return;
       pending.forEach((unit) => waiting.add(unit));
