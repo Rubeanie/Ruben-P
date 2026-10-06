@@ -1,4 +1,9 @@
-import { CLOUDINARY_CHAIN } from './imageLoader';
+import {
+  CLOUDINARY_CHAIN,
+  animatedClip,
+  isClip,
+  videoTransform
+} from './imageLoader';
 
 export const DEFAULT_THEME_COLORS = {
   primary: '#ed5f68',
@@ -148,6 +153,8 @@ export const themeGate = (themes) =>
 
 // The server and the Studio analyse the same small JPG of a hero photo.
 export function themeRendition(url) {
+  // A video's colours come from its first frame.
+  if (isClip(url)) return videoTransform(url, 'so_0,w_800,f_jpg,q_80');
   const parsed = new URL(url);
 
   if (parsed.hostname === 'cdn.sanity.io') {
@@ -174,6 +181,7 @@ export const PORTRAIT_QUERY = '(max-aspect-ratio: 3/4)';
 // Sized for the screen that paints it: no wider than a big desktop shows,
 // in the best format the browser takes. Other hosts keep the original.
 export function landscapeRendition(url) {
+  if (isClip(url)) return animatedClip(url, 'c_limit,w_1920');
   let parsed;
   try {
     parsed = new URL(url);
@@ -197,6 +205,8 @@ export function landscapeRendition(url) {
 }
 
 export function portraitRendition(url) {
+  // Cloudinary's conditional 3:4 crop is for images, so a video goes whole.
+  if (isClip(url)) return landscapeRendition(url);
   let parsed;
   try {
     parsed = new URL(url);

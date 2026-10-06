@@ -3,7 +3,7 @@ import { MediaCarousel as Carousel } from '@/components/lazy';
 import { aspectOf } from '@/components/Modules/ThreeScene/aspects';
 import { captionText } from '@/components/RichText/FigureCaption';
 import { resolveAsset } from '@/lib/imageBlock';
-import { isGif } from '@/lib/imageLoader';
+import { isAnimated } from '@/lib/imageLoader';
 import { renderable } from '@/lib/carouselItems';
 import uid from '@/lib/uid';
 import {
@@ -27,7 +27,7 @@ async function resolve(item) {
         type: 'image',
         src,
         alt: stegaClean(item.alt),
-        animated: isGif(src)
+        animated: isAnimated(src)
       };
     }
     case 'carouselYouTube': {

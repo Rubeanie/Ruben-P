@@ -10,7 +10,7 @@ import {
   resolveAsset,
   SCENE_POSTER_SIZES
 } from '@/lib/imageBlock';
-import { isGif } from '@/lib/imageLoader';
+import { isAnimated } from '@/lib/imageLoader';
 import { drawnModules } from '@/lib/modules';
 import { featuredFirst } from '@/lib/posts';
 import { isInternalHref, resolveLink } from '@/lib/processUrl';
@@ -182,8 +182,8 @@ export function picks(
   return modules
     .map((module) =>
       (PICKS[module._type]?.(module, { posts, onPost, railed }) ?? [])
-        // Animated GIFs run to megabytes: too much to fetch on a hover.
-        .filter((pick) => !isGif(pickKey(pick)))
+        // Animations run to megabytes: too much to fetch on a hover.
+        .filter((pick) => !isAnimated(pickKey(pick)))
     )
     .filter((found) => found.length)
     .slice(0, MODULES)

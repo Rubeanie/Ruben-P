@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { Environment } from '@react-three/drei';
 import { useTheme } from '@/components/ThemeContext';
 import { loadThemeImage } from '@/lib/themes';
+import { isClip, stillFrame } from '@/lib/imageLoader';
 
 // Built-in presets ship as JS modules exporting a base64 data-URI (drei's
 // getExtension reads data:application/exr). Explicit per-preset imports so each
@@ -101,7 +102,8 @@ function ThemeEnvironment({ background }) {
     let cancelled = false;
     let created = null;
 
-    decodeImage(url)
+    // A video theme lights the scene from its first frame.
+    decodeImage(isClip(url) ? stillFrame(url) : url)
       .then((img) => {
         try {
           if (cancelled) return;

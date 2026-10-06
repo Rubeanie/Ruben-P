@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { loaderFor, stillFrame } from './imageLoader';
+import { isAnimated, loaderFor, stillFrame } from './imageLoader';
 
 const load = (src, width, quality) => loaderFor(src)({ src, width, quality });
 
@@ -62,4 +62,30 @@ test('stillFrame asks each CDN for the first frame', () => {
   expect(
     stillFrame('https://res.cloudinary.com/demo/image/upload/v1/kittens.gif')
   ).toBe('https://res.cloudinary.com/demo/image/upload/pg_1/v1/kittens.gif');
+});
+
+describe('Cloudinary clips', () => {
+  const clip =
+    'https://res.cloudinary.com/ruben-p/video/upload/v1/samples/dance-2.mp4';
+
+  test('count as animated and play as a sized, looping WebP', () => {
+    expect(isAnimated(clip)).toBe(true);
+    expect(load(clip, 640)).toBe(
+      'https://res.cloudinary.com/ruben-p/video/upload/c_limit,w_640/fps_15/e_loop/fl_animated,fl_awebp,f_webp/v1/samples/dance-2.mp4'
+    );
+  });
+
+  test('keep a query string and survive a missing src', () => {
+    expect(stillFrame(`${clip}?t=1`)).toBe(
+      'https://res.cloudinary.com/ruben-p/video/upload/so_0/v1/samples/dance-2.jpg?t=1'
+    );
+    expect(isAnimated(`${stillFrame(clip)}?t=1`)).toBe(false);
+    expect(isAnimated(undefined)).toBe(false);
+  });
+
+  test('rest on the first frame as a sized still', () => {
+    expect(load(stillFrame(clip), 640)).toBe(
+      'https://res.cloudinary.com/ruben-p/video/upload/so_0/c_limit,f_auto,q_auto,w_640/v1/samples/dance-2.jpg'
+    );
+  });
 });
