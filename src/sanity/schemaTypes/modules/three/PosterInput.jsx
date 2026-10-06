@@ -6,7 +6,14 @@ import snapshotScene from './snapshotScene';
 
 export default function PosterInput(props) {
   const { onChange, renderDefault, readOnly } = props;
-  const scene = useFormValue(props.path.slice(0, -1)) || {};
+  const item = useFormValue(props.path.slice(0, -1)) || {};
+  // A carousel card (module › items › card › poster) takes the carousel's
+  // aspect ratio, so its poster does too.
+  const inCarousel = item._type === 'carouselScene';
+  const carousel = useFormValue(props.path.slice(0, inCarousel ? -3 : -1));
+  const scene = inCarousel
+    ? { ...item, aspectRatio: carousel?.aspectRatio }
+    : item;
   const client = useClient({ apiVersion });
   const toast = useToast();
   const [busy, setBusy] = useState(false);

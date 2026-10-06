@@ -1,5 +1,6 @@
 import { stegaClean } from '@sanity/client/stega';
 import { MediaCarousel as Carousel } from '@/components/lazy';
+import { aspectOf } from '@/components/Modules/ThreeScene/aspects';
 import { captionText } from '@/components/RichText/FigureCaption';
 import { resolveAsset } from '@/lib/imageBlock';
 import { isGif } from '@/lib/imageLoader';
@@ -11,14 +12,6 @@ import {
   getYouTubeId,
   getYouTubeStart
 } from '@/lib/youtube';
-
-// Fixed lookup rather than parsing the string: an unknown value should not reach CSS.
-const ASPECTS = {
-  '16:9': '16 / 9',
-  '4:3': '4 / 3',
-  '1:1': '1 / 1',
-  '3:4': '3 / 4'
-};
 
 // A renderable item as the client island draws it.
 async function resolve(item) {
@@ -51,7 +44,22 @@ async function resolve(item) {
         model: stegaClean(item.model),
         poster: stegaClean(item.poster),
         modelBytes: item.modelBytes,
-        label: stegaClean(item.alt)
+        label: stegaClean(item.alt),
+        // The three.js module's options, as it passes them to its scene.
+        look: {
+          background: stegaClean(item.background?.hex),
+          lights: stegaClean(item.lights?.hex),
+          environmentSource: stegaClean(item.environmentSource),
+          environmentPreset: stegaClean(item.environmentPreset),
+          environment: stegaClean(item.environment),
+          environmentBackground: item.environmentBackground,
+          keyLight: item.keyLight,
+          bloom: stegaClean(item.bloom),
+          grain: stegaClean(item.grain),
+          vignette: stegaClean(item.vignette),
+          orbitControls: item.orbitControls,
+          zoom: item.zoom
+        }
       };
   }
 }
@@ -71,7 +79,7 @@ export default async function MediaCarousel(props) {
       <Carousel
         id={uid(props)}
         items={items}
-        aspect={ASPECTS[stegaClean(props.aspectRatio)] || ASPECTS['16:9']}
+        aspect={aspectOf(stegaClean(props.aspectRatio))}
         loop={props.loop}
         preload={props.isFirstModule}
         besideRail={props.besideRail}

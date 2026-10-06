@@ -1,7 +1,11 @@
 import { groq } from '../../fetch';
 import { cloudinaryQuery } from '../fragments/cloudinary';
 import { imageQuery } from '../fragments/image';
-import { sceneFacadeQuery, sceneModelQuery } from '../fragments/scene';
+import {
+  sceneFacadeQuery,
+  sceneLookQuery,
+  sceneModelQuery
+} from '../fragments/scene';
 
 export const mediaCarouselQuery = groq`
   aspectRatio,
@@ -21,6 +25,7 @@ export const mediaCarouselQuery = groq`
     _type == 'carouselScene' => {
       ${sceneModelQuery},
       ${sceneFacadeQuery},
+      ${sceneLookQuery},
       alt
     }
   }

@@ -127,6 +127,22 @@ const carouselScene = {
       hidden: ({ parent }) => parent?.posterSource !== 'cloudinary',
       validation: posterFrom('cloudinary')
     }),
+    reuse(threeJs, 'background', {
+      description: 'Behind the model; the card stays opaque without one.'
+    }),
+    reuse(threeJs, 'lights'),
+    reuse(threeJs, 'environmentSource'),
+    reuse(threeJs, 'environmentPreset'),
+    reuse(threeJs, 'environmentFile'),
+    reuse(threeJs, 'environmentUrl'),
+    reuse(threeJs, 'environmentCloudinary'),
+    reuse(threeJs, 'environmentBackground'),
+    reuse(threeJs, 'keyLight'),
+    reuse(threeJs, 'bloom'),
+    reuse(threeJs, 'grain'),
+    reuse(threeJs, 'vignette'),
+    reuse(threeJs, 'orbitControls'),
+    reuse(threeJs, 'zoom'),
     {
       name: 'alt',
       type: 'string',

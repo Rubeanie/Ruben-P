@@ -12,19 +12,6 @@ import { loaderFor, stillFrame } from '@/lib/imageLoader';
 import { warmEmbed } from '@/lib/youtube';
 import styles from '@/styles/components/MediaCarousel.module.scss';
 
-// A card's scene keeps the three.js module's look without its options: the
-// page photo in its reflections, a key light and the quiet effects.
-const SCENE = {
-  environmentSource: 'theme',
-  keyLight: true,
-  bloom: 'medium',
-  grain: 'light',
-  vignette: 'light',
-  orbitControls: true,
-  // A wheel over a card should scroll the page.
-  zoom: false
-};
-
 // Fetches, at low priority, what a card needs the moment it comes to the
 // front: an animation's full rendition (at the widths the front card picks
 // from), the embed's connections, or the scene's code and model.
@@ -127,7 +114,7 @@ function Scene({ item, active, live, onPlay }) {
       }}>
       <SceneCanvas
         key={`${resets}:${lost}`}
-        {...SCENE}
+        {...item.look}
         model={item.model}
         poster={item.poster}
         modelBytes={item.modelBytes}

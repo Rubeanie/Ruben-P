@@ -25,3 +25,25 @@ export const sceneFacadeQuery = groq`
     modelSource == 'cloudinary' => modelCloudinary.bytes
   )
 `;
+
+// The scene's look: backdrop, lights, image-based lighting (the HDRI as one
+// URL), effects and controls.
+export const sceneLookQuery = groq`
+  background { hex },
+  lights { hex },
+  environmentSource,
+  environmentPreset,
+  // A box ticked before the source was cleared stays stored; it needs a source.
+  "environmentBackground": defined(environmentSource) && environmentSource != 'theme' && environmentBackground == true,
+  "environment": select(
+    environmentSource == 'file' => environmentFile.asset->url,
+    environmentSource == 'url' => environmentUrl,
+    environmentSource == 'cloudinary' => environmentCloudinary.secure_url
+  ),
+  keyLight,
+  "bloom": coalesce(bloom, 'off'),
+  "grain": select(grain == true => 'light', grain),
+  "vignette": select(vignette == true => 'light', vignette),
+  orbitControls,
+  zoom
+`;
