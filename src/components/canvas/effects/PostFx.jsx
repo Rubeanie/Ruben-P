@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import { EffectComposer } from '@react-three/postprocessing';
 import {
   BlendFunction,
@@ -153,11 +153,6 @@ export default function PostFx({
     [chain]
   );
   const reduced = useReducedMotion();
-  // The wrapper only resizes on a CSS size change, not a new pixel ratio.
-  const dpr = useThree((s) => s.viewport.dpr);
-  useEffect(() => {
-    composer.current?.setSize();
-  }, [dpr]);
 
   useFrame(() =>
     update(chain, bloom, vignette, grainTime, reduced, composer.current)

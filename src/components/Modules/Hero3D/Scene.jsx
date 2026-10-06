@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
-import { PerformanceMonitor, PerspectiveCamera } from '@react-three/drei';
+import { PerspectiveCamera } from '@react-three/drei';
 import { ToneMappingMode } from 'postprocessing';
 import { NeutralToneMapping } from 'three';
 import Canvas from '@/components/canvas/Canvas';
@@ -26,25 +26,24 @@ const GL = {
 // The full-screen hero draws at the screen's own density, up to 2x, and only
 // steps down (to 1x at most) while frames actually run slow, back up when they
 // recover. It overrides the shared canvas's generic 0.5-1.1 range.
-const top = () => Math.max(1, Math.min(devicePixelRatio, 2));
+const top = (ratio) => Math.max(1, Math.min(ratio, 2));
 
 // Set once frames still run slow at the lowest density: the effects stay off from then on,
 // across pages, rather than flip back on and slow down again.
 let overloaded = false;
 
 function Scene({ frameloop, progress, vignette, stage, grain, onReady }) {
-  const [max, setMax] = useState(top);
-  const [load, setLoad] = useState(1);
+  const [ratio, setRatio] = useState(() => devicePixelRatio);
   const [shed, setShed] = useState(overloaded);
   const reduced = useReducedMotion();
   // Re-read when the density changes: a window dragged to another screen, zoom.
   useEffect(() => {
-    const query = matchMedia(`(resolution: ${devicePixelRatio}dppx)`);
-    const change = () => setMax(top());
+    const query = matchMedia(`(resolution: ${ratio}dppx)`);
+    const change = () => setRatio(devicePixelRatio);
     query.addEventListener('change', change);
     return () => query.removeEventListener('change', change);
-  }, [max]);
-  const dpr = Math.round((1 + (max - 1) * load) * 100) / 100;
+  }, [ratio]);
+  const max = top(ratio);
   const composed = !reduced && !shed;
   // Written by Rig every frame, read by the composer.
   const levels = useRef({ bloom: 0, travel: 0 });
@@ -55,16 +54,11 @@ function Scene({ frameloop, progress, vignette, stage, grain, onReady }) {
       onReady={onReady}
       frameloop={frameloop}
       gl={GL}
-      dpr={dpr}
+      dprRange={[1, max]}
       onOverload={() => {
         overloaded = true;
         setShed(true);
       }}>
-      <PerformanceMonitor
-        factor={1}
-        step={0.1}
-        onChange={({ factor }) => setLoad(factor)}
-      />
       <Rig
         progress={progress}
         vignette={vignette}
