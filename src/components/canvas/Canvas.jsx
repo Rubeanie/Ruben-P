@@ -64,7 +64,15 @@ export default function Canvas({
         gl={{ precision: 'lowp', powerPreference: 'high-performance' }}
         dpr={dpr}
         frameloop={loop}
-        {...props}>
+        {...props}
+        onCreated={(state) => {
+          // R3F loses the context on unmount, while the canvas is still on
+          // screen; Vivaldi and Helium then show one white frame. Released a
+          // moment later the GPU memory still goes, without the flash.
+          const lose = state.gl.forceContextLoss.bind(state.gl);
+          state.gl.forceContextLoss = () => setTimeout(lose, 500);
+          props.onCreated?.(state);
+        }}>
         <Suspense fallback={null}>
           {children}
           <Ready onReady={onReady} />
