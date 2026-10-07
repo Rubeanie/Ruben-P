@@ -330,30 +330,24 @@ $copy-inset: 0.375rem;
   }
 }
 
-// Taps go through to the player's own poster, but only in the middle: its
-// title bar, copy link and "Watch on YouTube" sit in the edge band, which stays ours.
+// Taps on the disc zone go through to the player's own poster, so they play
+// with sound; the cover over the rest keeps them off its title, channel and
+// logo links, and on a card leaves the frame a swipe surface (iOS won't hand a
+// pan from inside the player to the page).
 .facade[data-through] {
   pointer-events: none;
 
-  .play::before {
+  &::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: 1;
     pointer-events: auto;
-    clip-path: polygon(
-      evenodd,
-      0 0,
-      100% 0,
-      100% 100%,
-      0 100%,
-      0 0,
-      15% 32%,
-      85% 32%,
-      85% 76%,
-      15% 76%,
-      15% 32%
-    );
+    clip-path: var.disc-hole();
+  }
+
+  .play::after {
+    content: none;
   }
 }
 

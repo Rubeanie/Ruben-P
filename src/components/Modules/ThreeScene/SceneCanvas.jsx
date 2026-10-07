@@ -123,6 +123,7 @@ export default function SceneCanvas({
                 alt=''
                 fill
                 sizes={sizedSizes(SCENE_POSTER_SIZES, blockSize)}
+                draggable={false}
               />
             </span>
           )}

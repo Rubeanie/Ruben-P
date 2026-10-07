@@ -17,6 +17,9 @@ import { PROSE_SIZES, sizedSizes } from '@/lib/imageBlock';
 import { blockLayout } from './layout';
 import styles from '@/styles/components/RichText.module.scss';
 
+// How long a press may spin before the player's own controls take over.
+const STALL = 8000;
+
 export default function YouTubeFacade({
   id,
   title,
@@ -168,6 +171,18 @@ export default function YouTubeFacade({
     if (paused) player.current?.pauseVideo();
   }, [paused]);
 
+  // A press that never turns into playback (the player didn't ready, or the
+  // tap reached it and YouTube held back) shows the player's own controls,
+  // where the next tap plays, rather than spinning on.
+  useEffect(() => {
+    if (!active || loaded) return;
+    const timer = setTimeout(() => {
+      setActive(false);
+      if (frame.current) reveal();
+    }, STALL);
+    return () => clearTimeout(timer);
+  }, [active, loaded]);
+
   // A tap that lands inside the player moves focus into its frame.
   useEffect(() => {
     if (!ready || loaded) return;
@@ -203,6 +218,8 @@ export default function YouTubeFacade({
           onLoad={mode === 'plain' ? reveal : undefined}
           data-armed={(mode === 'api' && !ready && !loaded) || undefined}
           data-loaded={loaded || ready || undefined}
+          // Showing, not just built under the facade; a carousel stops dragging over it.
+          data-revealed={loaded || undefined}
         />
       )}
       {/* A pre-built player sits under the facade, which fades out instead of unmounting. */}
@@ -218,6 +235,7 @@ export default function YouTubeFacade({
             sizes={sizedSizes(sizes, blockLayout(size, align)['data-size'])}
             preload={preload}
             loading={loading}
+            draggable={false}
           />
           <button
             ref={button}

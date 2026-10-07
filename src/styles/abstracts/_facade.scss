@@ -1,9 +1,37 @@
+@use 'sass:list';
+@use 'sass:math';
 @use './variables' as var;
 @use './recipes' as recipe;
 
 /* Click-to-load facade: the glass play disc over a still (YouTube, 3D scene) */
 
 $disc-size: 3.5rem;
+// The press zone where the frame around the disc must stay a swipe surface (a
+// carousel card): a touch target clear of the disc's edge.
+$disc-hit: 5.5rem;
+
+// A clip-path covering the frame except a $disc-hit circle on its centre, where
+// the disc sits. Polygon points, not shape(): plain percentages and calc work
+// everywhere clip-path does.
+@function disc-hole() {
+  $points: 32;
+  $r: math.div($disc-hit, 2);
+  $path:
+    0 0,
+    100% 0,
+    100% 100%,
+    0 100%,
+    0 0;
+  @for $i from 0 through $points {
+    $a: math.div(360deg * $i, $points);
+    $path: list.append(
+      $path,
+      calc(50% + math.cos($a) * $r) calc(50% + math.sin($a) * $r),
+      comma
+    );
+  }
+  @return polygon(evenodd, $path);
+}
 
 // The glass clears so the still reads through the disc.
 @mixin disc-clear {
@@ -95,6 +123,25 @@ $disc-size: 3.5rem;
   @media (hover: hover) and (pointer: fine) {
     .play:hover .disc {
       @include disc-clear;
+    }
+  }
+
+  // Only a zone on the disc takes the press (and the hover): the frame around
+  // it stays inert, a swipe surface on a carousel card. The button's own box
+  // keeps focus and the ring.
+  .play {
+    pointer-events: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: $disc-hit;
+      height: $disc-hit;
+      translate: -50% -50%;
+      border-radius: 50%;
+      pointer-events: auto;
     }
   }
 

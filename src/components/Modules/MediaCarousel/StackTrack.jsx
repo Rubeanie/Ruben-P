@@ -27,8 +27,9 @@ const FOLLOW = 24;
 const PASSED_SCALE = 0.1;
 const PASSED_FADE = 0.6;
 
-// A player or scene on the front card keeps the gesture to itself.
-const LIVE = '[data-front] :is(iframe, canvas)';
+// A player or scene on the front card keeps the gesture to itself. Phones
+// build the player under the facade before any tap, which doesn't count.
+const LIVE = '[data-front] :is(iframe[data-revealed], canvas)';
 
 // The stack's position in cards, held by the carousel so its dots can ride it.
 export const useStack = (index) =>
