@@ -10,6 +10,13 @@ main {
   min-height: 100lvh;
   position: relative;
   z-index: 1;
+  // Nothing a module paints past the screen's edge (a 3D card, a blur's
+  // overhang outside its clip-path) may widen the page. Clip, not hidden: no
+  // scroll container, so the sticky hero and rail still stick. Only while main
+  // spans the screen: wider, its edge isn't the screen's, and nothing reaches it.
+  @media (max-width: #{var.$content-max-width}) {
+    overflow-x: clip;
+  }
 
   .hero {
     display: flex;
