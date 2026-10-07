@@ -23,13 +23,15 @@ async function resolve(item) {
   };
   switch (stegaClean(item._type)) {
     case 'carouselImage': {
-      const { src } = resolveAsset(item);
+      const { src, clip } = resolveAsset(item);
       return {
         ...common,
         type: 'image',
         src,
+        clip,
         alt: stegaClean(item.alt),
-        animated: isAnimated(src)
+        // A clip that plays as video rests on its first frame, nothing to warm.
+        animated: isAnimated(src) && !clip?.video
       };
     }
     case 'carouselYouTube': {

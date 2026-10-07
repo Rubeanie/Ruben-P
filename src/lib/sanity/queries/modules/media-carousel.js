@@ -1,4 +1,5 @@
 import { groq } from '../../fetch';
+import { clipQuery } from '../fragments/clip';
 import { cloudinaryQuery } from '../fragments/cloudinary';
 import { imageQuery } from '../fragments/image';
 import {
@@ -21,6 +22,7 @@ export const mediaCarouselQuery = groq`
       imageType,
       image { ${imageQuery} },
       cloudinaryAsset { ${cloudinaryQuery} },
+      clip { ${clipQuery} },
       alt
     },
     _type == 'carouselYouTube' => { url },

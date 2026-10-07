@@ -163,6 +163,12 @@ $caption-min: 7.5rem;
   -webkit-user-drag: none;
 }
 
+// Safari stops a video's layer a fraction short of the card, leaving a line of
+// the still frame under it; the card clips the overhang.
+video.fill {
+  height: calc(100% + 1px);
+}
+
 // The site's YouTube facade, filling the card instead of spacing itself as a block.
 .slide .embed {
   position: absolute;

@@ -235,6 +235,21 @@ test('picks skip animated GIFs', () => {
   ]);
 });
 
+test('a clip playing as video warms its first frame, an animated one nothing', () => {
+  const url = 'https://res.cloudinary.com/c/video/upload/v1/a.mp4';
+  const clip = (settings) => ({
+    _type: 'imageBlock',
+    imageType: 'cloudinary.asset',
+    cloudinaryAsset: { secure_url: url, width: 640, height: 360 },
+    clip: settings
+  });
+  expect(
+    picks([text('a', clip({ start: 2 }), clip({ animatedImage: true }))]).map(
+      (p) => p.src
+    )
+  ).toEqual(['https://res.cloudinary.com/c/video/upload/so_2/v1/a.jpg']);
+});
+
 test('the contents and breadcrumbs leave the opening to the page', () => {
   const modules = [
     { _key: 't', _type: 'table-of-contents' },

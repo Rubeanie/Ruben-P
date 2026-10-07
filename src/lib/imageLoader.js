@@ -2,6 +2,7 @@ export const CLOUDINARY_CHAIN = /\/image\/upload\/((?:[^/]+\/)*?)(v\d+\/)/;
 const VIDEO_CHAIN = /\/video\/upload\/((?:[^/]+\/)*?)(v\d+\/)/;
 // stillFrame asks a video for a .jpg, which serves its first frame.
 const FRAME = /\.jpg(\?|$)/;
+const EXTENSION = /\.\w+(\?|$)/;
 
 const onVideoUpload = (src) =>
   typeof src === 'string' &&
@@ -28,22 +29,66 @@ const sized = (width) => `c_limit,f_auto,q_auto,w_${width}`;
 const cloudinaryLoader = ({ src, width }) =>
   src.replace(CLOUDINARY_CHAIN, `/image/upload/$1${sized(width)}/$2`);
 
-// A Cloudinary video in an image field plays as a looping animated WebP.
-// No f_auto: on a video URL it serves a video again. fps_15 roughly halves
-// the file and still reads as smooth motion.
-export const animatedClip = (src, size) =>
-  videoTransform(src, `${size}/fps_15/e_loop/fl_animated,fl_awebp,f_webp`);
+// A clip's cut as its image field sets it. Unset, it runs from the start for
+// up to MAX_CLIP seconds at 15 fps (roughly half a video's frames, and still
+// smooth) and loops; the cap holds whatever the field says. fps 0 keeps the
+// video's own frame rate.
+export const MAX_CLIP = 6;
+export const CLIP_FPS = [10, 15, 24];
+// Takes its own output too: resolveAsset settles a clip before the loaders do.
+export function clipSettings(clip) {
+  const length = Number(clip?.length);
+  return {
+    start: Math.max(0, Number(clip?.start) || 0),
+    length: length > 0 ? Math.min(length, MAX_CLIP) : MAX_CLIP,
+    fps: clip?.fps === 0 || CLIP_FPS.includes(clip?.fps) ? clip.fps : 15,
+    loop: clip?.playOnce !== true && clip?.loop !== false
+  };
+}
 
-const clipLoader = ({ src, width }) => animatedClip(src, `c_limit,w_${width}`);
+// The trim goes first, so the sizing and frame rate after it work on the cut.
+const trim = ({ start, length }) =>
+  `${start ? `so_${start},` : ''}du_${length}`;
+const rate = ({ fps }) => (fps ? `fps_${fps}/` : '');
+
+// A Cloudinary video in an image field can play as an animated WebP. No
+// f_auto: on a video URL it serves a video again. Without e_loop the WebP
+// plays once, as Cloudinary makes animations from videos.
+export function animatedClip(src, size, clip) {
+  const cut = clipSettings(clip);
+  const loop = cut.loop ? 'e_loop/' : '';
+  return videoTransform(
+    src,
+    `${trim(cut)}/${size}/${rate(cut)}${loop}fl_animated,fl_awebp,f_webp`
+  );
+}
+
+// The same cut as a silent video. VP9 WebM came out about half the size of
+// H.264 MP4 on a sample; the MP4 is for browsers without WebM (iOS before 17.4).
+const CODECS = { webm: 'f_webm,vc_vp9', mp4: 'f_mp4,vc_h264' };
+
+export function clipVideo(src, width, clip, format = 'mp4') {
+  const cut = clipSettings(clip);
+  return videoTransform(
+    src,
+    `${trim(cut)}/c_limit,w_${width}/${rate(cut)}ac_none,${CODECS[format]},q_auto`
+  ).replace(EXTENSION, `.${format}$1`);
+}
+
+const clipLoader =
+  (clip) =>
+  ({ src, width }) =>
+    animatedClip(src, `c_limit,w_${width}`, clip);
 const frameLoader = ({ src, width }) => videoTransform(src, sized(width));
 
 // Sanity and Cloudinary resize and re-encode on their own CDNs, so those images skip
 // Vercel's optimizer (and its per-transformation billing). Anything else, an
 // unversioned Cloudinary URL included, gets undefined and the default optimizer.
-export function loaderFor(src) {
+// `clip`'s cut (start, length, fps) goes into the animated image's URL.
+export function loaderFor(src, clip) {
   if (typeof src !== 'string') return undefined;
   if (src.startsWith('https://cdn.sanity.io/')) return sanityLoader;
-  if (onVideoUpload(src)) return isClip(src) ? clipLoader : frameLoader;
+  if (onVideoUpload(src)) return isClip(src) ? clipLoader(clip) : frameLoader;
   if (
     src.startsWith('https://res.cloudinary.com/') &&
     CLOUDINARY_CHAIN.test(src)
@@ -55,10 +100,11 @@ export const isAnimated = (src) =>
   /\.gif(\?|$)/i.test(src ?? '') || isClip(src);
 
 // An animated image's first frame, a few KB in place of the whole animation:
-// Sanity takes frame=1, Cloudinary pg_1, and a clip its video's first frame.
-export function stillFrame(src) {
+// Sanity takes frame=1, Cloudinary pg_1, and a clip the first frame of its cut.
+export function stillFrame(src, clip) {
   if (isClip(src)) {
-    return videoTransform(src, 'so_0').replace(/\.\w+(\?|$)/, '.jpg$1');
+    const { start } = clipSettings(clip);
+    return videoTransform(src, `so_${start}`).replace(EXTENSION, '.jpg$1');
   }
   if (src.startsWith('https://res.cloudinary.com/')) {
     return src.replace('/image/upload/', '/image/upload/pg_1/');

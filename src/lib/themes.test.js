@@ -103,13 +103,13 @@ test('themeGate hands each theme its portrait crop', () => {
   expect(gate).toContain(JSON.stringify(landscapeRendition(url)));
 });
 
-test('a Cloudinary video themes the page as a looping animation', () => {
+test('a Cloudinary video themes the page as a looping animation, six seconds at most', () => {
   const video = 'https://res.cloudinary.com/c/video/upload/v1/d/a.mp4';
   expect(themeRendition(video)).toBe(
     'https://res.cloudinary.com/c/video/upload/so_0,w_800,f_jpg,q_80/v1/d/a.mp4'
   );
   expect(landscapeRendition(video)).toBe(
-    'https://res.cloudinary.com/c/video/upload/c_limit,w_1920/fps_15/e_loop/fl_animated,fl_awebp,f_webp/v1/d/a.mp4'
+    'https://res.cloudinary.com/c/video/upload/du_6/c_limit,w_1920/fps_15/e_loop/fl_animated,fl_awebp,f_webp/v1/d/a.mp4'
   );
   expect(portraitRendition(video)).toBe(landscapeRendition(video));
 });

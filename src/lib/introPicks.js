@@ -11,7 +11,7 @@ import {
   SCENE_POSTER_SIZES,
   sizedSizes
 } from '@/lib/imageBlock';
-import { isAnimated } from '@/lib/imageLoader';
+import { isAnimated, stillFrame } from '@/lib/imageLoader';
 import { drawnModules } from '@/lib/modules';
 import { featuredFirst } from '@/lib/posts';
 import { isInternalHref, resolveLink } from '@/lib/processUrl';
@@ -65,9 +65,17 @@ export function viewModules(modules, hash) {
 
 const blockSizes = (sizes, block) => sizedSizes(sizes, stegaClean(block.size));
 
+// A clip that plays as video shows its first frame until it plays, and that
+// frame is what to warm; the video itself is left to the page.
 const imagePick = (block, sizes) => {
   const asset = resolveAsset(block);
-  return asset && { kind: 'image', src: asset.src, sizes };
+  if (!asset) return null;
+  const { src, clip } = asset;
+  return {
+    kind: 'image',
+    src: clip?.video ? stillFrame(src, clip) : src,
+    sizes
+  };
 };
 
 const heroPicks = (module) =>

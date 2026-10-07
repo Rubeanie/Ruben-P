@@ -157,6 +157,24 @@ $copy-inset: 0.375rem;
     border-radius: var.$common-border-radius;
     box-shadow: var.$hairline;
   }
+
+  // The clip, or the animated image standing in for it, over the first frame.
+  .over {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    // Safari stops a video's layer a fraction short, leaving a line of the
+    // frame under it; the clip box's rounding cuts the overhang.
+    height: calc(100% + 1px);
+    object-fit: cover;
+  }
+}
+
+// A clip's video lies over its first frame, which sizes the box.
+.clip {
+  position: relative;
+  overflow: clip;
+  border-radius: var.$common-border-radius;
 }
 
 /* YouTube block */
@@ -207,7 +225,8 @@ $copy-inset: 0.375rem;
     border-radius: 0;
   }
 
-  .figure img {
+  .figure :is(img, video),
+  .clip {
     border-radius: 0;
   }
 

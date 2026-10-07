@@ -1,5 +1,12 @@
 import { describe, expect, test } from 'bun:test';
-import { isAnimated, loaderFor, stillFrame } from './imageLoader';
+import {
+  animatedClip,
+  clipSettings,
+  clipVideo,
+  isAnimated,
+  loaderFor,
+  stillFrame
+} from './imageLoader';
 
 const load = (src, width, quality) => loaderFor(src)({ src, width, quality });
 
@@ -71,7 +78,7 @@ describe('Cloudinary clips', () => {
   test('count as animated and play as a sized, looping WebP', () => {
     expect(isAnimated(clip)).toBe(true);
     expect(load(clip, 640)).toBe(
-      'https://res.cloudinary.com/ruben-p/video/upload/c_limit,w_640/fps_15/e_loop/fl_animated,fl_awebp,f_webp/v1/samples/dance-2.mp4'
+      'https://res.cloudinary.com/ruben-p/video/upload/du_6/c_limit,w_640/fps_15/e_loop/fl_animated,fl_awebp,f_webp/v1/samples/dance-2.mp4'
     );
   });
 
@@ -86,6 +93,48 @@ describe('Cloudinary clips', () => {
   test('rest on the first frame as a sized still', () => {
     expect(load(stillFrame(clip), 640)).toBe(
       'https://res.cloudinary.com/ruben-p/video/upload/so_0/c_limit,f_auto,q_auto,w_640/v1/samples/dance-2.jpg'
+    );
+  });
+
+  test('take their cut, frame rate and loop from the field', () => {
+    const cut = { start: 1.5, length: 4, fps: 10, playOnce: true };
+    expect(loaderFor(clip, cut)({ src: clip, width: 640 })).toBe(
+      'https://res.cloudinary.com/ruben-p/video/upload/so_1.5,du_4/c_limit,w_640/fps_10/fl_animated,fl_awebp,f_webp/v1/samples/dance-2.mp4'
+    );
+    expect(clipVideo(clip, 1200, cut)).toBe(
+      'https://res.cloudinary.com/ruben-p/video/upload/so_1.5,du_4/c_limit,w_1200/fps_10/ac_none,f_mp4,vc_h264,q_auto/v1/samples/dance-2.mp4'
+    );
+    expect(stillFrame(clip, cut)).toBe(
+      'https://res.cloudinary.com/ruben-p/video/upload/so_1.5/v1/samples/dance-2.jpg'
+    );
+  });
+
+  test('play once after being settled again', () => {
+    const cut = clipSettings({ playOnce: true });
+    expect(clipSettings(cut)).toEqual(cut);
+    expect(animatedClip(clip, 'w_10', cut)).not.toContain('e_loop');
+    // The video's loop attribute reads the settled clip.
+    expect(cut.loop).toBe(false);
+  });
+
+  test('hold the cap whatever the field says', () => {
+    expect(clipSettings({ length: 20, fps: 60, start: -2 })).toEqual({
+      start: 0,
+      length: 6,
+      fps: 15,
+      loop: true
+    });
+    expect(animatedClip(clip, 'w_10', { length: 0 })).toContain('/du_6/');
+  });
+
+  test('keep the original frame rate when asked', () => {
+    expect(clipVideo(clip, 720, { fps: 0 })).not.toContain('fps_');
+    expect(animatedClip(clip, 'w_10', { fps: 0 })).not.toContain('fps_');
+  });
+
+  test('play as an MP4 whatever the upload was', () => {
+    expect(clipVideo(clip.replace('.mp4', '.mov?t=1'), 720)).toBe(
+      'https://res.cloudinary.com/ruben-p/video/upload/du_6/c_limit,w_720/fps_15/ac_none,f_mp4,vc_h264,q_auto/v1/samples/dance-2.mp4?t=1'
     );
   });
 });

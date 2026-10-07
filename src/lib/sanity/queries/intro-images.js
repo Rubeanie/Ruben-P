@@ -1,4 +1,5 @@
 import { groq } from '../fetch';
+import { clipQuery } from './fragments/clip';
 import { cloudinaryQuery } from './fragments/cloudinary';
 import { sceneModelQuery, scenePosterQuery } from './fragments/scene';
 
@@ -10,7 +11,8 @@ const headings = groq`content[_type == 'block' && ${heading}]{ _type, style, chi
 const picture = groq`
   imageType,
   image { asset->{ url, metadata { dimensions { width, height } } } },
-  cloudinaryAsset { ${cloudinaryQuery} }
+  cloudinaryAsset { ${cloudinaryQuery} },
+  clip { ${clipQuery} }
 `;
 
 // Every block keeps its place, so the opening counts blocks as the page draws

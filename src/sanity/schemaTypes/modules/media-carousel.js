@@ -54,6 +54,7 @@ const carouselImage = {
       description: 'Animated GIFs rest on their first frame until in front.'
     }),
     reuse(imageBlock, 'cloudinaryAsset'),
+    reuse(imageBlock, 'clip'),
     reuse(imageBlock, 'alt', { validation: required }),
     caption,
     source

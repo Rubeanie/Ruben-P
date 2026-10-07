@@ -4,10 +4,12 @@ import { useState } from 'react';
 import { preload } from 'react-dom';
 import { getImageProps } from 'next/image';
 import Image from '@/components/CdnImage';
+import ClipVideo from '@/components/ClipVideo';
 import SceneCanvas, {
   warmScene
 } from '@/components/Modules/ThreeScene/SceneCanvas';
 import YouTubeFacade from '@/components/RichText/YouTubeFacade';
+import { clipWidth } from '@/lib/imageBlock';
 import { isAnimated, loaderFor, stillFrame } from '@/lib/imageLoader';
 import { warmEmbed } from '@/lib/youtube';
 import styles from '@/styles/components/MediaCarousel.module.scss';
@@ -22,7 +24,7 @@ export function warmMedia(item, sizes) {
       alt: '',
       fill: true,
       sizes,
-      loader: loaderFor(item.src)
+      loader: loaderFor(item.src, item.clip)
     });
     preload(props.src, {
       as: 'image',
@@ -62,18 +64,35 @@ const loadProps = (load) => ({
   loading: load === 'eager' ? 'eager' : undefined
 });
 
-// An animated image rests on its first frame until its card is in front.
+// An animated image rests on its first frame until its card is in front; a
+// clip that plays as video always shows that frame, and plays over it in front.
 function Photo({ item, active, load, sizes }) {
+  const video = item.clip?.video;
   return (
-    <Image
-      src={item.animated && !active ? stillFrame(item.src) : item.src}
-      alt={item.alt || ''}
-      fill
-      sizes={sizes}
-      {...loadProps(load)}
-      draggable={false}
-      className={styles.fill}
-    />
+    <>
+      <Image
+        src={
+          video || (item.animated && !active)
+            ? stillFrame(item.src, item.clip)
+            : item.src
+        }
+        clip={item.clip}
+        alt={item.alt || ''}
+        fill
+        sizes={sizes}
+        {...loadProps(load)}
+        draggable={false}
+        className={styles.fill}
+      />
+      {video && active && (
+        <ClipVideo
+          src={item.src}
+          clip={item.clip}
+          width={clipWidth(sizes)}
+          className={styles.fill}
+        />
+      )}
+    </>
   );
 }
 

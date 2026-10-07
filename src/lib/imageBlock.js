@@ -1,5 +1,6 @@
 import { stegaClean } from '@sanity/client/stega';
 import { PHONE } from '@/lib/coverSizes';
+import { clipSettings, isClip } from '@/lib/imageLoader';
 
 // Rendered widths of an image block in prose and in a Creative column.
 export const PROSE_SIZES = `${PHONE} 100vw, 65rem`;
@@ -22,16 +23,32 @@ export function sizedSizes(sizes, size) {
   );
 }
 
-export function resolveAsset({ imageType, image, cloudinaryAsset }) {
+// A video has no srcset, so a clip takes one width: 1.5x the widest rem width
+// in `sizes` (24px a rem), between sharp and light; media conditions are not
+// widths, so they're dropped first.
+export function clipWidth(sizes) {
+  const widths = sizes.replace(/\([^()]*:[^()]*\)/g, '');
+  const rems = [...widths.matchAll(/([\d.]+)rem/g)].map(([, rem]) => +rem);
+  const wide = Math.ceil((Math.max(0, ...rems) * 24) / 100) * 100;
+  return Math.min(wide || 1920, 1920);
+}
+
+// `clip` comes with a Cloudinary video: its cut, and whether it plays as a
+// video (the default) or as an animated image.
+export function resolveAsset({ imageType, image, cloudinaryAsset, clip }) {
   if (stegaClean(imageType) === 'cloudinary.asset') {
-    const src = cloudinaryAsset?.derived_url || cloudinaryAsset?.secure_url;
-    return src
-      ? {
-          src: stegaClean(src),
-          width: cloudinaryAsset.width,
-          height: cloudinaryAsset.height
-        }
-      : null;
+    const src = stegaClean(
+      cloudinaryAsset?.derived_url || cloudinaryAsset?.secure_url
+    );
+    if (!src) return null;
+    return {
+      src,
+      width: cloudinaryAsset.width,
+      height: cloudinaryAsset.height,
+      ...(isClip(src) && {
+        clip: { ...clipSettings(clip), video: !clip?.animatedImage }
+      })
+    };
   }
   const asset = image?.asset;
   if (!asset?.url) return null;

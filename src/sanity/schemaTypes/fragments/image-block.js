@@ -1,5 +1,6 @@
 import { MdImage } from 'react-icons/md';
 import { blockLayoutFields } from './fields/block-layout';
+import { clipField } from './fields/clip';
 import { CloudinaryPreview } from '../../components/CloudinaryPreview';
 
 export const imageBlock = {
@@ -41,6 +42,7 @@ export const imageBlock = {
       hidden: ({ parent }) => parent?.imageType !== 'cloudinary.asset',
       fieldset: 'info'
     },
+    { ...clipField, fieldset: 'info' },
     {
       name: 'caption',
       type: 'text',
