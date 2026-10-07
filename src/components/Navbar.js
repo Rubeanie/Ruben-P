@@ -67,7 +67,14 @@ const Navbar = ({ lead, links, logo }) => {
   }, []);
 
   return (
-    <nav className={styles.nav}>
+    // A tap on the bar or the open menu's empty space closes the menu; links
+    // and the burger handle their own.
+    <nav
+      className={styles.nav}
+      onClick={(event) => {
+        if (open && !event.target.closest('a, button, input, select, textarea'))
+          close();
+      }}>
       <div className={styles.container}>
         <Link href={lead?.href ?? '/'} title={lead?.label} onClick={close}>
           <Logo svg={logo} />
