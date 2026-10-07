@@ -2,11 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { PHONE } from '@/lib/coverSizes';
-import { animatedClip, clipVideo } from '@/lib/imageLoader';
+import { PHONE_CLIP_WIDTH, animatedClip, clipVideo } from '@/lib/imageLoader';
 
 const REDUCED = '(prefers-reduced-motion: reduce)';
-// Phones get a small rendition whatever the block's width.
-const PHONE_WIDTH = 720;
 // Safari's WebM path stalls on the seek a loop makes, so Apple's engine (every
 // iOS browser) gets the MP4; the rest take the WebM, about half the size.
 const formats = () =>
@@ -18,7 +16,16 @@ const formats = () =>
 // first frame, which the caller draws as an image: the image holds the layout,
 // placeholder and preload, and is all that shows under reduced motion. It
 // mounts after hydration, and stays clear until it has a frame to show.
-export default function ClipVideo({ src, clip, width, className, style }) {
+// `phone` off drops the small phone rendition, for a player that never runs on
+// touch (a tile hovered in a narrow desktop window must keep to its fixed widths).
+export default function ClipVideo({
+  src,
+  clip,
+  width,
+  className,
+  style,
+  phone = true
+}) {
   const ref = useRef(null);
   const [motion, setMotion] = useState(false);
 
@@ -47,7 +54,7 @@ export default function ClipVideo({ src, clip, width, className, style }) {
   // Reduced motion wins over the Low Power fallback.
   if (!motion) return null;
   if (refused) {
-    const shown = matchMedia(PHONE).matches ? PHONE_WIDTH : width;
+    const shown = matchMedia(PHONE).matches ? PHONE_CLIP_WIDTH : width;
     return (
       // eslint-disable-next-line @next/next/no-img-element -- a Cloudinary animated WebP, already sized
       <img
@@ -76,12 +83,14 @@ export default function ClipVideo({ src, clip, width, className, style }) {
       disableRemotePlayback
       aria-hidden='true'>
       {order.flatMap((format) => [
-        <source
-          key={`${format}-phone`}
-          media={PHONE}
-          type={`video/${format}`}
-          src={clipVideo(src, PHONE_WIDTH, clip, format)}
-        />,
+        phone && (
+          <source
+            key={`${format}-phone`}
+            media={PHONE}
+            type={`video/${format}`}
+            src={clipVideo(src, PHONE_CLIP_WIDTH, clip, format)}
+          />
+        ),
         <source
           key={format}
           type={`video/${format}`}

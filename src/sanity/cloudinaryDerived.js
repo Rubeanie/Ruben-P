@@ -1,6 +1,16 @@
+import { carouselSizes } from '@/lib/carousel';
 import {
+  CREATIVE_SIZES,
+  PROSE_SIZES,
+  clipWidth,
+  sizedSizes
+} from '@/lib/imageBlock';
+import {
+  CLIP_WIDTHS,
+  PHONE_CLIP_WIDTH,
   EXTENSION,
   clipSettings,
+  clipVideo,
   cloudinaryTransform,
   isClip
 } from '@/lib/imageLoader';
@@ -79,4 +89,48 @@ export async function readPalette(url, clip) {
     rendition(url, clip, 'w_200,f_webp,q_70', 'webp')
   ).getPalette();
   return paletteFrom(palette);
+}
+
+// The widths the site asks a clip for where the image field sits, found with
+// the same functions the readers use: a post cover's tile takes either fixed
+// width, an image block or carousel card the one its sizes work out to, then
+// the phone's (those autoplay on touch, tiles never do).
+// `parent` is the field's parent value, `carousel` the module around a card.
+export function clipWidthsFor(path, type, parent, carousel) {
+  if (path.length === 1 && path[0] === 'cover' && type === 'page.post')
+    return CLIP_WIDTHS;
+  if (path.at(-1) !== 'image') return [];
+  if (parent?._type === 'imageBlock') {
+    const base = path.at(-3) === 'blocks' ? CREATIVE_SIZES : PROSE_SIZES;
+    return [clipWidth(sizedSizes(base, parent.size)), PHONE_CLIP_WIDTH];
+  }
+  if (parent?._type === 'carouselImage')
+    // Whether a table of contents sits beside it is the page's, not the block's.
+    return [
+      clipWidth(
+        carouselSizes(
+          carousel?.items?.length ?? 0,
+          carousel?.loop,
+          false,
+          carousel?.size
+        )
+      ),
+      PHONE_CLIP_WIDTH
+    ];
+  return [];
+}
+
+// Exactly what visitors will request for a clip: WebM and MP4 per width. A
+// forced animated image goes through srcset at many widths, so it isn't warmed.
+export function clipUrls(url, clip, widths) {
+  if (!isClip(url) || clip?.animatedImage) return [];
+  return widths.flatMap((w) =>
+    ['webm', 'mp4'].map((format) => clipVideo(url, w, clip, format))
+  );
+}
+
+// Cloudinary builds a video on its first request; asking now means visitors
+// get it already made. Fire and forget, and nothing here reads the answer.
+export function warm(urls) {
+  urls.forEach((url) => fetch(url, { mode: 'no-cors' }).catch(() => {}));
 }

@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { Stack, Text } from '@sanity/ui';
-import { set, unset } from 'sanity';
+import { set, unset, useFormValue } from 'sanity';
 import {
   assetUrl,
+  clipUrls,
+  clipWidthsFor,
   readFocus,
   readLqip,
-  readPalette
+  readPalette,
+  warm
 } from '../cloudinaryDerived';
 
 const READ = { palette: readPalette, focus: readFocus, lqip: readLqip };
@@ -22,6 +25,31 @@ export function CloudinaryImageInput(props) {
   const failedKey = useRef(null);
   const complete = DERIVED.every((name) => value?.[name]);
   const [failed, setFailed] = useState(false);
+
+  const type = useFormValue(['_type']);
+  const parent = useFormValue(props.path.slice(0, -1));
+  const carousel = useFormValue(props.path.slice(0, -3));
+  const widths = clipWidthsFor(props.path, type, parent, carousel);
+  const requests = url ? clipUrls(url, value?.clip, widths).join(' ') : '';
+  // What was in the form when it opened, which is already built or never will be.
+  const warmed = useRef(requests);
+  const pending = useRef(null);
+  const flush = () => {
+    if (!pending.current) return;
+    warmed.current = pending.current.join(' ');
+    warm(pending.current);
+    pending.current = null;
+  };
+  useEffect(() => {
+    pending.current = null;
+    if (readOnly || requests === warmed.current) return;
+    pending.current = requests ? requests.split(' ') : null;
+    // Typing a Start or Length changes the URLs on every keystroke; let it settle.
+    const timer = setTimeout(flush, 600);
+    return () => clearTimeout(timer);
+  }, [requests, readOnly]);
+  // Closing the dialog inside the delay still warms what was changed.
+  useEffect(() => flush, []);
 
   useEffect(() => {
     if (readOnly) return;

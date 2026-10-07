@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Flex, Stack, Text } from '@sanity/ui';
 import { useFormValue } from 'sanity';
 import { sizeFraction } from '@/lib/imageBlock';
-import { assetUrl } from '../cloudinaryDerived';
+import { assetUrl, clipWidthsFor } from '../cloudinaryDerived';
 import {
   animatedClip,
   clipSettings,
@@ -69,11 +69,15 @@ const QUIET = {
 export function ClipInput(props) {
   const parent = props.path.slice(0, -1);
   const asset = useFormValue([...parent, 'asset']);
-  // The image block's own Size, or the carousel's three levels up, narrows the
-  // file; a cover has neither and runs full width.
-  const own = useFormValue([...parent.slice(0, -1), 'size']);
-  const carousel = useFormValue([...parent.slice(0, -3), 'size']);
-  const width = Math.round(WIDTH * sizeFraction(own ?? carousel));
+  // Measured at the first width the site asks for here (a cover's 1200, a
+  // block's or card's own), which Studio has already had Cloudinary build.
+  const type = useFormValue(['_type']);
+  const holder = useFormValue(parent.slice(0, -1));
+  const carousel = useFormValue(parent.slice(0, -3));
+  const [site] = clipWidthsFor(parent, type, holder, carousel);
+  // Elsewhere the holder's or the carousel's Size narrows the file.
+  const width =
+    site ?? Math.round(WIDTH * sizeFraction(holder?.size ?? carousel?.size));
   const src = assetUrl(asset);
   const urls = src && {
     video: clipVideo(src, width, props.value, 'webm'),

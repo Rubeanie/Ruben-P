@@ -8,7 +8,12 @@ import { LuStar } from 'react-icons/lu';
 import ClipVideo from '@/components/ClipVideo';
 import { shapeSize, tileSizes } from '@/lib/bento';
 import { resolveImage } from '@/lib/imageBlock';
-import { animatedClip, animatedGif, loaderFor } from '@/lib/imageLoader';
+import {
+  animatedClip,
+  animatedGif,
+  loaderFor,
+  snapClipWidth
+} from '@/lib/imageLoader';
 import { easeOut, formatDate, reducedMotion } from '@/lib/posts';
 import { isPagePath } from '@/lib/slug';
 import styles from '@/styles/components/PostList.module.scss';
@@ -96,6 +101,7 @@ function Moving({ cover, width }) {
         src={src}
         clip={clip}
         width={width}
+        phone={false}
       />
     );
   return (
@@ -116,13 +122,14 @@ function Moving({ cover, width }) {
 }
 
 // The clip is cropped to the tile like the still, so it needs the video's
-// width at which its cropped side is still sharp on this screen.
+// width at which its cropped side is still sharp on this screen, snapped to a
+// width Studio has already had Cloudinary build.
 function clipWidthFor(box, cover) {
   const aspect =
     cover?.width && cover?.height ? cover.width / cover.height : 16 / 9;
-  const need =
-    Math.max(box.offsetWidth, box.offsetHeight * aspect) * devicePixelRatio;
-  return Math.min(1920, Math.ceil(need / 100) * 100);
+  return snapClipWidth(
+    Math.max(box.offsetWidth, box.offsetHeight * aspect) * devicePixelRatio
+  );
 }
 
 export default function Tile({

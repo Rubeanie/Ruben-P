@@ -2,7 +2,9 @@ import { describe, expect, test } from 'bun:test';
 import {
   animatedClip,
   clipSettings,
+  CLIP_WIDTHS,
   clipVideo,
+  snapClipWidth,
   isAnimated,
   loaderFor,
   stillFrame
@@ -135,6 +137,13 @@ describe('Cloudinary clips', () => {
   test('keep the original frame rate when asked', () => {
     expect(clipVideo(clip, 720, { fps: 0 })).not.toContain('fps_');
     expect(animatedClip(clip, 'w_10', { fps: 0 })).not.toContain('fps_');
+  });
+
+  test('snap the clip width up to a fixed one', () => {
+    expect(CLIP_WIDTHS).toEqual([1200, 1920]);
+    expect([100, 1200, 1201, 1920, 5000].map(snapClipWidth)).toEqual([
+      1200, 1200, 1920, 1920, 1920
+    ]);
   });
 
   test('play as an MP4 whatever the upload was', () => {

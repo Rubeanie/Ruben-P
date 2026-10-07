@@ -97,6 +97,15 @@ export function clipVideo(src, width, clip, format = 'mp4') {
   ).replace(EXTENSION, `.${format}$1`);
 }
 
+// Cloudinary builds each new video URL on first request, and bills it by the
+// second, so a clip is asked for at one of these widths, never a per-screen one.
+export const CLIP_WIDTHS = [1200, 1920];
+export const snapClipWidth = (need) =>
+  CLIP_WIDTHS.find((width) => width >= need) ?? CLIP_WIDTHS.at(-1);
+
+// Phones get this rendition of a block's clip whatever the block's width.
+export const PHONE_CLIP_WIDTH = 720;
+
 const clipLoader =
   (clip) =>
   ({ src, width }) =>
