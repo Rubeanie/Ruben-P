@@ -48,6 +48,9 @@ function Scene({ frameloop, progress, vignette, stage, grain, onReady }) {
   return (
     <Canvas
       className={styles.fill}
+      // Any source turns off the inline pointer-events: auto R3F puts on its
+      // div, so the layer never takes clicks meant for the page.
+      eventSource={stage}
       onReady={onReady}
       frameloop={frameloop}
       gl={GL}
