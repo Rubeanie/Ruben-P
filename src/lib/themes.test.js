@@ -3,6 +3,7 @@ import {
   landscapeRendition,
   nextThemeAfter,
   portraitRendition,
+  stillRendition,
   themeGate,
   themeRendition
 } from './themes';
@@ -112,4 +113,17 @@ test('a Cloudinary video themes the page as a looping animation, six seconds at 
     'https://res.cloudinary.com/c/video/upload/du_6/c_limit,w_1920/fps_15/e_loop/fl_animated,fl_awebp,f_webp/v1/d/a.mp4'
   );
   expect(portraitRendition(video)).toBe(landscapeRendition(video));
+});
+
+test('a video theme has a first-frame still for reduced motion, a photo none', () => {
+  const video = 'https://res.cloudinary.com/c/video/upload/v1/d/a.mp4';
+  const still =
+    'https://res.cloudinary.com/c/video/upload/so_0/c_limit,w_1920,f_auto,q_auto/v1/d/a.jpg';
+  expect(stillRendition(video)).toBe(still);
+  expect(
+    stillRendition('https://cdn.sanity.io/images/p/d/a-1x1.png')
+  ).toBeNull();
+  expect(themeGate([{ url: video, colors: { background: '#000' } }])).toContain(
+    JSON.stringify(still)
+  );
 });

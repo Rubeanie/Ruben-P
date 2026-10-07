@@ -96,8 +96,10 @@ export function loaderFor(src, clip) {
     return cloudinaryLoader;
 }
 
+// A still (stillFrame's output) is a .gif URL too, but doesn't move.
+const STILL = /[?&]frame=1(&|$)|\/pg_1\//;
 export const isAnimated = (src) =>
-  /\.gif(\?|$)/i.test(src ?? '') || isClip(src);
+  (/\.gif(\?|$)/i.test(src ?? '') && !STILL.test(src)) || isClip(src);
 
 // An animated image's first frame, a few KB in place of the whole animation:
 // Sanity takes frame=1, Cloudinary pg_1, and a clip the first frame of its cut.

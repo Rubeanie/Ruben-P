@@ -2,6 +2,7 @@ import {
   CLOUDINARY_CHAIN,
   animatedClip,
   isClip,
+  stillFrame,
   videoTransform
 } from './imageLoader';
 
@@ -127,6 +128,14 @@ export function applyThemeToDocument(theme) {
     '--image-background-portrait',
     getThemeImageUrl(portraitRendition(url))
   );
+  const still = stillRendition(url);
+  if (still)
+    document.documentElement.style.setProperty(
+      '--image-background-still',
+      getThemeImageUrl(still)
+    );
+  else
+    document.documentElement.style.removeProperty('--image-background-still');
 }
 
 // The provider remembers the theme on screen so a reload picks a different one.
@@ -142,12 +151,13 @@ export const LAST_THEME_KEY = 'last-theme';
 // runs; the colour fade that starts is finished.
 const json = (value) => JSON.stringify(value).replace(/</g, '\\u003c');
 export const themeGate = (themes) =>
-  `(function(t,k,g){var e=document.documentElement,s=e.style,l,a=[],b=[];try{l=localStorage.getItem(k)}catch(_){}t.forEach(function(p,i){if(p.colors){a.push(i);if(p.url!==l)b.push(i)}});b=b.length?b:a;if(!b.length)return;var i=b[Math.floor(Math.random()*b.length)],c=t[i].colors,m=document.querySelector('meta[name="theme-color"]');for(var n in c){s.setProperty('--color-'+n,c[n]);s.setProperty('--page-'+n,c[n])}s.setProperty('--image-background',"url('"+t[i].w+"')");s.setProperty('--image-background-portrait',"url('"+t[i].p+"')");if(m&&m.content===g){var f=m.cloneNode();f.content=c.background;f.setAttribute('data-gate','');m.before(f)}e.dataset.theme=i;e.getAnimations().forEach(function(a){if(a.transitionProperty)a.finish()})})(${json(
+  `(function(t,k,g){var e=document.documentElement,s=e.style,l,a=[],b=[];try{l=localStorage.getItem(k)}catch(_){}t.forEach(function(p,i){if(p.colors){a.push(i);if(p.url!==l)b.push(i)}});b=b.length?b:a;if(!b.length)return;var i=b[Math.floor(Math.random()*b.length)],c=t[i].colors,m=document.querySelector('meta[name="theme-color"]');for(var n in c){s.setProperty('--color-'+n,c[n]);s.setProperty('--page-'+n,c[n])}s.setProperty('--image-background',"url('"+t[i].w+"')");s.setProperty('--image-background-portrait',"url('"+t[i].p+"')");if(t[i].s)s.setProperty('--image-background-still',"url('"+t[i].s+"')");if(m&&m.content===g){var f=m.cloneNode();f.content=c.background;f.setAttribute('data-gate','');m.before(f)}e.dataset.theme=i;e.getAnimations().forEach(function(a){if(a.transitionProperty)a.finish()})})(${json(
     themes.map(({ url, colors }) => ({
       url,
       colors,
       w: landscapeRendition(url || DEFAULT_THEME_URL),
-      p: portraitRendition(url || DEFAULT_THEME_URL)
+      p: portraitRendition(url || DEFAULT_THEME_URL),
+      s: stillRendition(url || DEFAULT_THEME_URL)
     }))
   )},${json(LAST_THEME_KEY)},${json(DEFAULT_THEME_COLORS.background)})`;
 
@@ -202,6 +212,15 @@ export function landscapeRendition(url) {
   }
 
   return parsed.toString();
+}
+
+// A clip's background is an animated WebP; for visitors who ask for reduced
+// motion the stylesheet swaps in its first frame (WCAG 2.2.2). Null for a
+// still photo, which has nothing to swap.
+export function stillRendition(url) {
+  return isClip(url)
+    ? videoTransform(stillFrame(url), 'c_limit,w_1920,f_auto,q_auto')
+    : null;
 }
 
 export function portraitRendition(url) {
@@ -274,9 +293,11 @@ export async function resolveThemeDefinition(theme) {
 
   // Warm the rendition the stylesheet will pick, so the swap doesn't flash.
   await loadThemeImage(
-    matchMedia(PORTRAIT_QUERY).matches
-      ? portraitRendition(normalizedTheme.url)
-      : landscapeRendition(normalizedTheme.url)
+    (matchMedia('(prefers-reduced-motion: reduce)').matches &&
+      stillRendition(normalizedTheme.url)) ||
+      (matchMedia(PORTRAIT_QUERY).matches
+        ? portraitRendition(normalizedTheme.url)
+        : landscapeRendition(normalizedTheme.url))
   );
 
   if (!normalizedTheme.colors) {
