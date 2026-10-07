@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test';
-import { resolveImage } from './imageBlock';
+import { placeholderFor, resolveImage } from './imageBlock';
 
 const derived = {
   palette: { dominant: { background: '#112233' } },
@@ -21,7 +21,9 @@ test('a still image is its own still and does not move', () => {
     height: 1080,
     clip: null,
     moving: false,
-    ...derived
+    ...derived,
+    position: '29% 50%',
+    placeholder: placeholderFor({ ...derived, width: 1920, height: 1080 })
   });
   expect(resolveImage(null)).toBeNull();
   expect(resolveImage({ asset: {} })).toBeNull();
@@ -53,4 +55,32 @@ test('a clip rests on its Start frame; a GIF on its first', () => {
     moving: true,
     clip: null
   });
+});
+
+test('the placeholder is the blurred lqip unless blur is off, then the colour', () => {
+  const svg = (url) => decodeURIComponent(url.split(',').slice(1).join(','));
+  const blurred = svg(
+    placeholderFor({ ...derived, width: 1920, height: 1080 })
+  );
+  // In the image's own shape, so cover-fit frames it like the photo.
+  expect(blurred).toContain("viewBox='0 0 100 56'");
+  expect(blurred).toContain(`href='${derived.lqip}'`);
+  // A 3:4 cut of it centres on the subject, clamped to the image.
+  expect(
+    svg(placeholderFor({ ...derived, width: 1920, height: 1080 }, 3 / 4))
+  ).toContain("viewBox='8 0 42 56'");
+  expect(svg(placeholderFor({ ...derived, blur: false }))).toContain(
+    "fill='#112233'"
+  );
+  // No lqip falls back to the colour; nothing usable leaves next/image's default.
+  expect(placeholderFor({ palette: derived.palette })).toBe(
+    placeholderFor({ ...derived, blur: false })
+  );
+  expect(placeholderFor({ blur: false })).toBe('empty');
+  expect(
+    placeholderFor({
+      blur: false,
+      palette: { dominant: { background: "red'" } }
+    })
+  ).toBe('empty');
 });

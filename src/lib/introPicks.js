@@ -7,12 +7,12 @@ import { renderable } from '@/lib/carouselItems';
 import {
   CREATIVE_SIZES,
   PROSE_SIZES,
-  resolveAsset,
   resolveImage,
   SCENE_POSTER_SIZES,
+  stillOf,
   sizedSizes
 } from '@/lib/imageBlock';
-import { isAnimated, stillFrame } from '@/lib/imageLoader';
+import { isAnimated } from '@/lib/imageLoader';
 import { drawnModules } from '@/lib/modules';
 import { featuredFirst } from '@/lib/posts';
 import { isInternalHref, resolveLink } from '@/lib/processUrl';
@@ -69,23 +69,17 @@ const blockSizes = (sizes, block) => sizedSizes(sizes, stegaClean(block.size));
 // A clip that plays as video shows its first frame until it plays, and that
 // frame is what to warm; the video itself is left to the page.
 const imagePick = (block, sizes) => {
-  const asset = resolveAsset(block);
-  if (!asset) return null;
-  const { src, clip } = asset;
-  return {
-    kind: 'image',
-    src: clip?.video ? stillFrame(src, clip) : src,
-    sizes
-  };
+  const image = resolveImage(block.image);
+  if (!image) return null;
+  const { src, still, clip } = image;
+  return { kind: 'image', src: clip?.video ? still : src, sizes };
 };
 
 const heroPicks = (module) =>
-  heroPhotos(module)
-    .map(({ image, sizes, media }) => {
-      const src = stegaClean(image?.asset?.url);
-      return src && { kind: 'image', src, sizes, media };
-    })
-    .filter(Boolean);
+  heroPhotos(module).map(({ image, placeholder, ...pick }) => ({
+    kind: 'image',
+    ...pick
+  }));
 
 // Images and posters of a block list, as RichText renders them.
 const contentPicks = (content) =>
@@ -142,7 +136,7 @@ function carouselPicks(module, { railed }) {
 const tileCovers = (rows) =>
   rows
     .map(({ post, shape, mobileShape, wide }) => {
-      const still = resolveImage(post.cover)?.still;
+      const still = stillOf(post.cover);
       return (
         still && {
           kind: 'image',

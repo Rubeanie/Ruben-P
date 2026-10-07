@@ -3,6 +3,8 @@ import processUrl, { slugOf } from '@/lib/processUrl';
 import { isPagePath } from '@/lib/slug';
 import { baseUrl } from '@/lib/env';
 import { firstModule } from '@/lib/modules';
+import { stillOf } from '@/lib/imageBlock';
+import { heroPhoto } from '@/lib/heroPhotos';
 import { FEED_PATH } from '@/lib/feed';
 import { withDefaults } from '@/lib/metadataDefaults';
 import { SHARE_IMAGE } from '@/lib/shareImage/layout';
@@ -17,15 +19,13 @@ const getMetaObjects = (tags) =>
     return metaTag ? { ...mergedObject, ...metaTag } : mergedObject;
   }, {});
 
-const resolveImage = (image) => image?.asset?.url ?? '';
-
 const getMetaAttribute = (attrs) =>
   attrs?.filter(Boolean).reduce(
     (obj, i) => ({
       ...obj,
       [i?.attributeKey]:
         i.attributeType === 'image'
-          ? resolveImage(i?.attributeValueImage)
+          ? (stillOf(i?.attributeValueImage) ?? '')
           : i.attributeValueString
     }),
     {}
@@ -36,11 +36,11 @@ const bare = (url) => url.replace(/^(https?:\/\/[^/]+)\/$/, '$1');
 
 // A hand-set share image wins; any other page gets its generated card, which draws its cover or hero.
 function shareImages(pageSeo, og, path) {
-  const handSet = pageSeo.openGraph?.image?.asset?.url;
+  const handSet = stillOf(pageSeo.openGraph?.image);
   if (handSet) return [{ url: handSet }];
   if (isPagePath(path)) return [{ url: shareImageUrl(path), ...SHARE_IMAGE }];
-  if (og?.image?.asset?.url) return [{ url: og.image.asset.url }];
-  return [];
+  const site = stillOf(og?.image);
+  return site ? [{ url: site }] : [];
 }
 
 // Every tag is spelled out, including what Next would otherwise inherit, so the Studio
@@ -122,11 +122,11 @@ export function resolveMetadata(page, site) {
 }
 
 // Only these two heroes tint the browser bar; the page route and the share preview share the rule.
+// Its still: a clip's colours are its Start frame's, as the hero draws them.
 export function heroThemeImage(page) {
   const hero = firstModule(page?.modules);
   return (
-    (hero?._type === 'hero' && hero.bgImage?.asset?.url) ||
-    (hero?._type === 'hero.saas' && hero.image?.asset?.url) ||
+    (['hero', 'hero.saas'].includes(hero?._type) && stillOf(heroPhoto(hero))) ||
     null
   );
 }

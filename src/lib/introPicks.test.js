@@ -3,8 +3,6 @@ import { pageHrefs, picks, splitHref, viewModules } from './introPicks';
 import { carouselSizes } from './carousel';
 import { railedModules } from './toc';
 
-const sanity = (id) => `https://cdn.sanity.io/images/p/d/${id}-800x600.jpg`;
-const photo = (id) => ({ asset: { url: sanity(id) } });
 const figure = (id) => ({ _type: 'imageBlock', image: photo(id) });
 const text = (key, ...content) => ({
   _key: key,
@@ -24,7 +22,7 @@ const quiet = {
 const video = { _type: 'youtube', url: 'https://youtu.be/dQw4w9WgXcQ' };
 const cloudinary = (id, type = 'image', ext = 'jpg') =>
   `https://res.cloudinary.com/demo/${type}/upload/v1/${id}.${ext}`;
-const cover = (id) => ({ asset: { secure_url: cloudinary(id) } });
+const photo = (id) => ({ asset: { secure_url: cloudinary(id) } });
 
 test('picks follow the first two drawing modules, skipping quiet embeds', () => {
   const modules = [
@@ -35,7 +33,10 @@ test('picks follow the first two drawing modules, skipping quiet embeds', () => 
   ];
   const { modules: view } = viewModules(modules);
   expect(view.map((m) => m._key)).toEqual(['a', 'b', 'c']);
-  expect(picks(view).map((p) => p.src)).toEqual([sanity('one'), sanity('two')]);
+  expect(picks(view).map((p) => p.src)).toEqual([
+    cloudinary('one'),
+    cloudinary('two')
+  ]);
 });
 
 test('a hero contributes its photos, a video any block position', () => {
@@ -47,7 +48,7 @@ test('a hero contributes its photos, a video any block position', () => {
   expect(picks([hero, body])).toEqual([
     {
       kind: 'image',
-      src: sanity('cover'),
+      src: cloudinary('cover'),
       sizes: '(max-width: 43.75rem) 100vw, 50vw',
       media: undefined
     },
@@ -59,7 +60,9 @@ test('a hero contributes its photos, a video any block position', () => {
 test('picks are capped at four, a module gives two, repeats count once', () => {
   const a = text('a', figure('1'), figure('2'), figure('3'));
   const b = text('b', figure('2'), figure('4'), figure('5'));
-  expect(picks([a, b]).map((p) => p.src)).toEqual(['1', '2', '4'].map(sanity));
+  expect(picks([a, b]).map((p) => p.src)).toEqual(
+    ['1', '2', '4'].map((id) => cloudinary(id))
+  );
   const hero3d = { _type: 'hero.3d' };
   expect(picks([hero3d, a]).map((p) => p.kind)).toEqual([
     'model',
@@ -81,12 +84,12 @@ test('creative columns give their images at the column width', () => {
   expect(picks([creative])).toEqual([
     {
       kind: 'image',
-      src: sanity('left'),
+      src: cloudinary('left'),
       sizes: '(max-width: 43.75rem) 100vw, 30rem'
     },
     {
       kind: 'image',
-      src: sanity('right'),
+      src: cloudinary('right'),
       sizes: '(max-width: 43.75rem) 100vw, 30rem'
     }
   ]);
@@ -95,7 +98,7 @@ test('creative columns give their images at the column width', () => {
 test('a tile list gives the first desktop row, covers sized per tile', () => {
   const posts = Array.from({ length: 9 }, (_, i) => ({
     _id: `p${i}`,
-    cover: cover(`cover${i}`)
+    cover: photo(`cover${i}`)
   }));
   const result = picks([{ _type: 'post-list' }], { posts });
   expect(result.length).toBeGreaterThan(0);
@@ -135,7 +138,9 @@ test('a link to a heading shows its module and the next', () => {
   const { modules: view, matched } = viewModules(modules, '#mixtape');
   expect(matched).toBe(true);
   expect(view.map((m) => m._key)).toEqual(['b', 'c', 'd']);
-  expect(picks(view).map((p) => p.src)).toEqual(['tape', 'after'].map(sanity));
+  expect(picks(view).map((p) => p.src)).toEqual(
+    ['tape', 'after'].map((id) => cloudinary(id))
+  );
 });
 
 test('a hash can name a module id, and an unknown one falls back to the opening', () => {
@@ -209,13 +214,13 @@ test('pageHrefs finds CTA, link block and rich-text links, not the current page'
 test('a click-to-load scene gives its poster, a live one nothing', () => {
   const scene = (extra) => ({
     _type: 'three.js',
-    poster: sanity('poster'),
+    poster: cloudinary('poster'),
     ...extra
   });
   expect(picks([scene({ loadOnClick: true })])).toEqual([
     {
       kind: 'image',
-      src: sanity('poster'),
+      src: cloudinary('poster'),
       sizes: '(max-width: 43.75rem) 50vw, 32rem'
     }
   ]);
@@ -229,7 +234,7 @@ test('callout and Creative copy figures count like prose ones', () => {
     columns: [{ blocks: [{ _type: 'copy', content: [figure('inline')] }] }]
   };
   expect(picks([callout, creative]).map((p) => p.src)).toEqual(
-    ['note', 'inline'].map(sanity)
+    ['note', 'inline'].map((id) => cloudinary(id))
   );
 });
 
@@ -237,7 +242,7 @@ test('featured posts lead the wide row, except under a post', () => {
   const posts = ['a', 'b', 'c'].map((id) => ({
     _id: id,
     featured: id === 'c',
-    cover: cover(id)
+    cover: photo(id)
   }));
   const featured = { _type: 'post-featured', limit: 2 };
   const result = picks([featured], { posts });
@@ -251,10 +256,10 @@ test('featured posts lead the wide row, except under a post', () => {
 test('picks skip animated GIFs', () => {
   const gif = {
     _type: 'imageBlock',
-    image: { asset: { url: sanity('g').replace('.jpg', '.gif') } }
+    image: { asset: { secure_url: cloudinary('g', 'image', 'gif') } }
   };
   expect(picks([text('a', gif, figure('one'))]).map((p) => p.src)).toEqual([
-    sanity('one')
+    cloudinary('one')
   ]);
 });
 
@@ -262,9 +267,10 @@ test('a clip playing as video warms its first frame, an animated one nothing', (
   const url = 'https://res.cloudinary.com/c/video/upload/v1/a.mp4';
   const clip = (settings) => ({
     _type: 'imageBlock',
-    imageType: 'cloudinary.asset',
-    cloudinaryAsset: { secure_url: url, width: 640, height: 360 },
-    clip: settings
+    image: {
+      asset: { secure_url: url, width: 640, height: 360 },
+      clip: settings
+    }
   });
   expect(
     picks([text('a', clip({ start: 2 }), clip({ animatedImage: true }))]).map(
@@ -297,7 +303,9 @@ test('modules without pictures leave the two picks to ones further down', () => 
   ];
   const { modules: view } = viewModules(modules);
   expect(view).toHaveLength(5);
-  expect(picks(view).map((p) => p.src)).toEqual(['one', 'two'].map(sanity));
+  expect(picks(view).map((p) => p.src)).toEqual(
+    ['one', 'two'].map((id) => cloudinary(id))
+  );
 });
 
 test('the search stops five modules down', () => {
@@ -314,7 +322,7 @@ test('only the opening blocks of a long article count', () => {
   expect(picks([text('a', ...filler, figure('deep'))])).toEqual([]);
   expect(
     picks([text('a', ...filler.slice(1), figure('near'))]).map((p) => p.src)
-  ).toEqual([sanity('near')]);
+  ).toEqual([cloudinary('near')]);
 });
 
 test('a carousel gives its front card: photo, video or scene poster', () => {
@@ -328,7 +336,7 @@ test('a carousel gives its front card: photo, video or scene poster', () => {
     '(prefers-reduced-motion: reduce) and (max-width: 43.75rem) 92vw, (prefers-reduced-motion: reduce) min(61.3rem, (100vw - 4rem) * 1)';
   const sizes = `${still}, (max-width: 43.75rem) 81vw, min(54rem, (100vw - 4rem) * 0.881)`;
   expect(picks([carousel(image)])).toEqual([
-    { kind: 'image', src: sanity('front'), sizes }
+    { kind: 'image', src: cloudinary('front'), sizes }
   ]);
   // The front card is wider the fewer cards stand behind it.
   expect(picks([carousel(image, 3)])[0].sizes).toBe(
@@ -345,13 +353,13 @@ test('a carousel gives its front card: photo, video or scene poster', () => {
       carousel({
         _type: 'carouselScene',
         model: '/models/rp-logo.glb',
-        poster: sanity('poster')
+        poster: cloudinary('poster')
       })
     ])
   ).toEqual([
     {
       kind: 'image',
-      src: sanity('poster'),
+      src: cloudinary('poster'),
       sizes: '(max-width: 43.75rem) 50vw, 32rem'
     }
   ]);
@@ -395,12 +403,12 @@ test('a carousel counts and leads with only the items it can draw', () => {
   const broken = [
     { _type: 'carouselYouTube', url: 'https://youtu.be/nope' },
     { _type: 'carouselImage', image: null },
-    { _type: 'carouselScene', model: null, poster: sanity('poster') }
+    { _type: 'carouselScene', model: null, poster: cloudinary('poster') }
   ];
   const [front] = picks([
     { _type: 'media-carousel', items: [...broken, image, image, image] }
   ]);
-  expect(front.src).toBe(sanity('front'));
+  expect(front.src).toBe(cloudinary('front'));
   expect(front.sizes).toBe(carouselSizes(3, false));
 });
 test('a sized block hints its narrower box above a phone', () => {

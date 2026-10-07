@@ -10,11 +10,12 @@ import styles from '@/styles/components/Hero.module.scss';
 // The photo fills the hero and the site takes its theme, then it shrinks into
 // a card and hands the theme back as the page scrolls.
 export default async function Hero(props) {
-  const { pretitle, content, ctas, bgImage, scrollHint } = props;
+  const { pretitle, content, ctas, bgImageAlt, scrollHint } = props;
   const id = uid(props);
-  const url = bgImage?.asset?.url;
+  const photos = heroPhotos(props);
+  // The colours come from the still, a clip's Start frame.
+  const url = photos[0]?.image.still;
   const colors = url ? await themeFromImage(url) : null;
-  const [photo, mobile] = heroPhotos(props);
 
   return (
     // The section runs 112lvh; the flip sits halfway through the 28lvh settle.
@@ -28,10 +29,9 @@ export default async function Hero(props) {
         {/* Eager at high priority. A lone photo also gets React's automatic
             preload; a pair relies on these two alone. */}
         <Photo
-          image={photo?.image}
-          mobile={mobile}
+          photos={photos}
+          alt={bgImageAlt}
           className={styles.photo}
-          sizes={photo?.sizes}
           loading='eager'
           fetchPriority='high'
         />

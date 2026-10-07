@@ -2,7 +2,7 @@ import { expect, test } from 'bun:test';
 import { baseUrl } from '@/lib/env';
 import { heroThemeImage, resolveMetadata } from './resolveMetadata';
 
-const img = (url) => ({ asset: { url } });
+const img = (url) => ({ asset: { secure_url: url } });
 
 const site = {
   seo: {

@@ -212,8 +212,10 @@ $ring:
   position: absolute;
   inset: 0;
   clip-path: inset(0 round var.$common-border-radius);
-  // The dominant colour is the skeleton plate: it shows until the picture fades in.
-  background: var(--plate, #{var.$plate-neutral});
+  // The plate the picture fades in over: the cover's placeholder (its lqip
+  // blurred, or its dominant colour) framed like the photo, on that colour.
+  background: var(--placeholder, none) var(--focus, 50% 50%) / cover no-repeat
+    var(--plate, #{var.$plate-neutral});
 
   // Shimmer while the picture is pending: a 20% white sweep over a 36% band.
   &::after {

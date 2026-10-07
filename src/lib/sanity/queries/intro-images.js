@@ -1,19 +1,12 @@
 import { groq } from '../fetch';
-import { clipQuery } from './fragments/clip';
-import { cloudinaryQuery } from './fragments/cloudinary';
+import { cloudinaryStillQuery } from './fragments/cloudinary';
 import { sceneModelQuery, scenePosterQuery } from './fragments/scene';
 
 // Just enough of each linked page to tell what it shows first.
-const photo = groq`asset->{ url, metadata { dimensions { aspectRatio } } }`;
 const heading = groq`style in ['h1', 'h1Large', 'h2', 'h3']`;
 // Headings only: they decide which module an anchor belongs to.
 const headings = groq`content[_type == 'block' && ${heading}]{ _type, style, children[]{ text } }`;
-const picture = groq`
-  imageType,
-  image { asset->{ url, metadata { dimensions { width, height } } } },
-  cloudinaryAsset { ${cloudinaryQuery} },
-  clip { ${clipQuery} }
-`;
+const picture = groq`image { ${cloudinaryStillQuery} }`;
 
 // Every block keeps its place, so the opening counts blocks as the page draws
 // them; only headings and what draws carry more than their type.
@@ -33,9 +26,8 @@ export const introImagesQuery = groq`*[_type in ['page', 'page.post'] && metadat
     _key,
     uid,
     html { code },
-    bgImage { ${photo} },
-    bgImageMobile { ${photo} },
-    image { ${photo} },
+    bgImage { ${cloudinaryStillQuery} },
+    image { ${cloudinaryStillQuery} },
     _type == 'richtext-module' => { ${blocks} },
     _type == 'callout' => { ${blocks} },
     _type == 'accordion-list' => { items[]{ summary, ${headings} } },

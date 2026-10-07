@@ -46,10 +46,12 @@ $blend-end: 28lvh;
   }
 }
 
-// A desktop and mobile pair (Photo's <picture>): each photo's hotspot and blur.
+// A photo and its phone cut (Photo's <picture>): the photo framed on its
+// subject, the cut, already framed by the CDN, centred. Each over its own
+// placeholder, until it loads.
 .photo picture img {
   object-position: var(--position, 50% 50%);
-  background-image: var(--blur);
+  background-image: var(--placeholder);
   background-position: var(--position, 50% 50%);
 }
 
@@ -157,8 +159,8 @@ $card: inset(
   }
 
   .photo picture img {
-    object-position: var(--mobile-position, 50% 50%);
-    background-image: var(--mobile-blur);
-    background-position: var(--mobile-position, 50% 50%);
+    object-position: 50% 50%;
+    background-image: var(--phone-placeholder);
+    background-position: 50% 50%;
   }
 }

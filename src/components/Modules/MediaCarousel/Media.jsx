@@ -71,16 +71,16 @@ function Photo({ item, active, load, sizes }) {
   return (
     <>
       <Image
-        src={
-          video || (item.animated && !active)
-            ? stillFrame(item.src, item.clip)
-            : item.src
-        }
+        src={video || (item.animated && !active) ? item.still : item.src}
         clip={item.clip}
         alt={item.alt || ''}
         fill
         sizes={sizes}
         {...loadProps(load)}
+        placeholder={item.placeholder}
+        // Cropped to the card's ratio around the subject; inline, as next/image
+        // frames the placeholder by the same style.
+        style={{ objectFit: 'cover', objectPosition: item.position }}
         draggable={false}
         className={styles.fill}
       />
@@ -90,6 +90,8 @@ function Photo({ item, active, load, sizes }) {
           clip={item.clip}
           width={clipWidth(sizes)}
           className={styles.fill}
+          // Framed like the still under it, so the subject holds as it plays.
+          style={{ objectPosition: item.position }}
         />
       )}
     </>

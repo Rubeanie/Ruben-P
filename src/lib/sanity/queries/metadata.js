@@ -1,34 +1,12 @@
 import groq from 'groq';
-
-const imageFieldsQuery = groq`
-  _type,
-  crop{
-    _type,
-    right,
-    top,
-    left,
-    bottom
-  },
-  hotspot{
-    _type,
-    x,
-    y,
-    height,
-    width,
-  },
-  asset->{
-    url
-  }
-`;
+import { cloudinaryStillQuery } from './fragments/cloudinary';
 
 const metaAttributesQuery = groq`
   _type,
   attributeValueString,
   attributeType,
   attributeKey,
-  attributeValueImage{
-    ${imageFieldsQuery}
-  }
+  attributeValueImage{ ${cloudinaryStillQuery} }
 `;
 
 const openGraphQuery = groq`
@@ -36,9 +14,9 @@ const openGraphQuery = groq`
   siteName,
   description,
   title,
-  image{
-    ${imageFieldsQuery}
-  }
+  // Only what the still needs: og:image carries one URL, and internal links
+  // project this whole query for each page they point to.
+  image{ ${cloudinaryStillQuery} }
 `;
 
 const twitterQuery = groq`

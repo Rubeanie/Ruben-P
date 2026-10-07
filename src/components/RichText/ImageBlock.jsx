@@ -6,10 +6,9 @@ import { blockLayout } from './layout';
 import {
   PROSE_SIZES,
   clipWidth,
-  resolveAsset,
+  resolveImage,
   sizedSizes
 } from '@/lib/imageBlock';
-import { stillFrame } from '@/lib/imageLoader';
 import styles from '@/styles/components/RichText.module.scss';
 
 // Editors can leave the dimensions off a Cloudinary asset; a 3:2 guess keeps
@@ -18,26 +17,24 @@ const FALLBACK_WIDTH = 1200;
 const FALLBACK_HEIGHT = 800;
 
 export default function ImageBlock({ value, sanity, sizes = PROSE_SIZES }) {
-  const resolved = resolveAsset(value ?? {});
+  const resolved = resolveImage(value?.image);
   if (!resolved) return null;
 
-  const { src, width, height, blurDataURL, clip } = resolved;
-  const { caption, alt, source, loading, placeholder, size, align } = value;
-  const blur = stegaClean(placeholder) === 'blur' && blurDataURL;
+  const { src, still, width, height, clip, placeholder } = resolved;
+  const { caption, alt, source, loading, size, align } = value;
   const layout = blockLayout(stegaClean(size), stegaClean(align));
   const blockSizes = sizedSizes(sizes, layout['data-size']);
 
   const image = (
     <Image
-      src={clip?.video ? stillFrame(src, clip) : src}
+      src={clip?.video ? still : src}
       clip={clip}
       width={width || FALLBACK_WIDTH}
       height={height || FALLBACK_HEIGHT}
       alt={stegaClean(alt) || ''}
       sizes={blockSizes}
       loading={stegaClean(loading) || 'lazy'}
-      placeholder={blur ? 'blur' : 'empty'}
-      blurDataURL={blur ? blurDataURL : undefined}
+      placeholder={placeholder}
     />
   );
 

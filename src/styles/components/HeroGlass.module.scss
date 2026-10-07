@@ -56,12 +56,15 @@ $ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
     animation-name: lift;
   }
 
-  img {
+  // A clip's video settles with its still.
+  img,
+  video {
     animation-name: settle;
   }
 
   // The intro waits for the picture (GatedPhoto sets data-loaded), paused on its first frame.
   img,
+  video,
   &::after {
     animation-duration: 1.3s;
     animation-timing-function: $ease-out-expo;
@@ -70,6 +73,7 @@ $ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   &[data-loaded] img,
+  &[data-loaded] video,
   &[data-loaded]::after {
     animation-play-state: running;
   }

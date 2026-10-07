@@ -1,33 +1,17 @@
 import sharp from 'sharp';
-import { imageBuilder } from '@/lib/sanity/image';
+import { stillOf } from '@/lib/imageBlock';
 import { cloudinaryTransform } from '@/lib/imageLoader';
-import { luminance, photoUrl, shadeFor } from './colours';
+import { luminance, shadeFor } from './colours';
 import { seeded } from './rings';
 import { W, H } from './layout';
 
 export const jpegSrc = (buf) =>
   `data:image/jpeg;base64,${buf.toString('base64')}`;
 
-// The editor's crop and hotspot, cut to the card on the Sanity CDN.
-const sanityCrop = (image) =>
-  imageBuilder
-    .image(image)
-    .width(W)
-    .height(H)
-    .fit('crop')
-    .format('jpg')
-    .quality(85)
-    .url();
-
-// A Cloudinary still is cut to the card around its subject (g_auto, which a
-// Media Library focal point steers); a video's still is a WebP already.
+// The still is cut to the card around its subject (g_auto, which a Media
+// Library focal point steers); a video's still is a WebP already.
 const CARD = `c_fill,g_auto,w_${W},h_${H},q_85`;
-const cloudinaryCrop = (still) => cloudinaryTransform(still, CARD);
-
-const cardCrop = (image) =>
-  image._type === 'cloudinaryImage'
-    ? cloudinaryCrop(photoUrl(image))
-    : sanityCrop(image);
+const cardCrop = (image) => cloudinaryTransform(stillOf(image), CARD);
 
 // The CDN won't upscale a small image, so it is brought to size here. Null when the photo
 // can't be fetched or decoded.
@@ -41,7 +25,7 @@ export async function loadPhoto(image) {
       .jpeg({ quality: 92 })
       .toBuffer();
   } catch (error) {
-    console.error(`Share card photo failed: ${photoUrl(image)}`, error);
+    console.error(`Share card photo failed: ${stillOf(image)}`, error);
     return null;
   }
 }

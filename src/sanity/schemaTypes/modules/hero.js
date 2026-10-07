@@ -3,6 +3,7 @@ import { getBlockText } from '@/sanity/utils';
 import { textBlock } from '../fragments/text-block';
 import { scrollHintField } from '../fragments/fields/scroll-hint';
 import { uidField } from '../fragments/fields/uid';
+import { assetPreview } from '../../components/CloudinaryPreview';
 
 export const hero = {
   name: 'hero',
@@ -34,34 +35,13 @@ export const hero = {
     {
       name: 'bgImage',
       title: 'Background Image',
-      type: 'image',
-      options: {
-        hotspot: true
-      },
-      fields: [
-        {
-          name: 'alt',
-          type: 'string'
-        },
-        {
-          name: 'loading',
-          type: 'string',
-          options: {
-            layout: 'radio',
-            list: ['lazy', 'eager']
-          },
-          initialValue: 'lazy'
-        }
-      ],
+      type: 'cloudinaryImage',
       group: 'image'
     },
     {
-      name: 'bgImageMobile',
-      title: 'Background Image (Mobile)',
-      type: 'image',
-      options: {
-        hotspot: true
-      },
+      name: 'bgImageAlt',
+      title: 'Background Image alt text',
+      type: 'string',
       group: 'image'
     },
     scrollHintField({ initialValue: true, group: 'options' }),
@@ -70,12 +50,12 @@ export const hero = {
   preview: {
     select: {
       content: 'content',
-      media: 'bgImage'
+      asset: 'bgImage.asset'
     },
-    prepare: ({ content, media }) => ({
+    prepare: ({ content, asset }) => ({
       title: getBlockText(content),
       subtitle: 'Hero',
-      media
+      media: assetPreview(asset)
     })
   }
 };

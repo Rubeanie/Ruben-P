@@ -18,7 +18,7 @@ const formats = () =>
 // first frame, which the caller draws as an image: the image holds the layout,
 // placeholder and preload, and is all that shows under reduced motion. It
 // mounts after hydration, and stays clear until it has a frame to show.
-export default function ClipVideo({ src, clip, width, className }) {
+export default function ClipVideo({ src, clip, width, className, style }) {
   const ref = useRef(null);
   const [motion, setMotion] = useState(false);
 
@@ -52,6 +52,7 @@ export default function ClipVideo({ src, clip, width, className }) {
       // eslint-disable-next-line @next/next/no-img-element -- a Cloudinary animated WebP, already sized
       <img
         className={className}
+        style={style}
         src={animatedClip(src, `c_limit,w_${shown}`, clip)}
         alt=''
         aria-hidden='true'
@@ -64,7 +65,7 @@ export default function ClipVideo({ src, clip, width, className }) {
       key={wide}
       ref={ref}
       className={className}
-      style={loaded === wide ? undefined : { opacity: 0 }}
+      style={loaded === wide ? style : { ...style, opacity: 0 }}
       onLoadedData={() => setLoaded(wide)}
       autoPlay
       muted

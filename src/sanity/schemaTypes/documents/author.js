@@ -1,4 +1,5 @@
 import { MdPerson } from 'react-icons/md';
+import { assetPreview } from '../../components/CloudinaryPreview';
 
 export const author = {
   name: 'author',
@@ -13,8 +14,7 @@ export const author = {
     },
     {
       name: 'photo',
-      type: 'image',
-      options: { hotspot: true },
+      type: 'cloudinaryImage',
       description: 'Square crop works best'
     },
     {
@@ -29,6 +29,10 @@ export const author = {
     }
   ],
   preview: {
-    select: { title: 'name', media: 'photo' }
+    select: { title: 'name', asset: 'photo.asset' },
+    prepare: ({ title, asset }) => ({
+      title,
+      media: assetPreview(asset)
+    })
   }
 };

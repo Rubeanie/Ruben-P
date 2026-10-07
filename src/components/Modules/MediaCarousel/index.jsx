@@ -3,7 +3,7 @@ import { MediaCarousel as Carousel } from '@/components/lazy';
 import { aspectOf } from '@/components/Modules/ThreeScene/aspects';
 import { captionText } from '@/components/RichText/FigureCaption';
 import { blockLayout } from '@/components/RichText/layout';
-import { resolveAsset } from '@/lib/imageBlock';
+import { resolveImage } from '@/lib/imageBlock';
 import { isAnimated } from '@/lib/imageLoader';
 import { renderable } from '@/lib/carouselItems';
 import uid from '@/lib/uid';
@@ -23,12 +23,17 @@ async function resolve(item) {
   };
   switch (stegaClean(item._type)) {
     case 'carouselImage': {
-      const { src, clip } = resolveAsset(item);
+      const { src, still, clip, position, placeholder } = resolveImage(
+        item.image
+      );
       return {
         ...common,
         type: 'image',
         src,
+        still,
         clip,
+        position,
+        placeholder,
         alt: stegaClean(item.alt),
         // A clip that plays as video rests on its first frame, nothing to warm.
         animated: isAnimated(src) && !clip?.video

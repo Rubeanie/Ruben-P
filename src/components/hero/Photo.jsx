@@ -1,100 +1,125 @@
-import Image from '@/components/CdnImage';
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
 import { getImageProps } from 'next/image';
 import { stegaClean } from '@sanity/client/stega';
-import { isAnimated, loaderFor, stillFrame } from '@/lib/imageLoader';
+import Image from '@/components/CdnImage';
+import ClipVideo from '@/components/ClipVideo';
+import { clipWidth } from '@/lib/imageBlock';
+import { loaderFor } from '@/lib/imageLoader';
 
-const photoPosition = (image) =>
-  image?.hotspot
-    ? `${image.hotspot.x * 100}% ${image.hotspot.y * 100}%`
-    : undefined;
+// Cover-fit around the subject, over the rendition's placeholder, which
+// next/image frames by the same style.
+const imageProps = (
+  { image, src, sizes, placeholder = image.placeholder },
+  rest
+) => ({
+  src,
+  fill: true,
+  sizes,
+  placeholder,
+  style: { objectFit: 'cover', objectPosition: image.position },
+  ...rest
+});
 
-function imageProps(image, rest) {
-  const { url, metadata } = image.asset;
-  return {
-    src: url,
-    fill: true,
-    loader: loaderFor(url),
-    placeholder: metadata?.lqip ? 'blur' : undefined,
-    blurDataURL: metadata?.lqip,
-    style: { objectFit: 'cover', objectPosition: photoPosition(image) },
-    ...rest
-  };
-}
+// A clip plays over its still, filling and framed the same.
+const over = (image) => ({
+  position: 'absolute',
+  inset: 0,
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+  objectPosition: image.position
+});
 
-// An animated source's first frame, for the reduced-motion sources below.
-function still(image, rest) {
-  const { url } = image.asset;
-  const { props } = getImageProps({
-    ...imageProps(image, rest),
-    src: stillFrame(url),
-    loader: loaderFor(stillFrame(url)),
-    alt: ''
-  });
-  return props;
-}
-
-const REDUCED = '(prefers-reduced-motion: reduce)';
-
-// `mobile` ({ image, sizes, media }) art-directs a second photo: one <picture>,
-// so a screen downloads only the photo it shows. Each photo's hotspot and blur
-// go in custom properties the stylesheet swaps at the same breakpoint.
-export default function Photo({ image, mobile, className, ...rest }) {
-  if (!image?.asset?.url) return null;
-  const alt = stegaClean(image.alt) || '';
-
-  if (!mobile) {
-    // CdnImage picks the loader itself: a function can't cross into it.
-    const { loader, ...props } = imageProps(image, rest);
+// A hero's photo, from heroPhotos. A pair art-directs the phone's portrait cut:
+// one <picture>, so a screen downloads only the rendition it shows.
+export default function Photo({ photos, alt, className, ...rest }) {
+  const [photo, phone] = photos ?? [];
+  if (!photo) return null;
+  const text = stegaClean(alt) || '';
+  if (phone)
     return (
-      <div className={className}>
-        <Image {...props} alt={alt} />
-      </div>
+      <Pair
+        photos={[photo, phone]}
+        alt={text}
+        className={className}
+        {...rest}
+      />
     );
-  }
 
-  const { props: desktop } = getImageProps({ ...imageProps(image, rest), alt });
-  const { props: phone } = getImageProps({
-    ...imageProps(mobile.image, { ...rest, sizes: mobile.sizes }),
-    alt
-  });
+  const { image } = photo;
+  return (
+    <div className={className}>
+      {/* CdnImage picks the loader itself: a function can't cross into it. */}
+      <Image {...imageProps(photo, rest)} clip={image.clip} alt={text} />
+      {image.clip?.video && (
+        <ClipVideo
+          src={image.src}
+          clip={image.clip}
+          width={clipWidth(photo.sizes)}
+          style={over(image)}
+        />
+      )}
+    </div>
+  );
+}
+
+// next/image clears its placeholder once the photo decodes, but this <img> is
+// drawn by hand: it does the same, so none shows through a transparent photo
+// and no blank frame shows between. A failed decode clears it too; a source
+// swapped or unmounted meanwhile leaves it to the newer load.
+function settle(node, done) {
+  const src = node.currentSrc;
+  const clear = () => node.isConnected && node.currentSrc === src && done();
+  node.decode().then(clear, clear);
+}
+
+function Pair({ photos, alt, className, onLoad, ...rest }) {
+  const img = useRef(null);
+  const [loaded, setLoaded] = useState(false);
+  // A cached photo can finish before hydration, with no load event to catch.
+  useEffect(() => {
+    if (img.current?.complete && img.current.naturalWidth)
+      settle(img.current, () => setLoaded(true));
+  }, []);
+
+  const [desktop, portrait] = photos.map(
+    (photo) =>
+      getImageProps({
+        ...imageProps(photo, rest),
+        loader: loaderFor(photo.src),
+        alt
+      }).props
+  );
+  const placeholder = (props) =>
+    loaded ? undefined : props.style.backgroundImage;
   return (
     <div className={className}>
       <picture>
-        {/* Reduced motion gets the first frame (WCAG 2.2.2); each still sits
-            beside its photo's source so the art direction holds. */}
-        {isAnimated(mobile.image.asset.url) && (
-          <source
-            media={`${mobile.media} and ${REDUCED}`}
-            srcSet={
-              still(mobile.image, { ...rest, sizes: mobile.sizes }).srcSet
-            }
-            sizes={mobile.sizes}
-          />
-        )}
         <source
-          media={mobile.media}
-          srcSet={phone.srcSet}
-          sizes={phone.sizes}
+          media={photos[1].media}
+          srcSet={portrait.srcSet}
+          sizes={portrait.sizes}
         />
-        {isAnimated(image.asset.url) && (
-          <source
-            media={REDUCED}
-            srcSet={still(image, rest).srcSet}
-            sizes={desktop.sizes}
-          />
-        )}
         <img
           {...desktop}
+          ref={img}
           alt={alt}
+          onLoad={(event) => {
+            settle(event.currentTarget, () => setLoaded(true));
+            onLoad?.(event);
+          }}
+          // Each rendition's framing and placeholder, which the stylesheet
+          // swaps at the phone breakpoint.
           style={{
             ...desktop.style,
             objectPosition: undefined,
             backgroundImage: undefined,
             backgroundPosition: undefined,
             '--position': desktop.style.objectPosition,
-            '--blur': desktop.style.backgroundImage,
-            '--mobile-position': phone.style.objectPosition,
-            '--mobile-blur': phone.style.backgroundImage
+            '--placeholder': placeholder(desktop),
+            '--phone-placeholder': placeholder(portrait)
           }}
         />
       </picture>

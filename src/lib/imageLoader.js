@@ -33,6 +33,11 @@ function sanityLoader({ src, width, quality }) {
 // Last transform before the version so earlier named or chained ones stay;
 // c_limit keeps a small original from being scaled up.
 const sized = (width) => `c_limit,f_auto,q_auto,w_${width}`;
+
+// An image wider than 3:4 cut to 3:4 around its subject (g_auto, which a Media
+// Library focal point steers); a taller one stays whole. Sizing goes after it.
+export const portraitCrop = (src) =>
+  cloudinaryTransform(src, 'if_ar_gt_0.75/c_fill,ar_3:4,g_auto/if_end');
 const cloudinaryLoader = ({ src, width }) =>
   src.replace(CLOUDINARY_CHAIN, `/image/upload/$1${sized(width)}/$2`);
 
@@ -44,7 +49,7 @@ export const MAX_CLIP = 60;
 // A theme's background runs behind the whole page, so it stays short.
 export const THEME_CLIP = 6;
 export const CLIP_FPS = [10, 15, 24];
-// Takes its own output too: resolveAsset settles a clip before the loaders do.
+// Takes its own output too: resolveImage settles a clip before the loaders do.
 export function clipSettings(clip, max = MAX_CLIP) {
   const length = Number(clip?.length);
   return {

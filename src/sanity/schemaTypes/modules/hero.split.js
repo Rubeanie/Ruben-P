@@ -3,6 +3,7 @@ import { getBlockText } from '@/sanity/utils';
 import { textBlock } from '../fragments/text-block';
 import { scrollHintField } from '../fragments/fields/scroll-hint';
 import { uidField } from '../fragments/fields/uid';
+import { assetPreview } from '../../components/CloudinaryPreview';
 
 export const heroSplit = {
   name: 'hero.split',
@@ -31,30 +32,20 @@ export const heroSplit = {
     },
     {
       name: 'image',
-      type: 'image',
-      options: {
-        hotspot: true
-      },
-      fields: [
-        {
-          name: 'alt',
-          type: 'string'
-        },
-        {
-          name: 'onRight',
-          type: 'boolean',
-          initialValue: false
-        },
-        {
-          name: 'loading',
-          type: 'string',
-          options: {
-            layout: 'radio',
-            list: ['lazy', 'eager']
-          },
-          initialValue: 'lazy'
-        }
-      ],
+      type: 'cloudinaryImage',
+      group: 'image'
+    },
+    {
+      name: 'imageAlt',
+      title: 'Alt text',
+      type: 'string',
+      group: 'image'
+    },
+    {
+      name: 'imageOnRight',
+      title: 'Image on right',
+      type: 'boolean',
+      initialValue: false,
       group: 'image'
     },
     scrollHintField({ initialValue: false, group: 'options' }),
@@ -63,12 +54,12 @@ export const heroSplit = {
   preview: {
     select: {
       content: 'content',
-      media: 'image'
+      asset: 'image.asset'
     },
-    prepare: ({ content, media }) => ({
+    prepare: ({ content, asset }) => ({
       title: getBlockText(content),
       subtitle: 'Hero (Split)',
-      media
+      media: assetPreview(asset)
     })
   }
 };

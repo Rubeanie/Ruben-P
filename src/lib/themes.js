@@ -2,7 +2,9 @@ import {
   CLOUDINARY_CHAIN,
   THEME_CLIP,
   animatedClip,
+  cloudinaryTransform,
   isClip,
+  portraitCrop,
   stillFrame,
   videoTransform
 } from './imageLoader';
@@ -164,7 +166,8 @@ export const themeGate = (themes) =>
 
 // The server and the Studio analyse the same small JPG of a hero photo.
 export function themeRendition(url) {
-  // A video's colours come from its first frame.
+  // A theme video's colours come from its first frame; an image field's clip
+  // comes as its still (stillOf), at the clip's Start.
   if (isClip(url)) return videoTransform(url, 'so_0,w_800,f_jpg,q_80');
   const parsed = new URL(url);
 
@@ -174,11 +177,9 @@ export function themeRendition(url) {
     parsed.searchParams.set('q', '80');
   } else if (parsed.hostname === 'res.cloudinary.com') {
     // Last in the chain, just before the version, so no named or earlier
-    // transform overrides it; Vibrant can't read the AVIF or WebP served otherwise.
-    parsed.pathname = parsed.pathname.replace(
-      CLOUDINARY_CHAIN,
-      '/image/upload/$1w_800,f_jpg,q_80/$2'
-    );
+    // transform overrides it; Vibrant can't read the AVIF or WebP served
+    // otherwise. f_jpg wins over a video still's .webp too.
+    return cloudinaryTransform(url, 'w_800,f_jpg,q_80');
   }
 
   return parsed.toString();
@@ -236,12 +237,10 @@ export function portraitRendition(url) {
   }
 
   if (parsed.hostname === 'res.cloudinary.com') {
-    // Last before the version, like themeRendition; a taller photo is left
-    // whole. g_auto lets Cloudinary find the subject, and a focal point set
-    // in the Media Library overrides it.
-    parsed.pathname = parsed.pathname.replace(
-      CLOUDINARY_CHAIN,
-      '/image/upload/$1if_ar_gt_0.75/c_fill,ar_3:4,g_auto/if_end/c_limit,h_1600,f_auto,q_auto/$2'
+    // The phone hero's cut, sized last like themeRendition.
+    return cloudinaryTransform(
+      portraitCrop(url),
+      'c_limit,h_1600,f_auto,q_auto'
     );
   } else if (parsed.hostname === 'cdn.sanity.io') {
     const [, width, height] =

@@ -1,6 +1,9 @@
 import { LuBox, LuGalleryHorizontal, LuImage, LuYoutube } from 'react-icons/lu';
 import { getYouTubeId } from '@/lib/youtube';
-import { CloudinaryPreview } from '../../components/CloudinaryPreview';
+import {
+  CloudinaryPreview,
+  assetPreview
+} from '../../components/CloudinaryPreview';
 import { imageBlock } from '../fragments/image-block';
 import { youTubeBlock } from '../fragments/youTubeBlock';
 import { blockLayoutFields } from '../fragments/fields/block-layout';
@@ -24,13 +27,17 @@ const source = reuse(imageBlock, 'source', {
   description: 'Credit link; the caption becomes the link.'
 });
 
-// An item's picture, from its stored value, for the list and the module's preview.
+// An item's picture, from its stored value, for the list and the module's
+// preview: the item's own preview selects the same paths the stored item has.
 function media(item) {
-  const cloudinary =
-    item.imageType === 'cloudinary.asset'
-      ? item.cloudinaryAsset?.secure_url
-      : item.posterSource === 'cloudinary' && item.posterCloudinary?.secure_url;
-  if (cloudinary) return <CloudinaryPreview url={cloudinary} alt={item.alt} />;
+  if (item.image?.asset) return assetPreview(item.image.asset, item.alt);
+  if (item.posterSource === 'cloudinary' && item.posterCloudinary?.secure_url)
+    return (
+      <CloudinaryPreview
+        url={item.posterCloudinary.secure_url}
+        alt={item.alt}
+      />
+    );
   const id = item.url && getYouTubeId(item.url);
   if (id)
     return (
@@ -40,7 +47,7 @@ function media(item) {
         style={{ objectFit: 'cover' }}
       />
     );
-  return item.image ?? item.poster;
+  return item.poster;
 }
 
 const carouselImage = {
@@ -49,12 +56,7 @@ const carouselImage = {
   type: 'object',
   icon: LuImage,
   fields: [
-    reuse(imageBlock, 'imageType'),
-    reuse(imageBlock, 'image', {
-      description: 'Animated GIFs rest on their first frame until in front.'
-    }),
-    reuse(imageBlock, 'cloudinaryAsset'),
-    reuse(imageBlock, 'clip'),
+    reuse(imageBlock, 'image'),
     reuse(imageBlock, 'alt', { validation: required }),
     caption,
     source
@@ -63,9 +65,7 @@ const carouselImage = {
     select: {
       caption: 'caption',
       alt: 'alt',
-      imageType: 'imageType',
-      image: 'image',
-      cloudinaryAsset: 'cloudinaryAsset'
+      image: 'image'
     },
     prepare: (item) => ({
       title: item.caption || item.alt,

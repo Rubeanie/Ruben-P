@@ -1,5 +1,5 @@
 import { stegaClean } from '@sanity/client/stega';
-import { resolveAsset } from '@/lib/imageBlock';
+import { resolveImage } from '@/lib/imageBlock';
 import { getYouTubeId } from '@/lib/youtube';
 
 // Whether a carousel item has the media its card needs: the carousel draws
@@ -7,7 +7,7 @@ import { getYouTubeId } from '@/lib/youtube';
 export function renderable(item) {
   switch (stegaClean(item?._type)) {
     case 'carouselImage':
-      return Boolean(resolveAsset(item));
+      return Boolean(resolveImage(item.image));
     case 'carouselYouTube':
       return Boolean(getYouTubeId(stegaClean(item.url)));
     case 'carouselScene':

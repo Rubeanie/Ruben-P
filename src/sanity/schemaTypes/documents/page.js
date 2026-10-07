@@ -8,6 +8,7 @@ import { pageBlock } from '../fragments/page-block';
 import { metadata } from '../fragments/metadata';
 import { headingLinksField } from '../fragments/fields/heading-links';
 import { animateModulesField } from '../fragments/fields/animate-modules';
+import { assetPreview } from '../../components/CloudinaryPreview';
 
 export const page = {
   name: 'page',
@@ -42,14 +43,14 @@ export const page = {
     select: {
       title: 'title',
       slug: 'metadata.slug.current',
-      media: 'metadata.seo.openGraph.image',
+      shareImage: 'metadata.seo.openGraph.image.asset',
       noindex: 'metadata.seo.nofollowAttributes'
     },
-    prepare: ({ title, slug, media, noindex }) => ({
+    prepare: ({ title, slug, shareImage, noindex }) => ({
       title,
       subtitle: slug,
       media:
-        media ||
+        assetPreview(shareImage) ||
         (slug === '/' && MdHomeFilled) ||
         (slug === '404' && MdQuestionMark) ||
         (slug === 'redirect' && MdCallMissedOutgoing) ||

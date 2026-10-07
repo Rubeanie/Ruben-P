@@ -1,3 +1,4 @@
+import { HERO_PHOTO_FIELDS } from '@/lib/heroPhotos';
 import { resolveMetadata } from '@/lib/resolveMetadata';
 import processUrl, { slugOf } from '@/lib/processUrl';
 import { isPagePath, templateSlugs } from '@/lib/slug';
@@ -10,12 +11,6 @@ const LEVELS = { h1: 1, h1Large: 1, h2: 2, h3: 3 };
 const RANK = { bad: 0, warn: 1, good: 2, info: 3 };
 // The page's verdict from its worst item.
 export const VERDICTS = { bad: 'weak', warn: 'okay', good: 'good' };
-// The photo fields each hero renders.
-const HERO_PHOTOS = {
-  hero: ['bgImage', 'bgImageMobile'],
-  'hero.saas': ['image'],
-  'hero.split': ['image']
-};
 
 export const textOf = (block) => blockText(block).trim();
 
@@ -61,18 +56,14 @@ function imagesWithoutAlt(modules) {
     if (Array.isArray(value)) return value.forEach(visit);
     if (!value || typeof value !== 'object') return;
     if (value._type === 'imageBlock') {
-      const shown =
-        value.imageType === 'cloudinary.asset'
-          ? value.cloudinaryAsset
-          : value.image?.asset;
-      if (shown && !value.alt?.trim()) missing++;
+      if (value.image?.asset && !value.alt?.trim()) missing++;
       return;
     }
     Object.values(value).forEach(visit);
   };
   for (const mod of modules ?? []) {
-    for (const field of HERO_PHOTOS[mod._type] ?? [])
-      if (mod[field]?.asset && !mod[field].alt?.trim()) missing++;
+    const field = HERO_PHOTO_FIELDS[mod._type];
+    if (field && mod[field]?.asset && !mod[`${field}Alt`]?.trim()) missing++;
     visit(mod);
   }
   return missing;

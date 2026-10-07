@@ -3,8 +3,7 @@ import { loadPhoto } from './photo';
 
 const image = {
   asset: {
-    _id: 'image-0123456789abcdef0123456789abcdef01234567-1200x630-jpg',
-    url: 'https://cdn.sanity.io/images/p/d/0123456789abcdef0123456789abcdef01234567-1200x630.jpg'
+    secure_url: 'https://res.cloudinary.com/demo/image/upload/v1/a.jpg'
   }
 };
 const realFetch = globalThis.fetch;
@@ -27,13 +26,12 @@ test('a photo that fails to load, answers an error or will not decode comes back
   expect(console.error).toHaveBeenCalledTimes(3);
 });
 
-test('a Cloudinary cover still is cut to the card around its subject', async () => {
+test('the Start frame of a clip is cut to the card around its subject', async () => {
   console.error = mock(() => {});
   globalThis.fetch = mock(() =>
     Promise.resolve(new Response('', { status: 404 }))
   );
   const clip = {
-    _type: 'cloudinaryImage',
     asset: {
       secure_url: 'https://res.cloudinary.com/demo/video/upload/v1/a.mp4'
     },

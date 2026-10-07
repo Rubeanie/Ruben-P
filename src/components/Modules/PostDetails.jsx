@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { stegaClean } from '@sanity/client/stega';
-import { imageBuilder } from '@/lib/sanity/image';
+import { placeholderFor, resolveImage } from '@/lib/imageBlock';
+import { cloudinaryTransform } from '@/lib/imageLoader';
 import { resolveLink } from '@/lib/processUrl';
 import uid from '@/lib/uid';
 import { formatDate, initials, inkFor, sameDay } from '@/lib/posts';
@@ -21,17 +22,15 @@ function Sep() {
 }
 
 function Disc({ author }) {
-  // The URL builder reads ids and the crop rect, so the whole photo is cleaned.
-  const photo = stegaClean(author.photo);
-  const src = photo?.asset?._id
-    ? imageBuilder
-        .image(photo)
-        .width(PHOTO_PX)
-        .height(PHOTO_PX)
-        .fit('crop')
-        .auto('format')
-        .url()
-    : null;
+  // A square around the face (g_auto, or the Media Library focal point), over
+  // the same square of its placeholder.
+  const image = resolveImage(author.photo);
+  const src =
+    image &&
+    cloudinaryTransform(
+      image.still,
+      `c_fill,g_auto,w_${PHOTO_PX},h_${PHOTO_PX},f_auto,q_auto`
+    );
   return (
     <span className={styles.disc} aria-hidden='true'>
       {src ? (
@@ -44,6 +43,7 @@ function Disc({ author }) {
           alt=''
           // The CDN URL is already the exact crop; a second resize would only add a hop.
           unoptimized
+          placeholder={placeholderFor({ ...image, blur: author.photo.blur }, 1)}
         />
       ) : (
         initials(stegaClean(author.name))

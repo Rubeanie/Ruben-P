@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Flex, Stack, Text } from '@sanity/ui';
 import { useFormValue } from 'sanity';
 import { sizeFraction } from '@/lib/imageBlock';
+import { assetUrl } from '../cloudinaryDerived';
 import {
   animatedClip,
   clipSettings,
@@ -67,15 +68,13 @@ const QUIET = {
 // sizes of both renditions on request, until a setting changes.
 export function ClipInput(props) {
   const parent = props.path.slice(0, -1);
-  const cloudinaryImage = useFormValue([...parent, 'asset']);
-  const imageBlock = useFormValue([...parent, 'cloudinaryAsset']);
-  const asset = cloudinaryImage ?? imageBlock;
-  // The block's own Size, or the carousel's two levels up, narrows the file; a
-  // cover has neither and runs full width.
-  const own = useFormValue([...parent, 'size']);
-  const carousel = useFormValue([...parent.slice(0, -2), 'size']);
+  const asset = useFormValue([...parent, 'asset']);
+  // The image block's own Size, or the carousel's three levels up, narrows the
+  // file; a cover has neither and runs full width.
+  const own = useFormValue([...parent.slice(0, -1), 'size']);
+  const carousel = useFormValue([...parent.slice(0, -3), 'size']);
   const width = Math.round(WIDTH * sizeFraction(own ?? carousel));
-  const src = asset?.derived?.[0]?.secure_url || asset?.secure_url;
+  const src = assetUrl(asset);
   const urls = src && {
     video: clipVideo(src, width, props.value, 'webm'),
     image: animatedClip(src, `c_limit,w_${width}`, props.value)

@@ -81,7 +81,7 @@ export const openGraph = {
   fields: [
     {
       name: 'image',
-      type: 'image',
+      type: 'cloudinaryImage',
       description: 'Recommended size: 1200x630 pixels.'
     },
     {
@@ -194,7 +194,7 @@ export const metaAttribute = {
     {
       name: 'attributeValueImage',
       title: 'Image value',
-      type: 'image',
+      type: 'cloudinaryImage',
       hidden: ({ parent }) => parent?.attributeType !== 'image'
     },
     {

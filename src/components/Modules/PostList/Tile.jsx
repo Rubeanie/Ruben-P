@@ -193,12 +193,14 @@ export default function Tile({
   useEffect(() => {
     if (img.current?.complete && img.current.naturalWidth) setLoaded(true);
   }, []);
-  // One source per post at every shape, framed in CSS around the subject, so a
-  // shape change re-clips the same bitmap instead of switching to another crop.
-  const focus = cover?.focus
-    ? `${Math.round(cover.focus.x * 1000) / 10}% ${Math.round(cover.focus.y * 1000) / 10}%`
-    : undefined;
+  // The placeholder goes once the still has faded in over it, so none shows
+  // through a transparent cover or round its edge as the follow tilts it.
+  const [faded, setFaded] = useState(() => decoded.has(cover?.still));
   const plate = cover?.palette?.dominant?.background;
+  const placeholder =
+    cover && !faded && cover.placeholder !== 'empty'
+      ? `url("${cover.placeholder}")`
+      : undefined;
 
   // A moving cover plays while a mouse or pen rests on the tile or the keyboard
   // focuses it, never on touch or under reduced motion. The layer stays mounted
@@ -291,10 +293,12 @@ export default function Tile({
         m.tx = m.ty = 0;
         if (!m.raf && img.current) m.raf = requestAnimationFrame(settle);
       }}>
+      {/* One source per post at every shape, framed in CSS around the subject,
+          so a shape change re-clips the same bitmap instead of another crop. */}
       <div
         ref={picture}
         className={styles.picture}
-        style={{ '--focus': focus }}>
+        style={{ '--focus': cover?.position, '--placeholder': placeholder }}>
         {cover && (
           <Image
             ref={img}
@@ -309,6 +313,9 @@ export default function Tile({
               decoded.add(cover.still);
               setLoaded(true);
             }}
+            onTransitionEnd={(event) =>
+              event.propertyName === 'opacity' && loaded && setFaded(true)
+            }
           />
         )}
         {shown && cover?.moving && (

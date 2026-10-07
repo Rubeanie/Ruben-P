@@ -43,35 +43,50 @@ export function clipWidth(sizes) {
 const clipFor = (src, clip) =>
   isClip(src) ? { ...clipSettings(clip), video: !clip?.animatedImage } : null;
 
-export function resolveAsset({ imageType, image, cloudinaryAsset, clip }) {
-  if (stegaClean(imageType) === 'cloudinary.asset') {
-    const src = stegaClean(
-      cloudinaryAsset?.derived_url || cloudinaryAsset?.secure_url
+// A point of the image, 0-1 each way, as a CSS position.
+const percent = (n) => `${Math.round(n * 1000) / 10}%`;
+const positionOf = (focus) =>
+  focus ? `${percent(focus.x)} ${percent(focus.y)}` : undefined;
+
+const svgUrl = (svg) =>
+  `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+const HEX = /^#[\da-f]{3,8}$/i;
+
+// What shows under an image until it paints: its lqip blurred or, with the
+// field's blur switched off, its dominant colour. The blur is an SVG in the
+// image's own shape, so next/image's cover-fit and object-position frame it
+// like the photo; the lqip overhangs the box so the blur keeps its edges.
+// `crop` (width / height) narrows it to the cut the CDN's g_auto makes around
+// the subject, for a rendition that is that cut.
+export function placeholderFor(
+  { blur, lqip, palette, width, height, focus },
+  crop
+) {
+  if (blur !== false && lqip?.startsWith('data:image/')) {
+    const h = Math.round((100 * height) / width) || 56;
+    const w = Math.min(100, crop ? Math.round(h * crop) : 100);
+    const x = Math.min(Math.max(0, (focus?.x ?? 0.5) * 100 - w / 2), 100 - w);
+    return svgUrl(
+      `<svg xmlns='http://www.w3.org/2000/svg' viewBox='${Math.round(x)} 0 ${w} ${h}'><filter id='b'><feGaussianBlur stdDeviation='4'/></filter><image x='-10' y='${-h / 10}' width='120' height='${h * 1.2}' preserveAspectRatio='none' filter='url(#b)' href='${lqip}'/></svg>`
     );
-    if (!src) return null;
-    const settled = clipFor(src, clip);
-    return {
-      src,
-      width: cloudinaryAsset.width,
-      height: cloudinaryAsset.height,
-      ...(settled && { clip: settled })
-    };
   }
-  const asset = image?.asset;
-  if (!asset?.url) return null;
-  return {
-    src: stegaClean(asset.url),
-    width: asset.metadata?.dimensions?.width,
-    height: asset.metadata?.dimensions?.height,
-    blurDataURL: asset.metadata?.lqip
-  };
+  const colour = palette?.dominant?.background;
+  return HEX.test(colour ?? '')
+    ? svgUrl(
+        `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'><rect width='1' height='1' fill='${colour}'/></svg>`
+      )
+    : 'empty';
 }
 
-// A Cloudinary image field (a post cover; every image field later) as readers
-// draw it. `still` is what shows at rest: the image itself, or the first frame
-// of a clip's cut or of a GIF; `moving` says there is an animation behind it.
+// What an image field shows at rest, for heads, feeds, crawlers and crops.
+export const stillOf = (value) => resolveImage(value)?.still;
+
+// A Cloudinary image field as readers draw it. `still` is what shows at rest:
+// the image itself, or the first frame of a clip's cut or of a GIF; `moving`
+// says there is an animation behind it. `position` frames a cover-fit box
+// around the subject; `placeholder` goes to next/image or a CSS background.
 export function resolveImage(value) {
-  const { asset, clip, palette, focus, lqip } = stegaClean(value) ?? {};
+  const { asset, clip, blur, palette, focus, lqip } = stegaClean(value) ?? {};
   const src = asset?.derived_url || asset?.secure_url;
   if (!src) return null;
   const settled = clipFor(src, clip);
@@ -85,6 +100,14 @@ export function resolveImage(value) {
     moving,
     palette,
     focus,
-    lqip
+    lqip,
+    position: positionOf(focus),
+    placeholder: placeholderFor({
+      blur,
+      lqip,
+      palette,
+      width: asset.width,
+      height: asset.height
+    })
   };
 }

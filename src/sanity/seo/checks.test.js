@@ -32,7 +32,8 @@ const good = {
   modules: [
     {
       _type: 'hero',
-      bgImage: { asset, alt: 'Tail lights on the Hume' },
+      bgImage: { asset },
+      bgImageAlt: 'Tail lights on the Hume',
       content: [block('h1', 'Night drives'), block('normal', 'Twelve shots.')]
     },
     {
@@ -60,7 +61,7 @@ test('every photo a hero renders needs alt text', () => {
     );
   expect(missing(good.modules)).toBe(false);
   expect(
-    missing([{ ...good.modules[0], bgImageMobile: { asset } }, good.modules[1]])
+    missing([{ ...good.modules[0], bgImageAlt: '' }, good.modules[1]])
   ).toBe(true);
   expect(missing([{ _type: 'hero.saas', image: { asset } }])).toBe(true);
 });
@@ -73,10 +74,7 @@ test('a page leaning on defaults needs work, worst first', () => {
     modules: [
       {
         _type: 'richtext-module',
-        content: [
-          block('h2', 'Hi'),
-          { _type: 'imageBlock', imageType: 'image', image: { asset } }
-        ]
+        content: [block('h2', 'Hi'), { _type: 'imageBlock', image: { asset } }]
       }
     ]
   };

@@ -1,15 +1,13 @@
 import { groq } from '../../fetch';
 import { contentQuery } from '../fragments/content';
-import { imageQuery } from '../fragments/image';
+import { cloudinaryImageQuery } from '../fragments/cloudinary';
 import { ctaQuery } from './cta';
 
 export const heroSaasQuery = groq`
   pretitle,
   content[]{ ${contentQuery} },
   ctas[]{ ${ctaQuery} },
-  image {
-    ${imageQuery},
-    alt
-  },
+  image { ${cloudinaryImageQuery} },
+  imageAlt,
   "scrollHint": coalesce(scrollHint, true)
 `;

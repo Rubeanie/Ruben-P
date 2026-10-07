@@ -1,5 +1,5 @@
 import { MdEdit } from 'react-icons/md';
-import { CloudinaryPreview } from '../../components/CloudinaryPreview';
+import { assetPreview } from '../../components/CloudinaryPreview';
 import { pageBlock } from '../fragments/page-block';
 import { metadata } from '../fragments/metadata';
 import { headingLinksField } from '../fragments/fields/heading-links';
@@ -106,17 +106,14 @@ export const pagePost = {
       featured: 'featured',
       title: 'title',
       date: 'publishDate',
-      cover: 'cover.asset.derived.0.secure_url',
-      coverFull: 'cover.asset.secure_url'
+      cover: 'cover.asset'
     },
-    prepare({ featured, title, date, cover, coverFull }) {
+    prepare({ featured, title, date, cover }) {
       return {
         title: [featured && '⭐', title].filter(Boolean).join(' '),
         subtitle: date,
         // Sanity Studio preview thumbnail, next/image doesn't run in Studio.
-        media: (cover || coverFull) && (
-          <CloudinaryPreview url={cover || coverFull} />
-        )
+        media: assetPreview(cover)
       };
     }
   },

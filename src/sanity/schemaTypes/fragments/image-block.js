@@ -1,7 +1,6 @@
 import { MdImage } from 'react-icons/md';
 import { blockLayoutFields } from './fields/block-layout';
-import { clipField } from './fields/clip';
-import { CloudinaryPreview } from '../../components/CloudinaryPreview';
+import { assetPreview } from '../../components/CloudinaryPreview';
 
 export const imageBlock = {
   name: 'imageBlock',
@@ -14,35 +13,11 @@ export const imageBlock = {
   ],
   fields: [
     {
-      name: 'imageType',
-      type: 'string',
-      title: 'Image Type',
-      options: {
-        list: [
-          { title: 'Image', value: 'image' },
-          { title: 'Cloudinary Asset', value: 'cloudinary.asset' }
-        ],
-        layout: 'radio'
-      },
-      initialValue: 'image'
-    },
-    {
       name: 'image',
-      type: 'image',
-      hidden: ({ parent }) => parent?.imageType !== 'image',
-      options: {
-        hotspot: true
-      },
+      type: 'cloudinaryImage',
+      validation: (Rule) => Rule.required(),
       fieldset: 'info'
     },
-    {
-      name: 'cloudinaryAsset',
-      type: 'cloudinary.asset',
-      title: 'Cloudinary Image',
-      hidden: ({ parent }) => parent?.imageType !== 'cloudinary.asset',
-      fieldset: 'info'
-    },
-    { ...clipField, fieldset: 'info' },
     {
       name: 'caption',
       type: 'text',
@@ -68,44 +43,19 @@ export const imageBlock = {
       },
       initialValue: 'lazy',
       fieldset: 'options'
-    },
-    {
-      name: 'placeholder',
-      type: 'string',
-      options: {
-        list: ['none', 'blur']
-      },
-      initialValue: 'blur',
-      hidden: ({ parent }) => parent?.imageType !== 'cloudinary.asset',
-      fieldset: 'options'
     }
   ],
   preview: {
     select: {
       title: 'caption',
       subtitle: 'alt',
-      type: 'imageType',
-      sanity: 'image',
-      cloudinary: 'cloudinaryAsset.secure_url'
+      asset: 'image.asset'
     },
-    prepare({ title, subtitle, type, sanity, cloudinary }) {
-      var media;
-      if (type === 'image' && sanity) {
-        media = sanity;
-      } else if (type === 'cloudinary.asset' && cloudinary) {
-        media = (
-          // Sanity Studio preview thumbnail, next/image doesn't run in Studio.
-          <CloudinaryPreview url={cloudinary} alt={subtitle} />
-        );
-      } else {
-        media = null;
-      }
-
-      return {
-        title,
-        subtitle,
-        media
-      };
-    }
+    prepare: ({ title, subtitle, asset }) => ({
+      title,
+      subtitle,
+      // Sanity Studio preview thumbnail, next/image doesn't run in Studio.
+      media: assetPreview(asset, subtitle)
+    })
   }
 };

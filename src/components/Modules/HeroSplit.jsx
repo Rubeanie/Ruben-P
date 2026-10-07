@@ -6,16 +6,15 @@ import ScrollHint, { ScrollTarget } from '@/components/hero/ScrollHint';
 import styles from '@/styles/components/HeroSplit.module.scss';
 
 export default function HeroSplit(props) {
-  const { pretitle, content, ctas, image, scrollHint } = props;
+  const { pretitle, content, ctas, imageAlt, imageOnRight, scrollHint } = props;
   const id = uid(props);
-  const [photo] = heroPhotos(props);
 
   return (
     <section
       id={id}
       className={styles.hero}
       data-reveal-skip
-      data-image-right={image?.onRight ? true : undefined}>
+      data-image-right={imageOnRight ? true : undefined}>
       <Copy
         pretitle={pretitle}
         content={content}
@@ -23,9 +22,9 @@ export default function HeroSplit(props) {
         className={styles.copy}
       />
       <Photo
-        image={image}
+        photos={heroPhotos(props)}
+        alt={imageAlt}
         className={styles.frame}
-        sizes={photo.sizes}
         preload
       />
       {scrollHint && <ScrollHint next={`${id}-end`} align='start' />}

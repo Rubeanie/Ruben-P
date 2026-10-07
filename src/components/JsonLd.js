@@ -1,28 +1,31 @@
 import { stegaClean } from '@sanity/client/stega';
 import { baseUrl } from '@/lib/env';
 import processUrl, { resolveLink } from '@/lib/processUrl';
-import { resolveImage } from '@/lib/imageBlock';
+import { stillOf } from '@/lib/imageBlock';
 
 const clean = (value) => stegaClean(value)?.trim?.() || undefined;
 const isExternal = (url) => /^https?:\/\//i.test(url);
 const absolute = (link) =>
   (link && URL.parse(link, baseUrl)?.href) || undefined;
 
-// Heroes and image blocks keep their picture under one of these keys.
-const IMAGE_KEYS = ['image', 'bgImage', 'bgImageMobile'];
+// Heroes, image blocks and carousel cards keep their picture under one of
+// these keys; each counts as its still.
+const IMAGE_KEYS = ['image', 'bgImage'];
+
+// An image field as its still and the credit its Cloudinary asset carries.
+const picture = (field) => {
+  const url = stillOf(field);
+  return url && { url, credit: clean(field.asset.credit) };
+};
 
 function findImages(node, found = []) {
   if (Array.isArray(node)) {
     node.forEach((item) => findImages(item, found));
   } else if (node && typeof node === 'object') {
-    // An image block showing its Cloudinary picture keeps the unused Sanity one.
-    if (node.imageType === 'cloudinary.asset') return found;
     for (const [key, value] of Object.entries(node)) {
-      if (IMAGE_KEYS.includes(key) && value?.asset?.url) {
-        found.push(value.asset);
-      } else {
-        findImages(value, found);
-      }
+      const image = IMAGE_KEYS.includes(key) && picture(value);
+      if (image) found.push(image);
+      else findImages(value, found);
     }
   }
   return found;
@@ -36,36 +39,33 @@ export default function JsonLd({ page, path }) {
   const websiteId = `${baseUrl}/#website`;
   const creator = author ? { '@id': personId } : undefined;
 
-  const imageObject = (asset) => {
-    const creditLine = clean(asset.creditLine);
+  const imageObject = ({ url, credit }) =>
     // A credited picture is someone else's, so the site's rights don't apply.
-    if (creditLine) {
-      return {
-        '@type': 'ImageObject',
-        contentUrl: asset.url,
-        creator: { '@type': 'Person', name: creditLine },
-        creditText: creditLine
-      };
-    }
-    return {
-      '@type': 'ImageObject',
-      contentUrl: asset.url,
-      creator,
-      creditText: clean(author?.name),
-      copyrightNotice: clean(site?.copyrightNotice) ?? clean(author?.name),
-      license: clean(site?.license),
-      acquireLicensePage: clean(site?.acquireLicensePage)
-    };
-  };
+    credit
+      ? {
+          '@type': 'ImageObject',
+          contentUrl: url,
+          creator: { '@type': 'Person', name: credit },
+          creditText: credit
+        }
+      : {
+          '@type': 'ImageObject',
+          contentUrl: url,
+          creator,
+          creditText: clean(author?.name),
+          copyrightNotice: clean(site?.copyrightNotice) ?? clean(author?.name),
+          license: clean(site?.license),
+          acquireLicensePage: clean(site?.acquireLicensePage)
+        };
 
   // A cover is its still, as tiles and the share card show it.
-  const still = resolveImage(page.cover)?.still;
-  const cover = still && imageObject({ url: still });
+  const shown = picture(page.cover);
+  const cover = shown && imageObject(shown);
   const figures = [
-    ...new Map(findImages(page.modules).map((asset) => [asset.url, asset]))
+    ...new Map(findImages(page.modules).map((image) => [image.url, image]))
   ]
-    .filter(([url]) => url !== cover?.contentUrl)
-    .map(([, asset]) => imageObject(asset));
+    .filter(([url]) => url !== shown?.url)
+    .map(([, image]) => imageObject(image));
 
   const sameAs = site?.sameAs?.filter(isExternal) ?? [];
   const graph = [
@@ -74,7 +74,7 @@ export default function JsonLd({ page, path }) {
       '@id': personId,
       name: clean(author.name),
       url: absolute(resolveLink(author.link)) ?? baseUrl,
-      image: author.photo?.asset?.url,
+      image: stillOf(author.photo),
       jobTitle: clean(author.jobTitle),
       sameAs: sameAs.length ? sameAs : undefined
     },

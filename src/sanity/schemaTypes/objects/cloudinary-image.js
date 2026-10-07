@@ -22,6 +22,16 @@ export const cloudinaryImage = {
       validation: (Rule) => Rule.required()
     },
     clipField,
+    // Readers treat anything but an explicit false as on, so images saved
+    // before the switch existed keep the blur.
+    {
+      name: 'blur',
+      title: 'Blur placeholder',
+      type: 'boolean',
+      description:
+        'Fades in from a blurred preview; off shows a solid colour from the image.',
+      initialValue: true
+    },
     {
       name: 'palette',
       type: 'object',

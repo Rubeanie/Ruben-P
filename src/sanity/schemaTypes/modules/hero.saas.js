@@ -3,6 +3,7 @@ import { getBlockText } from '@/sanity/utils';
 import { textBlock } from '../fragments/text-block';
 import { scrollHintField } from '../fragments/fields/scroll-hint';
 import { uidField } from '../fragments/fields/uid';
+import { assetPreview } from '../../components/CloudinaryPreview';
 
 export const heroSaas = {
   name: 'hero.saas',
@@ -34,18 +35,15 @@ export const heroSaas = {
     },
     {
       name: 'image',
-      type: 'image',
-      options: {
-        hotspot: true
-      },
-      fields: [
-        {
-          name: 'alt',
-          type: 'string'
-        }
-      ],
+      type: 'cloudinaryImage',
       description: 'The photo the hero and its colours come from',
       validation: (Rule) => Rule.required(),
+      group: 'image'
+    },
+    {
+      name: 'imageAlt',
+      title: 'Alt text',
+      type: 'string',
       group: 'image'
     },
     scrollHintField({ initialValue: true, group: 'options' }),
@@ -54,12 +52,12 @@ export const heroSaas = {
   preview: {
     select: {
       content: 'content',
-      media: 'image'
+      asset: 'image.asset'
     },
-    prepare: ({ content, media }) => ({
+    prepare: ({ content, asset }) => ({
       title: getBlockText(content),
       subtitle: 'Hero (Glass)',
-      media
+      media: assetPreview(asset)
     })
   }
 };

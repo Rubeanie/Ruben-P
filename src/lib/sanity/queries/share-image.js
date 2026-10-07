@@ -1,25 +1,15 @@
 import groq from 'groq';
 import { cloudinaryImageQuery } from './fragments/cloudinary';
-
-const photoQuery = groq`
-  asset->{
-    _id,
-    url,
-    metadata { palette { vibrant { background }, dominant { background } } }
-  },
-  hotspot { x, y, width, height },
-  crop { top, bottom, left, right }
-`;
+import { heroImageQuery } from './fragments/hero-image';
 
 // The share card's photo candidates in order: the hand-set share image, the post cover, the hero.
-// The cover is a Cloudinary image field, the other two Sanity images until they move too.
 export const sharePhotosQuery = groq`
   "sharePhotos": [
-    metadata.seo.openGraph.image{ ${photoQuery} },
-    cover{ _type, ${cloudinaryImageQuery} },
+    metadata.seo.openGraph.image{ ${cloudinaryImageQuery} },
+    cover{ ${cloudinaryImageQuery} },
     select(
-      modules[0]._type == 'hero' => modules[0].bgImage{ ${photoQuery} },
-      modules[0]._type in ['hero.saas', 'hero.split'] => modules[0].image{ ${photoQuery} }
+      modules[0]._type == 'hero' => modules[0].bgImage{ ${cloudinaryImageQuery} },
+      modules[0]._type in ['hero.saas', 'hero.split'] => modules[0].image{ ${cloudinaryImageQuery} }
     )
   ]
 `;
@@ -39,7 +29,7 @@ export const shareImagePageQuery = groq`*[
     metaDescription,
     openGraph{ title, description }
   },
-  "modules": modules[0...4]{ _type, html{ code }, bgImage{ asset->{ url } }, image{ asset->{ url } } },
+  "modules": modules[0...4]{ _type, html{ code }, ${heroImageQuery} },
   ${sharePhotosQuery}
 }`;
 
