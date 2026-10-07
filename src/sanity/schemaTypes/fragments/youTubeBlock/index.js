@@ -1,6 +1,13 @@
 import { MdPlayArrow } from 'react-icons/md';
 import { YouTubePreview } from './YouTubePreview';
 import { blockLayoutFields } from '../fields/block-layout';
+import { imageBlock } from '../image-block';
+
+// The image block's caption and source, moved into this block's content group.
+const reuse = (name) => {
+  const { fieldset, ...field } = imageBlock.fields.find((f) => f.name === name);
+  return { ...field, group: 'content' };
+};
 
 export const youTubeBlock = {
   name: 'youtube',
@@ -20,6 +27,8 @@ export const youTubeBlock = {
         }),
       group: 'content'
     },
+    reuse('caption'),
+    reuse('source'),
     {
       name: 'autoplay',
       type: 'boolean',

@@ -4,6 +4,8 @@ export const youtubeBlockQuery = groq`
   url,
   autoplay,
   controls,
+  caption,
+  source,
   size,
   align
 `;

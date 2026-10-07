@@ -30,6 +30,8 @@ export default function YouTubeFacade({
   loading,
   sizes = PROSE_SIZES,
   className,
+  // Inside a figure, which carries the block's size, alignment and sanity key.
+  framed = false,
   // Set on a carousel card: `paused` while it is away from the front,
   // `prebuild` only near it, and `onPlay` claims the carousel's one player.
   inCarousel = false,
@@ -180,8 +182,8 @@ export default function YouTubeFacade({
     <div
       ref={root}
       className={`${styles.video} ${className ?? ''}`.trim()}
-      {...blockLayout(size, align)}
-      {...(sanity && { 'data-sanity': sanity })}>
+      {...(!framed && blockLayout(size, align))}
+      {...(!framed && sanity && { 'data-sanity': sanity })}>
       {mode && (
         <iframe
           ref={frame}

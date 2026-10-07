@@ -8,6 +8,7 @@ import {
   IFRAME_ALLOW
 } from '@/lib/youtube';
 import { YouTubeFacade } from '@/components/lazy';
+import FigureCaption from './FigureCaption';
 import { blockLayout } from './layout';
 import styles from '@/styles/components/RichText.module.scss';
 
@@ -22,25 +23,19 @@ export default async function YouTube({ value, sanity, preload = false }) {
   const size = stegaClean(value?.size);
   const align = stegaClean(value?.align);
 
-  if (stegaClean(value?.autoplay))
-    return (
-      <div
-        className={styles.video}
-        {...blockLayout(size, align)}
-        {...(sanity && { 'data-sanity': sanity })}>
-        <iframe
-          src={embedSrc(id, { controls, start, autoplay: true, mute: true })}
-          title={title}
-          loading='lazy'
-          allow={IFRAME_ALLOW}
-          allowFullScreen
-          referrerPolicy='strict-origin-when-cross-origin'
-          data-loaded=''
-        />
-      </div>
-    );
-
-  return (
+  const player = stegaClean(value?.autoplay) ? (
+    <div className={styles.video}>
+      <iframe
+        src={embedSrc(id, { controls, start, autoplay: true, mute: true })}
+        title={title}
+        loading='lazy'
+        allow={IFRAME_ALLOW}
+        allowFullScreen
+        referrerPolicy='strict-origin-when-cross-origin'
+        data-loaded=''
+      />
+    </div>
+  ) : (
     <YouTubeFacade
       key={`${id}:${start}`}
       id={id}
@@ -49,9 +44,19 @@ export default async function YouTube({ value, sanity, preload = false }) {
       controls={controls}
       start={start}
       size={size}
-      align={align}
-      sanity={sanity}
+      framed
       preload={preload}
     />
+  );
+
+  // The caption sits outside the clipped 16:9 box, like an image's.
+  return (
+    <figure
+      className={styles.videoFigure}
+      {...blockLayout(size, align)}
+      {...(sanity && { 'data-sanity': sanity })}>
+      {player}
+      <FigureCaption caption={value?.caption} source={value?.source} />
+    </figure>
   );
 }
