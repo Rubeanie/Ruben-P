@@ -247,11 +247,7 @@ export default function YouTubeFacade({
             onClick={play}>
             <span className={styles.scrim} aria-hidden />
             <span className={styles.disc} aria-hidden>
-              {active ? (
-                <span className={styles.spinner} />
-              ) : (
-                <LuPlay viewBox='5 2 16 20' />
-              )}
+              {active ? <span className={styles.spinner} /> : <LuPlay />}
             </span>
             <span className={styles.srOnly}>Play video:</span>
             <span className={styles.caption}>

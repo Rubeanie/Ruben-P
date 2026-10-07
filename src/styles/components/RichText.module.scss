@@ -254,13 +254,12 @@ $copy-inset: 0.375rem;
 
 @include var.play-facade;
 
-// Lucide's play triangle, filled so its stroke rounds the corners, nudged right
-// by a sixth of its width so its centroid, not its box, sits on the disc's centre.
+// Lucide's play triangle, filled so its stroke rounds the corners. Its own 24px
+// box already sets it a unit right of centre, Lucide's optical correction.
 .disc svg {
-  width: 0.96rem;
-  height: 1.2rem;
+  width: 1.44rem;
+  height: 1.44rem;
   fill: currentColor;
-  translate: calc(0.96rem / 6) 0;
 }
 
 .scrim {
