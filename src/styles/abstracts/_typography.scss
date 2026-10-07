@@ -12,6 +12,10 @@
 // Headings meet their gaps at the cap line and baseline, not at Mont's tall line box.
 @mixin trim-to-ink {
   text-box: trim-both cap alphabetic;
+  // WebKit repaints and sizes layers by the box, not the ink, so the trimmed-off
+  // ascenders and descenders clip at some scroll positions (WebKit 293471).
+  // A clear shadow widens its overflow rect without moving anything.
+  box-shadow: 0 0 0 0.35em transparent;
 }
 
 /* Non-composable (font-feature-settings replaces on override) */
