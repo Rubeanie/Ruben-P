@@ -1,5 +1,4 @@
 import { IoMdCube } from 'react-icons/io';
-import { apiVersion } from '@/lib/env';
 import { blockLayoutFields } from '../fragments/fields/block-layout';
 import { uidField } from '../fragments/fields/uid';
 import PosterInput from './three/PosterInput';
@@ -13,8 +12,17 @@ const LEVEL_OPTIONS = {
   layout: 'radio'
 };
 
-// A bigger GLB is still valid, just slow on a phone connection.
+// Cloudinary's free plan caps raw files here anyway, and even near it a
+// phone connection is slow.
 const MAX_MODEL_BYTES = 10 * 1024 * 1024;
+const MAX_MB = MAX_MODEL_BYTES / 1024 / 1024;
+
+const notTooBig = (Rule) =>
+  Rule.custom((asset) =>
+    !asset?.bytes || asset.bytes <= MAX_MODEL_BYTES
+      ? true
+      : `This file is ${(asset.bytes / 1024 / 1024).toFixed(1)} MB. Large files are slow to load on a phone connection.`
+  ).warning();
 
 export const threeJs = {
   name: 'three.js',
@@ -29,33 +37,12 @@ export const threeJs = {
       type: 'string',
       options: {
         list: [
-          { title: 'File upload', value: 'file' },
-          { title: 'URL', value: 'url' },
-          { title: 'Cloudinary', value: 'cloudinary' }
+          { title: 'Cloudinary', value: 'cloudinary' },
+          { title: 'URL', value: 'url' }
         ],
         layout: 'radio'
       },
-      initialValue: 'file',
-      group: 'content'
-    },
-    {
-      name: 'modelFile',
-      title: 'Model file',
-      type: 'file',
-      description: 'Upload a GLB file',
-      options: { accept: '.glb,model/gltf-binary' },
-      hidden: ({ parent }) => parent?.modelSource !== 'file',
-      validation: (Rule) =>
-        Rule.custom(async (file, context) => {
-          if (!file?.asset?._ref) return true;
-          const client = context.getClient({ apiVersion });
-          const size = await client.fetch(`*[_id == $id][0].size`, {
-            id: file.asset._ref
-          });
-          return !size || size <= MAX_MODEL_BYTES
-            ? true
-            : `This file is ${(size / 1024 / 1024).toFixed(1)} MB. Large models are slow to load on a phone connection.`;
-        }).warning(),
+      initialValue: 'cloudinary',
       group: 'content'
     },
     {
@@ -72,41 +59,18 @@ export const threeJs = {
       name: 'modelCloudinary',
       title: 'Cloudinary model',
       type: 'cloudinary.asset',
-      description: 'Must be a GLB file',
-      hidden: ({ parent }) => parent?.modelSource !== 'cloudinary',
-      group: 'content'
-    },
-    {
-      name: 'posterSource',
-      title: 'Poster source',
-      type: 'string',
-      description:
-        'Shown softly blurred until the visitor loads the model. Generate it from the scene, or use your own image.',
-      options: {
-        list: [
-          { title: 'Image', value: 'image' },
-          { title: 'Cloudinary', value: 'cloudinary' }
-        ],
-        layout: 'radio'
-      },
-      initialValue: 'image',
-      hidden: ({ parent }) => !parent?.loadOnClick,
+      description: `A GLB uploaded to Cloudinary as a raw file, ${MAX_MB} MB at most on the free plan.`,
+      hidden: ({ parent }) => parent?.modelSource === 'url',
+      validation: notTooBig,
       group: 'content'
     },
     {
       name: 'poster',
-      type: 'image',
+      type: 'cloudinaryImage',
+      description:
+        'Shown softly blurred until the visitor loads the model. Generate it from the scene, or pick your own image.',
       components: { input: PosterInput },
-      hidden: ({ parent }) =>
-        !parent?.loadOnClick || parent?.posterSource === 'cloudinary',
-      group: 'content'
-    },
-    {
-      name: 'posterCloudinary',
-      title: 'Cloudinary poster',
-      type: 'cloudinary.asset',
-      hidden: ({ parent }) =>
-        !parent?.loadOnClick || parent?.posterSource !== 'cloudinary',
+      hidden: ({ parent }) => !parent?.loadOnClick,
       group: 'content'
     },
     {
@@ -162,7 +126,6 @@ export const threeJs = {
         list: [
           { title: 'Preset', value: 'preset' },
           { title: 'Page photo (reflections)', value: 'theme' },
-          { title: 'File upload', value: 'file' },
           { title: 'URL', value: 'url' },
           { title: 'Cloudinary', value: 'cloudinary' }
         ],
@@ -203,15 +166,6 @@ export const threeJs = {
       group: 'options'
     },
     {
-      name: 'environmentFile',
-      title: 'Environment file',
-      type: 'file',
-      description: 'HDRI for reflections (.hdr or .exr)',
-      options: { accept: '.hdr,.exr' },
-      hidden: ({ parent }) => parent?.environmentSource !== 'file',
-      group: 'options'
-    },
-    {
       name: 'environmentUrl',
       title: 'Environment URL',
       type: 'url',
@@ -225,8 +179,9 @@ export const threeJs = {
       name: 'environmentCloudinary',
       title: 'Cloudinary environment',
       type: 'cloudinary.asset',
-      description: 'HDRI for reflections (.hdr or .exr)',
+      description: `HDRI for reflections (.hdr or .exr), uploaded to Cloudinary as a raw file, ${MAX_MB} MB at most on the free plan.`,
       hidden: ({ parent }) => parent?.environmentSource !== 'cloudinary',
+      validation: notTooBig,
       group: 'options'
     },
     {
@@ -312,13 +267,11 @@ export const threeJs = {
   preview: {
     select: {
       source: 'modelSource',
-      file: 'modelFile.asset.originalFilename',
       url: 'modelUrl',
       cloudinary: 'modelCloudinary.public_id'
     },
-    prepare({ source, file, url, cloudinary }) {
-      const subtitle =
-        source === 'file' ? file : source === 'url' ? url : cloudinary;
+    prepare({ source, url, cloudinary }) {
+      const subtitle = source === 'url' ? url : cloudinary;
       return { title: '3D scene', subtitle: subtitle || 'No model' };
     }
   }

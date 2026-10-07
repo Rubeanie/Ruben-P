@@ -3,7 +3,7 @@ import { MediaCarousel as Carousel } from '@/components/lazy';
 import { aspectOf } from '@/components/Modules/ThreeScene/aspects';
 import { captionText } from '@/components/RichText/FigureCaption';
 import { blockLayout } from '@/components/RichText/layout';
-import { resolveImage } from '@/lib/imageBlock';
+import { resolveImage, scenePoster } from '@/lib/imageBlock';
 import { isAnimated } from '@/lib/imageLoader';
 import { renderable } from '@/lib/carouselItems';
 import uid from '@/lib/uid';
@@ -51,7 +51,7 @@ async function resolve(item) {
         ...common,
         type: 'scene',
         model: stegaClean(item.model),
-        poster: stegaClean(item.poster),
+        poster: scenePoster(item.poster),
         modelBytes: item.modelBytes,
         label: stegaClean(item.alt),
         // The three.js module's options, as it passes them to its scene.

@@ -111,3 +111,16 @@ export function resolveImage(value) {
     })
   };
 }
+
+// A 3D scene's poster: always its still, since it sits blurred behind the
+// load button, over the field's placeholder like any image.
+export function scenePoster(value) {
+  const image = resolveImage(value);
+  return (
+    image && {
+      src: image.still,
+      placeholder: image.placeholder,
+      position: image.position
+    }
+  );
+}

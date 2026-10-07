@@ -116,7 +116,7 @@ function carouselPicks(module, { railed }) {
         { kind: 'youtube', id: getYouTubeId(stegaClean(item.url)), sizes }
       ];
     case 'carouselScene': {
-      const src = stegaClean(item.poster);
+      const src = stillOf(item.poster);
       return src
         ? [
             {
@@ -173,7 +173,7 @@ const PICKS = {
       .slice(0, PER_MODULE),
   // The click-to-load scene's poster; a live scene has none.
   'three.js': (module) => {
-    const src = stegaClean(module.poster);
+    const src = stillOf(module.poster);
     return module.loadOnClick && src
       ? [
           {

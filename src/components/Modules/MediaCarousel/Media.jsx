@@ -10,7 +10,7 @@ import SceneCanvas, {
 } from '@/components/Modules/ThreeScene/SceneCanvas';
 import YouTubeFacade from '@/components/RichText/YouTubeFacade';
 import { clipWidth } from '@/lib/imageBlock';
-import { isAnimated, loaderFor, stillFrame } from '@/lib/imageLoader';
+import { loaderFor } from '@/lib/imageLoader';
 import { warmEmbed } from '@/lib/youtube';
 import styles from '@/styles/components/MediaCarousel.module.scss';
 
@@ -120,8 +120,7 @@ function YouTube({ item, active, near, live, load, sizes, onPlay }) {
 }
 
 // The scene brings its own facade and loader; losing the carousel's one live
-// scene to another card resets it to the poster, which rests on its first frame
-// away from the front like a Photo.
+// scene to another card resets it to the poster, always a still.
 function Scene({ item, active, live, onPlay, blockSize }) {
   const resets = useResets(live);
   // A lost context can't show its last frame, so the card goes back to its poster.
@@ -138,11 +137,7 @@ function Scene({ item, active, live, onPlay, blockSize }) {
         key={`${resets}:${lost}`}
         {...item.look}
         model={item.model}
-        poster={
-          isAnimated(item.poster) && !active
-            ? stillFrame(item.poster)
-            : item.poster
-        }
+        poster={item.poster}
         blockSize={blockSize}
         modelBytes={item.modelBytes}
         label={item.label}

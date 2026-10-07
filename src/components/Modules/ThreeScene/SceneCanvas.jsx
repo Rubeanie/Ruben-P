@@ -119,10 +119,13 @@ export default function SceneCanvas({
             <span className={styles.poster} aria-hidden>
               {/* Blurred, so half the frame's resolution is plenty. */}
               <Image
-                src={poster}
+                src={poster.src}
                 alt=''
                 fill
                 sizes={sizedSizes(SCENE_POSTER_SIZES, blockSize)}
+                placeholder={poster.placeholder}
+                // Inline, as next/image frames the placeholder by the same style.
+                style={{ objectPosition: poster.position }}
                 draggable={false}
               />
             </span>

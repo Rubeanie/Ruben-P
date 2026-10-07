@@ -1,5 +1,11 @@
-import { createHash } from 'node:crypto';
-import { baseUrl, projectId } from '@/lib/env';
+import { baseUrl } from '@/lib/env';
+import {
+  BUSY,
+  createMemberCheck,
+  createRateLimit,
+  ipOf,
+  json
+} from '@/lib/studioMember';
 import {
   DESCRIPTION_LENGTH,
   MAX_BODY,
@@ -20,10 +26,6 @@ const MAX_HEADINGS = 40;
 // real cap on spend is the credit limit set on the OpenRouter key.
 export const RATE_LIMIT = 30;
 export const RATE_WINDOW = 10 * 60_000;
-const TOKEN_TTL = 60_000;
-const MAX_CACHED = 500;
-
-const json = (body, status = 200) => Response.json(body, { status });
 
 const clip = (value, max = MAX_TEXT) =>
   typeof value === 'string' ? value.slice(0, max) : '';
@@ -54,8 +56,6 @@ const STYLE = [
   'Never write like an AI. Your suggestions never contain these patterns:',
   AI_PATTERNS
 ].join(' ');
-
-const EDIT_ROLES = ['administrator', 'developer', 'editor', 'contributor'];
 
 // Suggestions that slip into AI habits are dropped unless the author wrote that
 // same tell first. Only unambiguous ones: everyday words like "key" or "rich" stay allowed.
@@ -339,9 +339,6 @@ const validItems = (items) =>
           item.flags.every((flag) => validFlag(flag, item.text))))
   );
 
-export const hashToken = (token) =>
-  createHash('sha256').update(token).digest('hex');
-
 // Model output sometimes arrives fenced even when JSON was asked for.
 export function parseModelJson(content) {
   if (typeof content !== 'string') return null;
@@ -357,56 +354,18 @@ export function createReviewHandler({
   env = process.env,
   now = Date.now
 } = {}) {
-  const verified = new Map();
-  const hits = new Map();
-
-  // Only someone who can edit this project passes. A viewer is turned away:
-  // that includes the site's read token, which preview sessions hand the browser.
-  async function userOf(token) {
-    const hash = hashToken(token);
-    const cached = verified.get(hash);
-    if (cached && cached.expires > now()) return cached.id;
-    verified.delete(hash);
-
-    const res = await fetcher(
-      `https://${projectId}.api.sanity.io/v2021-06-07/users/me`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-        cache: 'no-store',
-        signal: AbortSignal.timeout(5000)
-      }
-    ).catch(() => null);
-    if (res?.status !== 200) return null;
-    const me = await res.json().catch(() => null);
-    const canEdit = me?.roles?.some((role) => EDIT_ROLES.includes(role?.name));
-    // Robot tokens never pass, whatever their role: only a person signed in.
-    const robot = me?.provider === 'sanity-token';
-    if (typeof me?.id !== 'string' || !canEdit || robot) return null;
-
-    if (verified.size >= MAX_CACHED)
-      verified.delete(verified.keys().next().value);
-    verified.set(hash, { id: me.id, expires: now() + TOKEN_TTL });
-    return me.id;
-  }
-
-  function overLimit(id) {
-    const since = now() - RATE_WINDOW;
-    const recent = (hits.get(id) ?? []).filter((t) => t > since);
-    if (recent.length >= RATE_LIMIT) {
-      hits.set(id, recent);
-      return true;
-    }
-    recent.push(now());
-    hits.set(id, recent);
-    return false;
-  }
+  const memberOf = createMemberCheck({ fetch: fetcher, now });
+  const limit = { limit: RATE_LIMIT, window: RATE_WINDOW, now };
+  // Strangers are slowed before their token costs a call to Sanity.
+  const ipOverLimit = createRateLimit(limit);
+  const overLimit = createRateLimit(limit);
 
   return async function POST(request) {
-    const token = request.headers
-      .get('authorization')
-      ?.match(/^Bearer\s+(\S+)$/i)?.[1];
-    const user = token && (await userOf(token));
+    if (ipOverLimit(ipOf(request)))
+      return json({ error: 'too many requests' }, 429);
+    const user = await memberOf(request);
     if (!user) return json({ error: 'unauthorised' }, 401);
+    if (user === BUSY) return json({ error: 'too many requests' }, 429);
 
     const key = env.OPENROUTER_API_KEY;
     if (!key) return json({ error: 'not configured' }, 503);
@@ -415,7 +374,8 @@ export function createReviewHandler({
 
     if (Number(request.headers.get('content-length')) > MAX_BODY)
       return json({ error: 'too large' }, 413);
-    const raw = await request.text();
+    const raw = await request.text().catch(() => null);
+    if (raw === null) return json({ error: 'bad request' }, 400);
     if (Buffer.byteLength(raw) > MAX_BODY)
       return json({ error: 'too large' }, 413);
 

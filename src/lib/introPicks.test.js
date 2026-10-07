@@ -214,7 +214,7 @@ test('pageHrefs finds CTA, link block and rich-text links, not the current page'
 test('a click-to-load scene gives its poster, a live one nothing', () => {
   const scene = (extra) => ({
     _type: 'three.js',
-    poster: cloudinary('poster'),
+    poster: photo('poster'),
     ...extra
   });
   expect(picks([scene({ loadOnClick: true })])).toEqual([
@@ -353,7 +353,7 @@ test('a carousel gives its front card: photo, video or scene poster', () => {
       carousel({
         _type: 'carouselScene',
         model: '/models/rp-logo.glb',
-        poster: cloudinary('poster')
+        poster: photo('poster')
       })
     ])
   ).toEqual([
@@ -403,7 +403,7 @@ test('a carousel counts and leads with only the items it can draw', () => {
   const broken = [
     { _type: 'carouselYouTube', url: 'https://youtu.be/nope' },
     { _type: 'carouselImage', image: null },
-    { _type: 'carouselScene', model: null, poster: cloudinary('poster') }
+    { _type: 'carouselScene', model: null, poster: photo('poster') }
   ];
   const [front] = picks([
     { _type: 'media-carousel', items: [...broken, image, image, image] }

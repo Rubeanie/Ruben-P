@@ -1,9 +1,6 @@
 import { LuBox, LuGalleryHorizontal, LuImage, LuYoutube } from 'react-icons/lu';
 import { getYouTubeId } from '@/lib/youtube';
-import {
-  CloudinaryPreview,
-  assetPreview
-} from '../../components/CloudinaryPreview';
+import { assetPreview } from '../../components/CloudinaryPreview';
 import { imageBlock } from '../fragments/image-block';
 import { youTubeBlock } from '../fragments/youTubeBlock';
 import { blockLayoutFields } from '../fragments/fields/block-layout';
@@ -30,14 +27,8 @@ const source = reuse(imageBlock, 'source', {
 // An item's picture, from its stored value, for the list and the module's
 // preview: the item's own preview selects the same paths the stored item has.
 function media(item) {
-  if (item.image?.asset) return assetPreview(item.image.asset, item.alt);
-  if (item.posterSource === 'cloudinary' && item.posterCloudinary?.secure_url)
-    return (
-      <CloudinaryPreview
-        url={item.posterCloudinary.secure_url}
-        alt={item.alt}
-      />
-    );
+  const image = item.image?.asset ?? item.poster?.asset;
+  if (image) return assetPreview(image, item.alt);
   const id = item.url && getYouTubeId(item.url);
   if (id)
     return (
@@ -47,7 +38,6 @@ function media(item) {
         style={{ objectFit: 'cover' }}
       />
     );
-  return item.poster;
 }
 
 const carouselImage = {
@@ -102,14 +92,6 @@ const carouselYouTube = {
   }
 };
 
-// The poster stands in until the visitor loads the model, so it is required.
-const posterFrom = (kind) => (Rule) =>
-  Rule.custom((value, { parent }) =>
-    (parent?.posterSource ?? 'image') !== kind || value
-      ? true
-      : 'A poster shows until the model loads.'
-  );
-
 const carouselScene = {
   name: 'carouselScene',
   title: '3D scene',
@@ -117,17 +99,13 @@ const carouselScene = {
   icon: LuBox,
   fields: [
     reuse(threeJs, 'modelSource'),
-    reuse(threeJs, 'modelFile'),
     reuse(threeJs, 'modelUrl'),
     reuse(threeJs, 'modelCloudinary'),
-    reuse(threeJs, 'posterSource', { hidden: false }),
+    // The poster stands in until the visitor loads the model, so it is required.
     reuse(threeJs, 'poster', {
-      hidden: ({ parent }) => parent?.posterSource === 'cloudinary',
-      validation: posterFrom('image')
-    }),
-    reuse(threeJs, 'posterCloudinary', {
-      hidden: ({ parent }) => parent?.posterSource !== 'cloudinary',
-      validation: posterFrom('cloudinary')
+      hidden: false,
+      validation: (Rule) =>
+        Rule.required().error('A poster shows until the model loads.')
     }),
     reuse(threeJs, 'background', {
       description: 'Behind the model; the card stays opaque without one.'
@@ -135,7 +113,6 @@ const carouselScene = {
     reuse(threeJs, 'lights'),
     reuse(threeJs, 'environmentSource'),
     reuse(threeJs, 'environmentPreset'),
-    reuse(threeJs, 'environmentFile'),
     reuse(threeJs, 'environmentUrl'),
     reuse(threeJs, 'environmentCloudinary'),
     reuse(threeJs, 'environmentBackground'),
@@ -158,9 +135,7 @@ const carouselScene = {
     select: {
       caption: 'caption',
       alt: 'alt',
-      posterSource: 'posterSource',
-      poster: 'poster',
-      posterCloudinary: 'posterCloudinary'
+      poster: 'poster'
     },
     prepare: (item) => ({
       title: item.caption || item.alt,

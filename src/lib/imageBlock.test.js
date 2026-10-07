@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test';
-import { placeholderFor, resolveImage } from './imageBlock';
+import { placeholderFor, resolveImage, scenePoster } from './imageBlock';
 
 const derived = {
   palette: { dominant: { background: '#112233' } },
@@ -83,4 +83,20 @@ test('the placeholder is the blurred lqip unless blur is off, then the colour', 
       palette: { dominant: { background: "red'" } }
     })
   ).toBe('empty');
+});
+
+test("a scene's poster is its still over the field's placeholder", () => {
+  const gif = 'https://res.cloudinary.com/demo/image/upload/v1/spin.gif';
+  const poster = scenePoster({
+    asset: { secure_url: gif, width: 400, height: 300 },
+    blur: false,
+    ...derived
+  });
+  expect(poster.src).toBe(resolveImage({ asset: { secure_url: gif } }).still);
+  expect(poster.src).not.toBe(gif);
+  expect(poster.placeholder).toContain('%23112233');
+  expect(poster.position).toBe('29% 50%');
+  expect(scenePoster({ _type: 'image', asset: { _ref: 'image-x' } })).toBe(
+    null
+  );
 });

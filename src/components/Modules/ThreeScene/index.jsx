@@ -1,6 +1,7 @@
 import { stegaClean } from '@sanity/client/stega';
 import FigureCaption from '@/components/RichText/FigureCaption';
 import { blockLayout } from '@/components/RichText/layout';
+import { scenePoster } from '@/lib/imageBlock';
 import uid from '@/lib/uid';
 import { aspectOf } from './aspects';
 import SceneCanvas from './SceneCanvas';
@@ -66,7 +67,7 @@ export default function ThreeScene(props) {
             orbitControls={orbitControls}
             zoom={zoom}
             loadOnClick={loadOnClick}
-            poster={stegaClean(poster)}
+            poster={scenePoster(poster)}
             blockSize={layout['data-size']}
             modelBytes={modelBytes}
             label={stegaClean(caption)}
