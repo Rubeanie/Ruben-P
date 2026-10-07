@@ -1,4 +1,5 @@
 export const mod = (value, n) => ((value % n) + n) % n;
+export const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
 // The index `by` steps from `index`, wrapped on a loop; null past either end
 // of a row that doesn't wrap.

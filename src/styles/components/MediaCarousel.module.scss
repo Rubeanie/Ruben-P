@@ -298,20 +298,14 @@ $caption-min: 7.5rem;
   padding-inline: var.$space-1;
 }
 
+// --near is how close the stack sits to this dot, from 0 to 1, so a dot is
+// part way to a pill mid-swipe.
 .dot {
-  inline-size: $dot;
+  inline-size: calc(#{$dot} + #{$dot-active - $dot} * var(--near));
   block-size: $dot;
   border-radius: var.$radius-pill;
   background: currentColor;
-  opacity: 0.5;
-  transition:
-    inline-size 0.3s var.$ease-out,
-    opacity 0.3s var.$ease-out;
-
-  &[data-active] {
-    inline-size: $dot-active;
-    opacity: 1;
-  }
+  opacity: calc(0.5 + 0.5 * var(--near));
 
   @media (prefers-reduced-motion: reduce) {
     transition: opacity 0.2s ease;

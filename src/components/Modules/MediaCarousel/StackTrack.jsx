@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { animated, to, useSpring } from '@react-spring/web';
 import { DEPTH, depthOf, PERSPECTIVE } from '@/lib/carousel';
-import { aimFor, behind, mod } from './loop';
+import { aimFor, behind, clamp, mod } from './loop';
 import { pose } from './entrance';
 import useReducedMotion from '@/lib/useReducedMotion';
 import styles from '@/styles/components/MediaCarousel.module.scss';
@@ -30,7 +30,9 @@ const PASSED_FADE = 0.6;
 // A player or scene on the front card keeps the gesture to itself.
 const LIVE = '[data-front] :is(iframe, canvas)';
 
-const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+// The stack's position in cards, held by the carousel so its dots can ride it.
+export const useStack = (index) =>
+  useSpring(() => ({ pos: index, config: SETTLE }));
 
 // Past either end the stack follows less the further it is pulled.
 const rubberband = (over) => (over * 0.55) / (1 + 0.55 * Math.abs(over));
@@ -43,11 +45,12 @@ export default function StackTrack({
   onReach,
   loop,
   renderSlide,
-  entrance
+  entrance,
+  stack
 }) {
   const deck = useRef(null);
   const reduced = useReducedMotion();
-  const [{ pos }, api] = useSpring(() => ({ pos: index, config: SETTLE }));
+  const [{ pos }, api] = stack;
   // Reduced motion has no stack to drag, so the card only leans with the finger.
   const [{ lean }, leanApi] = useSpring(() => ({ lean: 0, config: SETTLE }));
   const drag = useRef(null);

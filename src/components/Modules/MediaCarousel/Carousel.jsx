@@ -4,23 +4,33 @@ import { useRef, useState } from 'react';
 import { animated } from '@react-spring/web';
 import { LuChevronLeft, LuChevronRight } from 'react-icons/lu';
 import { carouselSizes, depthOf } from '@/lib/carousel';
-import { behind, stepFrom } from './loop';
+import { behind, clamp, mod, stepFrom } from './loop';
 import { saveData } from '@/lib/saveData';
 import useReducedMotion from '@/lib/useReducedMotion';
 import Media, { warmMedia } from './Media';
-import StackTrack from './StackTrack';
+import StackTrack, { useStack } from './StackTrack';
 import useEntrance from './entrance';
 import styles from '@/styles/components/MediaCarousel.module.scss';
 
-// Where you are, not a control: the live region says it in words.
-function Dots({ count, index }) {
+// Where you are, not a control: the live region says it in words. The dots
+// ride the stack's own spring, so mid-swipe the capsule is part way from one
+// dot to the next, and lands with the card.
+function Dots({ count, pos, loop }) {
+  const last = count - 1;
+  // How close the stack sits to dot i, from 0 to 1; a loop measures the short
+  // way round, so the last capsule shrinks as the first grows.
+  const near = (i) =>
+    pos.to((p) => {
+      const d = Math.abs(i - (loop ? mod(p, count) : clamp(p, 0, last)));
+      return Math.max(0, 1 - (loop ? Math.min(d, count - d) : d));
+    });
   return (
     <span className={styles.dots} aria-hidden>
       {Array.from({ length: count }, (_, i) => (
-        <span
+        <animated.span
           key={i}
           className={styles.dot}
-          data-active={i === index || undefined}
+          style={{ '--near': near(i) }}
         />
       ))}
     </span>
@@ -37,6 +47,7 @@ export default function Carousel({
   besideRail
 }) {
   const [index, setIndex] = useState(0);
+  const stack = useStack(index);
   const [announcement, setAnnouncement] = useState('');
   // The cards holding the carousel's one YouTube player and one live scene.
   const [live, setLive] = useState({});
@@ -164,6 +175,7 @@ export default function Carousel({
         items={items}
         index={index}
         onIndex={setIndex}
+        stack={stack}
         onWarm={warm}
         onReach={reach}
         loop={wraps}
@@ -194,7 +206,7 @@ export default function Carousel({
           )}
           <div className={styles.controls}>
             {button(-1)}
-            <Dots count={count} index={index} />
+            <Dots count={count} pos={stack[0].pos} loop={wraps} />
             {button(1)}
           </div>
         </animated.div>
