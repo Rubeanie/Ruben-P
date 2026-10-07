@@ -18,10 +18,7 @@ test('nextThemeAfter steps in list order, wraps, and starts at the first', () =>
   expect(nextThemeAfter([], 'a')).toBe(null);
 });
 
-test('themeRendition shrinks Sanity and Cloudinary photos', () => {
-  expect(themeRendition('https://cdn.sanity.io/images/p/d/a-10x10.png')).toBe(
-    'https://cdn.sanity.io/images/p/d/a-10x10.png?w=800&fm=jpg&q=80'
-  );
+test('themeRendition shrinks Cloudinary photos', () => {
   expect(
     themeRendition('https://res.cloudinary.com/c/image/upload/v1/a.png')
   ).toBe('https://res.cloudinary.com/c/image/upload/w_800,f_jpg,q_80/v1/a.png');
@@ -37,18 +34,13 @@ test('themeRendition shrinks Sanity and Cloudinary photos', () => {
   );
 });
 
-test('landscapeRendition sizes Sanity and Cloudinary photos', () => {
+test('landscapeRendition sizes Cloudinary photos', () => {
   expect(
     landscapeRendition(
       'https://res.cloudinary.com/c/image/upload/t_x/v12/d/a.avif'
     )
   ).toBe(
     'https://res.cloudinary.com/c/image/upload/t_x/c_limit,w_1920,f_auto,q_auto/v12/d/a.avif'
-  );
-  expect(
-    landscapeRendition('https://cdn.sanity.io/images/p/d/a-10x10.png')
-  ).toBe(
-    'https://cdn.sanity.io/images/p/d/a-10x10.png?w=1920&auto=format&q=75&fit=max'
   );
   expect(landscapeRendition('https://example.com/a.png')).toBe(
     'https://example.com/a.png'
@@ -62,26 +54,6 @@ test('portraitRendition crops wide CDN photos to their middle 3:4', () => {
     )
   ).toBe(
     'https://res.cloudinary.com/c/image/upload/t_auto-optimised/if_ar_gt_0.75/c_fill,ar_3:4,g_auto/if_end/c_limit,h_1600,f_auto,q_auto/v12/d/a.avif'
-  );
-  expect(
-    portraitRendition('https://cdn.sanity.io/images/p/d/a-1920x1080.jpg?q=90')
-  ).toBe(
-    'https://cdn.sanity.io/images/p/d/a-1920x1080.jpg?q=75&rect=555%2C0%2C810%2C1080&h=1600&auto=format&fit=max'
-  );
-});
-
-test('portraitRendition sizes without cropping when it cannot crop', () => {
-  expect(
-    portraitRendition('https://cdn.sanity.io/images/p/d/a-600x1080.jpg')
-  ).toBe(
-    'https://cdn.sanity.io/images/p/d/a-600x1080.jpg?h=1600&auto=format&q=75&fit=max'
-  );
-  expect(
-    portraitRendition(
-      'https://cdn.sanity.io/images/p/d/a-1920x1080.jpg?rect=0,0,10,10'
-    )
-  ).toBe(
-    'https://cdn.sanity.io/images/p/d/a-1920x1080.jpg?rect=0%2C0%2C10%2C10&h=1600&auto=format&q=75&fit=max'
   );
 });
 
@@ -121,7 +93,7 @@ test('a video theme has a first-frame still for reduced motion, a photo none', (
     'https://res.cloudinary.com/c/video/upload/so_0,f_webp/c_limit,w_1920,f_auto,q_auto/v1/d/a.webp';
   expect(stillRendition(video)).toBe(still);
   expect(
-    stillRendition('https://cdn.sanity.io/images/p/d/a-1x1.png')
+    stillRendition('https://res.cloudinary.com/c/image/upload/v1/a.png')
   ).toBeNull();
   expect(themeGate([{ url: video, colors: { background: '#000' } }])).toContain(
     JSON.stringify(still)

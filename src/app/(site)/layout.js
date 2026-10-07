@@ -77,7 +77,6 @@ export default async function RootLayout({ children }) {
       data-scroll-behavior='smooth'
       className={`${mont.variable} ${figtree.variable} ${jetbrainsMono.variable} ${montCritical.variable} ${figtreeItalic.variable}`}>
       <head>
-        <link rel='preconnect' href='https://cdn.sanity.io' />
         <link rel='preconnect' href='https://res.cloudinary.com' />
         <script
           dangerouslySetInnerHTML={{

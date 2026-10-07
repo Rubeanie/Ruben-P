@@ -21,15 +21,6 @@ export const cloudinaryTransform = (src, transform) =>
     ? videoTransform(src, transform)
     : src.replace(CLOUDINARY_CHAIN, `/image/upload/$1${transform}/$2`);
 
-function sanityLoader({ src, width, quality }) {
-  const url = new URL(src);
-  url.searchParams.set('w', String(width));
-  url.searchParams.set('q', String(quality || 75));
-  url.searchParams.set('auto', 'format');
-  url.searchParams.set('fit', 'max');
-  return url.toString();
-}
-
 // Last transform before the version so earlier named or chained ones stay;
 // c_limit keeps a small original from being scaled up.
 const sized = (width) => `c_limit,f_auto,q_auto,w_${width}`;
@@ -113,13 +104,12 @@ const clipLoader =
 // The later f_auto wins over a still's own f_webp, so browsers still get AVIF.
 const frameLoader = ({ src, width }) => videoTransform(src, sized(width));
 
-// Sanity and Cloudinary resize and re-encode on their own CDNs, so those images skip
+// Cloudinary resizes and re-encodes on its own CDN, so those images skip
 // Vercel's optimizer (and its per-transformation billing). Anything else, an
 // unversioned Cloudinary URL included, gets undefined and the default optimizer.
 // `clip`'s cut (start, length, fps) goes into the animated image's URL.
 export function loaderFor(src, clip) {
   if (typeof src !== 'string') return undefined;
-  if (src.startsWith('https://cdn.sanity.io/')) return sanityLoader;
   if (onVideoUpload(src)) return isClip(src) ? clipLoader(clip) : frameLoader;
   if (
     src.startsWith('https://res.cloudinary.com/') &&
@@ -129,12 +119,12 @@ export function loaderFor(src, clip) {
 }
 
 // A still (stillFrame's output) is a .gif URL too, but doesn't move.
-const STILL = /[?&]frame=1(&|$)|\/pg_1\//;
+const STILL = /\/pg_1\//;
 export const isAnimated = (src) =>
   (/\.gif(\?|$)/i.test(src ?? '') && !STILL.test(src)) || isClip(src);
 
 // An animated image's first frame, a few KB in place of the whole animation:
-// Sanity takes frame=1, Cloudinary pg_1, and a clip the first frame of its cut.
+// Cloudinary takes pg_1, and a clip the first frame of its cut.
 export function stillFrame(src, clip) {
   if (isClip(src)) {
     const { start } = clipSettings(clip);
@@ -143,8 +133,5 @@ export function stillFrame(src, clip) {
       '.webp$1'
     );
   }
-  if (src.startsWith('https://res.cloudinary.com/')) {
-    return src.replace('/image/upload/', '/image/upload/pg_1/');
-  }
-  return `${src}${src.includes('?') ? '&' : '?'}frame=1`;
+  return src.replace('/image/upload/', '/image/upload/pg_1/');
 }

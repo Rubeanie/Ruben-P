@@ -171,11 +171,7 @@ export function themeRendition(url) {
   if (isClip(url)) return videoTransform(url, 'so_0,w_800,f_jpg,q_80');
   const parsed = new URL(url);
 
-  if (parsed.hostname === 'cdn.sanity.io') {
-    parsed.searchParams.set('w', '800');
-    parsed.searchParams.set('fm', 'jpg');
-    parsed.searchParams.set('q', '80');
-  } else if (parsed.hostname === 'res.cloudinary.com') {
+  if (parsed.hostname === 'res.cloudinary.com') {
     // Last in the chain, just before the version, so no named or earlier
     // transform overrides it; Vibrant can't read the AVIF or WebP served
     // otherwise. f_jpg wins over a video still's .webp too.
@@ -207,11 +203,6 @@ export function landscapeRendition(url) {
       CLOUDINARY_CHAIN,
       '/image/upload/$1c_limit,w_1920,f_auto,q_auto/$2'
     );
-  } else if (parsed.hostname === 'cdn.sanity.io') {
-    parsed.searchParams.set('w', '1920');
-    parsed.searchParams.set('auto', 'format');
-    parsed.searchParams.set('q', '75');
-    parsed.searchParams.set('fit', 'max');
   }
 
   return parsed.toString();
@@ -242,19 +233,6 @@ export function portraitRendition(url) {
       portraitCrop(url),
       'c_limit,h_1600,f_auto,q_auto'
     );
-  } else if (parsed.hostname === 'cdn.sanity.io') {
-    const [, width, height] =
-      parsed.pathname.match(/-(\d+)x(\d+)\.\w+$/)?.map(Number) ?? [];
-    const slice = Math.round((height * 3) / 4);
-    if (slice < width && !parsed.searchParams.has('rect'))
-      parsed.searchParams.set(
-        'rect',
-        `${Math.floor((width - slice) / 2)},0,${slice},${height}`
-      );
-    parsed.searchParams.set('h', '1600');
-    parsed.searchParams.set('auto', 'format');
-    parsed.searchParams.set('q', '75');
-    parsed.searchParams.set('fit', 'max');
   } else {
     return url;
   }
