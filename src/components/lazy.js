@@ -1,28 +1,45 @@
 'use client';
 
+import { Suspense, useState, useSyncExternalStore } from 'react';
 import dynamic from 'next/dynamic';
 
+const subscribe = () => () => {};
+
 // Split off so a page downloads only the modules it renders. Still
-// server-rendered; loading adds the Suspense boundary that lets the rest of the
-// page hydrate first.
-export const Bento = dynamic(() => import('./Modules/PostList/Bento'), {
-  loading: () => null
-});
-export const ThemeCycle = dynamic(
-  () => import('./Modules/CreativeModule/ThemeCycle'),
-  { loading: () => null }
+// server-rendered. Hydrating, a module sits in its own Suspense boundary, so
+// the rest of the page needn't wait for its code. Mounted by a client
+// navigation it has none, so the navigation waits for the code instead of
+// showing the page with an empty gap the module then pushes open.
+function lazily(Module) {
+  return function Lazily(props) {
+    const hydrating = useSyncExternalStore(
+      subscribe,
+      () => false,
+      () => true
+    );
+    // Fixed at mount: changing the tree's shape would remount the module.
+    const [boundary] = useState(hydrating);
+    return boundary ? (
+      <Suspense>
+        <Module {...props} />
+      </Suspense>
+    ) : (
+      <Module {...props} />
+    );
+  };
+}
+
+export const Bento = lazily(dynamic(() => import('./Modules/PostList/Bento')));
+export const ThemeCycle = lazily(
+  dynamic(() => import('./Modules/CreativeModule/ThemeCycle'))
 );
-export const ThemeImage = dynamic(
-  () => import('./Modules/CreativeModule/ThemeImage'),
-  { loading: () => null }
+export const ThemeImage = lazily(
+  dynamic(() => import('./Modules/CreativeModule/ThemeImage'))
 );
-export const Stage = dynamic(() => import('./Modules/Hero3D/Stage'), {
-  loading: () => null
-});
-export const MediaCarousel = dynamic(
-  () => import('./Modules/MediaCarousel/Carousel'),
-  { loading: () => null }
+export const Stage = lazily(dynamic(() => import('./Modules/Hero3D/Stage')));
+export const MediaCarousel = lazily(
+  dynamic(() => import('./Modules/MediaCarousel/Carousel'))
 );
-export const YouTubeFacade = dynamic(() => import('./RichText/YouTubeFacade'), {
-  loading: () => null
-});
+export const YouTubeFacade = lazily(
+  dynamic(() => import('./RichText/YouTubeFacade'))
+);

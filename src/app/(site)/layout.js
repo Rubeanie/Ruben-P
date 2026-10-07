@@ -20,6 +20,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { VisualEditingControls } from '@/components/VisualEditingControls';
 import { ServiceWorkerRegister } from '@/components/ServiceWorkerRegister';
+import { FontWarm } from '@/components/FontWarm';
 import { baseUrl } from '@/lib/env';
 import { stegaClean } from '@sanity/client/stega';
 import { sanitizeLogo } from '@/lib/cachedLogo';
@@ -115,6 +116,7 @@ export default async function RootLayout({ children }) {
           <SpeedInsights />
           <VisualEditingControls />
           <ServiceWorkerRegister />
+          <FontWarm />
         </ThemeProvider>
       </body>
     </html>
