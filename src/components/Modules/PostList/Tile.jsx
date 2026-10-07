@@ -202,8 +202,8 @@ export default function Tile({
         m.tx = m.ty = 0;
         if (!m.raf && img.current) m.raf = requestAnimationFrame(settle);
       }}>
-      {hasCover && (
-        <div className={styles.picture}>
+      <div className={styles.picture}>
+        {hasCover && (
           <Image
             ref={img}
             className={styles.img}
@@ -219,8 +219,8 @@ export default function Tile({
               setLoaded(true);
             }}
           />
-        </div>
-      )}
+        )}
+      </div>
       <div className={styles.text}>
         <h3 className={styles.title}>
           {featured && <span className={styles.srOnly}>Featured: </span>}

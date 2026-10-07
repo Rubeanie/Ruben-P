@@ -105,14 +105,9 @@ $ring:
   --star-clear: #{$star-clear};
   position: relative;
   display: block;
-  overflow: hidden;
   border-radius: var.$common-border-radius;
-  // The dominant colour is the skeleton plate: it shows until the picture fades in.
-  background: var(--plate, #{var.$plate-neutral});
   color: var.$color-on-dark;
-  // Composited clip: keeps the blurred band from leaving a seam at the rounded corners.
   isolation: isolate;
-  transform: translateZ(0);
   transition:
     transform 0.12s var.$ease-out,
     opacity 0.16s var.$ease-out;
@@ -130,7 +125,7 @@ $ring:
   }
 
   &:active {
-    transform: scale(0.98) translateZ(0);
+    transform: scale(0.98);
   }
 }
 
@@ -198,8 +193,8 @@ $ring:
 }
 
 :root:active-view-transition-type(bento)::view-transition-image-pair(*) {
-  overflow: clip;
-  border-radius: var.$common-border-radius;
+  // Clips both snapshots at once, as the tile clips its own stack.
+  clip-path: inset(0 round var.$common-border-radius);
 }
 
 // Only the named tiles move, so the root is not captured: the page stays live (a shorter result list clamps the scroll, and a root snapshot would ghost the whole page), and the chips repaint live.
@@ -211,10 +206,13 @@ $ring:
 :root:active-view-transition-type(bento)::view-transition {
   clip-path: inset(var(--nav-clearance) 0 0 0);
 }
+// Plate, photo and band are clipped as one: clipped one by one, each layer's
+// anti-aliased corner lets the one under it show through along the curve.
 .picture {
   position: absolute;
   inset: 0;
-  overflow: hidden;
+  clip-path: inset(0 round var.$common-border-radius);
+  // The dominant colour is the skeleton plate: it shows until the picture fades in.
   background: var(--plate, #{var.$plate-neutral});
 
   // Shimmer while the picture is pending: a 20% white sweep over a 36% band.
@@ -270,6 +268,10 @@ $ring:
   // Pale covers thin the band under the date; a soft shadow keeps small text past 4.5:1 without darkening every tile.
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
   text-align: start;
+  // The tile no longer clips (the picture does, see .picture), so copy too long
+  // for the tile stops at its edge here instead of spilling over its neighbours.
+  max-block-size: 100%;
+  overflow: clip;
 }
 
 .tile[data-shape='2x2'] {
@@ -280,12 +282,11 @@ $ring:
 /* Bands: the copy at the bottom or the top, driven by the tile's --pad and --star-clear tokens */
 
 .tile[data-band='bottom'] {
-  &::after,
+  .picture::before,
   &[data-live-band] .text::before {
     @include blur-band;
-    // Overshoots the clipped tile edge so the blur never leaves a hairline seam.
+    // Past the clip, so no edge of the band's own lands inside the picture.
     inset: 30% -2px -2px;
-    border-radius: 0 0 var.$common-border-radius var.$common-border-radius;
     background: linear-gradient(transparent, rgba(0, 0, 0, 0.4));
     mask-image: linear-gradient(transparent, #000 60%);
 
@@ -308,11 +309,10 @@ $ring:
 }
 
 .tile[data-band='top'] {
-  &::after,
+  .picture::before,
   &[data-live-band] .text::before {
     @include blur-band;
     inset: -2px -2px 30%;
-    border-radius: var.$common-border-radius var.$common-border-radius 0 0;
     background: linear-gradient(rgba(0, 0, 0, 0.4), transparent);
     mask-image: linear-gradient(#000 40%, transparent);
 
@@ -385,7 +385,15 @@ $ring:
 // During a morph the copy already cancels the snapshot's cover fit. Its band
 // follows the same transform and reflow, retaining the settled gradient extent.
 .tile[data-live-band] {
-  &::after {
+  // The live band overshoots like the settled one; for the morph, the tile clips it.
+  overflow: hidden;
+
+  // Lets the band past the copy's own clip.
+  .text {
+    overflow: visible;
+  }
+
+  .picture::before {
     visibility: hidden;
   }
 

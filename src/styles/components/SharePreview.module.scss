@@ -208,9 +208,11 @@ $sys:
 }
 
 // Facebook, dark.
+// The replica cards clip with clip-path, not overflow: one clip for the plate
+// and the image, so neither shows round the other's anti-aliased corner.
 .fb {
   max-width: 500px;
-  overflow: hidden;
+  clip-path: inset(0 round 8px);
   font-family: $sys;
   background: #3a3b3c;
   border-radius: 8px;
@@ -271,7 +273,7 @@ $sys:
   flex: none;
   width: 128px;
   aspect-ratio: 1.91;
-  overflow: hidden;
+  clip-path: inset(0 round 4px);
   border-radius: 4px;
 }
 .liText {
@@ -309,7 +311,7 @@ $sys:
   border-radius: 8px 0 8px 8px;
 }
 .waCard {
-  overflow: hidden;
+  clip-path: inset(0 round 6px);
   background: #025144;
   border-radius: 6px;
 }
@@ -663,7 +665,7 @@ $sys:
 }
 .im {
   width: min(270px, 100%);
-  overflow: hidden;
+  clip-path: inset(0 round 18px);
   background: #262628;
   border-radius: 18px;
 }

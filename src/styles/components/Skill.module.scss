@@ -32,7 +32,9 @@ $column: 11.25rem;
   min-height: $height;
   padding-block: var.$space-2;
   padding-inline: var.$space-3;
-  overflow: hidden;
+  // One clip for the plate and the watermark: overflow clips each layer on its own, and
+  // their anti-aliased corners let the layer under show through.
+  clip-path: inset(0 round var.$common-border-radius);
   border-radius: var.$common-border-radius;
   background: color-mix(in srgb, var(--brand) 14%, var.$color-plate-dark);
   // hairline ring, brighter along the top edge

@@ -24,7 +24,9 @@
   position: relative;
   flex: 1 1 0;
   aspect-ratio: 3 / 2;
-  overflow: hidden;
+  // One clip for the whole stack: overflow clips each layer on its own, and
+  // their anti-aliased corners let the layer under show through.
+  clip-path: inset(0 round var.$common-border-radius);
   border-radius: var.$common-border-radius;
 
   // The ring sits over the picture, where an inset shadow on the frame would be covered.

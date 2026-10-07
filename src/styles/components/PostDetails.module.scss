@@ -175,8 +175,10 @@ $cut-left: calc(#{$overlap} - #{$avatar-size} / 2);
   place-items: center;
   inline-size: $avatar-size;
   block-size: $avatar-size;
+  // One clip for the plate and the photo: overflow clips each on its own, and
+  // their anti-aliased edges let the plate show round the photo.
+  clip-path: inset(0 round 50%);
   border-radius: 50%;
-  overflow: hidden;
   background: color-mix(in srgb, var.$color-primary 25%, transparent);
   color: var.$color-text;
   font-family: var.$p-font;

@@ -272,8 +272,12 @@ export default function useBentoMorph({
         ) {
           // Match the settled tile band, then let its background follow the live copy's reflow.
           const bandExtra =
-            parseFloat(getComputedStyle(tile, '::after').height) -
-            text.offsetHeight;
+            parseFloat(
+              getComputedStyle(
+                tile.querySelector(`.${styles.picture}`),
+                '::before'
+              ).height
+            ) - text.offsetHeight;
           const leaving = [];
           for (const { line, index } of departingLines.get(tile) ?? []) {
             const current = [...text.children].find(

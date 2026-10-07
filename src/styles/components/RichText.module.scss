@@ -174,15 +174,21 @@ $copy-inset: 0.375rem;
 // A clip's video lies over its first frame, which sizes the box.
 .clip {
   position: relative;
-  overflow: clip;
+  // One clip for the whole stack: overflow clips each layer on its own, and
+  // their anti-aliased corners let the layer under show through.
+  clip-path: inset(0 round var.$common-border-radius);
   border-radius: var.$common-border-radius;
 }
 
 /* YouTube block */
 
-// The figure takes the block's gap, size and alignment; the box fills it.
+// The figure takes the block's gap, size and alignment; the box fills it. Its
+// plate, thumbnail and player are clipped as one, so the black never shows
+// through the picture's anti-aliased corner.
 .videoFigure > .video {
   margin: 0;
+  overflow: visible;
+  clip-path: inset(0 round var.$common-border-radius);
 }
 
 .video {
@@ -234,6 +240,11 @@ $copy-inset: 0.375rem;
   .figure :is(img, video),
   .clip {
     border-radius: 0;
+  }
+
+  // Square, but still clipped: the video overhangs its frame by a pixel.
+  .clip {
+    clip-path: inset(0);
   }
 
   .figure figcaption {

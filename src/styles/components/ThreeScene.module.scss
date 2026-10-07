@@ -14,8 +14,10 @@
 .frame {
   position: relative;
   aspect-ratio: var(--aspect, 16 / 9);
-  // Clip, not hidden: a scroll container would pin the play disc's view timeline.
-  overflow: clip;
+  // One clip for the plate, poster and canvas: clipped one by one, each layer's
+  // anti-aliased corner lets the one under it show through. Not overflow:
+  // hidden, a scroll container would pin the play disc's view timeline.
+  clip-path: inset(0 round var.$common-border-radius);
   border-radius: var.$common-border-radius;
   // A faint frosted plate: a scene lit by the page's theme belongs on the page,
   // and a solid slab cut it off. The blur keeps photo detail from behind the model.
@@ -100,6 +102,9 @@ $poster-blur: 16px;
   position: absolute;
   inset: -2 * $poster-blur;
   filter: blur($poster-blur) saturate(0.65) brightness(0.82);
+  // Its own layer: Safari 26 paints a filter drawn into the frame's layer past
+  // the rounded clip (WebKit 312584); a layer's filter clips like the card's video.
+  will-change: filter;
 
   img {
     object-fit: cover;
