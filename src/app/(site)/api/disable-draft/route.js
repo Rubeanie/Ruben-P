@@ -1,8 +1,8 @@
 import { draftMode } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-export function GET(request) {
-  draftMode().disable();
+export async function GET(request) {
+  (await draftMode()).disable();
 
   const url = new URL(request.nextUrl);
 

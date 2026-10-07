@@ -1,0 +1,115 @@
+@use '../abstracts/index' as var;
+
+$glyph-size: 1.75rem;
+
+.creative {
+  max-width: var.$measure-wide;
+  // Modules space themselves; sibling margins collapse to one gap.
+  margin-block: var.$block-gap;
+  margin-inline: auto;
+  text-align: start;
+}
+
+// Six tracks: a column spans two (three to a row) or three (two to a row).
+.grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var.$space-5 var.$tile-gap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.column {
+  --span: 2;
+  grid-column: span var(--span);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+// The last row always fills: a remainder of two goes half and half, a
+// remainder of one borrows from the row above to make two pairs.
+.grid:has(> :last-child:nth-child(3n + 2)) > :nth-last-child(-n + 2),
+.grid:has(> :last-child:nth-child(3n + 1)) > :nth-last-child(-n + 4) {
+  --span: 3;
+}
+
+.grid > :only-child {
+  grid-column: 1 / -1;
+}
+
+/* Blocks */
+
+.icon {
+  inline-size: $glyph-size;
+  block-size: $glyph-size;
+  color: var.$color-primary;
+}
+
+.heading {
+  margin-block: 0;
+  text-align: inherit;
+  filter: none;
+  text-wrap: balance;
+}
+
+.text {
+  max-width: var.$measure;
+  text-wrap: pretty;
+
+  p {
+    margin-block: 0;
+    text-align: inherit;
+  }
+
+  p + p {
+    margin-block-start: var.$space-3;
+  }
+}
+
+// The figure brings the block gap; inside a column the stack owns the rhythm.
+.column > figure {
+  margin-block: 0;
+}
+
+// The 44px target overhangs the text line, so the gap is measured to the words.
+.link > a {
+  margin-block: calc((1lh - #{var.$touch-target}) / 2);
+}
+
+// Rhythm: a heading holds on to its copy, an image or a control gets the larger step.
+.column > * + * {
+  margin-block-start: var.$space-3;
+}
+
+.column > :where(.heading) + * {
+  margin-block-start: var.$space-2;
+}
+
+.column > figure + *,
+.column > * + figure,
+.column > .control + *,
+.column > * + .control {
+  margin-block-start: var.$space-4;
+}
+
+@media (max-width: var.$media-mobile-width) {
+  // Phones centre, as the whole site does.
+  .creative {
+    text-align: center;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var.$space-5;
+  }
+
+  .column {
+    grid-column: auto;
+  }
+
+  .icon {
+    margin-inline: auto;
+  }
+}

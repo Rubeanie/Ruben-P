@@ -1,11 +1,10 @@
+@use 'sass:color';
+@use './abstracts/index' as var;
+
 #sanity {
   left: 0;
   width: 100vw;
   height: 100dvh;
-
-  h1 .img-heading {
-    text-shadow: 0px 0px 30px;
-  }
 
   p {
     font-size: 0.8125rem;
@@ -17,6 +16,7 @@
     height: 100%;
 
     svg {
+      box-sizing: border-box;
       width: 100%;
       height: 100%;
       padding: 10%;
@@ -24,5 +24,173 @@
       max-height: 100%;
       color: currentColor !important;
     }
+  }
+}
+
+// The CMS logo, drawn by the Studio navbar and the theme preview. The navbar
+// holds it in a small square, so a wide mark scales down to fit, not clip.
+.site-logo svg {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+}
+
+// A post category's colour as its list thumbnail; the colour itself is inline.
+.category-swatch {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 30%;
+  box-shadow: inset 0 0 0 1px rgb(128 128 128 / 0.4);
+}
+
+// The Studio's image heading: the site photo clipped to the glyphs, without the
+// fixed attachment the site uses, which breaks inside the editor's scroll pane.
+.image-heading {
+  padding-block-end: var.$image-text-descender;
+  background: url('#{var.$image-background-url}') center / cover no-repeat;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: brightness(1.15) contrast(0.6) saturate(1.5);
+}
+
+// The separator picker's preview: the band's glyph at a readable size, on a
+// fixed line so the dot's zero line-height and the icons' lift don't shift tiles.
+.separator-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 1.5rem;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+// The proofread list's AI fix wears Google's AI gradient; it plays once, then rests.
+$ai-blue: #4285f4;
+$ai-purple: #9b72cb;
+$ai-pink: #d96570;
+$proofread-ai: $ai-blue, $ai-purple, $ai-pink;
+
+@function ai-tint($blue, $purple, $pink) {
+  @return color.change($ai-blue, $alpha: $blue),
+    color.change($ai-purple, $alpha: $purple),
+    color.change($ai-pink, $alpha: $pink);
+}
+
+// A span holds the icon: Sanity UI resets the margins of icons inside text.
+.proofread-spark {
+  display: inline-flex;
+  padding-inline-end: 0.35em;
+  vertical-align: -0.125em;
+  animation: proofread-spark 600ms var.$ease-out 150ms both;
+
+  // Outranks Sanity UI's `svg:not([data-sanity-icon])` margins inside text.
+  &#{&} svg:not([data-sanity-icon]) {
+    display: block;
+    width: 1em;
+    height: 1em;
+    margin: 0;
+    // The quill's drawing hugs the top left of its square; this centres it.
+    transform: translate(0.06em, 0.06em);
+    fill: url(#proofread-ai-gradient);
+  }
+}
+
+// The gradient the AI icon is filled with.
+.proofread-gradient {
+  position: absolute;
+  width: 0;
+  height: 0;
+
+  stop:nth-child(1) {
+    stop-color: $ai-blue;
+  }
+  stop:nth-child(2) {
+    stop-color: $ai-purple;
+  }
+  stop:nth-child(3) {
+    stop-color: $ai-pink;
+  }
+}
+
+.proofread-better {
+  background-image: linear-gradient(90deg, ai-tint(0.14, 0.14, 0.12));
+}
+
+.proofread-ai {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background-image: linear-gradient(100deg, ai-tint(0.08, 0.08, 0.06));
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  // Let the tint and sheen show through the row's resting buttons.
+  [data-ui='Button']:not(:hover) {
+    background-color: transparent;
+  }
+
+  // A 1px gradient ring, its colours mirrored so the flow ends on blue to pink.
+  &::before {
+    z-index: 1;
+    padding: 1px;
+    background: linear-gradient(90deg, $ai-pink, $ai-purple, $proofread-ai);
+    background-size: 200% 100%;
+    background-position: 100% 0;
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+    animation: proofread-flow 1.6s var.$ease-out both;
+  }
+
+  &::after {
+    background: linear-gradient(
+      100deg,
+      transparent 25%,
+      color.change($ai-blue, $alpha: 0.22) 40%,
+      color.change($ai-purple, $alpha: 0.26) 50%,
+      color.change($ai-pink, $alpha: 0.2) 60%,
+      transparent 75%
+    );
+    transform: translateX(100%);
+    animation: proofread-sheen 1.1s var.$ease-out 150ms both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proofread-spark,
+  .proofread-ai::before,
+  .proofread-ai::after {
+    animation: none;
+  }
+}
+
+@keyframes proofread-spark {
+  from {
+    opacity: 0;
+    transform: scale(0.5) rotate(-90deg);
+  }
+}
+
+@keyframes proofread-flow {
+  from {
+    background-position: 0 0;
+  }
+}
+
+@keyframes proofread-sheen {
+  from {
+    transform: translateX(-100%);
   }
 }

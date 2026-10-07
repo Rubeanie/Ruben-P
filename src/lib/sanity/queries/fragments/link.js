@@ -2,6 +2,14 @@ import { groq } from '../../fetch';
 import { metadataQuery } from '../metadata';
 
 export const linkQuery = groq`
-  ...,
-  internal->{ _type, title, ${metadataQuery} }
+  _key,
+  "label": coalesce(label, internal->title, external),
+  type,
+  external,
+  params,
+  internal->{
+    _type,
+    title,
+    ${metadataQuery}
+  }
 `;

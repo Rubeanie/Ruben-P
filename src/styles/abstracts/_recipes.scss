@@ -1,0 +1,213 @@
+@use './variables' as var;
+
+/* Shared component shell recipes */
+
+// Small dark capsule over a photo: the filter chips and the category capsules share it.
+@mixin capsule {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25em 0.8em;
+  border-radius: var.$radius-pill;
+  background: rgba(var.$color-plate-dark, 0.7);
+  color: var.$color-on-dark;
+  font-family: var.$p-font;
+  font-weight: 600;
+  font-size: var.$p5-size;
+  letter-spacing: var.$track-small;
+}
+
+// A category mark filled with its colour, the ink picked for contrast (data-ink).
+// Smaller than a chip: it labels, it is not a control.
+@mixin category-capsule {
+  @include capsule;
+  padding: 0.15em 0.65em;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  background: var(--chip, rgba(var.$color-plate-dark, 0.7));
+  // Light ink by default: without a colour the capsule sits on the dark plate.
+  color: var.$color-on-dark;
+
+  &[data-ink='dark'] {
+    color: var.$color-on-primary;
+  }
+}
+
+/* Pretitle */
+@mixin pretitle {
+  font-family: var.$h-font;
+  color: var.$color-primary;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+// Raised, glossy button surface on the theme colour.
+// Hover lifts the light from above; a numeric strength so it never lags a theme blend.
+@mixin candy {
+  background:
+    linear-gradient(rgb(255 255 255 / var(--candy-lift, 0)), transparent),
+    linear-gradient(
+      color-mix(in srgb, var(--color-primary) 75%, #fff),
+      var(--color-primary)
+    );
+  box-shadow:
+    inset 0 0 1px 1px rgba(255, 255, 255, 0.14),
+    0 0 0 1px rgba(0, 0, 0, 0.08),
+    0 2px 2px rgba(0, 0, 0, 0.04),
+    0 0 0 1px var(--color-primary);
+  color: var.$color-on-primary;
+
+  @media (hover: hover) and (pointer: fine) {
+    // 0.2 white at the top = the top stop moving from 75% to 60% primary.
+    &:hover {
+      --candy-lift: 0.2;
+    }
+  }
+}
+
+// Focus ring shared by every interactive element.
+@mixin focus-ring($offset: 3px) {
+  &:focus-visible {
+    outline: 2px solid var.$color-primary;
+    outline-offset: $offset;
+  }
+}
+
+// Glass needs a solid stand-in when the user turns transparency down or contrast up.
+@mixin solid-fallback {
+  @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+    @content;
+  }
+}
+
+// Text link inside running copy: primary colour with a quiet underline that
+// fills on hover.
+@mixin text-link {
+  color: var.$color-primary;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(
+    in srgb,
+    var(--color-primary) 45%,
+    transparent
+  );
+  transition: text-decoration-color 0.15s ease;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      text-decoration-color: currentColor;
+    }
+  }
+}
+
+// 44px minimum touch target for links that are otherwise text-height.
+@mixin touch-target {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+}
+
+@mixin hidden-scrollbar {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// Overlay scrollbars only: a standard one would sit under the content as a second line.
+@mixin hidden-touch-scrollbar {
+  @media (hover: none) and (pointer: coarse) {
+    @include hidden-scrollbar;
+  }
+}
+// Stops text at N lines; a long title can never fill a small tile or card.
+@mixin clamp($lines) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines;
+  overflow: hidden;
+}
+
+// Visually hidden, still read out.
+@mixin sr-only {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+// The page's first or last module. Draft mode wraps each module in a
+// data-sanity div. Scripts, styles (a themed hero's), an embed that draws
+// nothing, and a wrapper that is empty or holds only such an embed sit among
+// the modules without being one.
+$_not-module: 'script, style, template, [data-quiet], [data-sanity]:empty, [data-sanity]:has(> [data-quiet]:only-child)';
+
+@mixin first-module {
+  :not([data-sanity]) > &:nth-child(1 of :not(#{$_not-module})),
+  [data-sanity]:nth-child(1 of :not(#{$_not-module})) > & {
+    @content;
+  }
+}
+
+@mixin last-module {
+  :not([data-sanity]) > &:nth-last-child(1 of :not(#{$_not-module})),
+  [data-sanity]:nth-last-child(1 of :not(#{$_not-module})) > & {
+    @content;
+  }
+}
+
+// A hero is the ground, not an object on it: it runs edge to edge, and as the
+// page's first module it cancels main's top padding. Anywhere else it spaces
+// like any module.
+@mixin hero-ground {
+  margin-block: var.$block-gap;
+  margin-inline: calc(-1 * #{var.$inline-pad});
+
+  @include first-module {
+    margin-block-start: calc(-1 * #{var.$space-3});
+  }
+}
+
+// A hero with a scroll hint keeps its bottom edge clear for it, lined up with the copy column.
+@mixin hint-room {
+  --hint-inset: #{var.$hero-pad};
+  padding-block-end: calc(#{var.$space-6} + 3.5rem);
+}
+
+// Sizing and alignment shared by the media blocks (image, video, 3D scene) so
+// their columns line up. Bleeding to the page edge on phones is the image's
+// own rule, not part of this.
+@mixin figure-block {
+  margin-block: var.$block-gap;
+  // Browsers give figure a 40px inline margin of its own.
+  margin-inline: 0;
+
+  // Sizes are fractions of the measure; phones always get the full column.
+  &[data-size='medium'] {
+    width: 75%;
+    margin-inline: auto;
+  }
+
+  &[data-size='small'] {
+    width: 50%;
+    margin-inline: auto;
+  }
+
+  &[data-align='start'] {
+    margin-inline: 0 auto;
+  }
+
+  &[data-align='end'] {
+    margin-inline: auto 0;
+  }
+
+  @media (max-width: var.$media-mobile-width) {
+    &,
+    &[data-size] {
+      width: auto;
+    }
+  }
+}

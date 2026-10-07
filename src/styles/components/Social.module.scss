@@ -1,114 +1,185 @@
-@use '../abstracts/index'as var;
+@use '../abstracts/index' as var;
 
-/* Social Buttons */
-$width: 385px;
-$height: 100px;
-$width-mobile: 230px;
-$svg-wrapper-width: 30%;
-$text-wrapper-height-mobile: 75px;
-$svg-size: 70px;
-$transition: 0.4s ease-in-out;
+$width: 27.5rem;
+$height: 7.5rem;
+$hover-scale: 1.05;
+$zoom-transition: transform 0.25s var.$ease-out;
+$gap: 1.25rem;
+
+// Modules space themselves; sibling margins collapse to one gap.
+.socials {
+  margin-block: var.$block-gap;
+}
+
+// Columns top out at --max-cols (from Sanity) via the max-width and drop as
+// the viewport narrows; min(width, 100%) lets one column shrink on phones.
+.list {
+  display: grid;
+  // interpolated so Sass doesn't try to evaluate min() itself
+  grid-template-columns: repeat(auto-fit, min(#{$width}, 100%));
+  justify-content: center;
+  gap: $gap;
+  width: 100%;
+  max-width: calc(
+    var(--max-cols, 2) * #{$width} + (var(--max-cols, 2) - 1) * #{$gap}
+  );
+  margin-inline: auto;
+}
+
+.card {
+  border-radius: var.$common-border-radius;
+  @include var.focus-ring(4px);
+
+  // The lift shadow is the card's: the face's clip-path would cut its own. Kept
+  // on at rest, clear, so hovering never changes the card's layering.
+  @media (hover: hover) and (pointer: fine) {
+    filter: drop-shadow(0 12px 16px transparent);
+
+    &:has(> .social:hover) {
+      filter: drop-shadow(0 12px 16px rgba(0, 0, 0, 0.4));
+    }
+  }
+}
 
 .social {
-  display: flex;
-  background: var.$color-primary;
+  --bar: var(--brand-ink, var(--brand));
   position: relative;
-  align-items: center;
-  transition: transform $transition;
-  margin: 10px;
-  width: $width;
-  max-width: 100vw;
-  height: $height;
+  display: flex;
+  align-items: stretch;
+  // Laid out at hover size and scaled down at rest, so hovering never upscales
+  // the raster (that's what blurred the text mid-zoom). The negative margins
+  // cancel the oversize so the card still fits its cell.
+  width: $hover-scale * 100%;
+  height: $height * $hover-scale;
+  margin: ($height * ($hover-scale - 1) * -0.5) (($hover-scale - 1) * -50%);
+  transform: scale(calc(1 / #{$hover-scale}));
+  // One clip for the plate, watermark and light bar: overflow clips each layer
+  // on its own, and their anti-aliased corners let the layer under show through.
+  clip-path: inset(0 round var.$common-border-radius);
   border-radius: var.$common-border-radius;
-  overflow: hidden;
-  box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.3);
+  background: color-mix(in srgb, var(--brand) 14%, var.$color-plate-dark);
+  // hairline ring, brighter along the top edge
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    var.$hairline;
+  color: var.$color-on-dark;
+  transition: $zoom-transition;
 
-  .svgWrapper,
-  .textWrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-  }
+  // Permanent layer: promoting on hover or press re-rasterised the text and made it jump.
+  will-change: transform;
 
-  .svgWrapper {
-    width: $svg-wrapper-width;
-    vertical-align: middle;
-
-    svg {
-      width: $svg-size;
-      height: $svg-size;
-    }
-  }
-
-  .textWrapper {
-    background: rgba(0, 0, 0, 0.212);
-    width: 100% - $svg-wrapper-width;
-
-    p {
-      font-size: var.$p3-size;
-      overflow: visible;
-    }
-  }
-
-  &:hover {
-    transform: scale(1.05) perspective(1px);
-  }
-
-  &:after {
-    content: "";
-    height: 55px;
-    width: 1px;
-    position: absolute;
-    left: 0px;
-    top: 50%;
-    transition: top $transition, opacity $transition;
-    transition-duration: 0.6s;
-    background: linear-gradient(transparent,
-        var.$color-text,
-        transparent);
-    opacity: 0;
-  }
-
-  &:after {
-    top: 65%;
-    opacity: 0;
-  }
-
-
-  &:hover:after {
-    top: 10%;
-    opacity: 1;
-  }
-}
-
-/* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: var.$media-mobile-width) {
-  .social {
-    width: $width-mobile;
-    height: fit-content;
-
-    .svgWrapper {
-      margin-block: 7.5px;
-      width: 100%;
-    }
-
-    .textWrapper {
-      width: 100%;
-      height: $text-wrapper-height-mobile;
-    }
-
+  @media (hover: hover) and (pointer: fine) {
     &:hover {
-      transform: unset;
+      transform: scale(1);
+      background: color-mix(in srgb, var(--brand) 22%, var.$color-plate-dark);
+
+      .watermark {
+        opacity: 0.38;
+      }
+
+      &::after {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
 
-    &:after {
-      content: unset;
+    // press feedback
+    &:hover:active {
+      transform: scale(0.98);
+    }
+  }
+
+  // Touch never hovers, so the press dips from the resting scale instead.
+  &:active {
+    transform: scale(calc(0.98 / #{$hover-scale}));
+  }
+
+  // light bar; translate rather than top so it stays off the layout path
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10%;
+    height: 4.125rem;
+    width: 1px;
+    background: linear-gradient(
+      transparent,
+      var(--bar, var.$color-text),
+      transparent
+    );
+    opacity: 0;
+    transform: translateY(105%);
+    transition:
+      transform 0.3s var.$ease-out,
+      opacity 0.2s ease;
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    // cancels the zoom transition; colours don't transition per-element anymore
+    transition: none;
+
+    &:hover,
+    &:active,
+    &:hover:active {
+      transform: scale(calc(1 / #{$hover-scale}));
+    }
+
+    &::after {
+      transform: translateY(0);
+      transition: opacity 0.3s ease;
     }
   }
 }
 
-/* Exports */
-:export {
-  colorPrimary: var.$color-primary;
+.watermark {
+  position: absolute;
+  right: -2rem;
+  bottom: -2.75rem;
+  color: var(
+    --brand-ink,
+    color-mix(in srgb, var(--brand) 70%, var.$color-on-dark)
+  );
+  opacity: 0.2;
+  transition: opacity var.$theme-transition;
+  pointer-events: none;
+
+  svg {
+    width: 10.75rem;
+    height: 10.75rem;
+  }
+}
+
+.text {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.15rem;
+  min-width: 0;
+  padding: 0 1.5rem;
+  text-align: left; // anchors against the bottom-right watermark
+}
+
+.title,
+.username {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.title {
+  font-family: var.$h-font;
+  font-size: var.$p1-size;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  // caps have no descenders, so a tighter line box
+  line-height: 1.1;
+}
+
+.username {
+  font-size: var.$p3-size;
+  opacity: 0.8;
 }

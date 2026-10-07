@@ -1,9 +1,8 @@
 {
   "buildCommand": "next build",
   "cleanUrls": true,
-  "devCommand": "next dev --turbo",
+  "devCommand": "next dev",
   "framework": "nextjs",
-  "installCommand": "pnpm install",
-  "outputDirectory": ".next",
-  "public": false
+  "installCommand": "bun install",
+  "outputDirectory": ".next"
 }

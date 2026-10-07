@@ -1,0 +1,20 @@
+@use '../abstracts/index' as var;
+
+// Height 0 and a block-end margin only: it collapses with the neighbours'
+// block-gap, so the gap becomes block-gap plus the size and never less.
+.spacer {
+  height: 0;
+  margin-block: 0 calc(#{var.$block-gap} + #{var.$space-5});
+
+  &[data-size='small'] {
+    margin-block-end: calc(#{var.$block-gap} + #{var.$space-4});
+  }
+
+  &[data-size='large'] {
+    margin-block-end: calc(#{var.$block-gap} + #{var.$space-6});
+  }
+
+  &[data-size='xl'] {
+    margin-block-end: calc(#{var.$block-gap} + #{var.$space-6} * 2);
+  }
+}

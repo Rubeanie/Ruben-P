@@ -1,0 +1,218 @@
+@use 'sass:list';
+@use 'sass:math';
+@use './variables' as var;
+@use './recipes' as recipe;
+
+/* Click-to-load facade: the glass play disc over a still (YouTube, 3D scene) */
+
+$disc-size: 3.5rem;
+// The press zone where the frame around the disc must stay a swipe surface (a
+// carousel card): a touch target clear of the disc's edge.
+$disc-hit: 5.5rem;
+
+// A clip-path covering the frame except a $disc-hit circle on its centre, where
+// the disc sits. Polygon points, not shape(): plain percentages and calc work
+// everywhere clip-path does.
+@function disc-hole() {
+  $points: 32;
+  $r: math.div($disc-hit, 2);
+  $path:
+    0 0,
+    100% 0,
+    100% 100%,
+    0 100%,
+    0 0;
+  @for $i from 0 through $points {
+    $a: math.div(360deg * $i, $points);
+    $path: list.append(
+      $path,
+      calc(50% + math.cos($a) * $r) calc(50% + math.sin($a) * $r),
+      comma
+    );
+  }
+  @return polygon(evenodd, $path);
+}
+
+// The glass clears so the still reads through the disc.
+@mixin disc-clear {
+  background-color: rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(6px) saturate(1.6);
+
+  svg {
+    color: var.$color-on-dark;
+    scale: 1.12;
+  }
+}
+
+// Emits .play, .disc and .spinner. Include at the root of a module; the frame
+// around it positions and clips.
+@mixin play-facade {
+  // The whole frame is the button; the disc is its child so hovering anywhere lifts it.
+  .play {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    border-radius: inherit;
+    // The frame clips outward outlines, so the ring sits inside.
+    @include recipe.focus-ring(-2px);
+  }
+
+  .disc {
+    width: $disc-size;
+    height: $disc-size;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: rgba(0, 0, 0, 0.34);
+    backdrop-filter: blur(16px) saturate(1.3);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      var.$hairline;
+    // The disc itself never transforms: its 1px hairlines would re-rasterise and
+    // snap when a scale settles, and a filter over backdrop-filter pops. Hover
+    // lightens the plate and moves only the glyph.
+    transition:
+      background-color 0.2s ease,
+      backdrop-filter 0.2s ease;
+
+    // The glyph tints through `color`, whether it fills or strokes.
+    svg {
+      color: rgba(var.$color-on-dark, 0.95);
+      transition:
+        color 0.2s ease,
+        scale 0.2s var.$ease-out;
+    }
+
+    @supports (animation-timeline: view()) {
+      animation: playIn linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 60%;
+    }
+  }
+
+  @keyframes discIn {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes playIn {
+    from {
+      opacity: 0;
+      transform: translateY(6px) scale(0.9);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .play:hover .disc {
+      @include disc-clear;
+    }
+  }
+
+  // Only a zone on the disc takes the press (and the hover): the frame around
+  // it stays inert, a swipe surface on a carousel card. The button's own box
+  // keeps focus and the ring.
+  .play {
+    pointer-events: none;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: $disc-hit;
+      height: $disc-hit;
+      translate: -50% -50%;
+      border-radius: 50%;
+      pointer-events: auto;
+    }
+  }
+
+  // Pressed, the disc holds the hover state until the content takes over.
+  .play[aria-busy='true'] .disc {
+    @include disc-clear;
+  }
+
+  .play:active .disc svg {
+    scale: 0.94;
+  }
+
+  // Takes the glyph's place on the disc while the content loads.
+  .spinner {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #fff;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      rotate: 1turn;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    // Fewer and gentler, not none: the disc still fades up with the frame, it
+    // just no longer travels.
+    .disc {
+      transition: background-color 0.2s ease;
+
+      @supports (animation-timeline: view()) {
+        animation-name: discIn;
+      }
+    }
+
+    .disc svg {
+      transition: color 0.2s ease;
+    }
+
+    .play:hover .disc svg,
+    .play:active .disc svg {
+      scale: 1;
+    }
+
+    .spinner {
+      animation: pulse 1.2s ease-in-out infinite alternate;
+      border-top-color: rgba(255, 255, 255, 0.35);
+    }
+  }
+
+  @keyframes pulse {
+    from {
+      opacity: 0.5;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @include recipe.solid-fallback {
+    // Hovered and busy included: both clear the glass, which has no place here.
+    .disc,
+    .play:hover .disc,
+    .play[aria-busy='true'] .disc {
+      backdrop-filter: none;
+      background: rgba(10, 14, 26, 0.94);
+    }
+  }
+}

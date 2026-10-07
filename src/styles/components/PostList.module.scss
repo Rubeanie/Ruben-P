@@ -1,0 +1,1107 @@
+@use '../abstracts/index' as var;
+
+// Chips and the closed search are one object: the same capsule height.
+$capsule-height: 1.75rem;
+// The search glyph, centred in the closed capsule.
+$glyph: 0.85rem;
+$glyph-start: ($capsule-height - $glyph) * 0.5;
+// The open field: text starts past the glyph; the end padding is the clear circle's slot whether or not it is showing, so the text area never changes width.
+$input-pad: ($glyph-start + $glyph + var.$space-1) $capsule-height;
+// How far the 44px target overhangs a capsule on each side.
+$hit-inset: (var.$touch-target - $capsule-height) * 0.5;
+$search-open: 16rem;
+$star-size: 1rem;
+// Room a title leaves for the star sitting in its corner.
+$star-clear: $star-size + var.$space-2 + var.$space-1;
+$star-clear-big: $star-size + var.$space-4 + var.$space-1;
+// Hairline ring, brighter along the top edge.
+$ring:
+  inset 0 1px 0 rgba(255, 255, 255, 0.14),
+  var.$hairline;
+// The band the copy sits on: the picture stays bright and softens under the text.
+@mixin blur-band {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  backdrop-filter: blur(18px) saturate(120%);
+  pointer-events: none;
+
+  @include var.solid-fallback {
+    backdrop-filter: none;
+    mask-image: none;
+  }
+}
+
+// 44px of pointer target on a 28px control, without the visual bulk.
+@mixin hit-band {
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -$hit-inset 0;
+  }
+}
+
+// A category as a disc of its colour; the name stays in the text for assistive tech and in the title for hover.
+@mixin dot {
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border-radius: 50%;
+  background: var(--chip, #{var.$color-on-dark});
+  overflow: hidden;
+  color: transparent;
+  // A dark ring keeps overlapping dots reading as separate discs and holds the colour on pale photos.
+  box-shadow: 0 0 0 1.5px var.$color-plate-dark;
+}
+
+.list {
+  container-type: inline-size;
+  max-width: var.$measure-wide;
+  margin-inline: auto;
+  // Modules space themselves; sibling margins collapse to one gap.
+  margin-block: var.$block-gap;
+
+  // Only while the held height settles after a morph (Bento sets it): a shorter page has no transform equivalent.
+  &[data-settling] {
+    transition: min-block-size 0.3s var.$ease-in-out;
+  }
+}
+
+.srOnly {
+  @include var.sr-only;
+}
+
+/* Square-unit grid */
+
+.grid {
+  --cols: 4;
+  --gap: #{var.$tile-gap};
+  // The wrapper is the query container, so 100cqw is the measure, not the viewport.
+  --unit: calc((100cqw - (var(--cols) - 1) * var(--gap)) / var(--cols));
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  grid-auto-rows: var(--unit);
+  grid-auto-flow: dense;
+  gap: var(--gap);
+}
+
+.grid .tile[data-shape='2x1'] {
+  grid-column: span 2;
+}
+
+.grid .tile[data-shape='1x2'] {
+  grid-row: span 2;
+}
+
+.grid .tile[data-shape='2x2'] {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+/* Tile */
+
+.tile {
+  // Copy padding and the room a title leaves for the star; the big tile and the phone folds change them.
+  --pad: #{var.$space-3};
+  --star-clear: #{$star-clear};
+  position: relative;
+  display: block;
+  border-radius: var.$common-border-radius;
+  color: var.$color-on-dark;
+  isolation: isolate;
+  transition:
+    transform 0.12s var.$ease-out,
+    opacity 0.16s var.$ease-out;
+  @include var.focus-ring(4px);
+
+  // The ring has to sit above the picture, and an inset shadow paints under children.
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    border-radius: inherit;
+    box-shadow: $ring;
+    pointer-events: none;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+// Only tiles that mount fade; a reflow of tiles already there stays instant.
+.grid .tile {
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+// Inside a morph the new snapshot already fades the tile in, so the mount fade stands down; Load more and first paint keep it.
+:root:active-view-transition .grid .tile {
+  transition-duration: 0s;
+}
+
+/* Filter morph: the view transition Bento starts on a chip or search change */
+
+// These pseudo-elements live on the document root, so the transition's type is the scope: any other page transition keeps its own look.
+:root:active-view-transition-type(bento)::view-transition-group(*) {
+  animation-duration: 0.3s;
+  animation-timing-function: var.$ease-out;
+}
+
+// Snapshots keep their own aspect, so a tile that changes shape is sized to its group and clipped there instead of spilling its copy under the cell.
+// Pairs show the new snapshot alone (the default cross-fade shows the picture twice); Chromium does not match :not(:only-child) here, hence pair first and lone second.
+:root:active-view-transition-type(bento)::view-transition-old(*),
+:root:active-view-transition-type(bento)::view-transition-new(*) {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  animation: none;
+}
+
+:root:active-view-transition-type(bento)::view-transition-old(*) {
+  opacity: 0;
+}
+
+// Lone snapshots, a tile leaving or arriving, keep their fade.
+:root:active-view-transition-type(bento)::view-transition-old(*):only-child {
+  animation: fade-out 0.3s var.$ease-out both;
+}
+
+:root:active-view-transition-type(bento)::view-transition-new(*):only-child {
+  animation: fade-in 0.3s var.$ease-out both;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+:root:active-view-transition-type(bento)::view-transition-image-pair(*) {
+  // Clips both snapshots at once, as the tile clips its own stack.
+  clip-path: inset(0 round var.$common-border-radius);
+}
+
+// Only the named tiles move, so the root is not captured: the page stays live (a shorter result list clamps the scroll, and a root snapshot would ghost the whole page), and the chips repaint live.
+:root:active-view-transition-type(bento) {
+  view-transition-name: none;
+}
+
+// Clipped at the pill's bottom edge (the navbar publishes --nav-clearance) so tiles slide under the navbar; naming the pill would capture its glass without a backdrop.
+:root:active-view-transition-type(bento)::view-transition {
+  clip-path: inset(var(--nav-clearance) 0 0 0);
+}
+// Plate, photo and band are clipped as one: clipped one by one, each layer's
+// anti-aliased corner lets the one under it show through along the curve.
+.picture {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 round var.$common-border-radius);
+  // The dominant colour is the skeleton plate: it shows until the picture fades in.
+  background: var(--plate, #{var.$plate-neutral});
+
+  // Shimmer while the picture is pending: a 20% white sweep over a 36% band.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      100deg,
+      transparent 32%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 68%
+    );
+    transform: translateX(-100%);
+    animation: shimmer 2.2s linear infinite;
+  }
+}
+
+.tile[data-loaded] .picture::after {
+  display: none;
+}
+
+.img,
+.moving {
+  object-fit: cover;
+  // The cover's subject, which a tile of any shape keeps in frame.
+  object-position: var(--focus, 50% 50%);
+  // Zoom, sway and tilt all ride the pointer follow, which eases in and settles on its own.
+  transform: perspective(60rem) scale(var(--zoom, 1))
+    translate(calc(var(--mx, 0) * -0.5%), calc(var(--my, 0) * -0.5%))
+    rotateX(calc(var(--my, 0) * -1.5deg)) rotateY(calc(var(--mx, 0) * 1.5deg));
+  // Opacity only: the follow writes the transform every frame and must not be eased by CSS.
+  transition: opacity 0.3s var.$ease-out;
+}
+
+.img {
+  opacity: 0;
+}
+
+.tile[data-loaded] .img {
+  opacity: 1;
+}
+
+// A moving cover's animation, over the still and under the band. It fades in
+// on its own once it can show, and the whole layer fades back on leave (FADE in Tile).
+.motion {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.3s var.$ease-out;
+
+  &[data-leaving] {
+    opacity: 0;
+  }
+}
+
+.moving {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+@keyframes shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.text {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var.$space-1;
+  padding: var(--pad);
+  // Pale covers thin the band under the date; a soft shadow keeps small text past 4.5:1 without darkening every tile.
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  text-align: start;
+  // The tile no longer clips (the picture does, see .picture), so copy too long
+  // for the tile stops at its edge here instead of spilling over its neighbours.
+  max-block-size: 100%;
+  overflow: clip;
+}
+
+.tile[data-shape='2x2'] {
+  --pad: #{var.$space-4};
+  --star-clear: #{$star-clear-big};
+}
+
+/* Bands: the copy at the bottom or the top, driven by the tile's --pad and --star-clear tokens */
+
+.tile[data-band='bottom'] {
+  .picture::before,
+  &[data-live-band] .text::before {
+    @include blur-band;
+    // Past the clip, so no edge of the band's own lands inside the picture.
+    inset: 30% -2px -2px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.4));
+    mask-image: linear-gradient(transparent, #000 60%);
+
+    @include var.solid-fallback {
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.72));
+    }
+  }
+
+  .text {
+    inset-block: auto 0;
+  }
+
+  .star {
+    inset: auto var(--pad) var(--pad) auto;
+  }
+
+  .dots {
+    inset: var(--pad) var(--pad) auto auto;
+  }
+}
+
+.tile[data-band='top'] {
+  .picture::before,
+  &[data-live-band] .text::before {
+    @include blur-band;
+    inset: -2px -2px 30%;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), transparent);
+    mask-image: linear-gradient(#000 40%, transparent);
+
+    @include var.solid-fallback {
+      background: linear-gradient(rgba(0, 0, 0, 0.72), transparent);
+    }
+  }
+
+  .text {
+    inset-block: 0 auto;
+  }
+
+  // The star sits in the title's corner, so the copy stops short of it.
+  .title {
+    padding-inline-end: var(--star-clear);
+  }
+
+  .star {
+    inset: var(--pad) var(--pad) auto auto;
+  }
+
+  .dots {
+    inset: auto var(--pad) var(--pad) auto;
+  }
+}
+
+/* Tile copy */
+
+.title {
+  margin: 0;
+  font-family: var.$p-font;
+  font-weight: 600;
+  font-size: var.$p4-size;
+  line-height: var.$lh-h3;
+  // Every title size sits under 1.5rem, where tighter tracking starts to pay.
+  letter-spacing: normal;
+  color: inherit;
+  text-align: inherit;
+  // The globals give headings a drop shadow; over the band the copy shares one soft text shadow instead.
+  filter: none;
+}
+
+.tile[data-shape='1x1'] .title {
+  @include var.clamp(2);
+}
+
+.tile[data-shape='2x1'] .title,
+.tile[data-shape='1x2'] .title {
+  @include var.clamp(3);
+  font-size: var.$p3-size;
+}
+
+.tile[data-shape='2x2'] .title {
+  font-size: var.$p2-size;
+}
+
+.summary,
+.meta {
+  margin: 0;
+  font-size: var.$p5-size;
+  line-height: var.$lh-small;
+  color: inherit;
+  text-align: inherit;
+}
+
+.meta[data-mobile-only] {
+  display: none;
+}
+
+// During a morph the copy already cancels the snapshot's cover fit. Its band
+// follows the same transform and reflow, retaining the settled gradient extent.
+.tile[data-live-band] {
+  // The live band overshoots like the settled one; for the morph, the tile clips it.
+  overflow: hidden;
+
+  // Lets the band past the copy's own clip.
+  .text {
+    overflow: visible;
+  }
+
+  .picture::before {
+    visibility: hidden;
+  }
+
+  .text::before {
+    z-index: 0;
+    height: calc(100% + var(--band-extra));
+  }
+
+  .text > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  &[data-band='bottom'] .text::before {
+    inset: auto -2px -2px;
+  }
+
+  &[data-band='top'] .text::before {
+    inset: -2px -2px auto;
+  }
+}
+
+/* Corner marks: the star in the band's own corner, the category dots in the corner the copy leaves free */
+
+// One dot per category in the free corner (top over a bottom band, bottom over a top band), inset by the copy padding.
+.dots {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  // Lifted off the photo the way the star is.
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+
+  li {
+    @include dot;
+    // Later dots paint over earlier ones, so the filtered category at the end sits on top of the stack.
+    position: relative;
+    flex: none;
+  }
+
+  li + li {
+    margin-inline-start: -0.15rem;
+  }
+}
+
+// A bare gold star in the band's free corner, beside the copy.
+.star {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  color: var.$color-star;
+  // Lifts the glyph off a light photo without a disc.
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+
+  svg {
+    display: block;
+    inline-size: $star-size;
+    block-size: $star-size;
+  }
+}
+
+/* Wide tiles: the 16:9 row under a post, title only in the copy */
+
+.tile[data-wide] {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  aspect-ratio: 16 / 9;
+  // Copy contributes a minimum height so long titles cannot escape a short photo.
+  min-block-size: min-content;
+
+  .text {
+    position: relative;
+    inset: auto;
+    flex: 0 0 auto;
+  }
+
+  .title {
+    @include var.clamp(2);
+    padding-inline-end: var(--star-clear);
+  }
+
+  &[data-band='top'] {
+    justify-content: flex-start;
+  }
+}
+
+/* Filters: the search capsule leads the chips, the feed capsule trails them */
+
+// The trailing fade at its widest; Filters.jsx writes the raw scroll left, so it narrows to nothing at the end.
+$fade: 48px;
+$plate: rgba(var.$color-plate-dark, 0.7);
+
+@property --feed-cut {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 0px;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: var.$space-3 var.$space-2;
+  margin-block-end: var.$space-4;
+}
+
+// One line that scrolls sideways in a fixed order; the mask fades the trailing edge only while there is more to scroll to.
+.chips {
+  display: flex;
+  flex-wrap: nowrap;
+  flex: 1 1 $search-open;
+  min-inline-size: 0;
+  gap: var.$space-2;
+  overflow-x: auto;
+  // No scroll snap: it fought the scroll-into-view of a selected chip (measured).
+  overscroll-behavior-x: contain;
+  // The chips' 44px hit bands overflow the line; this keeps them inside the scroller instead of clipped.
+  padding-block: $hit-inset;
+  margin-block: -$hit-inset;
+  // Keeps the doubled gap before the feed capsule, which sits at the row end.
+  margin-inline-end: var.$space-2;
+  // No scrollbar for a mouse either: the trailing fade already says there is more.
+  @include var.hidden-scrollbar;
+
+  // The fade closes as the strip ends; the feed pill cuts the end away under itself, with the fade ahead of the cut.
+  mask-image: linear-gradient(
+    to right,
+    #000
+      calc(
+        100% - var(--feed-cut) - min(
+            #{$fade},
+            max(var(--chips-fade, 0px), var(--feed-cut))
+          )
+      ),
+    transparent calc(100% - var(--feed-cut))
+  );
+  transition: --feed-cut 0.25s var.$ease-out;
+}
+
+// The pill reaches past the 16px gap by its words and their padding.
+.filters:has(.feed[data-copied]) .chips {
+  --feed-cut: calc(var(--copied-width) + #{var.$space-3});
+}
+
+.filters .search {
+  // Doubles the row gap so the capsule reads as its own control, not one more chip.
+  margin-inline-end: var.$space-2;
+}
+
+.chip {
+  @include var.capsule;
+  @include var.focus-ring(3px);
+  @include hit-band;
+  position: relative;
+  flex: 0 0 auto;
+  justify-content: center;
+  min-height: $capsule-height;
+  white-space: nowrap;
+  border: 0;
+  line-height: 1;
+  cursor: pointer;
+  opacity: var.$muted-strong;
+  // Deselected chips carry a hairline in their colour, so the row reads before anything is picked.
+  box-shadow: inset 0 0 0 1px
+    color-mix(in srgb, var(--chip, #{var.$color-on-dark}) 45%, transparent);
+  transition:
+    background-color 0.15s var.$ease-out,
+    box-shadow 0.15s var.$ease-out,
+    opacity 0.15s var.$ease-out;
+
+  &[aria-pressed='true'] {
+    background: var(--chip, #{var.$color-primary});
+    box-shadow: none;
+    color: var.$color-on-primary;
+    opacity: 1;
+
+    &[data-ink='light'] {
+      color: var.$color-on-dark;
+    }
+  }
+
+  // Under 44px tall, so the press answers with tint, never scale.
+  &:active {
+    opacity: 1;
+  }
+}
+
+// A glyph-only capsule that grows into a field.
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  inline-size: $capsule-height;
+  max-inline-size: 100%;
+  block-size: $capsule-height;
+  border-radius: var.$radius-pill;
+  background: $plate;
+  color: var.$color-on-dark;
+  box-shadow: inset 0 0 0 1px
+    color-mix(in srgb, var.$color-on-dark 45%, transparent);
+  // Width is the one property that opens the capsule without distorting the glyph or the caret, so it is the one width transition.
+  transition: inline-size 0.25s var.$ease-out;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -$hit-inset;
+  }
+
+  &:focus-within,
+  &[data-filled] {
+    inline-size: min(100%, $search-open);
+
+    .searchInput {
+      flex: 1 1 auto;
+      inline-size: auto;
+      padding-inline: $input-pad;
+
+      // The placeholder lands once the capsule has finished opening.
+      &::placeholder {
+        opacity: var.$muted;
+        transition: opacity 0.12s var.$ease-out 0.2s;
+      }
+    }
+  }
+
+  // A keyboard focus opened it: keyboard-initiated changes do not animate.
+  &[data-instant],
+  &[data-instant] .searchInput::placeholder {
+    transition: none;
+  }
+}
+
+.searchIcon {
+  position: absolute;
+  inset-inline-start: $glyph-start;
+  inline-size: $glyph;
+  block-size: $glyph;
+  // Half a pixel toward the corner: the magnifier's mass sits top-left in its box.
+  transform: translate(0.5px, 0.5px);
+  opacity: var.$muted;
+  pointer-events: none;
+}
+
+.searchInput {
+  @include var.focus-ring(3px);
+  // Above the wrapper's hit band, which would otherwise swallow the caret click.
+  position: relative;
+  // No content box at all, only padding, so the whole closed capsule is the input's hit area.
+  flex: 0 0 auto;
+  inline-size: 0;
+  min-inline-size: 0;
+  block-size: 100%;
+  padding-inline: $capsule-height 0;
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  outline: none;
+  color: inherit;
+  font-family: var.$p-font;
+  // A 16px input avoids automatic focus zoom on phones.
+  font-size: var.$p4-size;
+
+  &::placeholder {
+    color: currentColor;
+    opacity: 0;
+  }
+
+  // The field ships its own clear button, so the UA's is redundant.
+  &::-webkit-search-cancel-button {
+    display: none;
+  }
+}
+
+// A circle the size of the capsule's end cap, so its centre is the pill's own; the 44px target is the hit band around it.
+.searchClear {
+  @include var.focus-ring(2px);
+  @include hit-band;
+  position: absolute;
+  inset-inline-end: 0;
+  inset-block: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: $capsule-height;
+  block-size: $capsule-height;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+  // Hidden until there is text to clear (inert until then); the fade is the feedback, the slot never moves.
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity 0.15s var.$ease-out;
+
+  &::before {
+    inset: -$hit-inset;
+  }
+
+  svg {
+    inline-size: $glyph;
+    block-size: $glyph;
+  }
+}
+
+.search[data-filled] .searchClear {
+  opacity: var.$muted;
+}
+
+// The search capsule's twin. Its own box stays 28px; the plate is the pill, which grows leftward over the strip's end, so nothing reflows.
+.feed {
+  @include var.focus-ring(3px);
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  // The glyph keeps the end cap's centre while the capsule grows on phones.
+  justify-content: flex-end;
+  inline-size: $capsule-height;
+  block-size: $capsule-height;
+  // At the row end, so with no chips the pill grows into empty room, not over the search.
+  margin-inline-start: auto;
+  padding: 0 $glyph-start 0 0;
+  border: 0;
+  border-radius: var.$radius-pill;
+  background: none;
+  color: var.$color-on-dark;
+  cursor: pointer;
+  --pill: calc(var(--copied-width) + #{var.$space-3 + $capsule-height});
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -$hit-inset;
+  }
+}
+
+.feedPill {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  inline-size: $capsule-height;
+  padding-inline-end: $capsule-height;
+  overflow: hidden;
+  border-radius: inherit;
+  background: $plate;
+  box-shadow: inset 0 0 0 1px
+    color-mix(in srgb, var.$color-on-dark 45%, transparent);
+  pointer-events: none;
+  // The search capsule's own open and close.
+  transition:
+    inline-size 0.25s var.$ease-out,
+    background-color 0.15s var.$ease-out;
+
+  [data-copied] > & {
+    inline-size: var(--pill);
+  }
+
+  // Under 44px tall, so the press answers with tint, never scale.
+  .feed:active > & {
+    background-color: color-mix(in srgb, $plate, #fff 10%);
+    transition-duration: 0.25s, 0s;
+  }
+}
+
+.feedSaid {
+  flex: none;
+  font-family: var.$p-font;
+  font-weight: 600;
+  font-size: var.$p5-size;
+  letter-spacing: var.$track-small;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0;
+  // Out quickly on the close, in once the edge has moved.
+  transition: opacity 0.12s var.$ease-out;
+
+  [data-copied] & {
+    opacity: 1;
+    transition-delay: 0.08s;
+  }
+}
+
+// Both glyphs share one cell, so the way back is a cross-fade; the check itself lands at once.
+.feedGlyphs {
+  position: relative;
+  display: grid;
+
+  svg {
+    grid-area: 1 / 1;
+    inline-size: $glyph;
+    block-size: $glyph;
+    transition: opacity 0.2s var.$ease-out;
+  }
+
+  svg:first-child {
+    opacity: var.$muted;
+  }
+
+  // Coloured at rest too, so it keeps its colour while it fades out; it leaves with the words, ahead of the feed glyph's return.
+  svg:last-child {
+    opacity: 0;
+    color: var.$color-primary;
+    transition-duration: 0.12s;
+  }
+
+  [data-copied] & svg {
+    opacity: 0;
+    transition: none;
+  }
+
+  [data-copied] & svg:last-child {
+    opacity: 1;
+  }
+}
+
+/* Empty state: bare copy, one unit tall so the grid keeps its height */
+
+.empty {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var.$space-2;
+  block-size: var(--unit);
+
+  p {
+    margin: 0;
+    opacity: var.$muted-strong;
+  }
+}
+
+/* Load more: one unlabelled control under the grid, on the accordion's plate */
+
+.loadMoreRow {
+  display: flex;
+  justify-content: center;
+  margin-block-start: var.$block-gap;
+}
+
+.loadMore,
+.clear {
+  @include var.touch-target;
+  @include var.focus-ring;
+  justify-content: center;
+  gap: var.$space-2;
+  // The text sits 1rem in, where the accordion's summary text sits in its plate.
+  padding: var.$space-2 var.$space-3;
+  border: 0;
+  font-family: var.$p-font;
+  font-weight: 600;
+  font-size: var.$p4-size;
+  cursor: pointer;
+
+  svg {
+    flex: none;
+    inline-size: var.$space-3;
+    block-size: var.$space-3;
+  }
+}
+
+// The plate's top highlight and the press tint share one inset shadow list,
+// so the tint takes the plate's own shape. Doubled to beat the plate's shadow.
+$plate-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+
+.loadMore.loadMore {
+  box-shadow:
+    $plate-highlight,
+    inset 0 0 0 100vmax transparent;
+  transition: box-shadow 0.2s var.$ease-out;
+
+  &:active {
+    box-shadow:
+      $plate-highlight,
+      inset 0 0 0 100vmax var.$press-tint;
+    transition-duration: 0s;
+  }
+
+  // Phones: the grid's width, the label on the left edge and the chevron on the right.
+  @media (max-width: var.$media-mobile-width) {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+.loadMoreLabel {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var.$space-2;
+}
+
+.loadMoreCount {
+  font-weight: 400;
+  font-size: var.$p5-size;
+  opacity: var.$muted;
+}
+
+// Clearing the filters stays a quiet text control inside the empty state.
+.clear {
+  border-radius: var.$button-radius;
+  background: transparent;
+  color: var.$color-text;
+  transition: background-color 0.15s var.$ease-out;
+
+  &:active {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* Hover is desktop-only; touch fires it on tap */
+
+@media (hover: hover) and (pointer: fine) {
+  // Promoted only while the pointer is over the photo; nothing else in the tile is on this layer.
+  [data-depth] > .img,
+  [data-depth] .moving {
+    will-change: transform;
+  }
+
+  .chip[aria-pressed='false']:hover {
+    background: rgba(255, 255, 255, 0.06);
+    opacity: 1;
+  }
+
+  .search[data-filled] .searchClear:hover {
+    opacity: 1;
+  }
+
+  .feed:hover > .feedPill {
+    background-color: color-mix(
+      in srgb,
+      rgba(var.$color-plate-dark, 0.7),
+      #fff 6%
+    );
+  }
+
+  .loadMore.loadMore:hover {
+    box-shadow:
+      $plate-highlight,
+      inset 0 0 0 100vmax var.$press-tint;
+  }
+
+  .clear:hover {
+    background: var.$press-tint;
+  }
+}
+
+/* Phones: two columns, and only the square and wide shapes */
+
+@media (max-width: var.$media-mobile-width) {
+  .grid {
+    --cols: 2;
+  }
+
+  .grid .tile[data-mobile-shape] {
+    grid-row: span 1;
+  }
+
+  .grid .tile[data-mobile-shape='1x1'] {
+    grid-column: span 1;
+  }
+
+  .grid .tile[data-mobile-shape='2x1'] {
+    grid-column: span 2;
+  }
+
+  // Every fold takes the small tile's padding and star room.
+  .grid .tile[data-mobile-shape] {
+    --pad: #{var.$space-3};
+    --star-clear: #{$star-clear};
+  }
+
+  .grid .tile[data-mobile-shape='1x1'] .title {
+    @include var.clamp(2);
+    font-size: var.$p4-size;
+  }
+
+  .grid .tile[data-mobile-shape='2x1'] .title {
+    @include var.clamp(3);
+    font-size: var.$p3-size;
+  }
+
+  .grid .tile[data-mobile-shape='2x1'] .meta[data-mobile-only] {
+    display: block;
+  }
+
+  // The folded shapes take the square and wide copy with them.
+  .grid .tile[data-mobile-shape] .summary,
+  .grid .tile[data-mobile-shape='1x1'] .meta {
+    display: none;
+  }
+
+  // The search fills its row beside the feed capsule; the chip line under them bleeds to the viewport edge like the related row.
+  .filters {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+  }
+
+  .filters .search {
+    inline-size: 100%;
+    margin-inline-end: 0;
+    transition: none;
+  }
+
+  // The pill shares the row with the search instead of covering it: the capsule itself grows, and the field gives up the room.
+  .feed {
+    grid-row: 1;
+    grid-column: 2;
+    margin-inline-start: 0;
+    transition: inline-size 0.25s var.$ease-out;
+
+    &[data-copied] {
+      inline-size: var(--pill);
+    }
+  }
+
+  .feedPill,
+  [data-copied] > .feedPill {
+    inline-size: 100%;
+  }
+
+  .search .searchInput {
+    flex: 1 1 auto;
+    inline-size: auto;
+    padding-inline: $input-pad;
+
+    &::placeholder {
+      opacity: var.$muted;
+    }
+  }
+
+  .chips {
+    grid-column: 1 / -1;
+    margin-inline: calc(-1 * var.$inline-pad);
+    padding-inline: var.$inline-pad;
+  }
+
+  // The strip runs off the viewport edge like the related row; no fade there.
+  .chips {
+    mask-image: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile:active {
+    transform: none;
+  }
+
+  // The capsules snap open instead of growing; the feed's words still fade.
+  .search,
+  .feed,
+  .feedPill,
+  .chips {
+    transition: none;
+  }
+
+  // The edge it waited for no longer moves.
+  [data-copied] .feedSaid {
+    transition-delay: 0s;
+  }
+
+  .img,
+  .moving {
+    transform: none;
+  }
+
+  // Turned on mid-hover: the animation goes at once.
+  .motion {
+    display: none;
+  }
+
+  // The image and tile fades are opacity only, so they stay.
+  .picture::after {
+    animation: none;
+  }
+}

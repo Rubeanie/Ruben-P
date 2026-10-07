@@ -1,0 +1,4 @@
+// Keeps the svg a direct layout child, so callers size `svg` as before.
+.logo {
+  display: contents;
+}

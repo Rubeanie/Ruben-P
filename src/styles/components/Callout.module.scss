@@ -1,0 +1,112 @@
+@use '../abstracts/index' as var;
+
+// A large callout closes a page: extra air on top of the block gap, so it never
+// reads like one more section.
+$large-air: clamp(#{var.$space-6}, 1rem + 10vw, #{var.$space-6 * 2.5});
+$large-heading-phone: 3.25rem;
+$large-heading-measure: 12ch;
+$large-heading-measure-phone: 9ch;
+
+.callout {
+  // Modules space themselves; sibling margins collapse to one gap.
+  margin-block: var.$block-gap;
+  text-align: start;
+
+  h2,
+  h3,
+  p {
+    margin-block: 0;
+    text-align: inherit;
+  }
+
+  h2,
+  h3 {
+    @include var.trim-to-ink;
+  }
+
+  p {
+    opacity: var.$muted;
+  }
+}
+
+.inner {
+  max-width: var.$measure;
+  margin-inline: auto;
+}
+
+.content {
+  display: grid;
+  // A trimmed heading sits on its copy at the rich text heading-to-body gap.
+  gap: var.$space-3;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var.$space-2 var.$space-4;
+}
+
+// Only when there is text above it: a buttons-only callout starts at its own edge.
+.content + .actions {
+  margin-block-start: var.$space-4;
+}
+
+.callout[data-size='large'] {
+  padding-block: $large-air;
+
+  .inner {
+    max-width: var.$measure-wide;
+  }
+
+  h2,
+  h3 {
+    max-width: $large-heading-measure;
+    font-size: var.$hero-heading;
+    line-height: var.$lh-h1;
+    letter-spacing: var.$track-h1;
+    text-wrap: balance;
+  }
+
+  p {
+    font-size: var.$p2-size;
+  }
+
+  .content + .actions {
+    margin-block-start: var.$space-5;
+  }
+}
+
+@media (max-width: var.$media-mobile-width) {
+  // Phones centre, as the whole site does.
+  .callout {
+    text-align: center;
+
+    h2,
+    h3 {
+      margin-inline: auto;
+    }
+  }
+
+  .actions {
+    justify-content: center;
+  }
+
+  .callout[data-size='large'] {
+    h2,
+    h3 {
+      // Narrower, so the bigger type still breaks over lines.
+      max-width: $large-heading-measure-phone;
+      // The shared hero step bottoms out at 2.5rem, under twice the lead line on a phone.
+      font-size: $large-heading-phone;
+    }
+
+    p {
+      font-size: var.$body-size;
+    }
+
+    .content + .actions {
+      margin-block-start: var.$space-4;
+    }
+  }
+}

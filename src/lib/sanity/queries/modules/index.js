@@ -1,18 +1,45 @@
 import { groq } from '../../fetch';
-import { linkQuery } from '../fragments/link';
-import { ctaQuery } from './cta';
+import { heroQuery } from './hero';
+import { heroSaasQuery } from './hero-saas';
+import { heroSplitQuery } from './hero-split';
+import { hero3dQuery } from './hero-3d';
+import { richtextModuleQuery } from './richtext-module';
+import { accordionListQuery } from './accordion-list';
+import { calloutQuery } from './callout';
+import { statListQuery } from './stat-list';
+import { skillListQuery } from './skill-list';
+import { socialListQuery } from './social-list';
+import { postListQuery } from './post-list';
+import { postDetailsQuery } from './post-details';
+import { postFeaturedQuery } from './post-featured';
+import { spacerQuery } from './spacer';
+import { threeSceneQuery } from './three-scene';
+import { creativeModuleQuery } from './creative-module';
+import { breadcrumbsQuery } from './breadcrumbs';
+import { customHtmlQuery } from './custom-html';
+import { mediaCarouselQuery } from './media-carousel';
 
 export const modulesQuery = groq`
-  ...,
-  cta[] { ${ctaQuery} },
-  _type == "breadcrumbs" => { crumbs[]{ ${linkQuery} } },
-  _type == 'creative-module' => {
-		modules[]{
-			...,
-			subModules[]{
-				...,
-				ctas[]{ ${ctaQuery} }
-			}
-		}
-	},
+  _type,
+  _key,
+  uid,
+  _type == 'hero' => { ${heroQuery} },
+  _type == 'hero.saas' => { ${heroSaasQuery} },
+  _type == 'hero.split' => { ${heroSplitQuery} },
+  _type == 'hero.3d' => { ${hero3dQuery} },
+  _type == 'richtext-module' => { ${richtextModuleQuery} },
+  _type == 'accordion-list' => { ${accordionListQuery} },
+  _type == 'callout' => { ${calloutQuery} },
+  _type == 'stat-list' => { ${statListQuery} },
+  _type == 'skill-list' => { ${skillListQuery} },
+  _type == 'social-list' => { ${socialListQuery} },
+  _type == 'post-list' => { ${postListQuery} },
+  _type == 'post-details' => { ${postDetailsQuery} },
+  _type == 'post-featured' => { ${postFeaturedQuery} },
+  _type == 'spacer' => { ${spacerQuery} },
+  _type == 'three.js' => { ${threeSceneQuery} },
+  _type == 'creative-module' => { ${creativeModuleQuery} },
+  _type == 'breadcrumbs' => { ${breadcrumbsQuery} },
+  _type == 'custom-html' => { ${customHtmlQuery} },
+  _type == 'media-carousel' => { ${mediaCarouselQuery} },
 `;

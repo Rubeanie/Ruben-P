@@ -1,0 +1,98 @@
+@use './abstracts/index' as var;
+
+main {
+  max-width: var.$content-max-width;
+  margin: 0 auto;
+  // The last module's block gap sits inside the bottom padding.
+  padding: var.$space-3 var.$inline-pad
+    calc(#{var.$last-gap} - #{var.$block-gap});
+  // Every page fills the viewport, so the footer always starts below the fold.
+  min-height: 100lvh;
+  position: relative;
+  z-index: 1;
+  // Nothing a module paints past the screen's edge (a 3D card, a blur's
+  // overhang outside its clip-path) may widen the page. Clip, not hidden: no
+  // scroll container, so the sticky hero and rail still stick. Only while main
+  // spans the screen: wider, its edge isn't the screen's, and nothing reaches it.
+  @media (max-width: #{var.$content-max-width}) {
+    overflow-x: clip;
+  }
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var.$padding-safe;
+    padding-top: var.$navbar-height;
+    min-height: calc(100lvh - var(--announce-height));
+    transition: min-height 0.2s ease;
+  }
+
+  .hero-no-padding {
+    @extend .hero;
+    padding-top: unset;
+  }
+
+  // 44px tap target, like every text link.
+  .hero-no-padding .column p a {
+    @include var.touch-target;
+  }
+
+  // Clears the navbar, floating or docked, on pages that don't open with a
+  // hero. Padding, not margin, so the first module's block gap stays inside it
+  // and its box lands $first-gap below the bar whatever comes first.
+  .nav-pad {
+    padding-top: calc(
+      #{var.$nav-clearance-flow} - #{var.$space-3} + #{var.$first-gap} -
+        #{var.$block-gap}
+    );
+  }
+
+  $alert-icon: 1.25rem;
+
+  // Stands in for a module, so it spaces like one. The social card's plate,
+  // tinted with the severity's hue.
+  .alert {
+    --alert-hue: #{var.$color-error};
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: var.$space-3;
+    align-items: start;
+    max-width: var.$measure;
+    margin-block: var.$block-gap;
+    margin-inline: auto;
+    padding: var.$space-3;
+    border-radius: var.$common-border-radius;
+    background: color-mix(
+      in srgb,
+      var(--alert-hue) 14%,
+      #{var.$color-plate-dark}
+    );
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.14),
+      var.$hairline;
+    color: var.$color-on-dark;
+    font-family: var.$p-font;
+    font-size: var.$p4-size;
+    line-height: var.$lh-small;
+    text-align: start;
+
+    &.warning {
+      --alert-hue: #{var.$color-warning};
+    }
+
+    svg {
+      width: $alert-icon;
+      height: $alert-icon;
+      // centred on the first line
+      margin-block-start: calc((1lh - #{$alert-icon}) / 2);
+      color: var(--alert-hue);
+    }
+
+    strong {
+      font-weight: 600;
+      color: var(--alert-hue);
+    }
+  }
+}

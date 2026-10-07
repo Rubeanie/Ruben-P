@@ -1,6 +1,6 @@
 import '@/styles/sanity.scss';
 import Signature from '@/components/Signature';
-import { Preload } from '../preload';
+import { mont } from '@/styles/fonts';
 
 export default async function RootLayout({
   // Layouts must accept a children prop.
@@ -8,13 +8,16 @@ export default async function RootLayout({
   children
 }) {
   return (
-    <html lang='en'>
+    <html lang='en' className={mont.variable}>
+      <head>
+        <link rel='preconnect' href='https://www.gstatic.com' />
+        <link rel='preconnect' href='https://api.sanity.com' />
+        <link rel='preconnect' href='https://cdn.sanity.io' />
+        <link rel='preconnect' href='https://res.cloudinary.com' />
+      </head>
       <body style={{ margin: '0px' }}>
-        <Preload />
         <Signature />
-        <main>
-          {children}
-        </main>
+        <main>{children}</main>
       </body>
     </html>
   );

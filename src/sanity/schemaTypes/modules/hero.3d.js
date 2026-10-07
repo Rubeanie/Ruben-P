@@ -1,0 +1,92 @@
+import { Md3dRotation } from 'react-icons/md';
+import { getBlockText } from '@/sanity/utils';
+import { textBlock } from '../fragments/text-block';
+import { scrollHintField } from '../fragments/fields/scroll-hint';
+import { uidField } from '../fragments/fields/uid';
+
+export const hero3d = {
+  name: 'hero.3d',
+  title: 'Hero (3D)',
+  icon: Md3dRotation,
+  type: 'object',
+  fields: [
+    {
+      name: 'content',
+      ...textBlock,
+      description: 'The name and the line under it'
+    },
+    {
+      name: 'beats',
+      title: 'Text beats',
+      type: 'array',
+      of: [
+        {
+          name: 'beat',
+          type: 'object',
+          fields: [
+            {
+              name: 'stage',
+              type: 'string',
+              options: {
+                layout: 'radio',
+                list: [
+                  { title: 'Turn', value: 'turn' },
+                  { title: 'Approach', value: 'approach' }
+                ]
+              },
+              validation: (Rule) => Rule.required()
+            },
+            {
+              name: 'content',
+              ...textBlock,
+              description: 'A heading and one paragraph'
+            }
+          ],
+          preview: {
+            select: {
+              stage: 'stage',
+              content: 'content'
+            },
+            prepare: ({ stage, content }) => ({
+              title: getBlockText(content),
+              subtitle: stage
+            })
+          }
+        }
+      ],
+      validation: (Rule) => [
+        Rule.max(2).custom((beats) => {
+          const stages = (beats ?? []).map((beat) => beat.stage);
+          return stages.length === new Set(stages).size
+            ? true
+            : 'Only one beat per stage';
+        }),
+        Rule.custom((beats) =>
+          !beats?.length ||
+          beats.some((beat) => getBlockText(beat.content).trim())
+            ? true
+            : 'Both beats are empty; the hero will have nothing to say'
+        ).warning()
+      ],
+      description: 'One for the turn, one for the approach'
+    },
+    scrollHintField({ initialValue: false }),
+    {
+      name: 'grain',
+      title: 'Film grain',
+      type: 'boolean',
+      initialValue: true,
+      description: 'A faint moving grain over the mark while it moves'
+    },
+    uidField()
+  ],
+  preview: {
+    select: {
+      content: 'content'
+    },
+    prepare: ({ content }) => ({
+      title: getBlockText(content),
+      subtitle: 'Hero (3D)'
+    })
+  }
+};
