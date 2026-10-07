@@ -31,6 +31,7 @@ export default function Carousel({
   id,
   items,
   aspect,
+  layout,
   loop,
   preload,
   besideRail
@@ -43,7 +44,7 @@ export default function Carousel({
   const wraps = loop && count > 1;
   // The front card's share of the row; the stack takes the rest.
   const { room, deepest } = depthOf(count, wraps);
-  const sizes = carouselSizes(count, loop, besideRail);
+  const sizes = carouselSizes(count, loop, besideRail, layout['data-size']);
   const front = useRef(index);
   front.current = index;
   const entrance = useEntrance({
@@ -117,6 +118,7 @@ export default function Carousel({
           )}
           load={loadFor(i)}
           sizes={sizes}
+          blockSize={layout?.['data-size']}
           live={live[item.type] === item.key}
           onPlay={() => setLive((held) => ({ ...held, [item.type]: item.key }))}
         />
@@ -153,6 +155,7 @@ export default function Carousel({
       ref={entrance.ref}
       id={id}
       className={styles.carousel}
+      {...layout}
       aria-roledescription='carousel'
       aria-label='Media'
       style={{ '--aspect': aspect, '--room': room, '--count': count }}

@@ -9,6 +9,8 @@ import {
 
 export const mediaCarouselQuery = groq`
   aspectRatio,
+  size,
+  align,
   "loop": coalesce(loop, false),
   items[]{
     _type,

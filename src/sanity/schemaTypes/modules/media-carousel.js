@@ -3,6 +3,7 @@ import { getYouTubeId } from '@/lib/youtube';
 import { CloudinaryPreview } from '../../components/CloudinaryPreview';
 import { imageBlock } from '../fragments/image-block';
 import { youTubeBlock } from '../fragments/youTubeBlock';
+import { blockLayoutFields } from '../fragments/fields/block-layout';
 import { uidField } from '../fragments/fields/uid';
 import { threeJs } from './three';
 
@@ -195,6 +196,7 @@ export const mediaCarousel = {
       },
       initialValue: '16:9'
     },
+    ...blockLayoutFields(),
     {
       name: 'loop',
       type: 'boolean',
@@ -204,11 +206,16 @@ export const mediaCarousel = {
     uidField()
   ],
   preview: {
-    select: { items: 'items', aspectRatio: 'aspectRatio', loop: 'loop' },
-    prepare({ items = [], aspectRatio, loop }) {
+    select: {
+      items: 'items',
+      aspectRatio: 'aspectRatio',
+      size: 'size',
+      loop: 'loop'
+    },
+    prepare({ items = [], aspectRatio, size, loop }) {
       return {
         title: 'Media carousel',
-        subtitle: `${items.length} items · ${aspectRatio || '16:9'}${loop ? ' · loop' : ''}`,
+        subtitle: `${items.length} items · ${aspectRatio || '16:9'}${size && size !== 'full' ? ` · ${size}` : ''}${loop ? ' · loop' : ''}`,
         media: items[0] && media(items[0])
       };
     }

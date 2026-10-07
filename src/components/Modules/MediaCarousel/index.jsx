@@ -2,6 +2,7 @@ import { stegaClean } from '@sanity/client/stega';
 import { MediaCarousel as Carousel } from '@/components/lazy';
 import { aspectOf } from '@/components/Modules/ThreeScene/aspects';
 import { captionText } from '@/components/RichText/FigureCaption';
+import { blockLayout } from '@/components/RichText/layout';
 import { resolveAsset } from '@/lib/imageBlock';
 import { isAnimated } from '@/lib/imageLoader';
 import { renderable } from '@/lib/carouselItems';
@@ -12,6 +13,7 @@ import {
   getYouTubeId,
   getYouTubeStart
 } from '@/lib/youtube';
+import styles from '@/styles/components/MediaCarousel.module.scss';
 
 // A renderable item as the client island draws it.
 async function resolve(item) {
@@ -75,9 +77,10 @@ export default async function MediaCarousel(props) {
   // Streams in after the page's pre-paint reveal script has run, so this
   // wrapper, already in place, is what the script holds for the entrance.
   return (
-    <div data-entrance data-reveal-skip>
+    <div className={styles.column} data-entrance data-reveal-skip>
       <Carousel
         id={uid(props)}
+        layout={blockLayout(stegaClean(props.size), stegaClean(props.align))}
         items={items}
         aspect={aspectOf(stegaClean(props.aspectRatio))}
         loop={props.loop}

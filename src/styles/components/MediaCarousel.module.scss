@@ -18,11 +18,19 @@ $slim-plate: $slim-block + $plate-inset * 2;
 // takes its own row instead.
 $caption-min: 7.5rem;
 
-.carousel {
-  container-type: inline-size;
+// The module's wrapper carries the measure, so the sized variants are
+// fractions of it, as in the 3D scene.
+.column {
   max-width: var.$measure-wide;
   margin-inline: auto;
-  margin-block: var.$block-gap;
+}
+
+// Its own width is the container, so the stack, bar and controls scale with
+// the size.
+.carousel {
+  @include var.figure-block;
+
+  container-type: inline-size;
 
   // Crossfade only: the front card takes the whole row.
   @media (prefers-reduced-motion: reduce) {
