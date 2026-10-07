@@ -12,10 +12,7 @@ import { colorInput } from '@sanity/color-input';
 import { schemaTypes } from '@/sanity/schemaTypes';
 import { StudioLogo } from '@/sanity/components/StudioLogo';
 import { proofreadInspector } from '@/sanity/components/Proofread/ProofreadInspector';
-import {
-  cloudinarySchemaPlugin,
-  cloudinaryAssetSourcePlugin
-} from 'sanity-plugin-cloudinary';
+import { cloudinarySchemaPlugin } from 'sanity-plugin-cloudinary';
 
 const singletonTypes = ['site'];
 const proofreadTypes = ['page', 'page.post'];
@@ -53,7 +50,6 @@ export default defineConfig({
     }),
     media(),
     cloudinarySchemaPlugin(),
-    cloudinaryAssetSourcePlugin(),
     inlineSvgInput(),
     codeInput(),
     colorInput()
