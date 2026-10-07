@@ -1,4 +1,5 @@
 import groq from 'groq';
+import { cloudinaryImageQuery } from './fragments/cloudinary';
 
 const photoQuery = groq`
   asset->{
@@ -11,10 +12,11 @@ const photoQuery = groq`
 `;
 
 // The share card's photo candidates in order: the hand-set share image, the post cover, the hero.
+// The cover is a Cloudinary image field, the other two Sanity images until they move too.
 export const sharePhotosQuery = groq`
   "sharePhotos": [
     metadata.seo.openGraph.image{ ${photoQuery} },
-    cover{ ${photoQuery} },
+    cover{ _type, ${cloudinaryImageQuery} },
     select(
       modules[0]._type == 'hero' => modules[0].bgImage{ ${photoQuery} },
       modules[0]._type in ['hero.saas', 'hero.split'] => modules[0].image{ ${photoQuery} }

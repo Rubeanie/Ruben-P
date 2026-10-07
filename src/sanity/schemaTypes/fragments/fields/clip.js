@@ -2,8 +2,10 @@ import { CLIP_FPS, MAX_CLIP } from '@/lib/imageLoader';
 import { ClipInput } from '../../../components/ClipInput';
 
 // A Cloudinary video's cut, beside the asset in an image field, shown only once
-// a video is picked. `animatedImage` lets the editor force the heavier animated
-// image over the video.
+// a video is picked. The image block holds the asset as `cloudinaryAsset` beside
+// an `imageType`; a cloudinaryImage holds it as `asset`, always Cloudinary.
+// `animatedImage` lets the editor force the heavier animated image over the
+// video.
 export const clipField = {
   name: 'clip',
   title: 'Clip',
@@ -11,13 +13,13 @@ export const clipField = {
   type: 'object',
   options: { collapsible: true, collapsed: false },
   hidden: ({ parent }) =>
-    parent?.imageType !== 'cloudinary.asset' ||
-    parent?.cloudinaryAsset?.resource_type !== 'video',
+    (parent?.imageType ?? 'cloudinary.asset') !== 'cloudinary.asset' ||
+    (parent?.asset ?? parent?.cloudinaryAsset)?.resource_type !== 'video',
   components: { input: ClipInput },
   // The clip's parent holds the asset, and so the video's duration.
   validation: (Rule) =>
     Rule.custom((clip, { parent }) => {
-      const duration = parent?.cloudinaryAsset?.duration;
+      const duration = (parent?.asset ?? parent?.cloudinaryAsset)?.duration;
       return !duration || !(clip?.start >= duration)
         ? true
         : `Starts after the video ends (${duration.toFixed(1)} s).`;

@@ -8,6 +8,7 @@ import {
   CREATIVE_SIZES,
   PROSE_SIZES,
   resolveAsset,
+  resolveImage,
   SCENE_POSTER_SIZES,
   sizedSizes
 } from '@/lib/imageBlock';
@@ -137,18 +138,24 @@ function carouselPicks(module, { railed }) {
   }
 }
 
+// A tile shows its cover's still until hovered; the animation waits for that.
 const tileCovers = (rows) =>
   rows
-    .filter(({ post }) => post.cover?.asset?.url)
-    .map(({ post, shape, mobileShape, wide }) => ({
-      kind: 'cover',
-      cover: stegaClean(post.cover),
-      sizes: tileSizes({ shape, mobileShape, wide })
-    }));
+    .map(({ post, shape, mobileShape, wide }) => {
+      const still = resolveImage(post.cover)?.still;
+      return (
+        still && {
+          kind: 'image',
+          src: still,
+          sizes: tileSizes({ shape, mobileShape, wide })
+        }
+      );
+    })
+    .filter(Boolean);
 
 // One selection per module type that draws a picture, in page order: { kind:
-// 'image', src, sizes, media } | { kind: 'cover', cover, sizes } | { kind:
-// 'youtube', id } | { kind: 'model' }. A new image module adds a line here.
+// 'image', src, sizes, media } | { kind: 'youtube', id } | { kind: 'model' }.
+// A new image module adds a line here.
 const PICKS = {
   hero: heroPicks,
   'hero.split': heroPicks,
@@ -196,10 +203,7 @@ const PICKS = {
         )
 };
 
-const pickKey = (pick) =>
-  pick.kind === 'cover'
-    ? pick.cover.asset.url
-    : (pick.src ?? pick.id ?? pick.kind);
+const pickKey = (pick) => pick.src ?? pick.id ?? pick.kind;
 
 // What a link's destination shows first, in order of appearance, capped.
 // `posts` is the post index, for modules of tiles; `onPost` says the page is

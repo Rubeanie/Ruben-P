@@ -4,7 +4,6 @@ import { MODEL } from '@/lib/hero3d';
 import { fetchSanity } from '@/lib/sanity/fetch';
 import { getPostIndex } from '@/lib/sanity/queries/posts';
 import { introImagesQuery } from '@/lib/sanity/queries/intro-images';
-import { coverLoader } from '@/lib/sanity/image';
 import { loaderFor } from '@/lib/imageLoader';
 import { picks, splitHref, viewModules } from '@/lib/introPicks';
 import { railedModules } from '@/lib/toc';
@@ -56,12 +55,6 @@ async function preloadFor(pick) {
   switch (pick.kind) {
     case 'image':
       return image({ ...pick, loader: loaderFor(pick.src) });
-    case 'cover':
-      return image({
-        src: pick.cover.asset.url,
-        sizes: pick.sizes,
-        loader: coverLoader(pick.cover)
-      });
     case 'youtube':
       return image({
         src: await getThumb(pick.id),

@@ -1,6 +1,7 @@
 import { stegaClean } from '@sanity/client/stega';
 import { baseUrl } from '@/lib/env';
 import processUrl, { resolveLink } from '@/lib/processUrl';
+import { resolveImage } from '@/lib/imageBlock';
 
 const clean = (value) => stegaClean(value)?.trim?.() || undefined;
 const isExternal = (url) => /^https?:\/\//i.test(url);
@@ -57,7 +58,9 @@ export default function JsonLd({ page, path }) {
     };
   };
 
-  const cover = page.cover?.asset?.url && imageObject(page.cover.asset);
+  // A cover is its still, as tiles and the share card show it.
+  const still = resolveImage(page.cover)?.still;
+  const cover = still && imageObject({ url: still });
   const figures = [
     ...new Map(findImages(page.modules).map((asset) => [asset.url, asset]))
   ]

@@ -1,4 +1,5 @@
 import { MdEdit } from 'react-icons/md';
+import { CloudinaryPreview } from '../../components/CloudinaryPreview';
 import { pageBlock } from '../fragments/page-block';
 import { metadata } from '../fragments/metadata';
 import { headingLinksField } from '../fragments/fields/heading-links';
@@ -32,9 +33,8 @@ export const pagePost = {
     },
     {
       name: 'cover',
-      type: 'image',
-      options: { hotspot: true },
-      description: 'Shown on tiles and at the top of the post',
+      type: 'cloudinaryImage',
+      description: 'Shown on tiles and share cards',
       validation: (Rule) => Rule.required(),
       group: 'content'
     },
@@ -106,13 +106,17 @@ export const pagePost = {
       featured: 'featured',
       title: 'title',
       date: 'publishDate',
-      media: 'cover'
+      cover: 'cover.asset.derived.0.secure_url',
+      coverFull: 'cover.asset.secure_url'
     },
-    prepare({ featured, title, date, media }) {
+    prepare({ featured, title, date, cover, coverFull }) {
       return {
         title: [featured && '⭐', title].filter(Boolean).join(' '),
         subtitle: date,
-        media
+        // Sanity Studio preview thumbnail, next/image doesn't run in Studio.
+        media: (cover || coverFull) && (
+          <CloudinaryPreview url={cover || coverFull} />
+        )
       };
     }
   },

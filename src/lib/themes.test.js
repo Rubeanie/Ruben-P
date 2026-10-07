@@ -118,7 +118,7 @@ test('a Cloudinary video themes the page as a looping animation, six seconds at 
 test('a video theme has a first-frame still for reduced motion, a photo none', () => {
   const video = 'https://res.cloudinary.com/c/video/upload/v1/d/a.mp4';
   const still =
-    'https://res.cloudinary.com/c/video/upload/so_0/c_limit,w_1920,f_auto,q_auto/v1/d/a.jpg';
+    'https://res.cloudinary.com/c/video/upload/so_0,f_webp/c_limit,w_1920,f_auto,q_auto/v1/d/a.webp';
   expect(stillRendition(video)).toBe(still);
   expect(
     stillRendition('https://cdn.sanity.io/images/p/d/a-1x1.png')

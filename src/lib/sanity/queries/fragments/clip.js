@@ -1,4 +1,4 @@
-import { groq } from '../../fetch';
+import groq from 'groq';
 
 // A Cloudinary video's cut, beside the asset in an image field.
 export const clipQuery = groq`

@@ -1,4 +1,6 @@
 import groq from 'groq';
+import { clipQuery } from './fragments/clip';
+import { cloudinaryQuery } from './fragments/cloudinary';
 
 // Spreads skip a missing modules array, which `+` would turn into null.
 export const sitemapQuery = groq`{
@@ -11,8 +13,8 @@ export const sitemapQuery = groq`{
     'noindex': metadata.seo.nofollowAttributes,
     'priority': metadata.seo.priority,
     _updatedAt,
+    cover { asset { ${cloudinaryQuery} }, clip { ${clipQuery} } },
     'images': [
-      cover.asset->url,
       ...modules[_type == 'hero'].bgImage.asset->url,
       ...modules[_type == 'hero'].bgImageMobile.asset->url,
       ...modules[_type == 'hero.saas'].image.asset->url,

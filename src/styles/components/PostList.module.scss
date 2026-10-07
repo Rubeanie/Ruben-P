@@ -235,9 +235,11 @@ $ring:
   display: none;
 }
 
-.img {
+.img,
+.moving {
   object-fit: cover;
-  opacity: 0;
+  // The cover's subject, which a tile of any shape keeps in frame.
+  object-position: var(--focus, 50% 50%);
   // Zoom, sway and tilt all ride the pointer follow, which eases in and settles on its own.
   transform: perspective(60rem) scale(var(--zoom, 1))
     translate(calc(var(--mx, 0) * -0.5%), calc(var(--my, 0) * -0.5%))
@@ -246,8 +248,31 @@ $ring:
   transition: opacity 0.3s var.$ease-out;
 }
 
+.img {
+  opacity: 0;
+}
+
 .tile[data-loaded] .img {
   opacity: 1;
+}
+
+// A moving cover's animation, over the still and under the band. It fades in
+// on its own once it can show, and the whole layer fades back on leave (FADE in Tile).
+.motion {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.3s var.$ease-out;
+
+  &[data-leaving] {
+    opacity: 0;
+  }
+}
+
+.moving {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
 }
 
 @keyframes shimmer {
@@ -917,7 +942,8 @@ $plate-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.14);
 
 @media (hover: hover) and (pointer: fine) {
   // Promoted only while the pointer is over the photo; nothing else in the tile is on this layer.
-  .img[data-depth] {
+  [data-depth] > .img,
+  [data-depth] .moving {
     will-change: transform;
   }
 
@@ -1064,8 +1090,14 @@ $plate-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.14);
     transition-delay: 0s;
   }
 
-  .img {
+  .img,
+  .moving {
     transform: none;
+  }
+
+  // Turned on mid-hover: the animation goes at once.
+  .motion {
+    display: none;
   }
 
   // The image and tile fades are opacity only, so they stay.

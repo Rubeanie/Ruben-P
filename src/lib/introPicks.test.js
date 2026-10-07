@@ -22,6 +22,9 @@ const quiet = {
   html: { code: '<script></script>' }
 };
 const video = { _type: 'youtube', url: 'https://youtu.be/dQw4w9WgXcQ' };
+const cloudinary = (id, type = 'image', ext = 'jpg') =>
+  `https://res.cloudinary.com/demo/${type}/upload/v1/${id}.${ext}`;
+const cover = (id) => ({ asset: { secure_url: cloudinary(id) } });
 
 test('picks follow the first two drawing modules, skipping quiet embeds', () => {
   const modules = [
@@ -92,16 +95,34 @@ test('creative columns give their images at the column width', () => {
 test('a tile list gives the first desktop row, covers sized per tile', () => {
   const posts = Array.from({ length: 9 }, (_, i) => ({
     _id: `p${i}`,
-    cover: { asset: { url: sanity(`cover${i}`) } }
+    cover: cover(`cover${i}`)
   }));
   const result = picks([{ _type: 'post-list' }], { posts });
   expect(result.length).toBeGreaterThan(0);
   expect(result.length).toBeLessThanOrEqual(4);
   for (const pick of result) {
-    expect(pick.kind).toBe('cover');
+    expect(pick.kind).toBe('image');
     expect(pick.sizes).toMatch(/^\(max-width: 43.75rem\) \d+vw, (15|31)rem$/);
   }
   expect(picks([{ _type: 'post-list' }], { posts: [] })).toEqual([]);
+});
+
+test('a moving cover warms its still, never the animation', () => {
+  const posts = [
+    {
+      _id: 'clip',
+      cover: { asset: { secure_url: cloudinary('c', 'video', 'mp4') } }
+    },
+    {
+      _id: 'gif',
+      cover: { asset: { secure_url: cloudinary('g', 'image', 'gif') } }
+    }
+  ];
+  const featured = { _type: 'post-featured', limit: 2 };
+  expect(picks([featured], { posts }).map((p) => p.src)).toEqual([
+    'https://res.cloudinary.com/demo/video/upload/so_0,f_webp/v1/c.webp',
+    'https://res.cloudinary.com/demo/image/upload/pg_1/v1/g.gif'
+  ]);
 });
 
 test('a link to a heading shows its module and the next', () => {
@@ -216,11 +237,13 @@ test('featured posts lead the wide row, except under a post', () => {
   const posts = ['a', 'b', 'c'].map((id) => ({
     _id: id,
     featured: id === 'c',
-    cover: { asset: { url: sanity(id) } }
+    cover: cover(id)
   }));
   const featured = { _type: 'post-featured', limit: 2 };
   const result = picks([featured], { posts });
-  expect(result.map((p) => p.cover.asset.url)).toEqual(['c', 'a'].map(sanity));
+  expect(result.map((p) => p.src)).toEqual(
+    ['c', 'a'].map((id) => cloudinary(id))
+  );
   expect(result[0].sizes).toBe('(max-width: 43.75rem) 82vw, 15rem');
   expect(picks([featured], { posts, onPost: true })).toEqual([]);
 });
@@ -247,7 +270,9 @@ test('a clip playing as video warms its first frame, an animated one nothing', (
     picks([text('a', clip({ start: 2 }), clip({ animatedImage: true }))]).map(
       (p) => p.src
     )
-  ).toEqual(['https://res.cloudinary.com/c/video/upload/so_2/v1/a.jpg']);
+  ).toEqual([
+    'https://res.cloudinary.com/c/video/upload/so_2,f_webp/v1/a.webp'
+  ]);
 });
 
 test('the contents and breadcrumbs leave the opening to the page', () => {

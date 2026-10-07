@@ -1,6 +1,11 @@
 import { stegaClean } from '@sanity/client/stega';
 import { PHONE } from '@/lib/coverSizes';
-import { clipSettings, isClip } from '@/lib/imageLoader';
+import {
+  clipSettings,
+  isAnimated,
+  isClip,
+  stillFrame
+} from '@/lib/imageLoader';
 
 // Rendered widths of an image block in prose and in a Creative column.
 export const PROSE_SIZES = `${PHONE} 100vw, 65rem`;
@@ -33,21 +38,23 @@ export function clipWidth(sizes) {
   return Math.min(wide || 1920, 1920);
 }
 
-// `clip` comes with a Cloudinary video: its cut, and whether it plays as a
-// video (the default) or as an animated image.
+// `clip` comes with a Cloudinary video: its cut settings, plus whether it plays
+// as a video (the default) or as an animated image.
+const clipFor = (src, clip) =>
+  isClip(src) ? { ...clipSettings(clip), video: !clip?.animatedImage } : null;
+
 export function resolveAsset({ imageType, image, cloudinaryAsset, clip }) {
   if (stegaClean(imageType) === 'cloudinary.asset') {
     const src = stegaClean(
       cloudinaryAsset?.derived_url || cloudinaryAsset?.secure_url
     );
     if (!src) return null;
+    const settled = clipFor(src, clip);
     return {
       src,
       width: cloudinaryAsset.width,
       height: cloudinaryAsset.height,
-      ...(isClip(src) && {
-        clip: { ...clipSettings(clip), video: !clip?.animatedImage }
-      })
+      ...(settled && { clip: settled })
     };
   }
   const asset = image?.asset;
@@ -57,5 +64,27 @@ export function resolveAsset({ imageType, image, cloudinaryAsset, clip }) {
     width: asset.metadata?.dimensions?.width,
     height: asset.metadata?.dimensions?.height,
     blurDataURL: asset.metadata?.lqip
+  };
+}
+
+// A Cloudinary image field (a post cover; every image field later) as readers
+// draw it. `still` is what shows at rest: the image itself, or the first frame
+// of a clip's cut or of a GIF; `moving` says there is an animation behind it.
+export function resolveImage(value) {
+  const { asset, clip, palette, focus, lqip } = stegaClean(value) ?? {};
+  const src = asset?.derived_url || asset?.secure_url;
+  if (!src) return null;
+  const settled = clipFor(src, clip);
+  const moving = isAnimated(src);
+  return {
+    src,
+    still: moving ? stillFrame(src, settled) : src,
+    width: asset.width,
+    height: asset.height,
+    clip: settled,
+    moving,
+    palette,
+    focus,
+    lqip
   };
 }

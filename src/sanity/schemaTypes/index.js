@@ -34,6 +34,7 @@ import { tableOfContents } from './modules/table-of-contents';
 import { threeJs } from './modules/three';
 
 // objects
+import { cloudinaryImage } from './objects/cloudinary-image';
 import { cta } from './objects/cta';
 import { dynamicValue } from './objects/dynamic-value';
 import { link } from './objects/link';
@@ -84,6 +85,7 @@ export const schemaTypes = [
   threeJs,
 
   // objects
+  cloudinaryImage,
   cta,
   dynamicValue,
   link,

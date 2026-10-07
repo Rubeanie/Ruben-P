@@ -87,12 +87,22 @@ const photo = (vibrant, dominant) => ({
   }
 });
 
+// A post cover is a Cloudinary image field.
+const cloudinaryPhoto = (vibrant) => ({
+  _type: 'cloudinaryImage',
+  asset: {
+    secure_url: 'https://res.cloudinary.com/demo/image/upload/v1/a.jpg'
+  },
+  palette: { vibrant: { background: vibrant } }
+});
+
 test('the card shows the share image, then the cover, then the hero', () => {
-  const cover = photo('#111111');
+  const cover = cloudinaryPhoto('#111111');
   expect(sharePhoto({ sharePhotos: [null, cover, photo('#222222')] })).toBe(
     cover
   );
-  expect(sharePhoto({ sharePhotos: [null, null, null] })).toBeNull();
+  const empty = { _type: 'cloudinaryImage', asset: null };
+  expect(sharePhoto({ sharePhotos: [null, empty, null] })).toBeNull();
 });
 
 test('the ring reads the stored vibrant, then dominant, then the theme primary', () => {
@@ -102,6 +112,9 @@ test('the ring reads the stored vibrant, then dominant, then the theme primary',
   );
   expect(ringColour(photo(null, '#aab2c4'), theme)).toBe(
     ringAccent('#aab2c4', theme.background)
+  );
+  expect(ringColour(cloudinaryPhoto('#34566c'), theme)).toBe(
+    ringAccent('#34566c', theme.background)
   );
   expect(ringColour(null, theme)).toBe('#ed5f68');
 });

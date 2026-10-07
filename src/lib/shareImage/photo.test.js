@@ -26,3 +26,21 @@ test('a photo that fails to load, answers an error or will not decode comes back
   }
   expect(console.error).toHaveBeenCalledTimes(3);
 });
+
+test('a Cloudinary cover still is cut to the card around its subject', async () => {
+  console.error = mock(() => {});
+  globalThis.fetch = mock(() =>
+    Promise.resolve(new Response('', { status: 404 }))
+  );
+  const clip = {
+    _type: 'cloudinaryImage',
+    asset: {
+      secure_url: 'https://res.cloudinary.com/demo/video/upload/v1/a.mp4'
+    },
+    clip: { start: 2 }
+  };
+  await loadPhoto(clip);
+  expect(globalThis.fetch.mock.calls[0][0]).toBe(
+    'https://res.cloudinary.com/demo/video/upload/so_2,f_webp/c_fill,g_auto,w_1200,h_630,q_85/v1/a.webp'
+  );
+});

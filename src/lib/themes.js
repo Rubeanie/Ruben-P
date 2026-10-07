@@ -1,5 +1,6 @@
 import {
   CLOUDINARY_CHAIN,
+  THEME_CLIP,
   animatedClip,
   isClip,
   stillFrame,
@@ -191,7 +192,8 @@ export const PORTRAIT_QUERY = '(max-aspect-ratio: 3/4)';
 // Sized for the screen that paints it: no wider than a big desktop shows,
 // in the best format the browser takes. Other hosts keep the original.
 export function landscapeRendition(url) {
-  if (isClip(url)) return animatedClip(url, 'c_limit,w_1920');
+  if (isClip(url))
+    return animatedClip(url, 'c_limit,w_1920', { length: THEME_CLIP });
   let parsed;
   try {
     parsed = new URL(url);

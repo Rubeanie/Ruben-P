@@ -1,5 +1,6 @@
 import Color from 'color';
 import { brandInk } from '@/components/Social';
+import { resolveImage } from '@/lib/imageBlock';
 
 export const alpha = (hex, a) => Color(hex).alpha(a).rgb().string();
 
@@ -28,14 +29,20 @@ export function socialColours(brand) {
   };
 }
 
+// A candidate's URL: a Cloudinary field's still, or a Sanity image's own.
+export const photoUrl = (image) =>
+  image?._type === 'cloudinaryImage'
+    ? resolveImage(image)?.still
+    : image?.asset?.url;
+
 // The photo the card shows: a hand-set share image, then the post cover, then the hero.
-export const sharePhoto = (page) =>
-  page?.sharePhotos?.find((image) => image?.asset?.url) ?? null;
+export const sharePhoto = (page) => page?.sharePhotos?.find(photoUrl) ?? null;
 
 // The bold ring: the photo's stored vibrant (or dominant) swatch made loud on the card's
 // ground, or the theme primary. The Studio preview's Discord bar reads the same.
 export function ringColour(photo, theme) {
-  const { vibrant, dominant } = photo?.asset?.metadata?.palette ?? {};
+  const { vibrant, dominant } =
+    photo?.palette ?? photo?.asset?.metadata?.palette ?? {};
   const swatch = vibrant?.background ?? dominant?.background;
   return swatch ? ringAccent(swatch, theme.background) : theme.primary;
 }

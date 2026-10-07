@@ -78,13 +78,13 @@ describe('Cloudinary clips', () => {
   test('count as animated and play as a sized, looping WebP', () => {
     expect(isAnimated(clip)).toBe(true);
     expect(load(clip, 640)).toBe(
-      'https://res.cloudinary.com/ruben-p/video/upload/du_6/c_limit,w_640/fps_15/e_loop/fl_animated,fl_awebp,f_webp/v1/samples/dance-2.mp4'
+      'https://res.cloudinary.com/ruben-p/video/upload/du_60/c_limit,w_640/fps_15/e_loop/fl_animated,fl_awebp,f_webp/v1/samples/dance-2.mp4'
     );
   });
 
   test('keep a query string and survive a missing src', () => {
     expect(stillFrame(`${clip}?t=1`)).toBe(
-      'https://res.cloudinary.com/ruben-p/video/upload/so_0/v1/samples/dance-2.jpg?t=1'
+      'https://res.cloudinary.com/ruben-p/video/upload/so_0,f_webp/v1/samples/dance-2.webp?t=1'
     );
     expect(isAnimated(`${stillFrame(clip)}?t=1`)).toBe(false);
     expect(isAnimated(undefined)).toBe(false);
@@ -92,7 +92,7 @@ describe('Cloudinary clips', () => {
 
   test('rest on the first frame as a sized still', () => {
     expect(load(stillFrame(clip), 640)).toBe(
-      'https://res.cloudinary.com/ruben-p/video/upload/so_0/c_limit,f_auto,q_auto,w_640/v1/samples/dance-2.jpg'
+      'https://res.cloudinary.com/ruben-p/video/upload/so_0,f_webp/c_limit,f_auto,q_auto,w_640/v1/samples/dance-2.webp'
     );
   });
 
@@ -105,7 +105,7 @@ describe('Cloudinary clips', () => {
       'https://res.cloudinary.com/ruben-p/video/upload/so_1.5,du_4/c_limit,w_1200/fps_10/ac_none,f_mp4,vc_h264,q_auto/v1/samples/dance-2.mp4'
     );
     expect(stillFrame(clip, cut)).toBe(
-      'https://res.cloudinary.com/ruben-p/video/upload/so_1.5/v1/samples/dance-2.jpg'
+      'https://res.cloudinary.com/ruben-p/video/upload/so_1.5,f_webp/v1/samples/dance-2.webp'
     );
   });
 
@@ -118,13 +118,18 @@ describe('Cloudinary clips', () => {
   });
 
   test('hold the cap whatever the field says', () => {
-    expect(clipSettings({ length: 20, fps: 60, start: -2 })).toEqual({
+    expect(clipSettings({ length: 90, fps: 60, start: -2 })).toEqual({
       start: 0,
-      length: 6,
+      length: 60,
       fps: 15,
       loop: true
     });
-    expect(animatedClip(clip, 'w_10', { length: 0 })).toContain('/du_6/');
+    expect(animatedClip(clip, 'w_10', { length: 0 })).toContain('/du_60/');
+  });
+
+  test('a shorter cap holds, and blank runs to it', () => {
+    expect(clipSettings({ length: 90 }, 6).length).toBe(6);
+    expect(clipSettings({}, 6).length).toBe(6);
   });
 
   test('keep the original frame rate when asked', () => {
@@ -134,7 +139,7 @@ describe('Cloudinary clips', () => {
 
   test('play as an MP4 whatever the upload was', () => {
     expect(clipVideo(clip.replace('.mp4', '.mov?t=1'), 720)).toBe(
-      'https://res.cloudinary.com/ruben-p/video/upload/du_6/c_limit,w_720/fps_15/ac_none,f_mp4,vc_h264,q_auto/v1/samples/dance-2.mp4?t=1'
+      'https://res.cloudinary.com/ruben-p/video/upload/du_60/c_limit,w_720/fps_15/ac_none,f_mp4,vc_h264,q_auto/v1/samples/dance-2.mp4?t=1'
     );
   });
 });

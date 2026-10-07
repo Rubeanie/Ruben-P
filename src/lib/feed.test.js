@@ -10,9 +10,11 @@ const post = {
   publishDate: '2026-09-27T15:58:45Z',
   categories: ['Art', 'Code'],
   cover: {
-    url: 'https://cdn.example.com/a.png?x=1&y=2',
-    mimeType: 'image/png',
-    size: 42
+    asset: {
+      secure_url:
+        'https://res.cloudinary.com/demo/image/upload/v1/a.png?x=1&y=2',
+      bytes: 42
+    }
   }
 };
 
@@ -33,6 +35,22 @@ test('item carries link, guid, RFC 822 date, categories and enclosure', () => {
   expect(xml).toContain('<pubDate>Sun, 27 Sep 2026 15:58:45 GMT</pubDate>');
   expect(xml).toContain('<category>Art</category><category>Code</category>');
   expect(xml).toContain('length="42" type="image/png"');
+});
+
+test('a clip encloses its Start frame, length unknown', () => {
+  const clip = {
+    ...post,
+    cover: {
+      asset: {
+        secure_url: 'https://res.cloudinary.com/demo/video/upload/v1/a.mp4',
+        bytes: 9000
+      },
+      clip: { start: 2 }
+    }
+  };
+  expect(rssXml({ site, posts: [clip], baseUrl })).toContain(
+    '<enclosure url="https://res.cloudinary.com/demo/video/upload/so_2,f_webp/v1/a.webp" length="0" type="image/webp"/>'
+  );
 });
 
 test('keeps the caller order; no categories means no category tags', () => {

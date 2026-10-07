@@ -1,3 +1,5 @@
+import { resolveImage } from '@/lib/imageBlock';
+
 export const FEED_PATH = '/feed.xml';
 
 const ENTITIES = {
@@ -9,9 +11,20 @@ const ENTITIES = {
 };
 const escape = (s) => String(s).replace(/[&<>"']/g, (c) => ENTITIES[c]);
 
+// The cover's still: its type from the URL's extension, and its length known
+// only for an image served as uploaded (0 tells readers it's unknown).
+function enclosure(value) {
+  const cover = resolveImage(value);
+  if (!cover) return null;
+  const ext = cover.still.match(/\.(\w+)(?:\?|$)/)?.[1].toLowerCase();
+  const type = `image/${ext === 'jpg' ? 'jpeg' : ext}`;
+  const exact = !cover.moving && cover.src === value.asset.secure_url;
+  const length = (exact && value.asset.bytes) || 0;
+  return `<enclosure url="${escape(cover.still)}" length="${length}" type="${escape(type)}"/>`;
+}
+
 const item = (post, baseUrl) => {
   const link = escape(baseUrl + post.slug);
-  const { cover } = post;
   return [
     '<item>',
     `<title>${escape(post.title)}</title>`,
@@ -20,8 +33,7 @@ const item = (post, baseUrl) => {
     post.summary && `<description>${escape(post.summary)}</description>`,
     `<pubDate>${new Date(post.publishDate).toUTCString()}</pubDate>`,
     ...(post.categories ?? []).map((c) => `<category>${escape(c)}</category>`),
-    cover?.url &&
-      `<enclosure url="${escape(cover.url)}" length="${cover.size ?? 0}" type="${escape(cover.mimeType)}"/>`,
+    enclosure(post.cover),
     '</item>'
   ]
     .filter(Boolean)

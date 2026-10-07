@@ -5,13 +5,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { stegaClean } from '@sanity/client/stega';
 import { LuStar } from 'react-icons/lu';
-import { coverLoader } from '@/lib/sanity/image';
+import ClipVideo from '@/components/ClipVideo';
 import { shapeSize, tileSizes } from '@/lib/bento';
+import { resolveImage } from '@/lib/imageBlock';
+import { animatedClip, animatedGif, loaderFor } from '@/lib/imageLoader';
 import { easeOut, formatDate, reducedMotion } from '@/lib/posts';
 import { isPagePath } from '@/lib/slug';
 import styles from '@/styles/components/PostList.module.scss';
 
 const ZOOM = 1.04;
+// The animation's fade back to the still, as .motion sets it.
+const FADE = 300;
 
 // Covers this page has already decoded, so a tile that comes back paints its photo at once.
 const decoded = new Set();
@@ -79,6 +83,48 @@ function Dots({ categories, active }) {
   );
 }
 
+// The cover's animation over its still: a clip as video (Low Power Mode and
+// reduced motion handled by ClipVideo), a clip set to play as an animated image,
+// or a GIF as Cloudinary's animated WebP. Each stays clear until it can show.
+function Moving({ cover, width }) {
+  const [ready, setReady] = useState(false);
+  const { src, clip } = cover;
+  if (clip?.video)
+    return (
+      <ClipVideo
+        className={styles.moving}
+        src={src}
+        clip={clip}
+        width={width}
+      />
+    );
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- a Cloudinary animation, already sized
+    <img
+      className={styles.moving}
+      src={
+        clip
+          ? animatedClip(src, `c_limit,w_${width}`, clip)
+          : animatedGif(src, width)
+      }
+      alt=''
+      aria-hidden='true'
+      style={ready ? undefined : { opacity: 0 }}
+      onLoad={() => setReady(true)}
+    />
+  );
+}
+
+// The clip is cropped to the tile like the still, so it needs the video's
+// width at which its cropped side is still sharp on this screen.
+function clipWidthFor(box, cover) {
+  const aspect =
+    cover?.width && cover?.height ? cover.width / cover.height : 16 / 9;
+  const need =
+    Math.max(box.offsetWidth, box.offsetHeight * aspect) * devicePixelRatio;
+  return Math.min(1920, Math.ceil(need / 100) * 100);
+}
+
 export default function Tile({
   post,
   shape = '1x1',
@@ -94,6 +140,7 @@ export default function Tile({
   const [sizes, setSizes] = useState(wanted);
   if (!morphing && sizes !== wanted) setSizes(wanted);
   const img = useRef(null);
+  const picture = useRef(null);
   const motion = useRef({
     x: 0,
     y: 0,
@@ -107,7 +154,8 @@ export default function Tile({
   // Exponential smoothing with a 90ms constant: the picture eases toward the pointer and settles on its own.
   const settle = (now) => {
     const m = motion.current;
-    const el = img.current;
+    // On the picture, so the still and the animation over it move as one.
+    const el = picture.current;
     if (!el) return;
     const dt = Math.min(48, now - (m.last || now));
     m.last = now;
@@ -137,24 +185,56 @@ export default function Tile({
   };
   useEffect(() => () => cancelAnimationFrame(motion.current.raf), []);
 
-  // The builder reads ids and the crop rect, so the whole cover is cleaned.
-  const cover = stegaClean(post.cover);
+  const cover = resolveImage(post.cover);
   // A tile filtered out and back mounts fresh, and the morph snapshots it before any effect runs,
   // so a cover decoded earlier starts loaded instead of freezing its plate into the snapshot.
-  const [loaded, setLoaded] = useState(() => decoded.has(cover?.asset?.url));
+  const [loaded, setLoaded] = useState(() => decoded.has(cover?.still));
   // A cached image can finish before hydration, so onLoad alone leaves it at zero.
   useEffect(() => {
     if (img.current?.complete && img.current.naturalWidth) setLoaded(true);
   }, []);
-  const hasCover = Boolean(cover?.asset?.url);
-  // One source per post at every shape: the editor's crop applies, the tile frames it in CSS,
-  // so a shape change re-clips the same bitmap instead of switching to another crop.
-  const loader = coverLoader(cover);
-  // A folded phone tile re-crops the desktop crop in CSS, so the crop follows the editor's hotspot.
-  const position = cover?.hotspot
-    ? { objectPosition: `${cover.hotspot.x * 100}% ${cover.hotspot.y * 100}%` }
+  // One source per post at every shape, framed in CSS around the subject, so a
+  // shape change re-clips the same bitmap instead of switching to another crop.
+  const focus = cover?.focus
+    ? `${Math.round(cover.focus.x * 1000) / 10}% ${Math.round(cover.focus.y * 1000) / 10}%`
     : undefined;
-  const plate = cover?.asset?.metadata?.palette?.dominant?.background;
+  const plate = cover?.palette?.dominant?.background;
+
+  // A moving cover plays while a mouse or pen rests on the tile or the keyboard
+  // focuses it, never on touch or under reduced motion. The layer stays mounted
+  // (`shown`) through the fade back, then goes. A new play remounts it, so a
+  // hover during the fade starts the cut afresh.
+  const intent = useRef({ hover: false, focus: false });
+  const [playing, setPlaying] = useState(false);
+  const [shown, setShown] = useState(false);
+  const [plays, setPlays] = useState(0);
+  // The clip's width, fixed at the start of a play.
+  const [clipPx, setClipPx] = useState(0);
+  const request = (key, on) => {
+    intent.current[key] = on;
+    const next =
+      Boolean(cover?.moving) &&
+      !reducedMotion() &&
+      (intent.current.hover || intent.current.focus);
+    if (next && !playing) {
+      setPlays((n) => n + 1);
+      setClipPx(clipWidthFor(picture.current, cover));
+    }
+    setPlaying(next);
+    if (next) setShown(true);
+  };
+  // A live edit can swap the cover out from under a playing layer.
+  const [playedSrc, setPlayedSrc] = useState(cover?.src);
+  if (playedSrc !== cover?.src) {
+    setPlayedSrc(cover?.src);
+    setPlaying(false);
+    setShown(false);
+  }
+  useEffect(() => {
+    if (playing || !shown) return;
+    const timer = setTimeout(() => setShown(false), FADE);
+    return () => clearTimeout(timer);
+  }, [playing, shown]);
   const featured = Boolean(stegaClean(post.featured));
   const publishDate = post.publishDate ? stegaClean(post.publishDate) : null;
   const date = publishDate ? formatDate(publishDate) : '';
@@ -173,7 +253,7 @@ export default function Tile({
       data-band={band}
       data-mobile-shape={mobileShape}
       data-wide={wide || undefined}
-      data-loaded={!hasCover || loaded || undefined}
+      data-loaded={!cover || loaded || undefined}
       style={{
         '--plate': plate,
         // Bento tiles are named so a filter change morphs each one; the related row never transitions.
@@ -181,6 +261,14 @@ export default function Tile({
           ? undefined
           : `tile-${post._id.replace(/[^\w-]/g, '-')}`
       }}
+      onPointerEnter={(e) =>
+        e.pointerType !== 'touch' && request('hover', true)
+      }
+      // A tap focuses a link in some browsers; only keyboard focus shows a ring, and plays.
+      onFocus={(e) =>
+        e.currentTarget.matches(':focus-visible') && request('focus', true)
+      }
+      onBlur={() => request('focus', false)}
       onPointerMove={(e) => {
         if (!hasFinePointer()) return;
         if (reducedMotion()) return;
@@ -190,35 +278,46 @@ export default function Tile({
         m.tx = ((e.clientX - r.left) / r.width) * 2 - 1;
         m.ty = ((e.clientY - r.top) / r.height) * 2 - 1;
         m.hovering = true;
-        img.current.setAttribute('data-depth', '');
+        picture.current.setAttribute('data-depth', '');
         if (!m.raf) {
           m.last = 0;
           m.raf = requestAnimationFrame(settle);
         }
       }}
       onPointerLeave={() => {
+        request('hover', false);
         const m = motion.current;
         m.hovering = false;
         m.tx = m.ty = 0;
         if (!m.raf && img.current) m.raf = requestAnimationFrame(settle);
       }}>
-      <div className={styles.picture}>
-        {hasCover && (
+      <div
+        ref={picture}
+        className={styles.picture}
+        style={{ '--focus': focus }}>
+        {cover && (
           <Image
             ref={img}
             className={styles.img}
-            src={cover.asset.url}
-            loader={loader}
+            src={cover.still}
+            loader={loaderFor(cover.still)}
             // The link already reads the title; a second copy on the picture would announce it twice.
             alt=''
             fill
             sizes={sizes}
-            style={position}
             onLoad={() => {
-              decoded.add(cover.asset.url);
+              decoded.add(cover.still);
               setLoaded(true);
             }}
           />
+        )}
+        {shown && cover?.moving && (
+          <div
+            key={plays}
+            className={styles.motion}
+            data-leaving={!playing || undefined}>
+            <Moving cover={cover} width={clipPx} />
+          </div>
         )}
       </div>
       <div className={styles.text}>

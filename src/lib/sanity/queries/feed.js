@@ -1,4 +1,6 @@
 import groq from 'groq';
+import { clipQuery } from './fragments/clip';
+import { cloudinaryQuery } from './fragments/cloudinary';
 
 export const feedQuery = groq`{
   'site': *[_type == 'site'][0]{
@@ -13,7 +15,7 @@ export const feedQuery = groq`{
       publishDate,
       'slug': metadata.slug.current,
       'noindex': metadata.seo.nofollowAttributes,
-      'cover': cover.asset->{ url, mimeType, size },
+      cover { asset { ${cloudinaryQuery}, bytes }, clip { ${clipQuery} } },
       'categories': categories[]->title
     }
 }`;

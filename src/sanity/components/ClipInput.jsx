@@ -67,8 +67,11 @@ const QUIET = {
 // sizes of both renditions on request, until a setting changes.
 export function ClipInput(props) {
   const parent = props.path.slice(0, -1);
-  const asset = useFormValue([...parent, 'cloudinaryAsset']);
-  // The block's own Size, or the carousel's two levels up, narrows the file.
+  const cloudinaryImage = useFormValue([...parent, 'asset']);
+  const imageBlock = useFormValue([...parent, 'cloudinaryAsset']);
+  const asset = cloudinaryImage ?? imageBlock;
+  // The block's own Size, or the carousel's two levels up, narrows the file; a
+  // cover has neither and runs full width.
   const own = useFormValue([...parent, 'size']);
   const carousel = useFormValue([...parent.slice(0, -2), 'size']);
   const width = Math.round(WIDTH * sizeFraction(own ?? carousel));

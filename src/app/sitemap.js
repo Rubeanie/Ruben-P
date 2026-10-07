@@ -2,6 +2,7 @@ import { fetchSanity } from '@/lib/sanity/fetch';
 import { sitemapQuery } from '@/lib/sanity/queries/sitemap';
 import { baseUrl } from '@/lib/env';
 import { isIndexable } from '@/lib/slug';
+import { resolveImage } from '@/lib/imageBlock';
 
 // Every indexable CMS page and post (home included). The same tags as the
 // pages themselves, so a publish refreshes the sitemap too.
@@ -14,7 +15,7 @@ export default async function sitemap() {
 
   return pages
     .filter((p) => isIndexable(p, site))
-    .map(({ _type, slug, priority, images, _updatedAt }) => {
+    .map(({ _type, slug, priority, cover, images, _updatedAt }) => {
       const d = slug.split('/').filter(Boolean).length;
       return {
         url: slug === '/' ? baseUrl : `${baseUrl}${slug}`,
@@ -24,7 +25,9 @@ export default async function sitemap() {
         priority:
           priority ??
           (_type === 'page.post' ? 0.6 : Math.max(0.2, (10 - 2 * d) / 10)),
-        images: [...new Set(images.filter(Boolean))]
+        images: [
+          ...new Set([resolveImage(cover)?.still, ...images].filter(Boolean))
+        ]
       };
     });
 }
