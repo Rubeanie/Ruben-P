@@ -2,7 +2,7 @@ import Image from '@/components/CdnImage';
 import { stegaClean } from '@sanity/client/stega';
 import FigureCaption from './FigureCaption';
 import { blockLayout } from './layout';
-import { PROSE_SIZES, resolveAsset } from '@/lib/imageBlock';
+import { PROSE_SIZES, resolveAsset, sizedSizes } from '@/lib/imageBlock';
 import styles from '@/styles/components/RichText.module.scss';
 
 // Editors can leave the dimensions off a Cloudinary asset; a 3:2 guess keeps
@@ -29,7 +29,7 @@ export default function ImageBlock({ value, sanity, sizes = PROSE_SIZES }) {
         width={width || FALLBACK_WIDTH}
         height={height || FALLBACK_HEIGHT}
         alt={stegaClean(alt) || ''}
-        sizes={sizes}
+        sizes={sizedSizes(sizes, layout['data-size'])}
         loading={stegaClean(loading) || 'lazy'}
         placeholder={blur ? 'blur' : 'empty'}
         blurDataURL={blur ? blurDataURL : undefined}

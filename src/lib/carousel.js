@@ -1,4 +1,5 @@
 import { PHONE } from '@/lib/coverSizes';
+import { sizeFraction } from '@/lib/imageBlock';
 
 // Depth is drawn for a 300-unit card (150 either side of its centre); the
 // stylesheet turns units into pixels from the real card's width, so a phone
@@ -63,19 +64,21 @@ const column = (less, fraction) =>
 
 // `sizes` for the front card, its share of the column; under reduced motion
 // it takes the whole row. `besideRail`: the carousel sits beside a table of
-// contents, whose rail narrows the column on wide screens.
-export function carouselSizes(count, loop, besideRail = false) {
+// contents, whose rail narrows the column on wide screens. `size` is the
+// block's size option, which narrows the box above a phone.
+export function carouselSizes(count, loop, besideRail = false, size) {
+  const scale = sizeFraction(size);
   const share = 1 - depthOf(count, loop && count > 1).room;
   const still = '(prefers-reduced-motion: reduce)';
   const railed = (prefix, fraction) =>
-    besideRail && `${prefix}${RAIL_FROM} ${column(RAIL_REM, fraction)}`;
+    besideRail && `${prefix}${RAIL_FROM} ${column(RAIL_REM, fraction * scale)}`;
   return [
     `${still} and ${PHONE} ${PHONE_VW}vw`,
-    railed(`${still} and `, 1),
-    `${still} ${column(GUTTERS_REM, 1)}`,
+    railed(`${still} and `, scale),
+    `${still} ${column(GUTTERS_REM, scale)}`,
     `${PHONE} ${Math.ceil(PHONE_VW * share)}vw`,
-    railed('', share),
-    column(GUTTERS_REM, share)
+    railed('', share * scale),
+    column(GUTTERS_REM, share * scale)
   ]
     .filter(Boolean)
     .join(', ');

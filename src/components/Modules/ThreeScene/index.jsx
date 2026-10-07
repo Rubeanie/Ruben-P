@@ -67,6 +67,7 @@ export default function ThreeScene(props) {
             zoom={zoom}
             loadOnClick={loadOnClick}
             poster={stegaClean(poster)}
+            blockSize={layout['data-size']}
             modelBytes={modelBytes}
             label={stegaClean(caption)}
           />

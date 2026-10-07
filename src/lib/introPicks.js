@@ -8,7 +8,8 @@ import {
   CREATIVE_SIZES,
   PROSE_SIZES,
   resolveAsset,
-  SCENE_POSTER_SIZES
+  SCENE_POSTER_SIZES,
+  sizedSizes
 } from '@/lib/imageBlock';
 import { isAnimated } from '@/lib/imageLoader';
 import { drawnModules } from '@/lib/modules';
@@ -62,6 +63,8 @@ export function viewModules(modules, hash) {
   return { modules: drawn.slice(0, SEARCH_DEPTH), matched: false };
 }
 
+const blockSizes = (sizes, block) => sizedSizes(sizes, stegaClean(block.size));
+
 const imagePick = (block, sizes) => {
   const asset = resolveAsset(block);
   return asset && { kind: 'image', src: asset.src, sizes };
@@ -81,7 +84,7 @@ const contentPicks = (content) =>
     .slice(0, BLOCKS)
     .map((block) => {
       if (stegaClean(block._type) === 'imageBlock')
-        return imagePick(block, PROSE_SIZES);
+        return imagePick(block, blockSizes(PROSE_SIZES, block));
       if (stegaClean(block._type) !== 'youtube') return null;
       // An autoplaying one is a bare iframe, nothing to warm.
       const id = stegaClean(block.autoplay)
@@ -96,7 +99,12 @@ const contentPicks = (content) =>
 function carouselPicks(module, { railed }) {
   const shown = (module.items ?? []).filter(renderable);
   const item = shown[0];
-  const sizes = carouselSizes(shown.length, module.loop, railed.has(module));
+  const sizes = carouselSizes(
+    shown.length,
+    module.loop,
+    railed.has(module),
+    stegaClean(module.size)
+  );
   switch (stegaClean(item?._type)) {
     case 'carouselImage':
       return [imagePick(item, sizes)];
@@ -106,7 +114,15 @@ function carouselPicks(module, { railed }) {
       ];
     case 'carouselScene': {
       const src = stegaClean(item.poster);
-      return src ? [{ kind: 'image', src, sizes: SCENE_POSTER_SIZES }] : [];
+      return src
+        ? [
+            {
+              kind: 'image',
+              src,
+              sizes: sizedSizes(SCENE_POSTER_SIZES, stegaClean(module.size))
+            }
+          ]
+        : [];
     }
     default:
       return [];
@@ -138,7 +154,7 @@ const PICKS = {
       .flatMap((block) => {
         switch (stegaClean(block._type)) {
           case 'imageBlock':
-            return imagePick(block, CREATIVE_SIZES) ?? [];
+            return imagePick(block, blockSizes(CREATIVE_SIZES, block)) ?? [];
           case 'copy':
             return contentPicks(block.content);
           default:
@@ -150,7 +166,13 @@ const PICKS = {
   'three.js': (module) => {
     const src = stegaClean(module.poster);
     return module.loadOnClick && src
-      ? [{ kind: 'image', src, sizes: SCENE_POSTER_SIZES }]
+      ? [
+          {
+            kind: 'image',
+            src,
+            sizes: sizedSizes(SCENE_POSTER_SIZES, stegaClean(module.size))
+          }
+        ]
       : [];
   },
   'media-carousel': carouselPicks,

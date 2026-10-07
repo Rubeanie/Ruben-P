@@ -363,3 +363,21 @@ test('a carousel counts and leads with only the items it can draw', () => {
   expect(front.src).toBe(sanity('front'));
   expect(front.sizes).toBe(carouselSizes(3, false));
 });
+test('a sized block hints its narrower box above a phone', () => {
+  const [pick] = picks([
+    {
+      _type: 'creative-module',
+      columns: [{ blocks: [{ ...figure('left'), size: 'small' }] }]
+    }
+  ]);
+  expect(pick.sizes).toBe('(max-width: 43.75rem) 100vw, 15rem');
+  const [front] = picks([
+    {
+      _type: 'media-carousel',
+      size: 'medium',
+      items: [{ _type: 'carouselImage', image: photo('front') }]
+    }
+  ]);
+  expect(front.sizes).toBe(carouselSizes(1, false, false, 'medium'));
+  expect(front.sizes).not.toBe(carouselSizes(1, false));
+});

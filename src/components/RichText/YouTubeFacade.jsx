@@ -13,7 +13,7 @@ import {
   warmEmbed,
   whenIdle
 } from '@/lib/youtube';
-import { PROSE_SIZES } from '@/lib/imageBlock';
+import { PROSE_SIZES, sizedSizes } from '@/lib/imageBlock';
 import { blockLayout } from './layout';
 import styles from '@/styles/components/RichText.module.scss';
 
@@ -213,7 +213,7 @@ export default function YouTubeFacade({
             src={thumb}
             alt=''
             fill
-            sizes={sizes}
+            sizes={sizedSizes(sizes, blockLayout(size, align)['data-size'])}
             preload={preload}
             loading={loading}
           />

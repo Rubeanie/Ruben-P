@@ -7,6 +7,21 @@ export const CREATIVE_SIZES = `${PHONE} 100vw, 30rem`;
 // The click-to-load 3D scene's poster, blurred behind its play button.
 export const SCENE_POSTER_SIZES = `${PHONE} 50vw, 32rem`;
 
+// How much of the measure a block's size option takes above a phone, as
+// figure-block styles it; phones always get the full column.
+const SIZE_FRACTION = { medium: 0.75, small: 0.5 };
+export const sizeFraction = (size) => SIZE_FRACTION[size] ?? 1;
+
+// `sizes` ending in the block's widest width, scaled to its size option.
+export function sizedSizes(sizes, size) {
+  const fraction = sizeFraction(size);
+  if (fraction === 1) return sizes;
+  return sizes.replace(
+    /([\d.]+)(rem|vw)$/,
+    (_, width, unit) => `${Math.ceil(width * fraction * 10) / 10}${unit}`
+  );
+}
+
 export function resolveAsset({ imageType, image, cloudinaryAsset }) {
   if (stegaClean(imageType) === 'cloudinary.asset') {
     const src = cloudinaryAsset?.derived_url || cloudinaryAsset?.secure_url;

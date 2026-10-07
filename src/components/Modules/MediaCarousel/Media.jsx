@@ -101,7 +101,7 @@ function YouTube({ item, active, near, live, load, sizes, onPlay }) {
 // The scene brings its own facade and loader; losing the carousel's one live
 // scene to another card resets it to the poster, which rests on its first frame
 // away from the front like a Photo.
-function Scene({ item, active, live, onPlay }) {
+function Scene({ item, active, live, onPlay, blockSize }) {
   const resets = useResets(live);
   // A lost context can't show its last frame, so the card goes back to its poster.
   const [lost, setLost] = useState(0);
@@ -122,6 +122,7 @@ function Scene({ item, active, live, onPlay }) {
             ? stillFrame(item.poster)
             : item.poster
         }
+        blockSize={blockSize}
         modelBytes={item.modelBytes}
         label={item.label}
         paused={!active}
