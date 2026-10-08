@@ -1,16 +1,24 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useSyncExternalStore } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore
+} from 'react';
 import { preload } from 'react-dom';
 import dynamic from 'next/dynamic';
 import { MODEL } from '@/lib/hero3d';
+import { whenIdle } from '@/lib/youtube';
 import createBeats from './beats';
 import createProgress, { RANGE } from './progress';
 import styles from '@/styles/components/Hero3D.module.scss';
 
-// Server-rendered (as nothing, see Scene), so the page's HTML preloads the 3D
-// code at low priority instead of fetching it only after hydration.
-const Scene = dynamic(() => import('./Scene'), { loading: () => null });
+// Fetched once the page has loaded, so three.js never competes with the first
+// paint or holds up a phone's first taps; the layer fades in when it is ready.
+// A link to this page warms the code ahead of a client navigation.
+const Scene = dynamic(() => import('./Scene'), { ssr: false });
 
 const subscribe = (change) => {
   addEventListener('scroll', change, { passive: true });
@@ -25,11 +33,16 @@ const subscribe = (change) => {
 // after it scrolls up over the canvas, and once the move has run out the layer
 // hides and stops drawing, until the page scrolls back up into it.
 export default function Stage({ grain }) {
-  // The model downloads with the page, not after three.js. Asked for here, in
-  // the server render of a client component: from a server component the hint
-  // would also fire whenever a link prefetches this page.
-  if (typeof window === 'undefined')
-    preload(MODEL, { as: 'fetch', crossOrigin: 'anonymous' });
+  const [load, setLoad] = useState(false);
+  // The model downloads alongside three.js, not after it.
+  useEffect(
+    () =>
+      whenIdle(() => {
+        preload(MODEL, { as: 'fetch', crossOrigin: 'anonymous' });
+        setLoad(true);
+      }),
+    []
+  );
   const ref = useRef(null);
   const vignette = useRef(null);
   const done = useSyncExternalStore(
@@ -59,14 +72,16 @@ export default function Stage({ grain }) {
       className={styles.stage}
       data-done={done || undefined}
       aria-hidden='true'>
-      <Scene
-        frameloop={done ? 'never' : 'always'}
-        progress={progress}
-        vignette={vignette}
-        stage={ref}
-        grain={grain}
-        onReady={onReady}
-      />
+      {load && (
+        <Scene
+          frameloop={done ? 'never' : 'always'}
+          progress={progress}
+          vignette={vignette}
+          stage={ref}
+          grain={grain}
+          onReady={onReady}
+        />
+      )}
       <div ref={vignette} className={styles.vignette} />
     </div>
   );
