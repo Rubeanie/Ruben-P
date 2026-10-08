@@ -133,21 +133,19 @@ export function loadPlayerApi() {
   return playerApi;
 }
 
-// Safari's requestIdleCallback support is patchy, so settle for a short timeout
-// once the page has finished loading.
+// Once the page has loaded, so warm-ups never compete with its first paint.
+// Safari's requestIdleCallback support is patchy, so a short timeout stands in.
 export function whenIdle(callback) {
-  if ('requestIdleCallback' in window) {
-    const handle = requestIdleCallback(callback);
-    return () => cancelIdleCallback(handle);
-  }
+  const idle = window.requestIdleCallback ?? ((run) => setTimeout(run, 200));
+  const cancel = window.cancelIdleCallback ?? clearTimeout;
   let handle;
   const run = () => {
-    handle = setTimeout(callback, 200);
+    handle = idle(callback);
   };
   if (document.readyState === 'complete') run();
   else window.addEventListener('load', run, { once: true });
   return () => {
-    clearTimeout(handle);
+    cancel(handle);
     window.removeEventListener('load', run);
   };
 }
