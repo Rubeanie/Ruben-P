@@ -3,8 +3,9 @@
 // The final string sits under the counter so changing digits cannot resize the row.
 .count {
   display: inline-grid;
-  // End-aligned so the unit keeps its gap while the digits are still narrow.
-  justify-items: end;
+  // Every layer spans the final string's width and the digits end-align
+  // inside it, so the unit keeps its gap and no box moves while counting.
+  text-align: end;
 }
 
 .count > * {
