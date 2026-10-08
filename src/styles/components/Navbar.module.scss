@@ -219,7 +219,7 @@ $menu-button-height: 3.125rem;
           // Display-sized text: tracking tightens and the line box comes in, so
           // the gap sets the rhythm instead of body leading.
           line-height: 1.2;
-          letter-spacing: var.$track-h2;
+          letter-spacing: -0.015em;
         }
 
         &.cta p {
