@@ -14,12 +14,6 @@ export const mont = localFont({
     },
     { path: './trt/trt-mont-broz-light.woff2', weight: '300', style: 'normal' },
     {
-      path: './trt/trt-mont-broz-medium.woff2',
-      weight: '500',
-      style: 'normal'
-    },
-    { path: './trt/trt-mont-broz-bold.woff2', weight: '700', style: 'normal' },
-    {
       path: './trt/trt-mont-broz-extra-bold.woff2',
       weight: '800',
       style: 'normal'
@@ -28,10 +22,13 @@ export const mont = localFont({
   variable: '--font-mont',
   display: 'swap',
   preload: false,
-  adjustFontFallback: 'Arial',
+  // Its Verdana stand-ins are in globals.scss: Next only offers one Arial or
+  // Times face for every weight.
+  adjustFontFallback: false,
   // Mont's 800/300 win metrics leave 150 more units below caps than above, so
   // caps sit high in the line box. Rebalanced around the 650 cap height; the
-  // total stays 1100 so line boxes keep their size.
+  // total stays 1100 so line boxes keep their size. Next only takes literals
+  // here, so montCritical and the stand-ins in globals.scss repeat it.
   declarations: [
     { prop: 'ascent-override', value: '87.5%' },
     { prop: 'descent-override', value: '22.5%' },
@@ -39,7 +36,8 @@ export const mont = localFont({
   ]
 });
 
-// Figtree 2.002 from google/fonts; ss02's slashed zero is removed so the set is just the barred I and tailed l.
+// Figtree 2.002 from google/fonts; its ss02 (barred I, tailed l; the slashed zero removed) is the default, so
+// fallback fonts never see the feature: Windows Arial's ss02 is a unicase set.
 export const figtree = localFont({
   src: [
     { path: './figtree/figtree.woff2', weight: '300 900', style: 'normal' }
@@ -47,7 +45,8 @@ export const figtree = localFont({
   variable: '--font-figtree',
   display: 'swap',
   preload: true,
-  adjustFontFallback: 'Arial'
+  // Its per-weight Arial stand-ins are in globals.scss.
+  adjustFontFallback: false
 });
 
 // JetBrains Mono 2.211 from google/fonts, upright only: the code theme sets
@@ -61,11 +60,23 @@ export const jetbrainsMono = localFont({
   adjustFontFallback: false
 });
 
-// Only the Mont weight used above the fold is preloaded; share the existing family.
+// The weights headings use, preloaded so they replace their stand-ins as early
+// as possible: on a slow first visit the swap still lands after first paint.
+// Same family as above.
 export const montCritical = localFont({
-  src: './trt/trt-mont-broz-semi-bold.woff2',
-  weight: '600',
-  style: 'normal',
+  src: [
+    {
+      path: './trt/trt-mont-broz-medium.woff2',
+      weight: '500',
+      style: 'normal'
+    },
+    {
+      path: './trt/trt-mont-broz-semi-bold.woff2',
+      weight: '600',
+      style: 'normal'
+    },
+    { path: './trt/trt-mont-broz-bold.woff2', weight: '700', style: 'normal' }
+  ],
   variable: '--font-mont-critical',
   display: 'swap',
   preload: true,

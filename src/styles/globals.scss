@@ -1,3 +1,4 @@
+@use 'sass:math';
 @use './abstracts/index' as var;
 
 /* Main Content */
@@ -5,6 +6,28 @@
 
 /* Scrollbar */
 @use './scrollbar.scss';
+
+// Stand-ins drawn while the web fonts load, one per weight range. Sizes were
+// swept against every text style on the site for the fewest changed line
+// breaks and least height change; trimmed headings still lose a little cap
+// height on the swap. Overrides scale with size-adjust, hence the division.
+// Android has neither font and keeps its own sans-serif.
+@each $family, $face, $weights, $size, $ascent,
+  $descent in ('mont', 'Verdana', 100 549, 102%, 87.5%, 22.5%),
+  ('mont', 'Verdana Bold', 550 900, 95%, 87.5%, 22.5%),
+  ('figtree', 'Arial', 100 549, 103%, 95%, 25%),
+  ('figtree', 'Arial Bold', 550 900, 96%, 95%, 25%)
+{
+  @font-face {
+    font-family: '#{$family} Fallback';
+    src: local('#{$face}');
+    font-weight: $weights;
+    size-adjust: $size;
+    ascent-override: math.div($ascent, $size) * 100%;
+    descent-override: math.div($descent, $size) * 100%;
+    line-gap-override: 0%;
+  }
+}
 
 /* CSS Variables */
 :root {
@@ -255,8 +278,6 @@ body {
   z-index: 0;
   // Lining figures everywhere; the fonts' old-style sets stay off.
   font-variant-numeric: lining-nums;
-  // Figtree's ss02: barred I and tailed l, so the two stay distinct in running copy.
-  font-feature-settings: 'ss02';
 
   @media (max-aspect-ratio: 3/4) {
     --image-background-fit: var(

@@ -400,8 +400,6 @@ $copy-inset: 0.375rem;
   text-align: start;
   border-radius: var.$common-border-radius;
   overflow: hidden;
-  // The body's ss02 is a Figtree set; a mono font's ss02 means something else.
-  font-feature-settings: normal;
 }
 
 .codeHeader {
