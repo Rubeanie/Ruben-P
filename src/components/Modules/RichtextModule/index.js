@@ -8,7 +8,7 @@ export default function RichtextModule({
   align,
   values,
   dataAttribute,
-  isFirstModule,
+  lead,
   ...props
 }) {
   return (
@@ -22,7 +22,7 @@ export default function RichtextModule({
         value={content}
         values={values}
         dataAttribute={dataAttribute?.scope('content')}
-        isFirstModule={isFirstModule}
+        lead={lead}
       />
     </div>
   );

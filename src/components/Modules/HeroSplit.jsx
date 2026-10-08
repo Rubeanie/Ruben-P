@@ -25,7 +25,8 @@ export default function HeroSplit(props) {
         photos={heroPhotos(props)}
         alt={imageAlt}
         className={styles.frame}
-        preload
+        loading='eager'
+        fetchPriority='high'
       />
       {scrollHint && <ScrollHint next={`${id}-end`} align='start' />}
       {scrollHint && <ScrollTarget id={`${id}-end`} />}

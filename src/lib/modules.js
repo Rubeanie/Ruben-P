@@ -17,3 +17,21 @@ export const firstModule = (modules) => modules?.find(draws);
 
 // Every module that draws something, in page order.
 export const drawnModules = (modules) => modules?.filter(draws) ?? [];
+
+const MEDIA = new Set([
+  'hero',
+  'hero.saas',
+  'hero.split',
+  'hero.3d',
+  'media-carousel'
+]);
+const hasMedia = (m) =>
+  MEDIA.has(m._type) ||
+  (m._type === 'richtext-module' &&
+    m.content?.some(
+      ({ _type }) => _type === 'imageBlock' || _type === 'youtube'
+    ));
+
+// The first module with an image or video, which is likely the page's largest
+// paint: its opening media loads eagerly at high priority.
+export const leadModule = (modules) => modules?.find(hasMedia);

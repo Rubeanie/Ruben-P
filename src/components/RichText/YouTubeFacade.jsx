@@ -29,8 +29,8 @@ export default function YouTubeFacade({
   size,
   align,
   sanity,
-  preload = false,
   loading,
+  fetchPriority,
   sizes = PROSE_SIZES,
   className,
   // Inside a figure, which carries the block's size, alignment and sanity key.
@@ -233,8 +233,8 @@ export default function YouTubeFacade({
             alt=''
             fill
             sizes={sizedSizes(sizes, blockLayout(size, align)['data-size'])}
-            preload={preload}
             loading={loading}
+            fetchPriority={fetchPriority}
             draggable={false}
           />
           <button

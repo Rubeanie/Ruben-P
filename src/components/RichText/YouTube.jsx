@@ -12,7 +12,7 @@ import FigureCaption from './FigureCaption';
 import { blockLayout } from './layout';
 import styles from '@/styles/components/RichText.module.scss';
 
-export default async function YouTube({ value, sanity, preload = false }) {
+export default async function YouTube({ value, sanity, lead = false }) {
   const url = stegaClean(value?.url);
   const id = getYouTubeId(url);
   if (!id) return null;
@@ -45,7 +45,7 @@ export default async function YouTube({ value, sanity, preload = false }) {
       start={start}
       size={size}
       framed
-      preload={preload}
+      {...(lead && { loading: 'eager', fetchPriority: 'high' })}
     />
   );
 

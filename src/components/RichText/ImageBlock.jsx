@@ -16,7 +16,12 @@ import styles from '@/styles/components/RichText.module.scss';
 const FALLBACK_WIDTH = 1200;
 const FALLBACK_HEIGHT = 800;
 
-export default function ImageBlock({ value, sanity, sizes = PROSE_SIZES }) {
+export default function ImageBlock({
+  value,
+  sanity,
+  sizes = PROSE_SIZES,
+  lead
+}) {
   const resolved = resolveImage(value?.image);
   if (!resolved) return null;
 
@@ -33,7 +38,8 @@ export default function ImageBlock({ value, sanity, sizes = PROSE_SIZES }) {
       height={height || FALLBACK_HEIGHT}
       alt={stegaClean(alt) || ''}
       sizes={blockSizes}
-      loading={stegaClean(loading) || 'lazy'}
+      loading={lead ? 'eager' : stegaClean(loading) || 'lazy'}
+      fetchPriority={lead ? 'high' : undefined}
       placeholder={placeholder}
     />
   );

@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test';
-import { drawnModules, firstModule, isQuietHtml } from './modules';
+import { drawnModules, firstModule, isQuietHtml, leadModule } from './modules';
 
 test.each([
   ['', true],
@@ -34,4 +34,12 @@ test('drawnModules keeps page order and drops quiet embeds', () => {
   const text = { _type: 'richtext-module' };
   expect(drawnModules([quiet, hero, quiet, text])).toEqual([hero, text]);
   expect(drawnModules(undefined)).toEqual([]);
+});
+
+test('leadModule is the first module with an image or video', () => {
+  const html = { _type: 'custom-html', html: { code: '<p>Hi</p>' } };
+  const text = { _type: 'richtext-module', content: [{ _type: 'block' }] };
+  const video = { _type: 'richtext-module', content: [{ _type: 'youtube' }] };
+  expect(leadModule([html, text, video, { _type: 'hero' }])).toBe(video);
+  expect(leadModule([text])).toBeUndefined();
 });

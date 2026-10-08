@@ -65,13 +65,14 @@ const blockPath = (dataAttribute, props) =>
     ? dataAttribute.scope(`[_key=="${props.value._key}"]`).toString()
     : undefined;
 
-export default function RichText({
-  value,
-  values,
-  dataAttribute,
-  isFirstModule
-}) {
+export default function RichText({ value, values, dataAttribute, lead }) {
   if (!value) return null;
+  // The lead module's first image or video (see leadModule).
+  const first = lead
+    ? value.findIndex(
+        ({ _type }) => _type === 'imageBlock' || _type === 'youtube'
+      )
+    : -1;
   return (
     <PortableText
       value={value}
@@ -80,13 +81,17 @@ export default function RichText({
         types: {
           ...components.types,
           imageBlock: (props) => (
-            <ImageBlock {...props} sanity={blockPath(dataAttribute, props)} />
+            <ImageBlock
+              {...props}
+              sanity={blockPath(dataAttribute, props)}
+              lead={props.index === first}
+            />
           ),
           youtube: (props) => (
             <YouTube
               {...props}
               sanity={blockPath(dataAttribute, props)}
-              preload={isFirstModule && props.index === 0}
+              lead={props.index === first}
             />
           ),
           code: (props) => (

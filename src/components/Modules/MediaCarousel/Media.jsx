@@ -60,8 +60,8 @@ function useResets(live) {
 // `load` is 'preload' for the page's opening card, 'eager' for the cards
 // visible behind it, so none of them waits on lazy loading.
 const loadProps = (load) => ({
-  preload: load === 'preload',
-  loading: load === 'eager' ? 'eager' : undefined
+  loading: load ? 'eager' : undefined,
+  fetchPriority: load === 'preload' ? 'high' : undefined
 });
 
 // An animated image rests on its first frame until its card is in front; a

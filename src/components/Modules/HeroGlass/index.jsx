@@ -29,7 +29,8 @@ export default async function HeroGlass(props) {
           photos={photos}
           alt={imageAlt}
           className={styles.photo}
-          preload
+          loading='eager'
+          fetchPriority='high'
         />
         <Lines
           pretitle={pretitle}

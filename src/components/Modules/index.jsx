@@ -24,14 +24,14 @@ import TableOfContents from './TableOfContents';
 import ThreeScene from './ThreeScene';
 import ErrorBoundary from '../ErrorBoundary';
 import { anchors } from '@/lib/anchors';
-import { firstModule } from '@/lib/modules';
+import { leadModule } from '@/lib/modules';
 import { railedModules, tocEntries } from '@/lib/toc';
 
 const ModuleRenderer = ({
   module,
   page,
   dataAttribute,
-  isFirstModule,
+  lead,
   entries,
   besideRail
 }) => {
@@ -67,20 +67,14 @@ const ModuleRenderer = ({
     case 'hero.3d':
       return <Hero3D {...module} />;
     case 'media-carousel':
-      return (
-        <MediaCarousel
-          {...module}
-          isFirstModule={isFirstModule}
-          besideRail={besideRail}
-        />
-      );
+      return <MediaCarousel {...module} lead={lead} besideRail={besideRail} />;
     case 'richtext-module':
       return (
         <RichtextModule
           {...module}
           values={page?.values}
           dataAttribute={dataAttribute}
-          isFirstModule={isFirstModule}
+          lead={lead}
         />
       );
     case 'skill-list':
@@ -123,7 +117,7 @@ export async function Modules({ modules: fetched, page }) {
       id: page._id,
       type: page._type
     });
-  const first = firstModule(modules);
+  const lead = leadModule(modules);
   const railed = railedModules(modules, headings);
   return (
     <>
@@ -148,7 +142,7 @@ export async function Modules({ modules: fetched, page }) {
               module={module}
               page={page}
               dataAttribute={scoped}
-              isFirstModule={module === first}
+              lead={module === lead}
               besideRail={railed.has(module)}
               entries={
                 module._type === 'table-of-contents'

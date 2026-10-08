@@ -91,7 +91,7 @@ export default async function MediaCarousel(props) {
         items={items}
         aspect={aspectOf(stegaClean(props.aspectRatio))}
         loop={props.loop}
-        preload={props.isFirstModule}
+        preload={props.lead}
         besideRail={props.besideRail}
       />
     </div>
