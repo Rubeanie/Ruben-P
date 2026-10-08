@@ -1,8 +1,9 @@
 'use client';
 
-import { Suspense, useEffect, useRef, useState } from 'react';
-import { Canvas as R3FCanvas } from '@react-three/fiber';
+import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { Canvas as R3FCanvas, useThree } from '@react-three/fiber';
 import { PerformanceMonitor, Preload } from '@react-three/drei';
+import { WebGLRenderTarget } from 'three';
 
 const STEP = 0.05;
 
@@ -15,10 +16,21 @@ const fit = (dpr) =>
 // loaded" — per instance, with no reliance on three's global loading manager
 // (which would be shared across multiple canvases). Children with their own
 // inner Suspense (e.g. the environment) load independently and don't gate it.
+// The shaders compile off the main thread first, where the browser can, so the
+// first frame doesn't stall the page waiting on them. Twice: drawn through the
+// effects, into a render target, three builds each material a second program.
 function Ready({ onReady }) {
+  const { gl, scene, camera } = useThree();
   useEffect(() => {
-    onReady?.();
-  }, [onReady]);
+    const target = new WebGLRenderTarget(1, 1);
+    gl.setRenderTarget(target);
+    const composed = gl.compileAsync(scene, camera);
+    gl.setRenderTarget(null);
+    Promise.all([composed, gl.compileAsync(scene, camera)]).then(() => {
+      target.dispose();
+      onReady();
+    });
+  }, [gl, scene, camera, onReady]);
   return null;
 }
 
@@ -35,13 +47,19 @@ export default function Canvas({
   const containerRef = useRef(null);
   const [onScreen, setOnScreen] = useState(true);
   const [factor, setFactor] = useState(1);
+  const [ready, setReady] = useState(false);
   const [min, max] = dprRange;
   const dpr = fit(Math.round((min + (max - min) * factor) * 100) / 100);
-  // Only watch frames while the loop runs continuously.
-  const loop = frameloop ?? (onScreen ? 'always' : 'never');
+  // Nothing draws until the shaders are ready. Only watch frames while the
+  // loop runs continuously.
+  const loop = ready ? (frameloop ?? (onScreen ? 'always' : 'never')) : 'never';
   // At the 0.5 floor, tracked from the declines themselves: the monitor's
   // onChange stops firing once the factor reaches 0.
   const floor = useRef(false);
+  const markReady = useCallback(() => {
+    setReady(true);
+    onReady?.();
+  }, [onReady]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -75,7 +93,7 @@ export default function Canvas({
         }}>
         <Suspense fallback={null}>
           {children}
-          <Ready onReady={onReady} />
+          <Ready onReady={markReady} />
         </Suspense>
         <Preload all />
         {loop === 'always' && (
