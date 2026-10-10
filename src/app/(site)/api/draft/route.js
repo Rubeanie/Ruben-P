@@ -19,5 +19,6 @@ export async function GET(request) {
 
   (await draftMode()).enable();
 
-  redirect(redirectTo);
+  // A leading // would send the browser to another host.
+  redirect(redirectTo.replace(/^\/+/, '/'));
 }
