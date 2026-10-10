@@ -1,12 +1,18 @@
-import { isClip, stillFrame } from '@/lib/imageLoader';
+import { cloudinaryTransform, isClip, stillFrame } from '@/lib/imageLoader';
 import { assetUrl } from '../cloudinaryDerived';
 
 // Cloudinary assets carry no Sanity hotspot, so the thumbnail is a centred cover
-// crop; a video shows its first frame.
+// crop; a video shows its first frame. One small size serves every list, and a
+// clip's still is already WebP.
+const thumb = (url) =>
+  isClip(url)
+    ? cloudinaryTransform(stillFrame(url), 'c_fill,w_200,h_200,q_auto')
+    : cloudinaryTransform(url, 'c_fill,w_200,h_200,f_auto,q_auto');
+
 export function CloudinaryPreview({ url, alt = '' }) {
   return (
     <img
-      src={isClip(url) ? stillFrame(url) : url}
+      src={thumb(url)}
       alt={alt}
       style={{ width: '100%', height: '100%', objectFit: 'cover' }}
     />
