@@ -102,6 +102,7 @@ export default function Scene({
       onReady={onReady}
       onOverload={() => setShed(true)}
       frameloop={paused && settled ? 'never' : undefined}
+      composed={composed}
       // Layout size, not the projected one: a canvas under a CSS transform
       // would otherwise resize, and clear, as the page scrolls.
       resize={{ offsetSize: true }}

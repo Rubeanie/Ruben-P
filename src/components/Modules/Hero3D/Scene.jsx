@@ -53,6 +53,7 @@ function Scene({ frameloop, progress, vignette, stage, grain, onReady }) {
       eventSource={stage}
       onReady={onReady}
       frameloop={frameloop}
+      composed={composed}
       gl={GL}
       dprRange={[1, max]}
       onOverload={() => {

@@ -17,19 +17,19 @@ const fit = (dpr) =>
 // (which would be shared across multiple canvases). Children with their own
 // inner Suspense (e.g. the environment) load independently and don't gate it.
 // The shaders compile off the main thread first, where the browser can, so the
-// first frame doesn't stall the page waiting on them. Twice: drawn through the
-// effects, into a render target, three builds each material a second program.
+// first frame doesn't stall the page waiting on them. Only the programs that
+// will draw: through the effects, into a render target, three builds each
+// material a different one. The effect passes still compile on the first frame.
 // Polled here rather than through compileAsync, whose timer can't be stopped and
 // throws once an unmount has disposed the renderer.
-function Ready({ onReady }) {
+function Ready({ composed, onReady }) {
   const { gl, scene, camera } = useThree();
   useEffect(() => {
     let live = true;
-    const target = new WebGLRenderTarget(1, 1);
+    const target = composed ? new WebGLRenderTarget(1, 1) : null;
     gl.setRenderTarget(target);
     const materials = gl.compile(scene, camera);
     gl.setRenderTarget(null);
-    gl.compile(scene, camera).forEach((m) => materials.add(m));
     const check = () => {
       if (!live) return;
       for (const m of materials)
@@ -39,15 +39,15 @@ function Ready({ onReady }) {
         setTimeout(check, 10);
         return;
       }
-      target.dispose();
+      target?.dispose();
       onReady();
     };
     check();
     return () => {
       live = false;
-      target.dispose();
+      target?.dispose();
     };
-  }, [gl, scene, camera, onReady]);
+  }, [gl, scene, camera, composed, onReady]);
   return null;
 }
 
@@ -58,6 +58,7 @@ export default function Canvas({
   onReady,
   onOverload,
   frameloop,
+  composed = false,
   dprRange = [0.5, 1.1],
   ...props
 }) {
@@ -110,7 +111,7 @@ export default function Canvas({
         }}>
         <Suspense fallback={null}>
           {children}
-          <Ready onReady={markReady} />
+          <Ready composed={composed} onReady={markReady} />
         </Suspense>
         <Preload all />
         {loop === 'always' && (
