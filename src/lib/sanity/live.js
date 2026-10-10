@@ -6,5 +6,7 @@ import client from './client';
 export const { sanityFetch, SanityLive } = defineLive({
   client,
   serverToken: process.env.SANITY_READ_TOKEN,
-  browserToken: process.env.SANITY_READ_TOKEN
+  // Sent to the browser in draft mode, so it's a separate Viewer token that
+  // can be revoked without breaking published reads.
+  browserToken: process.env.SANITY_BROWSER_TOKEN
 });
