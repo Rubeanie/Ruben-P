@@ -9,6 +9,7 @@ import {
   checkSpelling,
   proofreadItems,
   dismissalsOf,
+  cacheKey,
   cachedCheck,
   distinctFixes,
   replacedBy,
@@ -54,8 +55,15 @@ async function wordingOf(items, token) {
       return { note: "AI wording suggestions aren't set up." };
     if (status !== 200)
       return { fixes, dismissals, note: reviewProblem(status) };
+    const batchDismissals = dismissalsOf(batch, data.dismissed);
     fixes.push(...data.fixes);
-    dismissals.push(...dismissalsOf(batch, data.dismissed));
+    dismissals.push(...batchDismissals);
+    // Kept now, so a later batch failing does not make a retry pay for this one again.
+    for (const item of batch)
+      wordingSeen.set(cacheKey(item), {
+        fixes: data.fixes.filter((fix) => fix.key === item.key),
+        dismissals: batchDismissals.filter((d) => d.key === item.key)
+      });
   }
   return { fixes, dismissals };
 }

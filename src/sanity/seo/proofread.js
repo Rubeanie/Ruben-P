@@ -267,7 +267,7 @@ export function wordDiff(before, after) {
 
 // A passage's cache key: its text, plus any spelling flags it carries, so new
 // flags on unchanged text still reach the AI to referee.
-const cacheKey = (item) =>
+export const cacheKey = (item) =>
   item.flags?.length
     ? JSON.stringify([
         item.text,
