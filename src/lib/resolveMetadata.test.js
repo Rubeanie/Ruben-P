@@ -2,7 +2,9 @@ import { expect, test } from 'bun:test';
 import { baseUrl } from '@/lib/env';
 import { heroThemeImage, resolveMetadata } from './resolveMetadata';
 
-const img = (url) => ({ asset: { secure_url: url } });
+// Image fields hold Cloudinary URLs only.
+const CDN = 'https://res.cloudinary.com/demo/image/upload/v1/';
+const img = (name) => ({ asset: { secure_url: CDN + name } });
 
 const site = {
   seo: {
@@ -14,7 +16,7 @@ const site = {
       title: 'Site OG title',
       description: null,
       siteName: 'Site name',
-      image: img('https://cdn.example/site.jpg')
+      image: img('site.jpg')
     },
     twitter: {
       handle: '@site',
@@ -189,7 +191,7 @@ test('a set card type ships as is; a handle beats the creator', () => {
 });
 
 test('a page gets its generated card, sized, ahead of the cover and the site default', () => {
-  const post = pageWith({}, { cover: img('https://cdn.example/cover.gif') });
+  const post = pageWith({}, { cover: img('cover.gif') });
   const m = resolveMetadata(post, site);
   expect(m.openGraph.images).toEqual([
     {
@@ -210,11 +212,11 @@ test('the home card sits at the bare route', () => {
 
 test("the page's own share image beats the generated card, untouched", () => {
   const post = pageWith(
-    { openGraph: { image: img('https://cdn.example/own.jpg') } },
-    { cover: img('https://cdn.example/cover.gif') }
+    { openGraph: { image: img('own.jpg') } },
+    { cover: img('cover.gif') }
   );
   expect(resolveMetadata(post, site).openGraph.images).toEqual([
-    { url: 'https://cdn.example/own.jpg' }
+    { url: CDN + 'own.jpg' }
   ]);
 });
 
@@ -228,7 +230,7 @@ test('a page with no open graph anywhere still ships its card', () => {
 
 test('without an address there is no card, so the site default stands', () => {
   const m = resolveMetadata({ metadata: { seo: {} } }, site);
-  expect(m.openGraph.images).toEqual([{ url: 'https://cdn.example/site.jpg' }]);
+  expect(m.openGraph.images).toEqual([{ url: CDN + 'site.jpg' }]);
   const none = resolveMetadata(
     { metadata: { slug: '404', seo: {} } },
     { seo: { ...site.seo, openGraph: { title: 'T' } } }
@@ -291,10 +293,10 @@ test('keywords are the focus keyphrase alone', () => {
 test('heroThemeImage reads only the first hero or glass hero photo', () => {
   expect(
     heroThemeImage({ modules: [{ _type: 'hero', bgImage: img('a') }] })
-  ).toBe('a');
+  ).toBe(CDN + 'a');
   expect(
     heroThemeImage({ modules: [{ _type: 'hero.saas', image: img('b') }] })
-  ).toBe('b');
+  ).toBe(CDN + 'b');
   expect(
     heroThemeImage({ modules: [{ _type: 'hero.split', image: img('c') }] })
   ).toBeNull();

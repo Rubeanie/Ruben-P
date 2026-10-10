@@ -88,7 +88,8 @@ export const stillOf = (value) => resolveImage(value)?.still;
 export function resolveImage(value) {
   const { asset, clip, blur, palette, focus, lqip } = stegaClean(value) ?? {};
   const src = asset?.derived_url || asset?.secure_url;
-  if (!src) return null;
+  // The server fetches some of these, so only Cloudinary's CDN gets through.
+  if (!src?.startsWith('https://res.cloudinary.com/')) return null;
   const settled = clipFor(src, clip);
   const moving = isAnimated(src);
   return {

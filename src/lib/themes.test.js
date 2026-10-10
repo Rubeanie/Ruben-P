@@ -29,9 +29,7 @@ test('themeRendition shrinks Cloudinary photos', () => {
   ).toBe(
     'https://res.cloudinary.com/c/image/upload/t_x/f_avif,w_2000/w_800,f_jpg,q_80/v12/d/a.avif'
   );
-  expect(themeRendition('https://example.com/a.png')).toBe(
-    'https://example.com/a.png'
-  );
+  expect(() => themeRendition('https://example.com/a.png')).toThrow();
 });
 
 test('landscapeRendition sizes Cloudinary photos', () => {

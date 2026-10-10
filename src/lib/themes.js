@@ -178,7 +178,8 @@ export function themeRendition(url) {
     return cloudinaryTransform(url, 'w_800,f_jpg,q_80');
   }
 
-  return parsed.toString();
+  // The server fetches this, so it reaches nothing but the CDN.
+  throw new Error('non-Cloudinary theme image');
 }
 
 // On a screen 3:4 or narrower, `cover` shows only the middle 3:4 of a wider

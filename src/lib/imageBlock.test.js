@@ -27,6 +27,9 @@ test('a still image is its own still and does not move', () => {
   });
   expect(resolveImage(null)).toBeNull();
   expect(resolveImage({ asset: {} })).toBeNull();
+  expect(
+    resolveImage({ asset: { secure_url: 'http://169.254.169.254/a.jpg' } })
+  ).toBeNull();
 });
 
 test('a clip rests on its Start frame; a GIF on its first', () => {
