@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [beta, master]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      # Placeholders so modules that read the Sanity config can load
+      NEXT_PUBLIC_SANITY_PROJECT_ID: test
+      NEXT_PUBLIC_SANITY_DATASET: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun test
+      - run: bun run lint

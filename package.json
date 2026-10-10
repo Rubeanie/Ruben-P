@@ -16,6 +16,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "test": "bun test",
     "prepare": "husky"
   },
   "dependencies": {
