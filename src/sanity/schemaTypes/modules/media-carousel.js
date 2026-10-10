@@ -6,6 +6,7 @@ import { youTubeBlock } from '../fragments/youTubeBlock';
 import { blockLayoutFields } from '../fragments/fields/block-layout';
 import { uidField } from '../fragments/fields/uid';
 import { threeJs } from './three';
+import { modelPreview } from './three/ModelInput';
 
 // A field of another type, without the fieldset or group it sits in there.
 const reuse = (type, name, overrides) => {
@@ -38,6 +39,8 @@ function media(item) {
         style={{ objectFit: 'cover' }}
       />
     );
+  if (item.modelSource !== 'url')
+    return modelPreview(item.modelCloudinary?.secure_url);
 }
 
 const carouselImage = {
@@ -135,7 +138,9 @@ const carouselScene = {
     select: {
       caption: 'caption',
       alt: 'alt',
-      poster: 'poster'
+      poster: 'poster',
+      modelSource: 'modelSource',
+      modelCloudinary: 'modelCloudinary'
     },
     prepare: (item) => ({
       title: item.caption || item.alt,

@@ -1,7 +1,8 @@
 import { IoMdCube } from 'react-icons/io';
 import { blockLayoutFields } from '../fragments/fields/block-layout';
 import { uidField } from '../fragments/fields/uid';
-import ModelInput from './three/ModelInput';
+import { assetPreview } from '../../components/CloudinaryPreview';
+import ModelInput, { modelPreview } from './three/ModelInput';
 import PosterInput from './three/PosterInput';
 
 const LEVEL_OPTIONS = {
@@ -271,11 +272,19 @@ export const threeJs = {
     select: {
       source: 'modelSource',
       url: 'modelUrl',
-      cloudinary: 'modelCloudinary.public_id'
+      cloudinary: 'modelCloudinary.public_id',
+      model: 'modelCloudinary.secure_url',
+      poster: 'poster.asset'
     },
-    prepare({ source, url, cloudinary }) {
+    prepare({ source, url, cloudinary, model, poster }) {
       const subtitle = source === 'url' ? url : cloudinary;
-      return { title: '3D scene', subtitle: subtitle || 'No model' };
+      return {
+        title: '3D scene',
+        subtitle: subtitle || 'No model',
+        media:
+          assetPreview(poster) ||
+          (source !== 'url' ? modelPreview(model) : undefined)
+      };
     }
   }
 };
