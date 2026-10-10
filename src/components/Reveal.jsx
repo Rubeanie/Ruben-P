@@ -8,10 +8,11 @@ const EASE_OUT = 'cubic-bezier(0.23, 1, 0.32, 1)';
 
 // Runs before first paint on a full load, except one from Back or Forward.
 // Lazy modules stream in after it and push down what follows, so it measures
-// again on every change until Reveal takes over: up to the first paint at the
-// usual line, after it only below the screen, where nothing has been seen.
+// again after any change until Reveal takes over: before the first paint at
+// once, at the usual line; after it at most once a frame, and only below the
+// screen, where nothing has been seen. Taking over measures what's pending.
 // If the app never hydrates, everything shows after five seconds.
-const script = `(function(f){if(performance.getEntriesByType('navigation')[0]?.type==='back_forward')return;var h=f(.9),o=new MutationObserver(function(){h=h.concat(f(performance.getEntriesByType('paint').length?1:.9))});self.__revealWatch=o;o.observe(document.body,{childList:true,subtree:true});setTimeout(function(){o.disconnect();h.forEach(function(u){u[2].cancel()})},5000)})(function(e){return(${hold})(!1,e).concat((${holdEntrances})(e))})`;
+const script = `(function(f){if(performance.getEntriesByType('navigation')[0]?.type==='back_forward')return;var h=f(.9),q=0,o=new MutationObserver(function(){performance.getEntriesByType('paint').length?q||(q=requestAnimationFrame(function(){q=0;h=h.concat(f(1))})):h=h.concat(f(.9))}),d=function(){o.disconnect();if(q){cancelAnimationFrame(q);q=0;h=h.concat(f(1))}};self.__revealWatch={disconnect:d};o.observe(document.body,{childList:true,subtree:true});setTimeout(function(){d();h.forEach(function(u){u[2].cancel()})},5000)})(function(e){return(${hold})(!1,e).concat((${holdEntrances})(e))})`;
 
 // Back and Forward bring a page back as it was left, so nothing enters. The
 // next reveal run uses the flag up.
