@@ -14,8 +14,7 @@ const openGraphQuery = groq`
   siteName,
   description,
   title,
-  // Only what the still needs: og:image carries one URL, and internal links
-  // project this whole query for each page they point to.
+  // Only what the still needs: og:image carries one URL.
   image{ ${cloudinaryStillQuery} }
 `;
 

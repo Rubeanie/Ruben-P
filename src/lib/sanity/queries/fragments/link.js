@@ -1,6 +1,6 @@
 import { groq } from '../../fetch';
-import { metadataQuery } from '../metadata';
 
+// resolveLink only needs the target's slug, not its SEO block.
 export const linkQuery = groq`
   _key,
   "label": coalesce(label, internal->title, external),
@@ -10,6 +10,6 @@ export const linkQuery = groq`
   internal->{
     _type,
     title,
-    ${metadataQuery}
+    metadata { "slug": slug.current }
   }
 `;
