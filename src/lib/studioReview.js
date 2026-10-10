@@ -130,7 +130,7 @@ function keyphrasesOf(list) {
 
 const TASKS = {
   seo: {
-    maxTokens: 1000,
+    maxTokens: 2000,
     system: [
       "You review a web page's search title and meta description for its editor.",
       'Judge whether they are specific, compelling and match what the page is about, using the page title, summary, headings and excerpt.',
@@ -215,7 +215,7 @@ const TASKS = {
     }
   },
   proofread: {
-    maxTokens: 2000,
+    maxTokens: 6000,
     system: [
       'You proofread the text of a web page for its editor.',
       'Each item has a key and a passage. Report spelling, grammar and punctuation mistakes, and sentences that read clumsily.',
@@ -433,6 +433,8 @@ export function createReviewHandler({
     if (!res?.ok) return json({ error: 'model unavailable' }, 502);
 
     const data = await res.json().catch(() => null);
+    if (data?.choices?.[0]?.finish_reason === 'length')
+      console.warn('review truncated', body.task, data.usage);
     const out = task.check(
       parseModelJson(data?.choices?.[0]?.message?.content),
       input
