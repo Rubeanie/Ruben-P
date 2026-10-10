@@ -3,18 +3,21 @@ import { stegaClean } from '@sanity/client/stega';
 import Skill from '@/components/Skill';
 import { resolveLink } from '@/lib/processUrl';
 import uid from '@/lib/uid';
-import { sanitizeSvg } from '@/lib/sanitizeSvg';
+import { sanitizeLogo } from '@/lib/cachedLogo';
 import styles from '@/styles/components/Skill.module.scss';
 
-export default function SkillList({ skills, ...props }) {
+export default async function SkillList({ skills, ...props }) {
   if (!skills?.length) return null;
+  const logos = await Promise.all(
+    skills.map(({ logo }) => logo && sanitizeLogo(stegaClean(logo)))
+  );
 
   return (
     <section
       id={uid(props)}
       className={styles.list}
       data-reveal-children='items'>
-      {skills.map(({ _key, title, logo, baseColor, url }) => {
+      {skills.map(({ _key, title, baseColor, url }, i) => {
         const href = resolveLink(url);
         // Skill sites open in a new tab; an internal page stays in this one.
         const external = stegaClean(url?.type) === 'external';
@@ -22,12 +25,8 @@ export default function SkillList({ skills, ...props }) {
           <Skill
             heading={title}
             logo={
-              logo && (
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: sanitizeSvg(stegaClean(logo))
-                  }}
-                />
+              logos[i] && (
+                <span dangerouslySetInnerHTML={{ __html: logos[i] }} />
               )
             }
             color={stegaClean(baseColor?.hex) ?? undefined}

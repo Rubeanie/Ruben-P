@@ -7,7 +7,7 @@ import {
 } from '@/lib/sanity/queries/share-image';
 import { baseUrl } from '@/lib/env';
 import { themeFromImage } from '@/lib/imageTheme';
-import { sanitizeSvg } from '@/lib/sanitizeSvg';
+import { sanitizeLogo } from '@/lib/cachedLogo';
 import { heroThemeImage } from '@/lib/resolveMetadata';
 import { DEFAULT_THEME_COLORS } from '@/lib/themes';
 import { mix, ringColour, sharePhoto, socialColours } from './colours';
@@ -63,7 +63,7 @@ export async function getShareCard(path) {
     ...cardText({ page, social, site, path }),
     photo,
     ...(await colours(page, photo, social)),
-    logo: sanitizeSvg(site.logo),
-    socialLogo: social?.logo ? sanitizeSvg(social.logo) : null
+    logo: await sanitizeLogo(site.logo),
+    socialLogo: social?.logo ? await sanitizeLogo(social.logo) : null
   };
 }
