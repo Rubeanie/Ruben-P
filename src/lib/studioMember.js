@@ -22,8 +22,8 @@ export const ipOf = (request) =>
   'unknown';
 
 // True once a key has made `limit` calls inside `window`. The counts live in
-// memory, so each server instance keeps its own. A key still inside its window
-// is never forgotten: when the table is full of them, new keys are refused.
+// memory, so each server instance keeps its own. When the table is full of live
+// keys the oldest goes, so a flood of new addresses cannot lock everyone else out.
 export function createRateLimit({ limit, window, now = Date.now }) {
   const hits = new Map();
   return function overLimit(key) {
@@ -31,7 +31,7 @@ export function createRateLimit({ limit, window, now = Date.now }) {
     if (!hits.has(key) && hits.size >= MAX_CACHED) {
       for (const [old, times] of hits)
         if (!times.some((t) => t > since)) hits.delete(old);
-      if (hits.size >= MAX_CACHED) return true;
+      if (hits.size >= MAX_CACHED) hits.delete(hits.keys().next().value);
     }
     const recent = (hits.get(key) ?? []).filter((t) => t > since);
     const over = recent.length >= limit;

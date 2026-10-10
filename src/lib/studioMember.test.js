@@ -1,22 +1,17 @@
 import { expect, test } from 'bun:test';
 import { BUSY, createMemberCheck, createRateLimit } from './studioMember';
 
-test('a key inside its window is never evicted to make room', () => {
-  let time = 0;
+test('a full table of live keys drops the oldest instead of refusing newcomers', () => {
   const overLimit = createRateLimit({
     limit: 2,
     window: 1000,
-    now: () => time
+    now: () => 0
   });
   overLimit('a');
   overLimit('a');
   expect(overLimit('a')).toBe(true);
   for (let i = 0; i < 500; i++) overLimit(`other-${i}`);
-  expect(overLimit('a')).toBe(true);
-  // A full table of active keys refuses newcomers rather than forget one.
-  expect(overLimit('new')).toBe(true);
-  // Once their windows pass, the old keys make room.
-  time = 2000;
+  // A newcomer is let in and the oldest key, 'a', is forgotten.
   expect(overLimit('new')).toBe(false);
   expect(overLimit('a')).toBe(false);
 });
