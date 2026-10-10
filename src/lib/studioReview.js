@@ -427,8 +427,9 @@ export function createReviewHandler({
         }
       }),
       cache: 'no-store',
-      // A Studio that gives up cancels the paid call with it.
-      signal: AbortSignal.any([request.signal, AbortSignal.timeout(30_000)])
+      // Aborting only frees this function; the provider still bills the full
+      // answer. Stops short of the route's own limit so the Studio hears why.
+      signal: AbortSignal.any([request.signal, AbortSignal.timeout(55_000)])
     }).catch(() => null);
     if (!res?.ok) return json({ error: 'model unavailable' }, 502);
 

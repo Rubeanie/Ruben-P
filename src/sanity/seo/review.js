@@ -7,8 +7,8 @@ export async function askReview(token, body) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(body),
-    // The route gives the model 30 seconds; leaving it cancels the paid call.
-    signal: AbortSignal.timeout(40_000)
+    // The route gives the model 55 seconds; leaving early does not stop the bill.
+    signal: AbortSignal.timeout(65_000)
   }).catch(() => null);
   if (!res) return { status: 0 };
   if (!res.ok) return { status: res.status };
