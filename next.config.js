@@ -22,8 +22,18 @@ const nextConfig = {
     // the default is 4 hours.
     minimumCacheTTL: 2678400,
     remotePatterns: [
-      { protocol: 'https', hostname: 'res.cloudinary.com' },
-      { protocol: 'https', hostname: 'i.ytimg.com' }
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/ruben-p/**',
+        search: ''
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.ytimg.com',
+        pathname: '/vi/**',
+        search: ''
+      }
     ]
   },
   sassOptions: {
