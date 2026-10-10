@@ -1,5 +1,6 @@
 import { revalidateTag } from 'next/cache';
 import { parseBody } from 'next-sanity/webhook';
+import { decodeSignatureHeader, SIGNATURE_HEADER_NAME } from '@sanity/webhook';
 
 // Every tag a Sanity fetch is called with. Any publish marks them all stale: the
 // site is small and edits are rare, so per-type mapping isn't worth its bugs.
@@ -30,6 +31,13 @@ export async function POST(request) {
   }));
   if (!isValidSignature)
     return new Response('Invalid signature', { status: 401 });
+
+  // A signature never expires on its own, so refuse replays of old deliveries.
+  const { timestamp } = decodeSignatureHeader(
+    request.headers.get(SIGNATURE_HEADER_NAME)
+  );
+  if (Math.abs(Date.now() - timestamp) > 5 * 60_000)
+    return new Response('Stale signature', { status: 401 });
 
   for (const tag of TAGS) revalidateTag(tag, 'max');
   return Response.json({ revalidated: TAGS, now: Date.now() });
