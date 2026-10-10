@@ -107,6 +107,11 @@ export default function Canvas({
           // moment later the GPU memory still goes, without the flash.
           const lose = state.gl.forceContextLoss.bind(state.gl);
           state.gl.forceContextLoss = () => setTimeout(lose, 500);
+          // A restored context starts blank, and a 'demand' loop won't redraw
+          // it by itself.
+          state.gl.domElement.addEventListener('webglcontextrestored', () =>
+            state.invalidate()
+          );
           props.onCreated?.(state);
         }}>
         <Suspense fallback={null}>

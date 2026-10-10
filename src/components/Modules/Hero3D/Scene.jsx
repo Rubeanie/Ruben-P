@@ -52,7 +52,8 @@ function Scene({ frameloop, progress, vignette, stage, grain, onReady }) {
       // div, so the layer never takes clicks meant for the page.
       eventSource={stage}
       onReady={onReady}
-      frameloop={frameloop}
+      // Held still, every frame is the same one: draw only when something changes.
+      frameloop={reduced && frameloop === 'always' ? 'demand' : frameloop}
       composed={composed}
       gl={GL}
       dprRange={[1, max]}
