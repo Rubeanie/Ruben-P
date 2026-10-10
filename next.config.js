@@ -46,7 +46,12 @@ const nextConfig = {
         source: '/:path*',
         headers: [
           { key: 'X-Content-Type-Options', value: 'nosniff' },
-          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' }
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          // Vercel skips noindex on custom domains for non-production branches (alpha, beta),
+          // and a page's own robots setting overrides the CMS site-wide one.
+          ...(process.env.VERCEL_ENV === 'production'
+            ? []
+            : [{ key: 'X-Robots-Tag', value: 'noindex' }])
         ]
       }
     ];
