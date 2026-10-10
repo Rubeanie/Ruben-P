@@ -89,6 +89,11 @@ test("Google's spent quota reads as 503, not the route's own limit", async () =>
   expect((await post(handler(fetcher), `${SITE}/about`)).status).toBe(503);
 });
 
+test('a key Google rejects reads as 500, not a passing outage', async () => {
+  const { fetcher } = fakeFetch(() => new Response('', { status: 403 }));
+  expect((await post(handler(fetcher), `${SITE}/about`)).status).toBe(500);
+});
+
 test('psiSummary keeps failing audits it could judge', () => {
   const data = {
     lighthouseResult: {

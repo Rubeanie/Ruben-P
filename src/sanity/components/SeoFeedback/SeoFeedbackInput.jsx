@@ -22,6 +22,7 @@ import { SeoPanel } from './SeoPanel';
 const LIVE_PROBLEMS = {
   401: 'Sign out and back in to run the live check.',
   429: 'That is a lot of checks; try again in a few minutes.',
+  500: 'Google rejected the PageSpeed key; check PAGESPEED_API_KEY and that the PageSpeed Insights API is enabled for it.',
   503: "Google's quota is used up for now; try later, or set PAGESPEED_API_KEY on the server."
 };
 

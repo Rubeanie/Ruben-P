@@ -77,6 +77,9 @@ export function createPageSpeedHandler({
       signal: AbortSignal.any([request.signal, AbortSignal.timeout(50_000)])
     }).catch(() => null);
     if (res?.status === 429) return json({ error: 'quota' }, 503);
+    // Retrying never fixes a key Google turns away.
+    if (res?.status === 400 || res?.status === 403)
+      return json({ error: 'key' }, 500);
     const result = res?.ok && psiSummary(await res.json().catch(() => null));
     return result ? json(result) : json({ error: 'no result' }, 502);
   };
