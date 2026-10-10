@@ -176,6 +176,12 @@ $proofread-ai: $ai-blue, $ai-purple, $ai-pink;
   }
 }
 
+// A picked HDRI has no picture, so the Cloudinary plugin's preview of it would
+// be a broken image (three/ModelInput.jsx shows the file instead).
+.cloudinary-file img {
+  display: none;
+}
+
 @keyframes proofread-spark {
   from {
     opacity: 0;

@@ -1,6 +1,7 @@
 import { IoMdCube } from 'react-icons/io';
 import { blockLayoutFields } from '../fragments/fields/block-layout';
 import { uidField } from '../fragments/fields/uid';
+import ModelInput from './three/ModelInput';
 import PosterInput from './three/PosterInput';
 
 const LEVEL_OPTIONS = {
@@ -59,7 +60,8 @@ export const threeJs = {
       name: 'modelCloudinary',
       title: 'Cloudinary model',
       type: 'cloudinary.asset',
-      description: `A GLB uploaded to Cloudinary as a raw file, ${MAX_MB} MB at most on the free plan.`,
+      description: `A GLB, ${MAX_MB} MB at most on the free plan. Select... opens the Cloudinary Media Library; upload there.`,
+      components: { input: ModelInput },
       hidden: ({ parent }) => parent?.modelSource === 'url',
       validation: notTooBig,
       group: 'content'
@@ -179,7 +181,8 @@ export const threeJs = {
       name: 'environmentCloudinary',
       title: 'Cloudinary environment',
       type: 'cloudinary.asset',
-      description: `HDRI for reflections (.hdr or .exr), uploaded to Cloudinary as a raw file, ${MAX_MB} MB at most on the free plan.`,
+      description: `HDRI for reflections (.hdr or .exr), ${MAX_MB} MB at most on the free plan. Select... opens the Cloudinary Media Library; upload there.`,
+      components: { input: ModelInput },
       hidden: ({ parent }) => parent?.environmentSource !== 'cloudinary',
       validation: notTooBig,
       group: 'options'
