@@ -1,4 +1,5 @@
 import { unstable_cache } from 'next/cache';
+import { baseUrl } from './env';
 import { clampContrast, deriveThemeColorsFromPalette } from './themeColors';
 import { themeRendition } from './themes';
 
@@ -6,7 +7,11 @@ const cachedThemeFromImage = unstable_cache(
   async (url) => {
     const rendition = themeRendition(url);
     // unstable_cache keeps the colours; the photo itself needn't be cached too.
-    const res = await fetch(rendition, { cache: 'no-store' });
+    // Strict transformations cut a new rendition only for the site's Referer.
+    const res = await fetch(rendition, {
+      cache: 'no-store',
+      headers: { Referer: baseUrl }
+    });
     const buffer = Buffer.from(await res.arrayBuffer());
     const { Vibrant } = await import('node-vibrant/node');
     const palette = await Vibrant.from(buffer).getPalette();

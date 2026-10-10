@@ -1,4 +1,5 @@
 import sharp from 'sharp';
+import { baseUrl } from '@/lib/env';
 import { stillOf } from '@/lib/imageBlock';
 import { cloudinaryTransform } from '@/lib/imageLoader';
 import { luminance, shadeFor } from './colours';
@@ -17,7 +18,8 @@ const cardCrop = (image) => cloudinaryTransform(stillOf(image), CARD);
 // can't be fetched or decoded.
 export async function loadPhoto(image) {
   try {
-    const res = await fetch(cardCrop(image));
+    // Strict transformations cut the new card crop only for the site's Referer.
+    const res = await fetch(cardCrop(image), { headers: { Referer: baseUrl } });
     if (!res.ok) throw new Error(`CDN answered ${res.status}`);
     return await sharp(Buffer.from(await res.arrayBuffer()))
       .flatten({ background: '#ffffff' })
