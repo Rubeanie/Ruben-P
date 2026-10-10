@@ -9,7 +9,11 @@ const ENTITIES = {
   '"': '&quot;',
   "'": '&apos;'
 };
-const escape = (s) => String(s).replace(/[&<>"']/g, (c) => ENTITIES[c]);
+// XML 1.0 rejects most control characters even escaped, so drop them.
+const escape = (s) =>
+  String(s)
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '')
+    .replace(/[&<>"']/g, (c) => ENTITIES[c]);
 
 // The cover's still: its type from the URL's extension, and its length known
 // only for an image served as uploaded (0 tells readers it's unknown).
