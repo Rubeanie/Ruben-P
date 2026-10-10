@@ -5,7 +5,6 @@ import structure from '@/sanity/structure';
 import { presentationTool } from 'sanity/presentation';
 import { locations } from '@/sanity/presentation';
 import { visionTool } from '@sanity/vision';
-import { media } from 'sanity-plugin-media';
 import { inlineSvgInput } from '@focus-reactive/sanity-plugin-inline-svg-input';
 import { codeInput } from '@sanity/code-input';
 import { colorInput } from '@sanity/color-input';
@@ -48,7 +47,6 @@ export default defineConfig({
       title: 'GROQ',
       defaultApiVersion: apiVersion
     }),
-    media(),
     cloudinarySchemaPlugin(),
     inlineSvgInput(),
     codeInput(),
