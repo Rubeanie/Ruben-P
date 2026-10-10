@@ -2,7 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { PHONE } from '@/lib/coverSizes';
-import { PHONE_CLIP_WIDTH, animatedClip, clipVideo } from '@/lib/imageLoader';
+import {
+  PHONE_CLIP_WIDTH,
+  THEME_CLIP,
+  animatedClip,
+  clipSettings,
+  clipVideo
+} from '@/lib/imageLoader';
 
 const REDUCED = '(prefers-reduced-motion: reduce)';
 // Safari's WebM path stalls on the seek a loop makes, so Apple's engine (every
@@ -38,7 +44,7 @@ export default function ClipVideo({
   }, []);
 
   // iOS Low Power Mode refuses autoplay, leaving the first frame under a play
-  // icon; the animated image plays there instead, bigger but still moving.
+  // icon; a short animated image plays there instead, bigger but still moving.
   const [refused, setRefused] = useState(false);
   // Browsers don't reload a <video> whose sources change, so a new cut (a live
   // Studio edit) remounts it, to be asked to play again and to fade in afresh.
@@ -60,7 +66,10 @@ export default function ClipVideo({
       <img
         className={className}
         style={style}
-        src={animatedClip(src, `c_limit,w_${shown}`, clip)}
+        src={animatedClip(src, `c_limit,w_${shown}`, {
+          ...clip,
+          length: Math.min(clipSettings(clip).length, THEME_CLIP)
+        })}
         alt=''
         aria-hidden='true'
       />
