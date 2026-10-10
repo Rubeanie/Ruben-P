@@ -40,11 +40,12 @@ const nextConfig = {
     includePaths: [path.join(__dirname, 'styles')]
   },
   async headers() {
-    // No CSP or frame blocking: the Sanity Presentation tool frames the site.
+    // Only same-origin framing: the Studio is embedded, so Presentation's preview is same-origin.
     return [
       {
         source: '/:path*',
         headers: [
+          { key: 'Content-Security-Policy', value: "frame-ancestors 'self'" },
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           // Vercel skips noindex on custom domains for non-production branches (alpha, beta),
