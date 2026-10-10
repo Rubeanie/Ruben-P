@@ -302,21 +302,3 @@ export function liveUrl(published) {
     };
   return { url: processUrl(published) };
 }
-
-// Lighthouse's SEO score and the audits it failed, minus the ones it can't judge.
-export function psiSummary(data) {
-  const lighthouse = data?.lighthouseResult;
-  const category = lighthouse?.categories?.seo;
-  if (!category) return null;
-  const failing = category.auditRefs
-    .map((ref) => lighthouse.audits?.[ref.id])
-    .filter(
-      (audit) =>
-        audit &&
-        audit.score !== null &&
-        audit.score < 1 &&
-        !['manual', 'notApplicable'].includes(audit.scoreDisplayMode)
-    )
-    .map((audit) => audit.title);
-  return { score: Math.round(category.score * 100), failing };
-}

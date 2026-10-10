@@ -3,7 +3,6 @@ import {
   changedSince,
   hasPhrase,
   liveUrl,
-  psiSummary,
   seoChecks,
   seoReviewInput
 } from './checks';
@@ -144,60 +143,6 @@ test('only a published real page has a live address', () => {
   expect(liveUrl({ metadata: { slug: { current: '404' } } }).reason).toMatch(
     /no public address/
   );
-});
-
-test('psiSummary keeps failing audits it could judge', () => {
-  const data = {
-    lighthouseResult: {
-      categories: {
-        seo: {
-          score: 0.83,
-          auditRefs: [
-            { id: 'is-crawlable' },
-            { id: 'meta-description' },
-            { id: 'structured-data' },
-            { id: 'hreflang' },
-            { id: 'image-alt' }
-          ]
-        }
-      },
-      audits: {
-        'is-crawlable': {
-          title: 'Page is blocked from indexing',
-          score: 0,
-          scoreDisplayMode: 'binary'
-        },
-        'meta-description': {
-          title: 'Document has a meta description',
-          score: 1,
-          scoreDisplayMode: 'binary'
-        },
-        'structured-data': {
-          title: 'Structured data is valid',
-          score: null,
-          scoreDisplayMode: 'manual'
-        },
-        hreflang: {
-          title: 'Document has a valid hreflang',
-          score: null,
-          scoreDisplayMode: 'notApplicable'
-        },
-        'image-alt': {
-          title: 'Image elements do not have [alt] attributes',
-          score: 0,
-          scoreDisplayMode: 'binary'
-        }
-      }
-    }
-  };
-  expect(psiSummary(data)).toEqual({
-    score: 83,
-    failing: [
-      'Page is blocked from indexing',
-      'Image elements do not have [alt] attributes'
-    ]
-  });
-  expect(psiSummary({})).toBeNull();
 });
 
 test('Creative headings and accordion questions count as h3s', () => {

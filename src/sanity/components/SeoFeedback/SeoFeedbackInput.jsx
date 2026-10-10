@@ -13,16 +13,17 @@ import { seoQuery } from '@/lib/sanity/queries/metadata';
 import {
   changedSince,
   liveUrl,
-  psiSummary,
   seoChecks,
   seoReviewInput
 } from '../../seo/checks';
 import { askReview, reviewProblem, SIGNED_OUT } from '../../seo/review';
 import { SeoPanel } from './SeoPanel';
 
-const PAGESPEED = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed';
-// Optional: without a key every keyless caller shares one daily quota, often spent by noon.
-const PAGESPEED_KEY = process.env.NEXT_PUBLIC_PAGESPEED_KEY;
+const LIVE_PROBLEMS = {
+  401: 'Sign out and back in to run the live check.',
+  429: 'That is a lot of checks; try again in a few minutes.',
+  503: "Google's quota is used up for now; try later, or set PAGESPEED_API_KEY on the server."
+};
 
 // The published Site settings are what fill a page's gaps on the live site.
 function useSite() {
@@ -106,26 +107,26 @@ function SeoFeedback({ doc, fields, onUse }) {
 
   const checkLive = async () => {
     setLive({ state: 'busy' });
-    const query = new URLSearchParams({
-      url: target.url,
-      category: 'seo',
-      strategy: 'mobile',
-      ...(PAGESPEED_KEY && { key: PAGESPEED_KEY })
-    });
-    // Lighthouse takes 10 to 30 seconds; past a minute it has stalled.
-    const res = await fetch(`${PAGESPEED}?${query}`, {
+    // The members-only route holds the PageSpeed key. Lighthouse takes 10 to
+    // 30 seconds; past a minute it has stalled.
+    const res = await fetch('/api/studio/pagespeed', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ url: target.url }),
       signal: AbortSignal.timeout(60_000)
     }).catch(() => null);
-    const result = res?.ok && psiSummary(await res.json().catch(() => null));
+    const result = res?.ok && (await res.json().catch(() => null));
     setLive(
       result
         ? { state: 'done', result }
         : {
             state: 'error',
             error:
-              res?.status === 429
-                ? "Google's free quota is used up for now; try later, or add a PageSpeed API key."
-                : 'Google could not check the page; try again in a moment.'
+              LIVE_PROBLEMS[res?.status] ??
+              'Google could not check the page; try again in a moment.'
           }
     );
   };
