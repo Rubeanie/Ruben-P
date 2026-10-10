@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Stack, Text } from '@sanity/ui';
 import { set, unset, useFormValue } from 'sanity';
+import { resolveImage } from '@/lib/imageBlock';
 import {
   assetUrl,
   clipUrls,
@@ -30,7 +31,19 @@ export function CloudinaryImageInput(props) {
   const parent = useFormValue(props.path.slice(0, -1));
   const carousel = useFormValue(props.path.slice(0, -3));
   const widths = clipWidthsFor(props.path, type, parent, carousel);
-  const requests = url ? clipUrls(url, value?.clip, widths).join(' ') : '';
+  // Crawlers and feed readers ask for a moving image's still without the
+  // site's Referer, which Strict Transformations refuses, so it's built here.
+  // The stored asset keeps a picked transformation under derived, which the
+  // site's query flattens to derived_url.
+  const image =
+    url &&
+    resolveImage({ ...value, asset: { ...value.asset, derived_url: url } });
+  const requests = url
+    ? [
+        ...clipUrls(url, value?.clip, widths),
+        ...(image?.moving ? [image.still] : [])
+      ].join(' ')
+    : '';
   // What was in the form when it opened, which is already built or never will be.
   const warmed = useRef(requests);
   const pending = useRef(null);
