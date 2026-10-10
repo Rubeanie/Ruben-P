@@ -3,6 +3,11 @@
   "cleanUrls": true,
   "devCommand": "next dev",
   "framework": "nextjs",
+  "git": {
+    "deploymentEnabled": {
+      "dependabot/**": false
+    }
+  },
   "installCommand": "bun install",
   "outputDirectory": ".next"
 }
