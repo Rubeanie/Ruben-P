@@ -44,12 +44,18 @@ export function CloudinaryImageInput(props) {
     pending.current = null;
     if (readOnly || requests === warmed.current) return;
     pending.current = requests ? requests.split(' ') : null;
-    // Typing a Start or Length changes the URLs on every keystroke; let it settle.
-    const timer = setTimeout(flush, 600);
+    // Every cut tried is billed as four videos, so wait for the editor to stop trying.
+    const timer = setTimeout(flush, 5000);
     return () => clearTimeout(timer);
   }, [requests, readOnly]);
-  // Closing the dialog inside the delay still warms what was changed.
-  useEffect(() => flush, []);
+  // Closing the dialog or the tab inside the delay still warms what was changed.
+  useEffect(() => {
+    window.addEventListener('pagehide', flush);
+    return () => {
+      window.removeEventListener('pagehide', flush);
+      flush();
+    };
+  }, []);
 
   useEffect(() => {
     if (readOnly) return;

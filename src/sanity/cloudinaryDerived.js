@@ -132,5 +132,8 @@ export function clipUrls(url, clip, widths) {
 // Cloudinary builds a video on its first request; asking now means visitors
 // get it already made. Fire and forget, and nothing here reads the answer.
 export function warm(urls) {
-  urls.forEach((url) => fetch(url, { mode: 'no-cors' }).catch(() => {}));
+  // keepalive, so a request made as the tab closes still goes out.
+  urls.forEach((url) =>
+    fetch(url, { mode: 'no-cors', keepalive: true }).catch(() => {})
+  );
 }
