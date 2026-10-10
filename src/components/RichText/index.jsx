@@ -68,11 +68,11 @@ const blockPath = (dataAttribute, props) =>
 export default function RichText({ value, values, dataAttribute, lead }) {
   if (!value) return null;
   // The lead module's first image or video (see leadModule).
-  const first = lead
-    ? value.findIndex(
-        ({ _type }) => _type === 'imageBlock' || _type === 'youtube'
-      )
-    : -1;
+  // Matched by key: PortableText's indices count a list as one block.
+  const firstKey = lead
+    ? value.find(({ _type }) => _type === 'imageBlock' || _type === 'youtube')
+        ?._key
+    : undefined;
   return (
     <PortableText
       value={value}
@@ -84,14 +84,14 @@ export default function RichText({ value, values, dataAttribute, lead }) {
             <ImageBlock
               {...props}
               sanity={blockPath(dataAttribute, props)}
-              lead={props.index === first}
+              lead={!!firstKey && props.value._key === firstKey}
             />
           ),
           youtube: (props) => (
             <YouTube
               {...props}
               sanity={blockPath(dataAttribute, props)}
-              lead={props.index === first}
+              lead={!!firstKey && props.value._key === firstKey}
             />
           ),
           code: (props) => (
