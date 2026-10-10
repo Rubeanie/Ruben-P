@@ -115,6 +115,9 @@ self.addEventListener('fetch', (event) => {
       (async () => {
         const cached = await caches.match(request);
         if (cached) return cached;
+        // The Studio's bundle is large and only the owner uses it: skip it.
+        const client = await self.clients.get(event.clientId);
+        if (client && new URL(client.url).pathname.startsWith('/admin')) return fetch(request);
         const res = await fetch(request);
         // Dev chunks are not hashed and come back without `immutable`.
         if (isCacheable(res) && /immutable/.test(res.headers.get('Cache-Control') || ''))
