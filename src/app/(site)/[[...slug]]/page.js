@@ -10,6 +10,7 @@ import { firstModule } from '@/lib/modules';
 import { introImages } from '@/lib/introImages';
 import { pageHrefs } from '@/lib/introPicks';
 import { notFound, permanentRedirect, redirect } from 'next/navigation';
+import { draftMode } from 'next/headers';
 import { Modules } from '@/components/Modules';
 import { getSite } from '@/lib/sanity/queries';
 import { heroThemeImage, resolveMetadata } from '@/lib/resolveMetadata';
@@ -34,6 +35,11 @@ export default async function Page({ params }) {
       if (target?.url.startsWith('/'))
         (target.permanent ? permanentRedirect : redirect)(target.url);
       if (target) return <Redirecting url={target.url} label={target.label} />;
+      // The redirect screen has no address of its own, so Presentation edits it here.
+      if (path === '/redirect' && (await draftMode()).isEnabled)
+        return (
+          <Redirecting url='https://example.com' label='Example' preview />
+        );
     }
     notFound();
   }

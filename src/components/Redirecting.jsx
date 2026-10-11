@@ -6,7 +6,8 @@ import { Modules } from '@/components/Modules';
 // link. Content is the CMS page with slug 'redirect' (like the 404 page), which
 // reaches the destination through the dynamicValue inline object. `url` comes
 // from getRedirect, which has already checked the scheme.
-export default async function Redirecting({ url, label }) {
+// `preview` leaves out the refresh, so Presentation can edit the screen in place.
+export default async function Redirecting({ url, label, preview }) {
   const page = await fetchSanity(
     groq`*[_type == 'page' && metadata.slug.current == 'redirect'][0]{
       modules[]{ ${modulesQuery} }
@@ -17,7 +18,7 @@ export default async function Redirecting({ url, label }) {
   return (
     <>
       <title>Redirecting</title>
-      <meta httpEquiv='refresh' content={`0;url=${url}`} />
+      {!preview && <meta httpEquiv='refresh' content={`0;url=${url}`} />}
 
       {page ? (
         <Modules

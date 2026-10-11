@@ -1,6 +1,8 @@
 import { map } from 'rxjs';
 import { isPagePath } from '@/lib/slug';
 
+const TEMPLATE_PATHS = { 404: '/404', redirect: '/redirect' };
+
 export const locations = (params, context) => {
   if (['page', 'page.post'].includes(params.type)) {
     const doc$ = context.documentStore.listenQuery(
@@ -11,15 +13,17 @@ export const locations = (params, context) => {
 
     return doc$.pipe(
       map((doc) => {
-        // The slug is the path itself; templates preview nowhere.
+        // The slug is the path itself. The templates preview where the site
+        // shows them: any unknown path, and a draft-only redirect screen.
         const slug = doc?.metadata?.slug?.current;
-        if (!isPagePath(slug)) return null;
+        const href = isPagePath(slug) ? slug : TEMPLATE_PATHS[slug];
+        if (!href) return null;
 
         return {
           locations: [
             {
               title: doc.title || doc.metadata?.title || 'untitled',
-              href: slug
+              href
             }
           ]
         };
