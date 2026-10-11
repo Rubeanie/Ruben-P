@@ -32,6 +32,56 @@
   }
 }
 
+// Type filled with the background photo, `$image`. It falls back to the flat
+// colour wherever the fill fails or fights the visitor's settings.
+@mixin image-text($image) {
+  // The fill only paints the span's line box and Mont's descenders reach past it;
+  // padding on an inline span grows the painted area without moving the text.
+  padding-block-end: var.$image-text-descender;
+  background-image: $image;
+  // Clipped to the letters like the photo, so they stay readable if the photo fails to load.
+  background-color: var.$color-primary;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-clip: text;
+  -webkit-background-clip: text;
+  background-attachment: fixed;
+  -webkit-text-fill-color: transparent;
+  filter: brightness(115%) contrast(43%)
+    drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.6)) saturate(1.5);
+
+  // Firefox has repaint bugs with background-clip:text + background-attachment:fixed.
+  @-moz-document url-prefix() {
+    @include _image-text-flat;
+  }
+
+  // Both a request for higher contrast and Windows' forced-colors mode keep
+  // background images, so the photo would override the chosen palette.
+  @media (prefers-contrast: more), (forced-colors: active) {
+    @include _image-text-flat;
+  }
+
+  // iOS cannot paint a fixed background, on iPads and landscape phones too.
+  @supports (-webkit-touch-callout: none) {
+    @include _image-text-flat;
+  }
+
+  @media screen and (max-width: var.$media-mobile-width) {
+    @include _image-text-flat;
+  }
+}
+
+@mixin _image-text-flat {
+  background: unset;
+  background-size: unset;
+  background-attachment: unset;
+  background-clip: unset;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+  filter: unset;
+}
+
 /* Pretitle */
 @mixin pretitle {
   font-family: var.$h-font;

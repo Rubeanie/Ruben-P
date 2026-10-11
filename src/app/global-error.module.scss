@@ -9,8 +9,8 @@
   font-weight: 700;
   font-display: swap;
   // Mont's rebalanced metrics, as in src/styles/fonts.
-  ascent-override: 87.5%;
-  descent-override: 22.5%;
+  ascent-override: var.$mont-ascent;
+  descent-override: var.$mont-descent;
   line-gap-override: 0%;
 }
 
@@ -24,12 +24,11 @@
 $h-font: 'error-mont', sans-serif;
 $p-font: 'error-figtree', sans-serif;
 
-// Without the theme's Sanity data it wears the default theme
-// (DEFAULT_THEME_COLORS in src/lib/themes.js).
+// Without the theme's Sanity data it wears the default theme.
 .body {
-  --color-primary: #ed5f68;
-  --color-background: #0f182d;
-  --color-text: #eaf6ff;
+  @each $name, $value in var.$default-theme-colors {
+    #{$name}: #{$value};
+  }
   margin: 0;
   -webkit-text-size-adjust: 100%;
   text-align: center;
@@ -87,40 +86,9 @@ $p-font: 'error-figtree', sans-serif;
   filter: var.$common-drop-shadow;
 }
 
-@mixin flat {
-  background: none;
-  -webkit-text-fill-color: currentColor;
-  filter: none;
-}
-
 // The site's photo-filled heading (image-text in globals.scss).
 .fill {
-  padding-block-end: var.$image-text-descender;
-  background: var.$color-primary url(var.$image-background-url) center / cover
-    no-repeat fixed;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: brightness(115%) contrast(43%)
-    drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.6)) saturate(1.5);
-
-  // Phones, iOS (no fixed backgrounds), Firefox (repaint bugs) and higher
-  // contrast get the flat colour, as on the site.
-  @media (max-width: var.$media-mobile-width),
-    (prefers-contrast: more),
-    (forced-colors: active) {
-    @include flat;
-  }
-
-  @supports (-webkit-touch-callout: none) {
-    @include flat;
-  }
-}
-
-@-moz-document url-prefix() {
-  .fill {
-    @include flat;
-  }
+  @include var.image-text(url(var.$image-background-url));
 }
 
 @media (min-width: var.$media-mobile-width) {

@@ -28,7 +28,7 @@ export const mont = localFont({
   // Mont's 800/300 win metrics leave 150 more units below caps than above, so
   // caps sit high in the line box. Rebalanced around the 650 cap height; the
   // total stays 1100 so line boxes keep their size. Next only takes literals
-  // here, so montCritical and the stand-ins in globals.scss repeat it.
+  // here, so montCritical and $mont-ascent/$mont-descent in Sass repeat it.
   declarations: [
     { prop: 'ascent-override', value: '87.5%' },
     { prop: 'descent-override', value: '22.5%' },

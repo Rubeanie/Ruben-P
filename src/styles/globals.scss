@@ -13,8 +13,9 @@
 // height on the swap. Overrides scale with size-adjust, hence the division.
 // Android has neither font and keeps its own sans-serif.
 @each $family, $face, $weights, $size, $ascent,
-  $descent in ('mont', 'Verdana', 100 549, 102%, 87.5%, 22.5%),
-  ('mont', 'Verdana Bold', 550 900, 95%, 87.5%, 22.5%),
+  $descent
+    in ('mont', 'Verdana', 100 549, 102%, var.$mont-ascent, var.$mont-descent),
+  ('mont', 'Verdana Bold', 550 900, 95%, var.$mont-ascent, var.$mont-descent),
   ('figtree', 'Arial', 100 549, 103%, 95%, 25%),
   ('figtree', 'Arial Bold', 550 900, 96%, 95%, 25%)
 {
@@ -33,23 +34,15 @@
 :root {
   // Script animations read the standard curve here instead of repeating the bezier.
   --ease-out: #{var.$ease-out};
-  --color-primary: #ed5f68;
-  --color-secondary: #33456d;
-  --color-background: #0f182d;
-  --color-text: #eaf6ff;
+  @each $name, $value in var.$default-theme-colors {
+    #{$name}: #{$value};
+  }
   --image-background: url('#{var.$image-background-url}');
 }
 
 // registered colours interpolate once at the root and everything that reads
 // them follows, so no element needs a colour transition of its own
-$theme-color-properties: (
-  '--color-primary': #ed5f68,
-  '--color-secondary': #33456d,
-  '--color-background': #0f182d,
-  '--color-text': #eaf6ff
-);
-
-@each $name, $value in $theme-color-properties {
+@each $name, $value in var.$default-theme-colors {
   @property #{$name} {
     syntax: '<color>';
     inherits: true;
@@ -195,55 +188,7 @@ li {
 }
 
 .image-text {
-  // The fill only paints the span's line box and Mont's descenders reach past it;
-  // padding on an inline span grows the painted area without moving the text.
-  padding-block-end: var.$image-text-descender;
-  background-image: var.$image-background;
-  // Clipped to the letters like the photo, so they stay readable if the photo fails to load.
-  background-color: var.$color-primary;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  background-clip: text;
-  -webkit-background-clip: text;
-  background-attachment: fixed;
-  -webkit-text-fill-color: transparent;
-  filter: brightness(115%) contrast(43%)
-    drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.6)) saturate(1.5);
-}
-
-// Sass can't @extend across a media query, so this is a mixin.
-@mixin image-text-flat {
-  background: unset;
-  background-size: unset;
-  background-attachment: unset;
-  background-clip: unset;
-  -webkit-background-clip: unset;
-  -webkit-text-fill-color: unset;
-  filter: unset;
-}
-
-// Firefox has repaint bugs with background-clip:text + background-attachment:fixed,
-// so fall back to a solid heading colour.
-@-moz-document url-prefix() {
-  .image-text {
-    @include image-text-flat;
-  }
-}
-
-// Both a request for higher contrast and Windows' forced-colors mode keep
-// background images, so the photo would override the chosen palette.
-@media (prefers-contrast: more), (forced-colors: active) {
-  .image-text {
-    @include image-text-flat;
-  }
-}
-
-// iOS cannot paint a fixed background, on iPads and landscape phones too.
-@supports (-webkit-touch-callout: none) {
-  .image-text {
-    @include image-text-flat;
-  }
+  @include var.image-text(var.$image-background);
 }
 
 /* TRT Mont Broz OpenType feature utility class — opt-in only, never global */
@@ -376,11 +321,5 @@ body {
   h2:has(.image-text),
   h3:has(.image-text) {
     filter: none;
-  }
-}
-
-@media screen and (max-width: var.$media-mobile-width) {
-  .image-text {
-    @include image-text-flat;
   }
 }

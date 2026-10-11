@@ -3,6 +3,13 @@ $color-primary: var(--color-primary);
 $color-secondary: var(--color-secondary);
 $color-background: var(--color-background);
 $color-text: var(--color-text);
+// The default theme's (DEFAULT_THEME_COLORS in src/lib/themes.js).
+$default-theme-colors: (
+  '--color-primary': #ed5f68,
+  '--color-secondary': #33456d,
+  '--color-background': #0f182d,
+  '--color-text': #eaf6ff
+);
 // The photo as globals.scss picks it for the screen's shape.
 $image-background: var(--image-background-fit);
 // One copy of the default photo; the site root and the Studio decorator both read it.
@@ -96,6 +103,9 @@ $inverted-padding-safe: 0 calc(-1 * env(safe-area-inset-right)) 0
 $h-font: var(--font-mont), 'mont Fallback', sans-serif;
 $p-font: var(--font-figtree), 'figtree Fallback', sans-serif;
 $mono-font: var(--font-mono), ui-monospace, monospace;
+// Mont's line box rebalanced around its cap height (src/styles/fonts/index.js).
+$mont-ascent: 87.5%;
+$mont-descent: 22.5%;
 
 /* Text Alignments */
 $h-alignment: center;
