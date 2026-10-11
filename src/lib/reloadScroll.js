@@ -18,5 +18,64 @@
 // is glided to again: Safari scrolls to it once, against the page as it stood,
 // and lands short. Its scrollIntoView skips the root's scroll-padding, so the
 // offset is worked out.
-export const reloadScroll =
-  "(function(k){var h=history,e=document.documentElement,i,y,m,r=0;addEventListener('pagehide',function(){try{sessionStorage.setItem(k+location.href,Math.round(scrollY))}catch(_){}});try{i=decodeURIComponent(location.hash.slice(1));if(/^(reload|back_forward)$/.test(performance.getEntriesByType('navigation')[0]?.type))y=+sessionStorage.getItem(k+location.href)}catch(_){}if(!y&&!i)return;if(y)h.scrollRestoration='manual';['wheel','touchstart','keydown'].forEach(function(n){addEventListener(n,function(){m=1},{once:true,passive:true})});requestAnimationFrame(function f(){if(m)return;var a=r++===0&&self.PerformanceObserver?.supportedEntryTypes?.includes('paint')&&!performance.getEntriesByType('paint').length,t=!y&&i&&document.getElementById(i),d=t?t.getBoundingClientRect().top+scrollY-(parseFloat(getComputedStyle(e).scrollPaddingTop)||0)-(parseFloat(getComputedStyle(t).scrollMarginTop)||0):y,b=document.querySelector('template[id^=\"B:\"]');if((b||!d||e.scrollHeight-innerHeight<d)&&(document.readyState!=='complete'||b&&performance.now()<5e3))return requestAnimationFrame(f);if(d&&!(y&&scrollY))scrollTo({top:d,behavior:y&&a?'instant':'auto'})});addEventListener('load',function(){setTimeout(function(){h.scrollRestoration='auto'})})})('scroll:')";
+//
+// Inlined by its source text, so it stays self-contained and in syntax every
+// browser parses as is: no imports, no optional chaining.
+function restore(key) {
+  const root = document.documentElement;
+  // Read at pagehide, as client navigation may have changed the URL since.
+  addEventListener('pagehide', () => {
+    try {
+      sessionStorage.setItem(key + location.href, Math.round(scrollY));
+    } catch {}
+  });
+
+  let heading, position;
+  try {
+    heading = decodeURIComponent(location.hash.slice(1));
+    const navigation = performance.getEntriesByType('navigation')[0];
+    if (/^(reload|back_forward)$/.test(navigation && navigation.type))
+      position = +sessionStorage.getItem(key + location.href);
+  } catch {}
+  if (!position && !heading) return;
+  if (position) history.scrollRestoration = 'manual';
+
+  // Any input before the page settles is the visitor's own scrolling.
+  let moved = false;
+  for (const type of ['wheel', 'touchstart', 'keydown'])
+    addEventListener(type, () => (moved = true), { once: true, passive: true });
+
+  const paints =
+    self.PerformanceObserver &&
+    (self.PerformanceObserver.supportedEntryTypes || []).includes('paint');
+  let frames = 0;
+
+  requestAnimationFrame(function settle() {
+    if (moved) return;
+    const unseen =
+      frames++ === 0 && paints && !performance.getEntriesByType('paint').length;
+    const target = !position && heading && document.getElementById(heading);
+    const top = target
+      ? target.getBoundingClientRect().top +
+        scrollY -
+        (parseFloat(getComputedStyle(root).scrollPaddingTop) || 0) -
+        (parseFloat(getComputedStyle(target).scrollMarginTop) || 0)
+      : position;
+    const streaming = document.querySelector('template[id^="B:"]');
+    const waiting = streaming || !top || root.scrollHeight - innerHeight < top;
+    if (
+      waiting &&
+      (document.readyState !== 'complete' ||
+        (streaming && performance.now() < 5000))
+    )
+      return requestAnimationFrame(settle);
+    if (top && !(position && scrollY))
+      scrollTo({ top, behavior: position && unseen ? 'instant' : 'auto' });
+  });
+
+  addEventListener('load', () =>
+    setTimeout(() => (history.scrollRestoration = 'auto'))
+  );
+}
+
+export const reloadScroll = `(${restore})('scroll:')`;

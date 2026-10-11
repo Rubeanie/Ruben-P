@@ -131,3 +131,10 @@ test('a plain load only records the position on the way out', () => {
   p.fire('pagehide');
   expect(p.env.saved).toEqual(['scroll:https://example.com/about', 0]);
 });
+
+test('a position is saved under the URL the page has navigated to since', () => {
+  const p = page({ type: 'navigate', height: 3000 });
+  p.env.location.href = 'https://example.com/work';
+  p.fire('pagehide');
+  expect(p.env.saved).toEqual(['scroll:https://example.com/work', 0]);
+});
