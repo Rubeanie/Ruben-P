@@ -17,6 +17,7 @@
     "start": "next start",
     "lint": "eslint .",
     "test": "bun test",
+    "diagram": "bun scripts/diagram.js",
     "prepare": "husky"
   },
   "dependencies": {
@@ -69,6 +70,7 @@
     "@types/tar-stream": "^3.1.4",
     "@types/unist": "^3.0.3",
     "cross-env": "^10.1.0",
+    "d3-hierarchy": "^3.1.2",
     "eslint": "^9.0.0",
     "eslint-config-next": "^16.3.8",
     "eslint-config-prettier": "^10.1.8",
