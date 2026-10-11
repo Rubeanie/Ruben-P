@@ -3,5 +3,21 @@
 // gives the bar a style to transition from, so the docking it starts is finished.
 // The band above has just matched too, and WebKit would glide <html>'s
 // --announce-height in from 0, so <html>'s own transitions are finished as well.
-export const navGate =
-  "var d=document.documentElement,l=document.querySelector('[data-nav-links]'),f=function(e,o){e.getAnimations(o).forEach(function(a){if(a.transitionProperty)a.finish()})};if(l&&l.scrollWidth>l.clientWidth){d.setAttribute('data-nav-compact','');f(l.closest('nav'),{subtree:true})}f(d)";
+//
+// Inlined by its source text, so it stays self-contained and in syntax every
+// browser parses as is: no imports, no optional chaining.
+function gate() {
+  const root = document.documentElement;
+  const links = document.querySelector('[data-nav-links]');
+  const finish = (element, options) => {
+    for (const animation of element.getAnimations(options))
+      if (animation.transitionProperty) animation.finish();
+  };
+  if (links && links.scrollWidth > links.clientWidth) {
+    root.setAttribute('data-nav-compact', '');
+    finish(links.closest('nav'), { subtree: true });
+  }
+  finish(root);
+}
+
+export const navGate = `(${gate})()`;
