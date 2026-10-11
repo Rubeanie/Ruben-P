@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { Stack, Text } from '@sanity/ui';
-import { set, unset, useFormValue } from 'sanity';
+import { set, unset } from 'sanity';
 import { resolveImage } from '@/lib/imageBlock';
 import {
   assetUrl,
-  clipUrls,
-  clipWidthsFor,
   readFocus,
   readLqip,
   readPalette,
@@ -27,40 +25,32 @@ export function CloudinaryImageInput(props) {
   const complete = DERIVED.every((name) => value?.[name]);
   const [failed, setFailed] = useState(false);
 
-  const type = useFormValue(['_type']);
-  const parent = useFormValue(props.path.slice(0, -1));
-  const carousel = useFormValue(props.path.slice(0, -3));
-  const widths = clipWidthsFor(props.path, type, parent, carousel);
   // Crawlers and feed readers ask for a moving image's still without the
   // site's Referer, which Strict Transformations refuses, so it's built here.
   // The stored asset keeps a picked transformation under derived, which the
-  // site's query flattens to derived_url.
+  // site's query flattens to derived_url. A clip's own renditions wait for
+  // Prepare clip (ClipInput).
   const image =
     url &&
     resolveImage({ ...value, asset: { ...value.asset, derived_url: url } });
-  const requests = url
-    ? [
-        ...clipUrls(url, value?.clip, widths),
-        ...(image?.moving ? [image.still] : [])
-      ].join(' ')
-    : '';
+  const still = image?.moving ? image.still : '';
   // What was in the form when it opened, which is already built or never will be.
-  const warmed = useRef(requests);
+  const warmed = useRef(still);
   const pending = useRef(null);
   const flush = () => {
     if (!pending.current) return;
-    warmed.current = pending.current.join(' ');
-    warm(pending.current);
+    warmed.current = pending.current;
+    warm([pending.current]);
     pending.current = null;
   };
   useEffect(() => {
     pending.current = null;
-    if (readOnly || requests === warmed.current) return;
-    pending.current = requests ? requests.split(' ') : null;
-    // Every cut tried is billed as four videos, so wait for the editor to stop trying.
+    if (readOnly || still === warmed.current) return;
+    pending.current = still || null;
+    // Typing a Start passes through a still per keystroke; build only the last.
     const timer = setTimeout(flush, 5000);
     return () => clearTimeout(timer);
-  }, [requests, readOnly]);
+  }, [still, readOnly]);
   // Closing the dialog or the tab inside the delay still warms what was changed.
   useEffect(() => {
     window.addEventListener('pagehide', flush);
