@@ -1,0 +1,26 @@
+name: Diagram
+
+# Redraws diagram.svg, the codebase map in the README, after each push to the
+# default branch. The old version listened to `main`, which this repo doesn't have.
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths-ignore: [diagram.svg]
+
+concurrency:
+  group: diagram
+  cancel-in-progress: true
+
+jobs:
+  diagram:
+    runs-on: ubuntu-latest
+    # Only this job may write, and only to commit the diagram back.
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: githubocto/repo-visualizer@a999615bdab757559bf94bda1fe6eef232765f85 # 0.9.1
+        with:
+          excluded_paths: .github,.husky,.vscode
+          commit_message: 'chore: redraw the codebase diagram'
