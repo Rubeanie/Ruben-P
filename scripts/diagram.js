@@ -35,8 +35,7 @@ const files = execFileSync('git', ['ls-tree', '-r', '-l', '-z', 'HEAD'], {
     const [meta, path] = line.split('\t');
     return { path, size: Number(meta.trim().split(/\s+/)[3]) };
   })
-  .filter((file) => file.size > 0 && !SKIP.test(file.path))
-  .sort((a, b) => (a.path < b.path ? -1 : 1));
+  .filter((file) => file.size > 0 && !SKIP.test(file.path));
 
 // Nest the flat paths into folders.
 const tree = { name: '', children: [] };
