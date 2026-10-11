@@ -43,6 +43,12 @@ describe('clipUrls', () => {
     ]);
   });
 
+  test('start with the WebM at the first width, which Prepare clip measures', () => {
+    const [first] = clipUrls(clip, {}, [1600, 720]);
+    expect(first).toContain('/c_limit,w_1600/');
+    expect(first).toEndWith('.webm');
+  });
+
   test('skip a forced animated image', () => {
     expect(clipUrls(clip, { animatedImage: true }, [1200])).toEqual([]);
   });

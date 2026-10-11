@@ -1,17 +1,12 @@
 import { useState } from 'react';
 import { Flex, Stack, Text } from '@sanity/ui';
-import { useFormValue } from 'sanity';
+import { set, setIfMissing, useFormValue } from 'sanity';
 import { sizeFraction } from '@/lib/imageBlock';
-import { assetUrl, clipWidthsFor } from '../cloudinaryDerived';
-import {
-  animatedClip,
-  clipSettings,
-  clipVideo,
-  MAX_CLIP
-} from '@/lib/imageLoader';
+import { assetUrl, clipUrls, clipWidthsFor } from '../cloudinaryDerived';
+import { clipSettings, MAX_CLIP } from '@/lib/imageLoader';
 
-// What the estimate and the measurement assume: a full-width desktop figure
-// 1200px wide, narrowed by the Size option.
+// Where the site asks for no clip width, the estimate assumes a full-width
+// desktop figure 1200px wide, narrowed by the Size option.
 const WIDTH = 1200;
 // A ceiling, not an average: the heaviest of six Cloudinary sample clips cut
 // to 4 s at 1200x675 and 15 fps. Its VP9 WebM, which most browsers get, took
@@ -24,9 +19,9 @@ const VIDEO_BYTES = 0.13;
 const megabytes = (bytes) => `${(bytes / 1e6).toFixed(1)} MB`;
 
 function estimate(asset, clip, target) {
-  const { start, length, fps: set } = clipSettings(clip);
+  const { start, length, fps: chosen } = clipSettings(clip);
   // Original keeps the video's rate, which the asset may not record.
-  const fps = set || asset?.frame_rate || 30;
+  const fps = chosen || asset?.frame_rate || 30;
   const seconds = Math.min(
     length,
     asset?.duration ? Math.max(asset.duration - start, 0) : MAX_CLIP
@@ -63,72 +58,86 @@ const QUIET = {
   color: 'var(--card-link-fg-color)',
   cursor: 'pointer'
 };
+const CAUTION = { color: 'var(--card-badge-caution-fg-color)' };
 
-// The clip's settings, with what they cost: an instant estimate, and the real
-// sizes of both renditions on request, until a setting changes.
+// The clip's settings, with what they cost: an estimate until Prepare clip has
+// Cloudinary build every rendition the site asks for, then the video's real
+// size, until a setting changes.
 export function ClipInput(props) {
+  const { value, onChange, readOnly } = props;
   const parent = props.path.slice(0, -1);
   const asset = useFormValue([...parent, 'asset']);
-  // Measured at the first width the site asks for here (a cover's 1200, a
-  // block's or card's own), which Studio has already had Cloudinary build.
   const type = useFormValue(['_type']);
   const holder = useFormValue(parent.slice(0, -1));
   const carousel = useFormValue(parent.slice(0, -3));
-  const [site] = clipWidthsFor(parent, type, holder, carousel);
-  // Elsewhere the holder's or the carousel's Size narrows the file.
+  // A cover's 1200 and 1920, a block's or card's own then the phone's.
+  const widths = clipWidthsFor(parent, type, holder, carousel);
   const width =
-    site ?? Math.round(WIDTH * sizeFraction(holder?.size ?? carousel?.size));
+    widths[0] ??
+    Math.round(WIDTH * sizeFraction(holder?.size ?? carousel?.size));
   const src = assetUrl(asset);
-  const urls = src && {
-    video: clipVideo(src, width, props.value, 'webm'),
-    image: animatedClip(src, `c_limit,w_${width}`, props.value)
-  };
-  const key = urls && `${urls.video} ${urls.image}`;
-  const [measured, setMeasured] = useState(null);
-  const real = measured?.key === key && measured;
+  // The WebM at the first width comes first, and is the size shown.
+  const urls = src ? clipUrls(src, value, widths) : [];
+  // The URLs carry the asset's version, the cut and the widths.
+  const key = urls.join(' ');
+  const prepared = key && value?.preparedFor === key && value?.videoBytes;
+  const [attempt, setAttempt] = useState(null);
+  const current = attempt?.key === key && attempt;
 
-  const measure = async () => {
-    setMeasured({ key, busy: true });
+  const prepare = async () => {
+    setAttempt({ key, busy: true });
     try {
-      const [video, image] = await Promise.all([
-        bytesOf(urls.video),
-        bytesOf(urls.image)
+      const [videoBytes] = await Promise.all(urls.map(bytesOf));
+      onChange([
+        setIfMissing({}),
+        set(key, ['preparedFor']),
+        set(videoBytes, ['videoBytes'])
       ]);
-      setMeasured({ key, video, image });
+      setAttempt(null);
     } catch {
-      setMeasured({ key, failed: true });
+      setAttempt({ key, failed: true });
     }
   };
 
-  const guess = estimate(asset, props.value, width);
-  const sizes = real?.video
-    ? `Video ${megabytes(real.video)} · as animated image ${megabytes(real.image)}`
-    : `Video up to ~${megabytes(guess.video)} · as animated image up to ~${megabytes(guess.image)}`;
+  const guess = estimate(asset, value, width);
+  const video = prepared
+    ? megabytes(value.videoBytes)
+    : `up to ~${megabytes(guess.video)}`;
 
   return (
     <Stack space={4}>
       {props.renderDefault(props)}
-      {urls && (
-        <Flex gap={3} wrap='wrap'>
+      {src && (
+        <Stack space={3}>
           <Text size={1} muted>
-            {sizes}
+            Video {video} · as animated image up to ~{megabytes(guess.image)}
           </Text>
-          {real?.busy ? (
-            <Text size={1} muted>
-              measuring…
-            </Text>
-          ) : (
-            !real?.video && (
+          {key && !prepared && (
+            <Flex gap={3} wrap='wrap'>
               <Text size={1}>
-                <button type='button' style={QUIET} onClick={measure}>
-                  {real?.failed
-                    ? 'could not measure, retry'
-                    : 'check real size'}
-                </button>
+                <span style={CAUTION}>
+                  Not prepared: the first visitor may wait while Cloudinary
+                  builds it.
+                </span>
               </Text>
-            )
+              {current?.busy ? (
+                <Text size={1} muted>
+                  Preparing…
+                </Text>
+              ) : (
+                !readOnly && (
+                  <Text size={1}>
+                    <button type='button' style={QUIET} onClick={prepare}>
+                      {current?.failed
+                        ? 'Could not prepare, retry'
+                        : 'Prepare clip'}
+                    </button>
+                  </Text>
+                )
+              )}
+            </Flex>
           )}
-        </Flex>
+        </Stack>
       )}
     </Stack>
   );

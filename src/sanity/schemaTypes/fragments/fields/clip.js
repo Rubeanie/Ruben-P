@@ -64,6 +64,10 @@ export const clipField = {
       description:
         'Plays as an animated image instead of a video: many times heavier.',
       initialValue: false
-    }
+    },
+    // Set by Prepare clip: the renditions it had Cloudinary build, and the
+    // first one's (the WebM's) size.
+    { name: 'preparedFor', type: 'string', hidden: true, readOnly: true },
+    { name: 'videoBytes', type: 'number', hidden: true, readOnly: true }
   ]
 };

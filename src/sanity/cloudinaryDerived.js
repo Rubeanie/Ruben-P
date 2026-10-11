@@ -121,7 +121,8 @@ export function clipWidthsFor(path, type, parent, carousel) {
 }
 
 // Exactly what visitors will request for a clip: WebM and MP4 per width. A
-// forced animated image goes through srcset at many widths, so it isn't warmed.
+// forced animated image goes through srcset at many widths, so it isn't
+// prepared.
 export function clipUrls(url, clip, widths) {
   if (!isClip(url) || clip?.animatedImage) return [];
   return widths.flatMap((w) =>
@@ -129,8 +130,8 @@ export function clipUrls(url, clip, widths) {
   );
 }
 
-// Cloudinary builds a video on its first request; asking now means visitors
-// get it already made. Fire and forget, and nothing here reads the answer.
+// Cloudinary builds a rendition on its first request; asking now means
+// visitors get it already made. Fire and forget, and nothing here reads the answer.
 export function warm(urls) {
   // keepalive, so a request made as the tab closes still goes out.
   urls.forEach((url) =>
