@@ -188,9 +188,11 @@ export function themeRendition(url) {
 export const PORTRAIT_QUERY = '(max-aspect-ratio: 3/4)';
 
 // Sized for the screen that paints it, in the best format the browser takes:
-// enough to cover a 1920x1080 screen whatever the photo's shape. A photo wider
-// than 16:9 fills by height, so it keeps 1080px of it (up to 3840 wide); any
-// other fills by width. Other hosts keep the original.
+// enough to cover a 1920x1080 screen whatever the photo's shape. A photo
+// narrower than 4:3 is cut to 4:3 around its subject first, the tallest any
+// screen wider than 3:4 shows; one wider than 16:9 fills by height, keeping
+// 1080px of it (up to 3840 wide); any other fills by width. Other hosts keep
+// the original.
 export function landscapeRendition(url) {
   if (isClip(url))
     return animatedClip(url, 'c_limit,w_1920', { length: THEME_CLIP });
@@ -204,7 +206,7 @@ export function landscapeRendition(url) {
   if (parsed.hostname === 'res.cloudinary.com') {
     parsed.pathname = parsed.pathname.replace(
       CLOUDINARY_CHAIN,
-      '/image/upload/$1if_ar_gt_1.78/c_limit,w_3840,h_1080/if_else/c_limit,w_1920/if_end/f_auto,q_auto/$2'
+      '/image/upload/$1if_ar_lt_1.33/c_fill,ar_4:3,g_auto/if_end/if_ar_gt_1.78/c_limit,w_3840,h_1080/if_else/c_limit,w_1920/if_end/f_auto,q_auto/$2'
     );
   }
 

@@ -38,7 +38,7 @@ test('landscapeRendition sizes Cloudinary photos', () => {
       'https://res.cloudinary.com/c/image/upload/t_x/v12/d/a.avif'
     )
   ).toBe(
-    'https://res.cloudinary.com/c/image/upload/t_x/if_ar_gt_1.78/c_limit,w_3840,h_1080/if_else/c_limit,w_1920/if_end/f_auto,q_auto/v12/d/a.avif'
+    'https://res.cloudinary.com/c/image/upload/t_x/if_ar_lt_1.33/c_fill,ar_4:3,g_auto/if_end/if_ar_gt_1.78/c_limit,w_3840,h_1080/if_else/c_limit,w_1920/if_end/f_auto,q_auto/v12/d/a.avif'
   );
   expect(landscapeRendition('https://example.com/a.png')).toBe(
     'https://example.com/a.png'
