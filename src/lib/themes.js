@@ -152,9 +152,54 @@ export const LAST_THEME_KEY = 'last-theme';
 // setBarColor hands over: React hydrates a meta by its content, so editing the
 // server one makes React append a second. WebKit can style <html> before this
 // runs; the colour fade that starts is finished.
+//
+// Inlined by its source text, so it stays self-contained and in syntax every
+// browser parses as is: no imports, no optional chaining.
+function gate(themes, key, defaultBar) {
+  const root = document.documentElement;
+  const style = root.style;
+  let last;
+  try {
+    last = localStorage.getItem(key);
+  } catch {}
+
+  // A theme with colours other than the last one shown, if there is one.
+  const coloured = [];
+  const fresh = [];
+  themes.forEach((theme, index) => {
+    if (!theme.colors) return;
+    coloured.push(index);
+    if (theme.url !== last) fresh.push(index);
+  });
+  const pool = fresh.length ? fresh : coloured;
+  if (!pool.length) return;
+  const index = pool[Math.floor(Math.random() * pool.length)];
+  const { colors, w: landscape, p: portrait, s: still } = themes[index];
+
+  for (const name in colors) {
+    style.setProperty('--color-' + name, colors[name]);
+    style.setProperty('--page-' + name, colors[name]);
+  }
+  style.setProperty('--image-background', `url('${landscape}')`);
+  style.setProperty('--image-background-portrait', `url('${portrait}')`);
+  if (still) style.setProperty('--image-background-still', `url('${still}')`);
+
+  const bar = document.querySelector('meta[name="theme-color"]');
+  if (bar && bar.content === defaultBar) {
+    const standIn = bar.cloneNode();
+    standIn.content = colors.background;
+    standIn.setAttribute('data-gate', '');
+    bar.before(standIn);
+  }
+  root.dataset.theme = index;
+  for (const animation of root.getAnimations())
+    if (animation.transitionProperty) animation.finish();
+}
+
 const json = (value) => JSON.stringify(value).replace(/</g, '\\u003c');
+// Each theme carries its renditions under short keys, to keep the page small.
 export const themeGate = (themes) =>
-  `(function(t,k,g){var e=document.documentElement,s=e.style,l,a=[],b=[];try{l=localStorage.getItem(k)}catch(_){}t.forEach(function(p,i){if(p.colors){a.push(i);if(p.url!==l)b.push(i)}});b=b.length?b:a;if(!b.length)return;var i=b[Math.floor(Math.random()*b.length)],c=t[i].colors,m=document.querySelector('meta[name="theme-color"]');for(var n in c){s.setProperty('--color-'+n,c[n]);s.setProperty('--page-'+n,c[n])}s.setProperty('--image-background',"url('"+t[i].w+"')");s.setProperty('--image-background-portrait',"url('"+t[i].p+"')");if(t[i].s)s.setProperty('--image-background-still',"url('"+t[i].s+"')");if(m&&m.content===g){var f=m.cloneNode();f.content=c.background;f.setAttribute('data-gate','');m.before(f)}e.dataset.theme=i;e.getAnimations().forEach(function(a){if(a.transitionProperty)a.finish()})})(${json(
+  `(${gate})(${json(
     themes.map(({ url, colors }) => ({
       url,
       colors,
