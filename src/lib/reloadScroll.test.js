@@ -61,6 +61,14 @@ test('a reload glides back once the page is tall enough and settled', () => {
   expect(p.env.history.scrollRestoration).toBe('auto');
 });
 
+test('a Back that loads the page again glides back too', () => {
+  const p = page({ type: 'back_forward', stored: '1200', height: 1000 });
+  expect(p.env.history.scrollRestoration).toBe('manual');
+  p.html.scrollHeight = 3000;
+  p.frame();
+  expect(p.scrolls).toEqual([1200]);
+});
+
 test('a heading in the URL is scrolled to below the scroll padding', () => {
   const p = page({ type: 'navigate', hash: '#heading', height: 3000 });
   expect(p.env.history.scrollRestoration).toBe('auto');
