@@ -40,6 +40,34 @@
   inset: 0;
 }
 
+// On a slow line the logo traces where the mark will appear, at its resting
+// width: about 52% of the frame's height, or 72% of a portrait screen's width
+// (measured on alpha). The same frame as the stage, painted over it, so the
+// trace fades out over the scene fading in.
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100lvh;
+  container-type: size;
+  pointer-events: none;
+  transition: opacity 0.8s var.$ease-out;
+  --loader-size: min(52lvh, 72vw);
+
+  @starting-style {
+    opacity: 0;
+  }
+
+  &[data-out] {
+    opacity: 0;
+  }
+}
+
 // The rig sets opacity and scale from the same progress as the camera.
 .vignette {
   position: absolute;
@@ -189,7 +217,8 @@
     height: auto;
   }
 
-  .stage {
+  .stage,
+  .loading {
     position: absolute;
   }
 
