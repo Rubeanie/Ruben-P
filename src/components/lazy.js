@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useState, useSyncExternalStore } from 'react';
+import { Suspense, useMemo, useState, useSyncExternalStore } from 'react';
 import dynamic from 'next/dynamic';
 
 const subscribe = () => () => {};
@@ -19,12 +19,20 @@ function lazily(Module) {
     );
     // Fixed at mount: changing the tree's shape would remount the module.
     const [boundary] = useState(hydrating);
-    return boundary ? (
-      <Suspense>
-        <Module {...props} />
-      </Suspense>
-    ) : (
-      <Module {...props} />
+    // The store re-renders this once hydrated. Handed the same element, the
+    // boundary sits that render out: an update reaching it before its code
+    // arrives makes React drop the server HTML for the empty fallback, and
+    // the page collapses until the code lands.
+    return useMemo(
+      () =>
+        boundary ? (
+          <Suspense>
+            <Module {...props} />
+          </Suspense>
+        ) : (
+          <Module {...props} />
+        ),
+      [boundary, props]
     );
   };
 }
