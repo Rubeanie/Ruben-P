@@ -9,7 +9,7 @@ import {
 } from 'react';
 import Link from 'next/link';
 import { LuX } from 'react-icons/lu';
-import { dismissKey, isDismissed } from '@/lib/announcement';
+import { DISMISS_MS, dismissKey, isHidden } from '@/lib/announcement';
 import { rateTween, stepRate } from '@/lib/rate';
 import styles from '@/styles/components/Announcement.module.scss';
 
@@ -19,15 +19,6 @@ const HYSTERESIS = 8; // px; stops flapping at the fit boundary
 
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
 
-// Dismissed here or in another tab, or past its end: the same test as the inline script.
-const isHidden = (key, end) => {
-  if (end && Date.now() >= end) return true;
-  try {
-    return isDismissed(localStorage.getItem(key));
-  } catch {
-    return false;
-  }
-};
 const onStorage = (callback) => {
   addEventListener('storage', callback);
   return () => removeEventListener('storage', callback);
@@ -58,7 +49,7 @@ export default function AnnouncementBand({
   // the inline script hid it before paint; after hydration it leaves the tree
   const hidden = useSyncExternalStore(
     onStorage,
-    () => isHidden(dismissKey(id), end),
+    () => isHidden(dismissKey(id), end, DISMISS_MS),
     () => false
   );
   const shown = !hidden && !gone;

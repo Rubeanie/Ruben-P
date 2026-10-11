@@ -1,8 +1,9 @@
-import { expect, test } from 'bun:test';
+import { expect, spyOn, test } from 'bun:test';
 import {
   DISMISS_MS,
+  announcementGate,
   dismissKey,
-  isDismissed,
+  isHidden,
   liveAnnouncement
 } from './announcement';
 import { GLYPHS } from '../components/AnnouncementSeparator';
@@ -64,12 +65,68 @@ test('every separator the Studio offers has a glyph', () => {
   expect(values).toContain(field.initialValue);
 });
 
-test('a dismissal lapses after a few days', () => {
-  const now = 1_000_000_000_000;
-  expect(isDismissed(String(now - 1000), now)).toBe(true);
-  expect(isDismissed(String(now - DISMISS_MS), now)).toBe(false);
+// [what, end, stored, hidden] at `now`; a stored Error throws, as blocked
+// storage does. The band and its inline gate must agree on every one.
+const cases = [
+  ['a recent dismissal hides it', 0, String(now - 1000), true],
+  ['a dismissal lapses after a few days', 0, String(now - DISMISS_MS), false],
   // The old flag ('1') and missing or junk values count as lapsed.
-  expect(isDismissed('1', now)).toBe(false);
-  expect(isDismissed(null, now)).toBe(false);
-  expect(isDismissed('x', now)).toBe(false);
+  ['the old flag has lapsed', 0, '1', false],
+  ['no dismissal shows it', 0, null, false],
+  ['a junk dismissal shows it', 0, 'x', false],
+  ['its end hides it', now, null, true],
+  ['before its end it shows', now + 1, null, false],
+  ['its end hides it with storage blocked', now, new Error('blocked'), true],
+  ['blocked storage shows it', 0, new Error('blocked'), false]
+];
+
+// The visitor's storage, holding `stored` under the band's key.
+const storage = (id, stored) => ({
+  getItem: (key) => {
+    if (stored instanceof Error) throw stored;
+    return key === dismissKey(id) ? stored : null;
+  }
+});
+
+// The band's check, as AnnouncementBand runs it.
+function bandHides(end, stored) {
+  const clock = spyOn(Date, 'now').mockReturnValue(now);
+  globalThis.localStorage = storage('a', stored);
+  try {
+    return isHidden(dismissKey('a'), end, DISMISS_MS);
+  } finally {
+    clock.mockRestore();
+    delete globalThis.localStorage;
+  }
+}
+
+// Runs the inline gate. Returns the flag it leaves on <html>.
+function gated(id, end, stored) {
+  let flag = null;
+  const env = {
+    Date: { now: () => now },
+    localStorage: storage(id, stored),
+    document: {
+      documentElement: {
+        setAttribute: (name, value) =>
+          name === 'data-announcement-hidden' && (flag = value)
+      }
+    }
+  };
+  new Function(...Object.keys(env), announcementGate(id, end))(
+    ...Object.values(env)
+  );
+  return flag;
+}
+
+for (const [what, end, stored, hidden] of cases)
+  test(`band and gate: ${what}`, () => {
+    expect(bandHides(end, stored)).toBe(hidden);
+    expect(gated('a', end, stored)).toBe(hidden ? 'a' : null);
+  });
+
+test('the gate escapes markup in the id', () => {
+  const id = 'a</script><script>alert(1)</script>';
+  expect(announcementGate(id, 0)).not.toContain('</script>');
+  expect(gated(id, now, null)).toBe(id);
 });
