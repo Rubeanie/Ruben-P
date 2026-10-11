@@ -3,7 +3,14 @@ import { reloadScroll } from './reloadScroll';
 
 // Runs the inline script against a stand-in page. `frame()` advances one
 // animation frame; `fire(type)` dispatches a window event.
-function page({ type = 'reload', hash = '', stored, height = 0, template }) {
+function page({
+  type = 'reload',
+  hash = '',
+  stored,
+  height = 0,
+  template,
+  painted = true
+}) {
   const listeners = {};
   const frames = [];
   const scrolls = [];
@@ -28,13 +35,18 @@ function page({ type = 'reload', hash = '', stored, height = 0, template }) {
       setItem: (key, value) => (env.saved = [key, value])
     },
     location: { href: 'https://example.com/about' + hash, hash },
-    performance: { getEntriesByType: () => [{ type }] },
+    performance: {
+      getEntriesByType: (kind) =>
+        kind === 'paint' ? (painted ? [{}] : []) : [{ type }],
+      now: () => 0
+    },
+    self: { PerformanceObserver: { supportedEntryTypes: ['paint'] } },
     scrollY: 0,
     innerHeight: 900,
     requestAnimationFrame: (fn) => frames.push(fn),
     getComputedStyle: (el) =>
       el === html ? { scrollPaddingTop: '90px' } : { scrollMarginTop: '10px' },
-    scrollTo: (x, y) => scrolls.push(y),
+    scrollTo: ({ top, behavior }) => scrolls.push([top, behavior]),
     setTimeout: (fn) => fn()
   };
   new Function(...Object.keys(env), reloadScroll)(...Object.values(env));
@@ -56,7 +68,7 @@ test('a reload glides back once the page is tall enough and settled', () => {
   expect(p.scrolls).toEqual([]);
   p.state.template = null;
   p.frame();
-  expect(p.scrolls).toEqual([1200]);
+  expect(p.scrolls).toEqual([[1200, 'auto']]);
   p.fire('load');
   expect(p.env.history.scrollRestoration).toBe('auto');
 });
@@ -66,13 +78,43 @@ test('a Back that loads the page again glides back too', () => {
   expect(p.env.history.scrollRestoration).toBe('manual');
   p.html.scrollHeight = 3000;
   p.frame();
-  expect(p.scrolls).toEqual([1200]);
+  expect(p.scrolls).toEqual([[1200, 'auto']]);
+});
+
+test('a reload ready by the first frame jumps there before it paints', () => {
+  const p = page({ stored: '1200', height: 3000, painted: false });
+  p.frame();
+  expect(p.scrolls).toEqual([[1200, 'instant']]);
+});
+
+test('a page still short at the first frame glides once it is tall enough', () => {
+  const p = page({ stored: '1200', height: 1000, painted: false });
+  p.frame();
+  p.html.scrollHeight = 3000;
+  p.frame();
+  expect(p.scrolls).toEqual([[1200, 'auto']]);
+});
+
+test('streamed modules are waited for even after load, for a while', () => {
+  const p = page({ stored: '1200', height: 3000, template: {} });
+  p.state.readyState = 'complete';
+  p.frame();
+  expect(p.scrolls).toEqual([]);
+  p.state.template = null;
+  p.frame();
+  expect(p.scrolls).toEqual([[1200, 'auto']]);
 });
 
 test('a heading in the URL is scrolled to below the scroll padding', () => {
-  const p = page({ type: 'navigate', hash: '#heading', height: 3000 });
+  const p = page({
+    type: 'navigate',
+    hash: '#heading',
+    height: 3000,
+    painted: false
+  });
   expect(p.env.history.scrollRestoration).toBe('auto');
-  expect(p.scrolls).toEqual([1400]);
+  p.frame();
+  expect(p.scrolls).toEqual([[1400, 'auto']]);
 });
 
 test('input before the page settles leaves the scroll alone', () => {
