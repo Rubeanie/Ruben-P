@@ -108,9 +108,12 @@ function Outcome({ state }) {
   );
 }
 
-function Entry({ label, source, children }) {
+// An applied entry steps back so what's left to do stands out.
+const DONE = { opacity: 0.45, transition: 'opacity 200ms ease-out' };
+
+function Entry({ label, source, done, children }) {
   return (
-    <Card padding={3} radius={2} border>
+    <Card padding={3} radius={2} border style={done ? DONE : undefined}>
       <Stack space={3}>
         <Flex gap={3} align='center' justify='space-between'>
           <Text size={0} muted>
@@ -150,7 +153,10 @@ function InContext({ match: { text, offset, length }, compact }) {
 function Match({ match, apply }) {
   const [state, run] = useApply(apply);
   return (
-    <Entry label={match.label} source='Spelling'>
+    <Entry
+      label={match.label}
+      source='Spelling'
+      done={state?.result === 'applied'}>
       <Text size={1} weight='medium'>
         {match.message}
       </Text>
@@ -243,6 +249,7 @@ function Fix({ fix, apply }) {
   return (
     <Entry
       label={fix.label}
+      done={state?.result === 'applied'}
       source={
         better ? (
           <Badge className='proofread-better' fontSize={0}>
