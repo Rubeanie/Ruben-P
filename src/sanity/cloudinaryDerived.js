@@ -1,4 +1,5 @@
 import { carouselSizes } from '@/lib/carousel';
+import { HERO_PHOTO_FIELDS, heroPhotos } from '@/lib/heroPhotos';
 import {
   CREATIVE_SIZES,
   PROSE_SIZES,
@@ -94,11 +95,16 @@ export async function readPalette(url, clip) {
 // The widths the site asks a clip for where the image field sits, found with
 // the same functions the readers use: a post cover's tile takes either fixed
 // width, an image block or carousel card the one its sizes work out to, then
-// the phone's (those autoplay on touch, tiles never do).
+// the phone's (those autoplay on touch, tiles never do). A hero's photo takes
+// its own rendition's, then the phone's.
 // `parent` is the field's parent value, `carousel` the module around a card.
 export function clipWidthsFor(path, type, parent, carousel) {
   if (path.length === 1 && path[0] === 'cover' && type === 'page.post')
     return CLIP_WIDTHS;
+  if (path.at(-1) === HERO_PHOTO_FIELDS[parent?._type]) {
+    const [photo] = heroPhotos(parent);
+    return photo ? [clipWidth(photo.sizes), PHONE_CLIP_WIDTH] : [];
+  }
   if (path.at(-1) !== 'image') return [];
   if (parent?._type === 'imageBlock') {
     const base = path.at(-3) === 'blocks' ? CREATIVE_SIZES : PROSE_SIZES;

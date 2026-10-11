@@ -33,6 +33,16 @@ describe('clipWidthsFor', () => {
       )
     ).toEqual([clipWidth(carouselSizes(3, true, false, 'medium')), 720]);
   });
+
+  test("a hero's photo takes its rendition's width, then the phone's", () => {
+    const hero = {
+      _type: 'hero.split',
+      image: { asset: { secure_url: clip, width: 1920, height: 1080 } }
+    };
+    const path = ['modules', { _key: 'h' }, 'image'];
+    expect(clipWidthsFor(path, 'page', hero)).toEqual([1920, 720]);
+    expect(clipWidthsFor(path, 'page', { _type: 'hero.split' })).toEqual([]);
+  });
 });
 
 describe('clipUrls', () => {
