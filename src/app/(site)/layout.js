@@ -31,6 +31,7 @@ import { resolveLink } from '@/lib/processUrl';
 import { navLinks } from '@/lib/navLinks';
 import { feedTypes } from '@/lib/resolveMetadata';
 import { navGate } from '@/lib/navGate';
+import { reloadScroll } from '@/lib/reloadScroll';
 import skip from '@/styles/components/SkipLink.module.scss';
 
 export async function generateMetadata() {
@@ -87,6 +88,7 @@ export default async function RootLayout({ children }) {
             __html: themeGate(normalisedThemes)
           }}
         />
+        <script dangerouslySetInnerHTML={{ __html: reloadScroll }} />
       </head>
       <body>
         <a href='#main' className={skip.skip}>
