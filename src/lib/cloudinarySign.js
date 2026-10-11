@@ -1,4 +1,4 @@
-import { createHash, randomBytes } from 'node:crypto';
+import { createHash } from 'node:crypto';
 import { folderFor } from '@/lib/cloudinaryFolder';
 import {
   BUSY,
@@ -38,9 +38,10 @@ export function signParams(params, secret) {
     .digest('hex');
 }
 
-// Signs one Studio upload for a page that exists. The editor names only the
-// page; the folder, file name, formats and no-overwrite are fixed here and
-// covered by the signature.
+// Signs one Studio upload for a page that exists. The editor names the page and
+// the scene; the folder, file name and formats are fixed here and covered by
+// the signature. Each scene has one poster, so a new one replaces the old in
+// place (a new version, so a new URL) instead of piling up beside it.
 // Accepted, since only project editors can sign: Cloudinary can't sign the
 // endpoint's resource type (allowed_formats still applies) or the file itself,
 // so a member could post a different allowed image under the poster's name,
@@ -49,8 +50,7 @@ export function createSignHandler({
   fetch: fetcher = (...args) => fetch(...args),
   env = process.env,
   now = Date.now,
-  exists = pageExists,
-  random = () => randomBytes(3).toString('hex')
+  exists = pageExists
 } = {}) {
   const memberOf = createMemberCheck({ fetch: fetcher, now, fresh: true });
   const limit = { limit: RATE_LIMIT, window: RATE_WINDOW, now };
@@ -74,21 +74,24 @@ export function createSignHandler({
     if (raw === null) return json({ error: 'bad request' }, 400);
     if (Buffer.byteLength(raw) > MAX_BODY)
       return json({ error: 'too large' }, 413);
-    let path;
+    let path, scene;
     try {
-      path = JSON.parse(raw)?.path;
+      ({ path, scene } = JSON.parse(raw) ?? {});
     } catch {
       return json({ error: 'bad request' }, 400);
     }
     const folder = folderFor(path);
+    // A Sanity array key, which names the poster's file.
+    if (typeof scene !== 'string' || !/^[\w-]{1,64}$/.test(scene))
+      return json({ error: 'bad request' }, 400);
     if (!folder || !(await exists(path).catch(() => false)))
       return json({ error: 'bad request' }, 400);
 
     const params = {
       allowed_formats: 'avif,jpg,png,webp',
       folder,
-      overwrite: false,
-      public_id: `3d-poster-${random()}`,
+      overwrite: true,
+      public_id: `3d-poster-${scene}`,
       timestamp: Math.floor(now() / 1000)
     };
     return json({

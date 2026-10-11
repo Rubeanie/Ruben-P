@@ -55,6 +55,7 @@ export default function PosterInput(props) {
       });
       const asset = await uploadToCloudinary(blob, {
         path,
+        scene: item._key,
         token: client.config().token
       });
       // A whole new value, so nothing of an older poster's derived data or

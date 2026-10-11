@@ -29,8 +29,7 @@ const handler = ({ env = ENV, fetcher = fakeFetch().fetcher } = {}) =>
     fetch: fetcher,
     env,
     now: () => NOW,
-    exists: async (path) => PAGES.includes(path),
-    random: () => 'abc123'
+    exists: async (path) => PAGES.includes(path)
   });
 
 const post = (body, token = MEMBER, ip = '203.0.113.1') =>
@@ -107,7 +106,7 @@ test('one address is throttled before its tokens reach Sanity', async () => {
   expect((await sign(post({ path: '/' }, 'bogus-x'))).status).toBe(429);
   expect(calls).toHaveLength(RATE_LIMIT);
   // Another address is still served.
-  const other = post({ path: '/' }, MEMBER, '198.51.100.7');
+  const other = post({ path: '/', scene: 'abc123' }, MEMBER, '198.51.100.7');
   expect((await sign(other)).status).toBe(200);
 });
 
@@ -119,8 +118,15 @@ test('a member is checked with Sanity on every request', async () => {
   expect(calls).toHaveLength(2);
 });
 
+test('a scene that is not a plain key is refused', async () => {
+  for (const scene of [undefined, '', '../x', 'a b', 'x'.repeat(65)])
+    expect((await handler()(post({ path: '/', scene }))).status).toBe(400);
+});
+
 test('a member gets the fixed params, signed, and never the secret', async () => {
-  const res = await handler()(post({ path: '/about', folder: 'Private' }));
+  const res = await handler()(
+    post({ path: '/about', scene: 'abc123', folder: 'Private' })
+  );
   expect(res.status).toBe(200);
   const text = await res.text();
   expect(text).not.toContain(SECRET);
@@ -128,7 +134,7 @@ test('a member gets the fixed params, signed, and never the secret', async () =>
   expect(body.params).toEqual({
     allowed_formats: 'avif,jpg,png,webp',
     folder: 'Website/Pages/about',
-    overwrite: false,
+    overwrite: true,
     public_id: '3d-poster-abc123',
     timestamp: NOW / 1000
   });

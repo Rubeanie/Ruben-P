@@ -3,7 +3,7 @@ const SIGNED_OUT = 'Sign out and back in to upload.';
 // Uploads an image straight from the editor's browser to Cloudinary, into the
 // page's folder. The site's members-only route signs the request (see
 // lib/cloudinarySign.js); the bytes never pass through it.
-export async function uploadToCloudinary(blob, { path, token }) {
+export async function uploadToCloudinary(blob, { path, scene, token }) {
   if (!token) throw new Error(SIGNED_OUT);
   const signing = await fetch('/api/studio/cloudinary-sign', {
     method: 'POST',
@@ -11,7 +11,7 @@ export async function uploadToCloudinary(blob, { path, token }) {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ path }),
+    body: JSON.stringify({ path, scene }),
     signal: AbortSignal.timeout(15_000)
   });
   if (!signing.ok)
