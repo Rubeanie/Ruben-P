@@ -15,6 +15,8 @@ concurrency:
 jobs:
   diagram:
     runs-on: ubuntu-latest
+    # A manual run from another branch would commit the diagram there.
+    if: github.ref == 'refs/heads/master'
     # Only this job may write, and only to commit the diagram back.
     permissions:
       contents: write
