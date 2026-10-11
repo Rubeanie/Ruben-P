@@ -1,18 +1,8 @@
 'use client';
 
 import { useLayoutEffect, useRef, useSyncExternalStore } from 'react';
-import { hold, holdEntrances } from '@/lib/reveal';
-
-// The Sass $ease-out token.
-const EASE_OUT = 'cubic-bezier(0.23, 1, 0.32, 1)';
-
-// Runs before first paint on a full load, except one from Back or Forward.
-// Lazy modules stream in after it and push down what follows, so it measures
-// again after any change until Reveal takes over: before the first paint at
-// once, at the usual line; after it at most once a frame, and only below the
-// screen, where nothing has been seen. Taking over measures what's pending.
-// If the app never hydrates, everything shows after five seconds.
-const script = `(function(f){if(performance.getEntriesByType('navigation')[0]?.type==='back_forward')return;var h=f(.9),q=0,o=new MutationObserver(function(){performance.getEntriesByType('paint').length?q||(q=requestAnimationFrame(function(){q=0;h=h.concat(f(1))})):h=h.concat(f(.9))}),d=function(){o.disconnect();if(q){cancelAnimationFrame(q);q=0;h=h.concat(f(1))}};self.__revealWatch={disconnect:d};o.observe(document.body,{childList:true,subtree:true});setTimeout(function(){d();h.forEach(function(u){u[2].cancel()})},5000)})(function(e){return(${hold})(!1,e).concat((${holdEntrances})(e))})`;
+import { hold, play } from '@/lib/reveal';
+import { revealWatch } from '@/lib/revealWatch';
 
 // Back and Forward bring a page back as it was left, so nothing enters. The
 // next reveal run uses the flag up.
@@ -21,34 +11,6 @@ if (typeof window !== 'undefined')
   addEventListener('popstate', () => (traversed = true));
 
 const subscribe = () => () => {};
-
-const filtered = (el, pseudo) => {
-  const value = getComputedStyle(el, pseudo).backdropFilter;
-  return Boolean(value) && value !== 'none';
-};
-const pseudoGlass = (el) => filtered(el, '::before') || filtered(el, '::after');
-const glass = (el) => filtered(el) || pseudoGlass(el);
-
-// An element still to play its own fade-in is left to it.
-const fadesItself = (el) =>
-  el
-    .getAnimations()
-    .some(
-      (a) =>
-        a.effect?.getKeyframes().some((k) => 'opacity' in k) &&
-        (a.effect.getComputedTiming().progress ?? 1) < 1
-    );
-
-// Opacity below 1 on an ancestor of a backdrop-filter makes that ancestor the
-// glass's backdrop root, and the blur only snaps on when the fade ends. So a
-// unit holding glass is faded piecewise: every branch without glass fades as
-// one, and a glass element fades itself (its blur crossfades in, no snap).
-function fadeTargets(el) {
-  if (fadesItself(el)) return [];
-  return pseudoGlass(el) || [...el.querySelectorAll('*')].some(glass)
-    ? [...el.children].flatMap(fadeTargets)
-    : [el];
-}
 
 // Plays each held unit in, in reading order, as it crosses the reveal line.
 export default function Reveal() {
@@ -62,7 +24,6 @@ export default function Reveal() {
   const adopt = useRef(hydrating);
 
   useLayoutEffect(() => {
-    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const waiting = new Set();
     const running = new Set();
     const played = new Map();
@@ -75,31 +36,9 @@ export default function Reveal() {
       observer.unobserve(unit[0]);
       unit[2].cancel();
     };
-    // Web Animations rather than transitions: each runs from the held value to
-    // whatever the element's own styles say (muted text at 0.7, a zoom card's
-    // rest scale), and it sits above a module's own CSS animation.
     const show = (unit, delay) => {
-      const [el] = unit;
-      const { translate, scale } = getComputedStyle(el);
+      const anims = play(unit, delay);
       appear(unit);
-      const timing = (duration) => ({
-        duration: still ? 300 : duration,
-        easing: EASE_OUT,
-        delay,
-        fill: 'backwards'
-      });
-      const anims = [];
-      if (!still)
-        anims.push(el.animate([{ translate, scale, offset: 0 }], timing(700)));
-      // A rich text block of media fades as one piece: split up, its dark
-      // plate showed solid while the picture inside was still faint.
-      const block = el.parentElement?.dataset.revealChildren === 'blocks';
-      const fades =
-        block && el.querySelector('img, video, iframe')
-          ? [el]
-          : fadeTargets(el);
-      for (const node of fades)
-        anims.push(node.animate([{ opacity: 0, offset: 0 }], timing(500)));
       played.set(unit, anims);
       for (const a of anims) {
         running.add(a);
@@ -187,7 +126,7 @@ export default function Reveal() {
   return hydrating ? (
     <script
       suppressHydrationWarning
-      dangerouslySetInnerHTML={{ __html: script }}
+      dangerouslySetInnerHTML={{ __html: revealWatch }}
     />
   ) : null;
 }
