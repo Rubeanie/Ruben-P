@@ -1,19 +1,8 @@
 import { VisualEditing } from 'next-sanity/visual-editing';
-import { draftMode } from 'next/headers';
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import { SanityLive } from '@/lib/sanity/live';
 
-export async function VisualEditingControls() {
-  const { isEnabled } = await draftMode();
-  // Draft sessions stay out of the visitor analytics and their free quotas.
-  if (!isEnabled)
-    return (
-      <>
-        <Analytics />
-        <SpeedInsights />
-      </>
-    );
+// Only rendered in draft mode; the layout decides.
+export function VisualEditingControls() {
   return (
     <>
       {/* Live updates only while editing: published changes reach visitors

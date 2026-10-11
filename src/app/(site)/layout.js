@@ -16,7 +16,9 @@ import { SiteLogo } from '@/components/SiteLogo';
 import { getSite, getThemes } from '@/lib/sanity/queries';
 import { introImages, menuHrefs } from '@/lib/introImages';
 import IntentImages from '@/components/IntentImages';
+import { draftMode } from 'next/headers';
 import { VisualEditingControls } from '@/components/VisualEditingControls';
+import { Telemetry } from '@/components/Telemetry';
 import { ServiceWorkerRegister } from '@/components/ServiceWorkerRegister';
 import { FontWarm } from '@/components/FontWarm';
 import { baseUrl } from '@/lib/env';
@@ -64,7 +66,11 @@ async function MenuIntent({ site }) {
 }
 
 export default async function RootLayout({ children }) {
-  const [themes, site] = await Promise.all([getThemes(), getSite()]);
+  const [themes, site, { isEnabled: draft }] = await Promise.all([
+    getThemes(),
+    getSite(),
+    draftMode()
+  ]);
   const normalisedThemes = themes.map(normalizeTheme).filter(Boolean);
   const logo = await sanitizeLogo(stegaClean(site.logo));
   return (
@@ -109,7 +115,8 @@ export default async function RootLayout({ children }) {
             logo={logo}
             author={site.author?.name}
           />
-          <VisualEditingControls />
+          {/* Draft sessions stay out of the visitor analytics and their free quotas. */}
+          {draft ? <VisualEditingControls /> : <Telemetry />}
           <ServiceWorkerRegister />
           <FontWarm />
         </ThemeProvider>
