@@ -63,3 +63,9 @@ test('keeps the caller order; no categories means no category tags', () => {
     '<atom:link href="https://example.com/feed.xml" rel="self"'
   );
 });
+
+test('without Site Settings the feed is still valid, just untitled', () => {
+  const xml = rssXml({ site: null, posts: [], baseUrl: 'https://x.test' });
+  expect(xml).toContain('<title></title>');
+  expect(xml).not.toContain('undefined');
+});

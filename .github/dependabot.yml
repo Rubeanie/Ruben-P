@@ -1,13 +1,21 @@
 version: 2
 updates:
+  # One PR a month per ecosystem; security fixes still arrive as they're found.
   - package-ecosystem: bun
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
     groups:
-      minor-and-patch:
-        update-types: [minor, patch]
+      all:
+        patterns: ['*']
+    # ESLint is on its way out for Biome, once Biome reads SCSS.
+    ignore:
+      - dependency-name: eslint
+        update-types: ['version-update:semver-major']
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
+    groups:
+      all:
+        patterns: ['*']

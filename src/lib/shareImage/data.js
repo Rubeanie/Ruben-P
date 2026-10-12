@@ -45,7 +45,7 @@ async function colours(page, photo, social) {
 
 // Everything the card draws for a path, or null when nothing is shared there.
 export async function getShareCard(path) {
-  const [page, site] = stegaClean(
+  const [page, siteSettings] = stegaClean(
     await Promise.all([
       fetchSanity(shareImagePageQuery, {
         params: { path },
@@ -54,6 +54,8 @@ export async function getShareCard(path) {
       fetchSanity(shareImageSiteQuery, { tags: ['site'] })
     ])
   );
+  // No Site Settings yet: the card still draws, without the site's logo.
+  const site = siteSettings ?? {};
   const social = !page && (await getVanitySocial(path));
   if (!page && !social) return null;
   const photo = social ? null : sharePhoto(page);
@@ -63,7 +65,7 @@ export async function getShareCard(path) {
     ...cardText({ page, social, site, path }),
     photo,
     ...(await colours(page, photo, social)),
-    logo: await sanitizeLogo(site.logo),
+    logo: site.logo ? await sanitizeLogo(site.logo) : null,
     socialLogo: social?.logo ? await sanitizeLogo(social.logo) : null
   };
 }
