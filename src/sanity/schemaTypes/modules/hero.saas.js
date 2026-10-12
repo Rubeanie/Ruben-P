@@ -4,6 +4,7 @@ import { textBlock } from '../fragments/text-block';
 import { scrollHintField } from '../fragments/fields/scroll-hint';
 import { uidField } from '../fragments/fields/uid';
 import { assetPreview } from '../../components/CloudinaryPreview';
+import { imageRequired } from '../objects/cloudinary-image';
 
 export const heroSaas = {
   name: 'hero.saas',
@@ -37,7 +38,7 @@ export const heroSaas = {
       name: 'image',
       type: 'cloudinaryImage',
       description: 'The photo the hero and its colours come from',
-      validation: (Rule) => Rule.required(),
+      validation: imageRequired,
       group: 'image'
     },
     {

@@ -7,6 +7,12 @@ const swatch = (name) => ({
   fields: [{ name: 'background', type: 'string' }]
 });
 
+// New documents fill in the image's defaults below, so an untouched image is
+// still an object: required means it has an asset, checked by the field that
+// needs one.
+export const imageRequired = (Rule) =>
+  Rule.custom((image) => (image?.asset ? true : 'Required'));
+
 // A Cloudinary image or video. The input fills palette, focus and lqip from
 // the asset, noting in derivedFrom what they were made for; the editor never
 // touches them.
@@ -18,8 +24,7 @@ export const cloudinaryImage = {
   fields: [
     {
       name: 'asset',
-      type: 'cloudinary.asset',
-      validation: (Rule) => Rule.required()
+      type: 'cloudinary.asset'
     },
     clipField,
     // Readers treat anything but an explicit false as on, so images saved
