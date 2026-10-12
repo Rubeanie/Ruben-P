@@ -27,7 +27,7 @@ export const DEFAULT_THEME = {
 };
 
 // Colours arrive as hex already: the server normalises them (themeColors.js)
-// and a visitor's photo is derived in hex, so the browser needs no colour maths.
+// and a photo read on the device (colorsFromImage) comes out in hex too.
 export function normalizeThemeDefinition(input) {
   if (!input) {
     return null;
@@ -321,7 +321,7 @@ export async function resolveThemeDefinition(theme) {
   }
 
   // Warm the rendition the stylesheet will pick, so the swap doesn't flash.
-  await loadThemeImage(
+  const image = await loadThemeImage(
     (matchMedia('(prefers-reduced-motion: reduce)').matches &&
       stillRendition(normalizedTheme.url)) ||
       (matchMedia(PORTRAIT_QUERY).matches
@@ -329,7 +329,9 @@ export async function resolveThemeDefinition(theme) {
         : landscapeRendition(normalizedTheme.url))
   );
 
-  if (!normalizedTheme.colors) {
+  // A bare URL (overrideTheme in the console) reads its colours here.
+  const colors = normalizedTheme.colors ?? (await colorsFromImage(image));
+  if (!colors) {
     throw new Error(
       `Could not resolve theme colors for ${normalizedTheme.url}`
     );
@@ -337,7 +339,21 @@ export async function resolveThemeDefinition(theme) {
 
   return {
     ...normalizedTheme,
+    colors,
     source: normalizedTheme.source || 'cms',
     status: 'ready'
   };
+}
+
+// Read on the device from a decoded image, in the hex the server derives;
+// null for a flat or tiny picture with no palette.
+export async function colorsFromImage(image) {
+  const [{ Vibrant }, { clampContrast, deriveThemeColorsFromPalette }] =
+    await Promise.all([
+      import('node-vibrant/browser'),
+      import('./themeColors')
+    ]);
+  const palette = await Vibrant.from(image).maxDimension(800).getPalette();
+  const colors = deriveThemeColorsFromPalette(palette);
+  return colors && clampContrast(colors);
 }

@@ -2,9 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/components/ThemeContext';
-import { DEFAULT_THEME } from '@/lib/themes';
+import { DEFAULT_THEME, colorsFromImage } from '@/lib/themes';
 
-const LONG_EDGE = 800;
 const MAX_BYTES = 100 * 1024 * 1024;
 
 const DECODE_ERROR = 'Couldn’t read that one. Try another photo.';
@@ -26,17 +25,8 @@ async function themeFromFile(file) {
   }
 
   try {
-    const [{ Vibrant }, { clampContrast, deriveThemeColorsFromPalette }] =
-      await Promise.all([
-        import('node-vibrant/browser'),
-        import('@/lib/themeColors')
-      ]);
-    const palette = await Vibrant.from(img)
-      .maxDimension(LONG_EDGE)
-      .getPalette();
-    const colors = deriveThemeColorsFromPalette(palette);
-    if (colors)
-      return { url, colors: clampContrast(colors), source: 'visitor' };
+    const colors = await colorsFromImage(img);
+    if (colors) return { url, colors, source: 'visitor' };
   } catch {
     // a flat or tiny picture has no palette to read
   }
