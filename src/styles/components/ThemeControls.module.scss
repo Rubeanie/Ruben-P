@@ -1,0 +1,201 @@
+@use '../abstracts/index' as var;
+
+$plate-radius: var.$common-border-radius;
+$stroke-rest: rgba(255, 255, 255, 0.24);
+$stroke-lit: rgba(255, 255, 255, 0.4);
+
+/* Next theme: the outline chip with a split swatch of the current theme */
+
+// --soft widens the seam into a ramp and --blend pulls the two colours towards
+// each other; animated together they read as a rotational blur.
+@property --soft {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --blend {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 0%;
+}
+
+.cycle {
+  gap: 0.55em;
+  margin: 0;
+  padding-inline: 1em 1.3em;
+  border: 0;
+  cursor: pointer;
+
+  // the spin holds the hovered look
+  &[aria-busy='true'] {
+    background: var.$chip-lit;
+  }
+}
+
+.swatch {
+  --a: color-mix(
+    in oklab,
+    #{var.$color-background} var(--blend),
+    #{var.$color-primary}
+  );
+  --b: color-mix(
+    in oklab,
+    #{var.$color-primary} var(--blend),
+    #{var.$color-background}
+  );
+  flex: none;
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+  // A hard conic stop is not anti-aliased, so the resting seam keeps a few
+  // degrees of ramp (about half a pixel at the rim) to read as a straight line.
+  --seam: max(var(--soft), 4deg);
+  // primary above a 30deg seam, background below
+  background: conic-gradient(
+    from 240deg,
+    var(--a) 0deg,
+    var(--a) calc(180deg - var(--seam)),
+    var(--b) calc(180deg + var(--seam)),
+    var(--b) calc(360deg - var(--seam)),
+    var(--a) 360deg
+  );
+}
+
+/* Photo: a dashed plate that opens the file picker or takes a drop */
+
+.drop {
+  --stroke: #{$stroke-rest};
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var.$space-3;
+  inline-size: 100%;
+  min-block-size: 6.5rem;
+  margin: 0;
+  padding: var.$space-3 var.$space-4;
+  border: 0;
+  border-radius: $plate-radius;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-family: var.$p-font;
+  text-align: start;
+  transition: background-color 0.15s ease;
+
+  &:active,
+  &[aria-busy='true'] {
+    --stroke: #{$stroke-lit};
+    background: var.$press-tint;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover:not([aria-busy='true']) {
+      --stroke: #{$stroke-lit};
+    }
+  }
+
+  &[data-drag] {
+    background: color-mix(in srgb, var.$color-primary 10%, transparent);
+  }
+
+  &[data-drag],
+  &[data-moving] {
+    --stroke: #{var.$color-primary};
+  }
+}
+
+// An SVG edge rather than a dashed border, so the dashes can march.
+.dashes {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: visible;
+  pointer-events: none;
+
+  rect {
+    width: calc(100% - 1px);
+    height: calc(100% - 1px);
+    rx: calc(#{$plate-radius} - 0.5px);
+    fill: none;
+    stroke: var(--stroke);
+    stroke-width: 1px;
+    stroke-dasharray: 4px 4px;
+    transition: stroke 0.15s ease;
+  }
+}
+
+.disc {
+  flex: none;
+  display: grid;
+  place-items: center;
+  inline-size: var.$touch-target;
+  block-size: var.$touch-target;
+  border-radius: 50%;
+  color: var.$color-primary;
+  background: color-mix(in srgb, var.$color-primary 12%, transparent);
+
+  svg {
+    inline-size: 1.4rem;
+    block-size: 1.4rem;
+  }
+}
+
+.copy {
+  display: grid;
+  gap: 0.125rem;
+  min-inline-size: 0;
+}
+
+.title {
+  font-weight: 600;
+  font-size: var.$p4-size;
+}
+
+// Two lines are kept for the longest message, so no state moves the plate.
+.hint {
+  min-block-size: 2lh;
+  font-weight: 400;
+  font-size: var.$p5-size;
+  line-height: var.$lh-small;
+  opacity: var.$muted;
+  text-wrap: pretty;
+
+  &[data-error] {
+    opacity: 1;
+    color: var.$color-error;
+  }
+}
+
+// Only a mouse or trackpad can drag a file in.
+.fine {
+  display: none;
+
+  @media (hover: hover) and (pointer: fine) {
+    display: inline;
+  }
+}
+
+@include var.solid-fallback {
+  .cycle[aria-busy='true'] {
+    background: var.$chip-lit-solid;
+  }
+}
+
+@media (max-width: var.$media-mobile-width) {
+  .drop {
+    flex-direction: column;
+    justify-content: center;
+    min-block-size: 10rem;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drop[data-drag],
+  .drop[aria-busy='true'] {
+    --stroke: #{var.$color-primary};
+  }
+}

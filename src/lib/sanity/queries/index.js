@@ -1,14 +1,26 @@
 import { fetchSanity, groq } from '../fetch';
 import { navigationQuery } from './navigation';
 import { seoQuery } from './metadata';
+import { linkQuery } from './fragments/link';
 import { themesQuery } from './fragments/themes';
+import { announcementQuery } from './fragments/announcement';
+import {
+  themeFromImage,
+  themeHasAllColors,
+  fillThemeColors
+} from '@/lib/imageTheme';
 
 export async function getSite() {
   const site = await fetchSanity(
     groq`
 			*[_type == 'site'][0]{
+				title,
+				alternateName,
+				author->{ name, link { ${linkQuery} } },
+				logo,
 				headerMenu->{ ${navigationQuery} },
 				footerMenu->{ ${navigationQuery} },
+				"announcements": array::compact(announcements[]->{ ${announcementQuery} }),
         ${seoQuery}
 			}
 		`,
@@ -29,10 +41,24 @@ export async function getThemes() {
 		`,
     { tags: ['theme'] }
   );
-  
-  if (!site?.themes || !Array.isArray(site.themes) || site.themes.length === 0) {
+
+  if (
+    !site?.themes ||
+    !Array.isArray(site.themes) ||
+    site.themes.length === 0
+  ) {
     return [];
   }
 
-  return site.themes;
+  // the site theme and a hero photo derive their colours the same way
+  return Promise.all(
+    site.themes.map(async (style) => {
+      if (!style.image || themeHasAllColors(style)) {
+        return style;
+      }
+
+      const colors = await themeFromImage(style.image);
+      return fillThemeColors(style, colors);
+    })
+  );
 }

@@ -1,43 +1,21 @@
-import { groq } from '../fetch';
-
-const imageFieldsQuery = groq`
-  _type,
-  crop{
-    _type,
-    right,
-    top,
-    left,
-    bottom
-  },
-  hotspot{
-    _type,
-    x,
-    y,
-    height,
-    width,
-  },
-  asset->{...}
-`;
+import groq from 'groq';
+import { cloudinaryStillQuery } from './fragments/cloudinary';
 
 const metaAttributesQuery = groq`
   _type,
   attributeValueString,
   attributeType,
   attributeKey,
-  attributeValueImage{
-    ${imageFieldsQuery}
-  }
+  attributeValueImage{ ${cloudinaryStillQuery} }
 `;
 
 const openGraphQuery = groq`
   _type,
   siteName,
-  url,
   description,
   title,
-  image{
-    ${imageFieldsQuery}
-  }
+  // Only what the still needs: og:image carries one URL.
+  image{ ${cloudinaryStillQuery} }
 `;
 
 const twitterQuery = groq`
@@ -52,7 +30,7 @@ const seoFieldsQuery = groq`
   _type,
   metaTitle,
   nofollowAttributes,
-  seoKeywords,
+  focusKeyphrase,
   metaDescription,
   openGraph{
     ${openGraphQuery}

@@ -1,0 +1,36 @@
+name: Diagram
+
+# Redraws diagram.svg, the codebase map in the README, after each push to the
+# default branch. Pushes made with GITHUB_TOKEN don't retrigger workflows.
+on:
+  workflow_dispatch:
+  push:
+    branches: [master]
+    paths-ignore: [diagram.svg]
+
+concurrency:
+  group: diagram
+  cancel-in-progress: true
+
+jobs:
+  diagram:
+    runs-on: ubuntu-latest
+    # A manual run from another branch would commit the diagram there.
+    if: github.ref == 'refs/heads/master'
+    # Only this job may write, and only to commit the diagram back.
+    permissions:
+      contents: write
+    env:
+      HUSKY: 0
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+      - run: bun install --frozen-lockfile
+      - run: bun scripts/diagram.js
+      - name: Commit the diagram if it changed
+        run: |
+          git diff --quiet diagram.svg && exit 0
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'chore: redraw the codebase diagram' diagram.svg
+          git push

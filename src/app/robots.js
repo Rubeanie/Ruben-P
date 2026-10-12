@@ -1,10 +1,20 @@
-export default function robots() {
+import { fetchSanity } from '@/lib/sanity/fetch';
+import { robotsQuery } from '@/lib/sanity/queries/robots';
+import { baseUrl } from '@/lib/env';
+
+export default async function robots() {
+  const site = await fetchSanity(robotsQuery, {
+    tags: ['site'],
+    perspective: 'published',
+    stega: false
+  });
+
   return {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: '/404'
+      disallow: site?.disallow
     },
-    sitemap: 'https://www.ruben-p.com/sitemap.xml'
+    sitemap: `${baseUrl}/sitemap.xml`
   };
 }
