@@ -1,18 +1,14 @@
-import { VisualEditing } from 'next-sanity';
-import { draftMode } from 'next/headers';
+import { SanityLive } from '@/lib/sanity/live';
+import { DraftModeUi } from '@/components/DraftModeUi';
 
+// Only rendered in draft mode; the layout decides.
 export function VisualEditingControls() {
   return (
     <>
-      {draftMode().isEnabled && (
-        <>
-          <VisualEditing />
-
-          <a className='draft-disable' href='/api/disable-draft'>
-            Disable draft mode
-          </a>
-        </>
-      )}
+      {/* Live updates only while editing: published changes reach visitors
+          through the publish webhook, without a Sanity connection per tab. */}
+      <SanityLive />
+      <DraftModeUi />
     </>
   );
 }

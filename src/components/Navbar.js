@@ -1,170 +1,121 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { RubenP } from '@/utils/icons';
-import { useSpring, animated } from '@react-spring/web';
-import { Squeeze as Hamburger } from 'hamburger-react';
-import { addEffect } from '@react-three/fiber';
-import Lenis from 'lenis';
+import { usePathname } from 'next/navigation';
+import Logo from '@/components/Logo';
+import styles from '@/styles/components/Navbar.module.scss';
 
-const navbarData = {
-  navigation: [
-    {
-      title: 'About',
-      icon: <p>About</p>,
-      url: '/about'
-    },
-    {
-      title: 'Portfolio',
-      icon: <p>Portfolio</p>,
-      url: '/portfolio'
-    },
-    {
-      title: 'Socials',
-      icon: <p>Socials</p>,
-      url: '/socials'
-    }
-  ]
-};
+const Navbar = ({ lead, links, logo }) => {
+  const linksRef = useRef(null);
+  const toggleRef = useRef(null);
+  const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+  const close = () => setOpen(false);
 
-const Navbar = () => {
-  const navRef = useRef(null);
-  const logoRef = useRef(null);
-  const pagesRef = useRef(null);
+  // Close the menu on navigation, including browser back.
+  const [prevPathname, setPrevPathname] = useState(pathname);
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
+    setOpen(false);
+  }
 
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState(false);
-  const [blurAmount, setBlurAmount] = useState(1);
-
-  const [springs, api] = useSpring(() => ({
-    WebkitBackdropFilter: 'blur(1px)',
-    backdropFilter: 'blur(1px)',
-    config: {
-      mass: 9,
-      tension: 265,
-      friction: 90,
-      precision: 0.02,
-      clamp: true
-    }
-  }));
-
-  const updateNav = useCallback(() => {
-    const shouldShowDropdown =
-      logoRef.current.offsetWidth + pagesRef.current.offsetWidth + 136 >=
-      navRef.current.offsetWidth;
-    setShowDropdown(shouldShowDropdown);
+  // Compact mode when the links overflow their row, published on <html> for the
+  // styles. The layout's inline script sets it before first paint; this keeps
+  // it current. Fitting again closes the menu, which only exists in compact mode.
+  useEffect(() => {
+    const links = linksRef.current;
+    const observer = new ResizeObserver(() => {
+      const overflowing = links.scrollWidth > links.clientWidth;
+      document.documentElement.toggleAttribute('data-nav-compact', overflowing);
+      if (!overflowing) setOpen(false);
+    });
+    // the row's own box only changes on resize; the links change with fonts and content
+    for (const el of [links, ...links.children]) observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
-  const handleScroll = useCallback(() => {
-    const newBlurAmount = window.scrollY > 100 ? 4 : 1;
-    setBlurAmount(newBlurAmount);
-    document.documentElement.setAttribute(
-      'data-nav-scrolled',
-      window.scrollY > 100 ? 'true' : 'false'
-    );
-  }, []);
-
-  const toggleDropdown = useCallback((open) => {
-    setOpenDropdown(open);
+  // Scroll lock, glass state and the footer all read these <html> attributes.
+  useEffect(() => {
     document.documentElement.setAttribute('data-nav-dropdown', open);
+    // the open menu covers the page and the band, so keep keyboard focus in the nav
+    for (const el of document.querySelectorAll('body > :not(nav, script)'))
+      el.toggleAttribute('inert', open);
+  }, [open]);
+
+  // Escape closes the menu and hands focus back to the toggle.
+  useEffect(() => {
+    if (!open) return;
+    const onKeyDown = (event) => {
+      if (event.key !== 'Escape') return;
+      setOpen(false);
+      toggleRef.current?.focus();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [open]);
+
+  useEffect(() => {
+    const onScroll = () =>
+      document.documentElement.setAttribute(
+        'data-nav-scrolled',
+        window.scrollY > 100 ? 'true' : 'false'
+      );
+    onScroll(); // a refresh can land mid-page
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  useEffect(() => {
-    const resizeObserver = new ResizeObserver(updateNav);
-    resizeObserver.observe(navRef.current);
-    resizeObserver.observe(logoRef.current);
-    resizeObserver.observe(pagesRef.current);
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      resizeObserver.disconnect();
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [updateNav, handleScroll]);
-
-  useEffect(() => {
-    api.start({
-      WebkitBackdropFilter: `blur(${openDropdown ? 7 : blurAmount}px)`,
-      backdropFilter: `blur(${openDropdown ? 7 : blurAmount}px)`
-    });
-  }, [openDropdown, blurAmount]);
-
-  useEffect(() => {
-    if (!showDropdown && openDropdown) {
-      toggleDropdown(false);
-    }
-  }, [showDropdown, openDropdown, toggleDropdown]);
-
-  // Use lenis to control scrolling
-  useEffect(() => {
-    const lenis = new Lenis({
-      smoothWheel: false,
-      syncTouch: true,
-      syncTouch: true
-    });
-    const updateLenis = (time) => {
-      if (!openDropdown) {
-        lenis.raf(time);
-      }
-    };
-    const removeEffect = addEffect(updateLenis);
-    return () => {
-      lenis.destroy();
-      removeEffect();
-    };
-  }, [openDropdown]);
 
   return (
-    <animated.nav style={springs}>
-      <div className='container' ref={navRef}>
-        <Link href='/' passHref title='Home' ref={logoRef}>
-          <RubenP
-            onClick={() => {
-              toggleDropdown(false);
-            }}
-          />
+    // A tap on the bar or the open menu's empty space closes the menu; links
+    // and the burger handle their own.
+    <nav
+      className={styles.nav}
+      onClick={(event) => {
+        if (open && !event.target.closest('a, button, input, select, textarea'))
+          close();
+      }}>
+      <div className={styles.container}>
+        <Link href={lead?.href ?? '/'} title={lead?.label} onClick={close}>
+          <Logo svg={logo} />
         </Link>
-        <div
-          className={`row-fixed ${showDropdown ? 'hidden' : ''}`}
-          ref={pagesRef}>
-          {navbarData.navigation.map((link) => (
-            <Link key={link.title} href={link.url} passHref>
-              {link.icon}
+        <div className={styles.links} ref={linksRef} data-nav-links>
+          {links.map((link) => (
+            <Link
+              key={link.key}
+              href={link.href}
+              className={link.cta ? styles.cta : undefined}>
+              <p>{link.label}</p>
             </Link>
           ))}
         </div>
-        <div className='dropdown'>
-          <div
-            className='column'
-            onClick={() => {
-              toggleDropdown(false);
-            }}>
-            <Link href='/' passHref>
-              <p>Home</p>
-            </Link>
-            {navbarData.navigation.map((link) => (
-              <Link key={`dropdown_${link.title}`} href={link.url} passHref>
-                {link.icon}
-              </Link>
-            ))}
+        <button
+          ref={toggleRef}
+          type='button'
+          className={styles.burger}
+          aria-expanded={open}
+          aria-controls='nav-menu'
+          aria-label='Show menu'
+          onClick={() => setOpen(!open)}
+        />
+        <div id='nav-menu' className={styles.dropdown} inert={!open}>
+          <div className={styles.menu}>
+            {[lead, ...links]
+              .filter((link) => link?.href)
+              .map((link, i) => (
+                <Link
+                  key={link.key}
+                  href={link.href}
+                  onClick={close}
+                  style={{ '--i': i }}
+                  className={link.cta ? styles.cta : undefined}>
+                  <p>{link.label}</p>
+                </Link>
+              ))}
           </div>
         </div>
-        <div hidden={!showDropdown}>
-          <Hamburger
-            toggled={openDropdown}
-            toggle={toggleDropdown}
-            size={37.5}
-            duration={0.3}
-            distance='sm'
-            color='var(--color-primary)'
-            easing='ease-out'
-            rounded={true}
-            label='Show menu'
-          />
-        </div>
       </div>
-    </animated.nav>
+    </nav>
   );
 };
 

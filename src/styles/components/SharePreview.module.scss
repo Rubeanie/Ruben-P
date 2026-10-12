@@ -1,0 +1,710 @@
+@use '../abstracts/index' as var;
+
+// Platform replicas in each platform's own dark theme, approximate.
+$sys:
+  system-ui,
+  -apple-system,
+  'Segoe UI',
+  Roboto,
+  Helvetica,
+  Arial,
+  sans-serif;
+
+.cover {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.missing {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+// Fallback marks drawn on the card itself: dotted under text, a dotted outline on images.
+.mark {
+  --mark-text: 0.8;
+  --mark-outline: 0.7;
+  text-decoration: underline dotted 1.5px rgb(var(--mark) / var(--mark-text));
+  text-underline-offset: 3px;
+  &[data-kind='site'] {
+    --mark: 224 163 58;
+  }
+  &[data-kind='generated'] {
+    --mark: 90 169 255;
+    --mark-outline: 0.75;
+  }
+  &[data-kind='missing'] {
+    --mark: 240 106 106;
+    --mark-text: 0.85;
+  }
+  &[data-kind='derived'] {
+    --mark: 255 255 255;
+    --mark-text: 0.25;
+  }
+  &:has(img) {
+    display: contents;
+  }
+  &:is([data-kind='site'], [data-kind='generated']) img {
+    outline: 1.5px dotted rgb(var(--mark) / var(--mark-outline));
+    outline-offset: -1.5px;
+  }
+}
+
+// Google, dark results page.
+.google {
+  position: relative;
+  max-width: 632px;
+  padding: 16px;
+  font-family: Arial, sans-serif;
+  background: #1f1f1f;
+  border-radius: 8px;
+  &[data-hidden] > :not(.gHidden) {
+    opacity: 0.35;
+  }
+}
+.gSite {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-block-end: 4px;
+  > span:last-child {
+    display: grid;
+    min-width: 0;
+  }
+}
+.gFav {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  background: #fff;
+  border-radius: 50%;
+  img {
+    width: 18px;
+    height: 18px;
+  }
+}
+.gName {
+  font-size: 14px;
+  line-height: 20px;
+  color: #dadce0;
+}
+.gUrl {
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 18px;
+  color: #bdc1c6;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.gTitle {
+  overflow: hidden;
+  padding-block: 5px 3px;
+  font-size: 20px;
+  line-height: 26px;
+  color: #99c3ff;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.gSnippet {
+  @include var.clamp(2);
+  font-size: 14px;
+  line-height: 22px;
+  color: #bdc1c6;
+}
+.gHidden {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline: 16px;
+  padding: 8px 12px;
+  font: 600 13px/1.3 $sys;
+  color: #fff;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.75);
+  border-radius: 6px;
+  translate: 0 -50%;
+}
+
+// X, dark.
+.x {
+  max-width: 516px;
+  overflow: hidden;
+  font-family: $sys;
+  background: #000;
+  border: 1px solid #2f3336;
+  border-radius: 16px;
+}
+.xLarge {
+  position: relative;
+  aspect-ratio: 2;
+}
+.xOverlay {
+  position: absolute;
+  inset-block-end: 12px;
+  inset-inline: 12px auto;
+  max-width: calc(100% - 24px);
+  overflow: hidden;
+  padding: 0 4px;
+  font-size: 13px;
+  line-height: 20px;
+  color: #fff;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  background: rgba(0, 0, 0, 0.77);
+  border-radius: 4px;
+}
+.xFrom {
+  margin-block-start: 4px;
+  font: 13px/16px $sys;
+  color: #71767b;
+}
+.xSmall {
+  display: flex;
+}
+.xThumb {
+  flex: none;
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border-inline-end: 1px solid #2f3336;
+}
+.xText {
+  display: grid;
+  align-content: center;
+  gap: 2px;
+  min-width: 0;
+  padding: 12px;
+  font-size: 15px;
+  line-height: 20px;
+}
+.xDim {
+  color: #71767b;
+}
+.xTitle {
+  overflow: hidden;
+  color: #e7e9ea;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.xDesc {
+  @include var.clamp(2);
+  color: #71767b;
+}
+.xBare {
+  padding: 12px 16px;
+  font-size: 15px;
+  line-height: 20px;
+  color: #1d9bf0;
+  word-break: break-all;
+}
+.xNote {
+  margin-block-start: 8px;
+  font-size: 13px;
+  color: #71767b;
+  word-break: normal;
+}
+
+// Facebook, dark.
+// The replica cards clip with clip-path, not overflow: one clip for the plate
+// and the image, so neither shows round the other's anti-aliased corner.
+.fb {
+  max-width: 500px;
+  clip-path: inset(0 round 8px);
+  font-family: $sys;
+  background: #3a3b3c;
+  border-radius: 8px;
+}
+.fbImage {
+  aspect-ratio: 1.91;
+}
+.fbSmall {
+  display: flex;
+}
+.fbThumb {
+  flex: none;
+  width: 144px;
+  height: 144px;
+}
+.fbText {
+  display: grid;
+  gap: 2px;
+  align-content: center;
+  min-width: 0;
+  padding: 10px 12px;
+}
+.fbDomain {
+  font-size: 12px;
+  line-height: 16px;
+  color: #b0b3b8;
+  text-transform: uppercase;
+}
+.fbTitle {
+  @include var.clamp(2);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  color: #e4e6eb;
+}
+.fbDesc {
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 20px;
+  color: #b0b3b8;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+// LinkedIn organic post, compact card.
+.li {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  max-width: 552px;
+  padding: 8px;
+  font-family: $sys;
+  background: #1b1f23;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+}
+.liThumb {
+  flex: none;
+  width: 128px;
+  aspect-ratio: 1.91;
+  clip-path: inset(0 round 4px);
+  border-radius: 4px;
+}
+.liText {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.liTitle {
+  @include var.clamp(2);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.9);
+}
+.liDomain {
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+// WhatsApp, dark, an outgoing bubble.
+.waRow {
+  display: flex;
+  justify-content: flex-end;
+  max-width: 420px;
+  padding: 12px;
+  background: #0b141a;
+  border-radius: 8px;
+}
+.wa {
+  width: min(330px, 100%);
+  padding: 3px 3px 6px;
+  font-family: $sys;
+  background: #005c4b;
+  border-radius: 8px 0 8px 8px;
+}
+.waCard {
+  clip-path: inset(0 round 6px);
+  background: #025144;
+  border-radius: 6px;
+}
+.waImage {
+  aspect-ratio: 1.91;
+}
+.waSmall {
+  display: flex;
+}
+.waThumb {
+  flex: none;
+  width: 88px;
+  height: 88px;
+}
+.waText {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 6px 10px 8px;
+}
+.waTitle {
+  @include var.clamp(2);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 19px;
+  color: #e9edef;
+}
+.waDesc {
+  @include var.clamp(2);
+  font-size: 12.5px;
+  line-height: 17px;
+  color: rgba(233, 237, 239, 0.7);
+}
+.waDomain {
+  font-size: 12px;
+  color: rgba(233, 237, 239, 0.6);
+}
+.waLink {
+  padding: 6px 6px 0;
+  font-size: 14.2px;
+  line-height: 19px;
+  color: #53bdeb;
+  word-break: break-all;
+}
+.waTime {
+  padding-inline-end: 6px;
+  font-size: 11px;
+  color: rgba(233, 237, 239, 0.6);
+  text-align: end;
+}
+
+// Discord desktop, default Dark theme (visual refresh), values from its client CSS.
+// gg sans only ships inside the client; this is the fallback stack its CSS names after it.
+.dcWrap {
+  --dc-chat: #1a1a1e;
+  --dc-embed: #242429;
+  --dc-border: #97979f1f;
+  --dc-text: #efeff1;
+  --dc-header: #fbfbfb;
+  --dc-muted: #abacb2;
+  --dc-link: #4d96ee;
+  display: flex;
+  gap: 16px;
+  max-width: 560px;
+  padding: 8px 16px 12px;
+  font-family:
+    'gg sans', var(--font-noto-sans), 'Noto Sans', 'Helvetica Neue', Helvetica,
+    Arial, sans-serif;
+  background: var(--dc-chat);
+  border-radius: 8px;
+}
+.dcAvatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-block-start: 2px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background: #5865f2;
+  border-radius: 50%;
+}
+.dcMessage {
+  display: grid;
+  gap: 0;
+  justify-items: start;
+  min-width: 0;
+}
+.dcHeader {
+  display: flex;
+  gap: 4px 8px;
+  flex-wrap: wrap;
+  align-items: baseline;
+  line-height: 22px;
+}
+.dcAuthor {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--dc-header);
+}
+.dcTime {
+  font-size: 12px;
+  color: var(--dc-muted);
+}
+.dcLink {
+  max-width: 100%;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--dc-link);
+  overflow-wrap: anywhere;
+}
+.dc {
+  box-sizing: border-box;
+  max-width: max-content;
+  margin-block: 2px;
+  background: var(--dc-embed);
+  border: 1px solid var(--dc-border);
+  border-inline-start: 4px solid var(--bar);
+  border-radius: 4px;
+}
+.dcGrid {
+  display: grid;
+  grid-template-columns: auto;
+  max-width: 516px;
+  padding: 2px 16px 16px 12px;
+  &[data-thumb] {
+    grid-template-columns: minmax(0, 1fr) min-content;
+  }
+}
+.dcSite,
+.dcTitle,
+.dcDesc,
+.dcImage {
+  grid-column: 1;
+  min-width: 0;
+}
+.dcSite {
+  margin-block-start: 8px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--dc-text);
+}
+.dcTitle {
+  margin-block-start: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+  color: var(--dc-link);
+  overflow-wrap: anywhere;
+}
+.dcDesc {
+  margin-block-start: 8px;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--dc-text);
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+// Discord scales the thumbnail into 80x80 without cropping.
+.dcThumb {
+  grid-row: 1 / 8;
+  grid-column: 2;
+  justify-self: end;
+  margin-block-start: 8px;
+  margin-inline-start: 16px;
+  img {
+    display: block;
+    max-width: 80px;
+    max-height: 80px;
+    border-radius: 4px;
+  }
+}
+.dcImage {
+  margin-block-start: 16px;
+  img {
+    display: block;
+    max-width: min(400px, 100%);
+    max-height: 300px;
+    border-radius: 4px;
+  }
+}
+
+// An invalid X card: the bare link, then what a valid card would show.
+.xStack {
+  display: grid;
+  gap: 16px;
+}
+.xWould {
+  display: grid;
+  gap: 8px;
+  opacity: 0.6;
+}
+.xWouldLabel {
+  font: 12px/16px $sys;
+  color: #71767b;
+}
+
+// Platform tabs, each with a status dot.
+.tabLabel {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+.dot {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  background: #3fb97a;
+  border-radius: 50%;
+  &[data-warn] {
+    background: #e0a33a;
+  }
+}
+// One row of tabs; on a phone it scrolls sideways instead of wrapping.
+.tabs {
+  overflow-x: auto;
+  @include var.hidden-touch-scrollbar;
+  // The TabList wraps by default; one row that scrolls keeps the tabs one control.
+  > div {
+    flex-wrap: nowrap !important;
+    width: max-content;
+  }
+}
+.srOnly {
+  @include var.sr-only;
+}
+
+// Slack desktop, dark. Slack-Lato is Slack's own build of Lato.
+.slWrap {
+  display: flex;
+  gap: 8px;
+  max-width: 560px;
+  padding: 8px 20px 12px;
+  font:
+    15px/22px Slack-Lato,
+    var(--font-lato),
+    Lato,
+    'Helvetica Neue',
+    Helvetica,
+    Arial,
+    sans-serif;
+  color: #d1d2d3;
+  background: #1a1d21;
+  border-radius: 8px;
+}
+.slAvatar {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin-block-start: 4px;
+  font-weight: 900;
+  color: #fff;
+  background: #4a8b6e;
+  border-radius: 8px;
+}
+.slMessage {
+  display: grid;
+  justify-items: start;
+  min-width: 0;
+}
+.slHeader {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.slAuthor {
+  font-weight: 900;
+  color: #f8f8f8;
+}
+.slTime {
+  font-size: 12px;
+  color: #ababad;
+}
+.slLink {
+  max-width: 100%;
+  color: #1d9bd1;
+  overflow-wrap: anywhere;
+}
+.sl {
+  max-width: 100%;
+  margin-block-start: 4px;
+  padding-inline-start: 12px;
+  border-inline-start: 4px solid #35373b;
+  border-radius: 2px;
+}
+.slBody {
+  display: flex;
+  gap: 12px;
+}
+.slText {
+  display: grid;
+  min-width: 0;
+}
+.slSite {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-weight: 700;
+  color: #f8f8f8;
+}
+.slIcon {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+}
+.slTitle {
+  font-weight: 700;
+  color: #1d9bd1;
+  overflow-wrap: anywhere;
+}
+.slDesc {
+  color: #d1d2d3;
+  overflow-wrap: anywhere;
+}
+// Longest side 75px, shape kept.
+.slThumb {
+  flex: none;
+  margin-inline-start: auto;
+  img {
+    display: block;
+    max-width: 75px;
+    max-height: 75px;
+    border-radius: 4px;
+  }
+}
+.slImage {
+  margin-block-start: 8px;
+  img {
+    display: block;
+    max-width: min(360px, 100%);
+    max-height: 500px;
+    border-radius: 8px;
+  }
+}
+
+// Apple Messages, dark, a sent rich link.
+.imWrap {
+  display: grid;
+  justify-items: end;
+  max-width: 420px;
+  padding: 12px 14px 8px;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, 'Segoe UI',
+    Helvetica, Arial, sans-serif;
+  background: #000;
+  border-radius: 8px;
+}
+.im {
+  width: min(270px, 100%);
+  clip-path: inset(0 round 18px);
+  background: #262628;
+  border-radius: 18px;
+}
+.imImage {
+  overflow: hidden;
+}
+.imCaption {
+  display: grid;
+  gap: 1px;
+  padding: 9px 12px 10px;
+}
+.imTitle {
+  @include var.clamp(2);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 19px;
+  color: #fff;
+}
+.imDomain {
+  font-size: 13px;
+  line-height: 17px;
+  color: #98989f;
+}
+.imIconCard {
+  display: flex;
+  align-items: center;
+  .imCaption {
+    padding-inline-start: 10px;
+  }
+}
+.imIcon {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  margin-inline-start: 12px;
+  border-radius: 9px;
+}
+.imMeta {
+  margin-block-start: 3px;
+  font-size: 11px;
+  color: #8e8e93;
+}

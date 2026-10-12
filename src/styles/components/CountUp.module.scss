@@ -1,0 +1,21 @@
+@use '../abstracts/index' as var;
+
+// The final string sits under the counter so changing digits cannot resize the row.
+.count {
+  display: inline-grid;
+  // Every layer spans the final string's width and the digits end-align
+  // inside it, so the unit keeps its gap and no box moves while counting.
+  text-align: end;
+}
+
+.count > * {
+  grid-area: 1 / 1;
+}
+
+.reserve {
+  visibility: hidden;
+}
+
+.srOnly {
+  @include var.sr-only;
+}
