@@ -42,7 +42,7 @@ const post = (body, token = MEMBER, ip = '203.0.113.1') =>
     body: typeof body === 'string' ? body : JSON.stringify(body)
   });
 
-test("the signature matches Cloudinary's documented example", () => {
+test("the signature follows Cloudinary's recipe on its documented example", () => {
   expect(
     signParams(
       {
@@ -52,7 +52,7 @@ test("the signature matches Cloudinary's documented example", () => {
       },
       'abcd'
     )
-  ).toBe('bfd09f95f331f558cbd1320e67aa8d488770583e');
+  ).toBe('cc927e1290f9e3ae4c1a741eda21a4630b4ce80f9ce0bc0296337d25cf40f91e');
 });
 
 test('a page path maps to a plain folder under Website/Pages', () => {

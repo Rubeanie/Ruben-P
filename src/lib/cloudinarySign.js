@@ -26,14 +26,15 @@ async function pageExists(path) {
 }
 
 // Cloudinary's documented recipe: every signed param as k=v, sorted by name,
-// joined with &, the secret appended, SHA-1 in hex. file, api_key,
-// resource_type and cloud_name are never part of it.
+// joined with &, the secret appended, SHA-256 in hex (Cloudinary takes it as
+// well as the weaker SHA-1). file, api_key, resource_type and cloud_name are
+// never part of it.
 export function signParams(params, secret) {
   const serial = Object.keys(params)
     .sort()
     .map((key) => `${key}=${params[key]}`)
     .join('&');
-  return createHash('sha1')
+  return createHash('sha256')
     .update(serial + secret)
     .digest('hex');
 }
