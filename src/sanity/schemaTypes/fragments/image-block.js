@@ -1,6 +1,7 @@
 import { MdImage } from 'react-icons/md';
 import { blockLayoutFields } from './fields/block-layout';
 import { assetPreview } from '../../components/CloudinaryPreview';
+import { imageRequired } from '../objects/cloudinary-image';
 
 export const imageBlock = {
   name: 'imageBlock',
@@ -15,7 +16,7 @@ export const imageBlock = {
     {
       name: 'image',
       type: 'cloudinaryImage',
-      validation: (Rule) => Rule.required(),
+      validation: imageRequired,
       fieldset: 'info'
     },
     {

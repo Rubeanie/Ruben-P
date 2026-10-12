@@ -17,7 +17,7 @@ export const DEFAULT_THEME_COLORS = {
 };
 
 export const DEFAULT_THEME_URL =
-  'https://res.cloudinary.com/ruben-p/image/upload/f_avif,q_30,c_limit,w_800/v1645499430/Images/Backgrounds/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq.webp';
+  'https://res.cloudinary.com/ruben-p/image/upload/f_avif,q_30,c_limit,w_800/v1645499430/Website/Themes/paolo-celentano-qMjZUL0_pOw-unsplash_jioifq.webp';
 
 export const DEFAULT_THEME = {
   url: DEFAULT_THEME_URL,

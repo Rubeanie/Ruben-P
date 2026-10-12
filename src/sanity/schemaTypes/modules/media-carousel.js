@@ -108,7 +108,9 @@ const carouselScene = {
     reuse(threeJs, 'poster', {
       hidden: false,
       validation: (Rule) =>
-        Rule.required().error('A poster shows until the model loads.')
+        Rule.custom((poster) =>
+          poster?.asset ? true : 'A poster shows until the model loads.'
+        )
     }),
     reuse(threeJs, 'background', {
       description: 'Behind the model; the card stays opaque without one.'

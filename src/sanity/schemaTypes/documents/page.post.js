@@ -1,5 +1,6 @@
 import { MdEdit } from 'react-icons/md';
 import { assetPreview } from '../../components/CloudinaryPreview';
+import { imageRequired } from '../objects/cloudinary-image';
 import { pageBlock } from '../fragments/page-block';
 import { metadata } from '../fragments/metadata';
 import { headingLinksField } from '../fragments/fields/heading-links';
@@ -35,7 +36,7 @@ export const pagePost = {
       name: 'cover',
       type: 'cloudinaryImage',
       description: 'Shown on tiles and share cards',
-      validation: (Rule) => Rule.required(),
+      validation: imageRequired,
       group: 'content'
     },
     {
