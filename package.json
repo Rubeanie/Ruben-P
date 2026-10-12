@@ -30,7 +30,7 @@
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
     "@react-three/postprocessing": "^3.1.2",
-    "@sanity/client": "^7.23.0",
+    "@sanity/client": "^8.9.0",
     "@sanity/code-input": "^7.1.6",
     "@sanity/color-input": "^6.0.8",
     "@sanity/presentation": "^2.0.0",
