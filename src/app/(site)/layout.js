@@ -73,7 +73,9 @@ export default async function RootLayout({ children }) {
     draftMode()
   ]);
   const normalisedThemes = themes.map(normalizeTheme).filter(Boolean);
-  const logo = await sanitizeLogo(stegaClean(site.logo));
+  // A string even without Site Settings: React's server payload drops an
+  // undefined __html, and the renderer then rejects the empty object.
+  const logo = (await sanitizeLogo(stegaClean(site.logo))) ?? '';
   return (
     // The announcement's inline script may flag <html> before hydration.
     <html

@@ -27,9 +27,9 @@ export async function getSite() {
     { tags: ['site'] }
   );
 
-  if (!site) throw new Error("Missing 'site' document in Sanity Studio");
-
-  return site;
+  // A fresh dataset has no Site Settings yet; the site still builds, bare, so
+  // the Studio can go live and fill them in.
+  return site ?? {};
 }
 
 export async function getThemes() {

@@ -44,13 +44,14 @@ const item = (post, baseUrl) => {
     .join('');
 };
 
-// Posts arrive already filtered and ordered.
+// Posts arrive already filtered and ordered; a dataset without Site Settings
+// still gets a valid, untitled feed.
 export const rssXml = ({ site, posts, baseUrl }) =>
   '<?xml version="1.0" encoding="UTF-8"?>' +
   '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>' +
-  `<title>${escape(site.title)}</title>` +
+  `<title>${escape(site?.title ?? '')}</title>` +
   `<link>${escape(baseUrl)}</link>` +
-  `<description>${escape(site.description || site.title)}</description>` +
+  `<description>${escape(site?.description || site?.title || '')}</description>` +
   '<language>en</language>' +
   `<atom:link href="${escape(baseUrl + FEED_PATH)}" rel="self" type="application/rss+xml"/>` +
   posts.map((p) => item(p, baseUrl)).join('') +

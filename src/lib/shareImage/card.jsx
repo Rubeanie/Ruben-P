@@ -294,12 +294,14 @@ export async function shareCard(card) {
           justifyContent: 'space-between'
         }}>
         {facts.element}
-        <img
-          src={logoSrc(card.logo, '#ffffff')}
-          width={LOGO_SIZE}
-          height={LOGO_SIZE}
-          alt=''
-        />
+        {card.logo && (
+          <img
+            src={logoSrc(card.logo, '#ffffff')}
+            width={LOGO_SIZE}
+            height={LOGO_SIZE}
+            alt=''
+          />
+        )}
       </Positioned>
     </div>
   );
