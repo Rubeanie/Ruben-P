@@ -11,7 +11,23 @@ import {
   portraitRendition
 } from '@/lib/themes';
 
-const pill = { borderRadius: 999, padding: '3px 10px', fontSize: 10 };
+// The site's glossy button on the primary, with its dark ink.
+const button = (primary) => ({
+  borderRadius: 999,
+  padding: '3px 10px',
+  fontSize: 10,
+  background: `linear-gradient(color-mix(in srgb, ${primary} 75%, #fff), ${primary})`,
+  color: INKS.dark
+});
+
+// Headings are primary on the site, lifted off the photo by a shadow.
+const heading = (primary) => ({
+  color: primary,
+  filter: 'drop-shadow(0 0 8px rgba(0, 0, 0, 0.85))',
+  fontWeight: 700,
+  lineHeight: 1.1,
+  letterSpacing: '-0.02em'
+});
 
 // Ground, photo laid over it at 35% (as the site does), and a padded column.
 function Frame({ src, colors, radius, pad, style, children }) {
@@ -57,7 +73,7 @@ function Frame({ src, colors, radius, pad, style, children }) {
   );
 }
 
-function Navbar({ logo, logoHeight = 14, children }) {
+function Navbar({ logo, logoHeight = 14, primary, children }) {
   return (
     <div
       style={{
@@ -67,8 +83,11 @@ function Navbar({ logo, logoHeight = 14, children }) {
         justifyContent: 'space-between',
         padding: '4px 4px 4px 12px',
         borderRadius: 999,
-        background: 'rgba(0, 0, 0, 0.35)',
-        backdropFilter: 'blur(8px)'
+        // The site's light glass at the top of a page, logo in the primary.
+        border: '1px solid rgba(255, 255, 255, 0.08)',
+        background: 'rgba(0, 0, 0, 0.12)',
+        backdropFilter: 'blur(4px) saturate(120%)',
+        color: primary
       }}>
       {logo ? (
         <span
@@ -95,46 +114,24 @@ function ThemeMock({ url, colors, title, message }) {
       radius={12}
       pad={10}
       style={{ aspectRatio: '16 / 9' }}>
-      <Navbar logo={logo}>
-        <span style={{ ...pill, background: colors.primary, color: INKS.dark }}>
-          Contact
-        </span>
+      <Navbar logo={logo} primary={colors.primary}>
+        <span style={button(colors.primary)}>Contact</span>
       </Navbar>
       <div style={{ margin: 'auto 0', display: 'grid', gap: 6 }}>
-        <div
-          style={{
-            fontSize: 22,
-            fontWeight: 700,
-            lineHeight: 1.1,
-            letterSpacing: '-0.02em'
-          }}>
+        <div style={{ ...heading(colors.primary), fontSize: 22 }}>
           {title || 'Untitled style'}
         </div>
-        <div style={{ fontSize: 11, opacity: 0.8 }}>
+        <div style={{ fontSize: 11 }}>
           {message || 'A line of body text over the photo.'}
         </div>
         <span
           style={{
-            ...pill,
+            ...button(colors.primary),
             justifySelf: 'center',
-            marginTop: 4,
-            background: colors.primary,
-            color: INKS.dark
+            marginTop: 4
           }}>
           View work
         </span>
-      </div>
-      <div
-        style={{
-          width: '60%',
-          padding: '6px 10px',
-          borderRadius: 8,
-          background: colors.secondary,
-          fontSize: 10,
-          textAlign: 'left'
-        }}>
-        <span style={{ color: colors.primary, fontWeight: 600 }}>Latest</span> A
-        card on the secondary colour
       </div>
     </Frame>
   );
@@ -158,7 +155,7 @@ function PhoneMock({ url, colors, title, message }) {
         radius={14}
         pad={6}
         style={{ aspectRatio: '9 / 19.5' }}>
-        <Navbar logo={logo} logoHeight={9}>
+        <Navbar logo={logo} logoHeight={9} primary={colors.primary}>
           <LuMenu size={11} style={{ marginRight: 6 }} />
         </Navbar>
         <div
@@ -171,24 +168,20 @@ function PhoneMock({ url, colors, title, message }) {
           <div
             style={{
               ...clamp(3),
-              fontSize: 13,
-              fontWeight: 700,
-              lineHeight: 1.1,
-              letterSpacing: '-0.02em'
+              ...heading(colors.primary),
+              fontSize: 13
             }}>
             {title || 'Untitled style'}
           </div>
-          <div style={{ ...clamp(3), fontSize: 8, opacity: 0.8 }}>
+          <div style={{ ...clamp(3), fontSize: 8 }}>
             {message || 'A line of body text over the photo.'}
           </div>
           <span
             style={{
-              ...pill,
+              ...button(colors.primary),
               justifySelf: 'center',
               padding: '2px 8px',
-              fontSize: 8,
-              background: colors.primary,
-              color: INKS.dark
+              fontSize: 8
             }}>
             View work
           </span>
@@ -231,7 +224,8 @@ export function ThemePreview({ url, value }) {
         </Flex>
         <Text size={0} muted>
           Rough preview. Blank colours show what the site fills in from the
-          image.
+          image. Secondary only tints the 3D scenes and share images, so it
+          isn&apos;t shown here.
         </Text>
       </Stack>
     </Card>
