@@ -11,9 +11,9 @@ import {
 
 export const DEFAULT_THEME_COLORS = {
   primary: '#ed5f68',
-  secondary: '#33456d',
-  background: '#0f182d',
-  text: '#eaf6ff'
+  secondary: '#2f446b',
+  background: '#0d182d',
+  text: '#ccdbf7'
 };
 
 export const DEFAULT_THEME_URL =
@@ -209,18 +209,20 @@ export const themeGate = (themes) =>
     }))
   )},${json(LAST_THEME_KEY)},${json(DEFAULT_THEME_COLORS.background)})`;
 
-// The server and the Studio analyse the same small JPG of a hero photo.
+// The server and the Studio analyse the same small PNG of a hero photo. PNG is
+// lossless and Vibrant reads every pixel (quality 1, no downscale of its own),
+// so both read the same colours.
 export function themeRendition(url) {
   // A theme video's colours come from its first frame; an image field's clip
   // comes as its still (stillOf), at the clip's Start.
-  if (isClip(url)) return videoTransform(url, 'so_0,w_800,f_jpg,q_80');
+  if (isClip(url)) return videoTransform(url, 'so_0,w_200,f_png');
   const parsed = new URL(url);
 
   if (parsed.hostname === 'res.cloudinary.com') {
     // Last in the chain, just before the version, so no named or earlier
     // transform overrides it; Vibrant can't read the AVIF or WebP served
-    // otherwise. f_jpg wins over a video still's .webp too.
-    return cloudinaryTransform(url, 'w_800,f_jpg,q_80');
+    // otherwise. f_png wins over a video still's .webp too.
+    return cloudinaryTransform(url, 'w_200,f_png');
   }
 
   // The server fetches this, so it reaches nothing but the CDN.
@@ -345,8 +347,8 @@ export async function resolveThemeDefinition(theme) {
   };
 }
 
-// Read on the device from a decoded image, in the hex the server derives;
-// null for a flat or tiny picture with no palette.
+// Read on the device from a decoded image, through the same derivation as the
+// server, in hex; null for a flat or tiny picture with no palette.
 export async function colorsFromImage(image) {
   const [{ Vibrant }, { clampContrast, deriveThemeColorsFromPalette }] =
     await Promise.all([

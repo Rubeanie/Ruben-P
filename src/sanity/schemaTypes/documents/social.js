@@ -1,5 +1,6 @@
 import { MdAccountCircle } from 'react-icons/md';
 import { InlineSvgPreviewComponent } from '@focus-reactive/sanity-plugin-inline-svg-input';
+import { DEFAULT_THEME_COLORS } from '@/lib/themes';
 
 export const PreviewComponent = ({ logo, backgroundColor }) => {
   return (
@@ -35,7 +36,7 @@ export const social = {
       title: 'Brand color',
       type: 'color',
       options: {
-        colorList: [{ hex: '#ed5f68' }]
+        colorList: [{ hex: DEFAULT_THEME_COLORS.primary }]
       }
     },
     {

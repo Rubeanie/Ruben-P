@@ -7,14 +7,15 @@ const cachedThemeFromImage = unstable_cache(
   async (url) => {
     const rendition = themeRendition(url);
     // unstable_cache keeps the colours; the photo itself needn't be cached too.
-    // Strict transformations cut a new rendition only for the site's Referer.
+    // Strict transformations cut a new rendition only for the site's Referer,
+    // which Cloudinary matches with its trailing slash.
     const res = await fetch(rendition, {
       cache: 'no-store',
-      headers: { Referer: baseUrl }
+      headers: { Referer: `${baseUrl}/` }
     });
     const buffer = Buffer.from(await res.arrayBuffer());
     const { Vibrant } = await import('node-vibrant/node');
-    const palette = await Vibrant.from(buffer).getPalette();
+    const palette = await Vibrant.from(buffer).quality(1).getPalette();
     const colors = deriveThemeColorsFromPalette(palette);
 
     return colors ? clampContrast(colors) : null;

@@ -6,8 +6,8 @@ import { hierarchy, pack } from 'd3-hierarchy';
 
 const SIZE = 1000;
 const MARGIN = 20;
-const BACKGROUND = '#0f182d';
-const TEXT = '#eaf6ff';
+const BACKGROUND = '#0d182d';
+const TEXT = '#ccdbf7';
 const MUTED = '#a9b6c9';
 const FONT = `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif`;
 
