@@ -5,7 +5,11 @@ import { useClient } from 'sanity';
 import { apiVersion } from '@/lib/env';
 import { useSiteLogo } from '../useSiteLogo';
 import { COLOR_FIELDS, useImageColors } from '../imageColors';
-import { DEFAULT_THEME_COLORS, portraitRendition } from '@/lib/themes';
+import {
+  DEFAULT_THEME_COLORS,
+  landscapeRendition,
+  portraitRendition
+} from '@/lib/themes';
 
 const pill = { borderRadius: 999, padding: '3px 10px', fontSize: 10 };
 
@@ -80,11 +84,13 @@ function Navbar({ logo, logoHeight = 14, children }) {
   );
 }
 
+// What a desktop paints, so opening a theme also builds its background before
+// the first visitor asks.
 function ThemeMock({ url, colors, title, message }) {
   const logo = useSiteLogo(useClient({ apiVersion }));
   return (
     <Frame
-      src={url}
+      src={url && landscapeRendition(url)}
       colors={colors}
       radius={12}
       pad={10}
