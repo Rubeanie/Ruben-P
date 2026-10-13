@@ -17,11 +17,35 @@ test('deriveThemeColorsFromPalette derives four hex colors from a palette', () =
   const colors = deriveThemeColorsFromPalette(palette);
 
   expect(colors).toEqual({
-    primary: '#F7A58C',
+    primary: '#F2A891',
     secondary: '#2D446C',
     background: '#0C182D',
     text: '#C9D9F7'
   });
+});
+
+test('a mid-tone accent keeps its colour instead of washing out to white', () => {
+  const colors = clampContrast(
+    deriveThemeColorsFromPalette({
+      DarkMuted: { hex: '#2c3953' },
+      LightVibrant: { hex: '#ed5f69' }
+    })
+  );
+
+  expect(colors.primary).toBe('#ED5F69');
+});
+
+test('clampContrast keeps the primary readable under dark ink on a near-black ground', () => {
+  const colors = clampContrast(
+    deriveThemeColorsFromPalette({
+      DarkMuted: { hex: '#101010' },
+      Muted: { hex: '#737373' }
+    })
+  );
+
+  expect(
+    Color(colors.primary).contrast(Color('#121212'))
+  ).toBeGreaterThanOrEqual(4.5);
 });
 
 test('clampContrast nudges low-contrast colors up to the threshold', () => {

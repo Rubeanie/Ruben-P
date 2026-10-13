@@ -1,4 +1,5 @@
 import Color from 'color';
+import { INKS } from './posts';
 import { normalizeThemeDefinition } from './themes';
 
 const ACCENT_SWATCHES = ['LightVibrant', 'Vibrant', 'LightMuted', 'Muted'];
@@ -67,9 +68,8 @@ export function deriveThemeColorsFromPalette(palette) {
       : baseColor.saturate(0.6).lighten(1.35);
 
     return {
-      primary: accentColor.isDark()
-        ? accentColor.lighten(1.15).saturate(0.15).hex()
-        : accentColor.saturate(0.1).hex(),
+      // As picked; clampContrast lifts a dark one only as far as it must.
+      primary: accentColor.hex(),
       secondary: baseColor.saturate(0.25).lighten(0.2).hex(),
       background: baseColor.saturate(0.75).darken(0.55).hex(),
       text: baseColor.saturate(1.3).lighten(2.5).hex()
@@ -83,10 +83,11 @@ export function clampContrast(colors) {
   const ground = Color(colors.background);
   const direction = ground.isDark() ? 1 : -1;
 
-  const clamp = (hex) => {
+  const clamp = (hex, grounds) => {
     let color = Color(hex);
+    const low = () => grounds.some((g) => color.contrast(g) < 4.5);
 
-    for (let step = 0; step < 50 && color.contrast(ground) < 4.5; step += 1) {
+    for (let step = 0; step < 50 && low(); step += 1) {
       const nextLightness = Math.min(
         100,
         Math.max(0, color.lightness() + direction * 2)
@@ -99,7 +100,12 @@ export function clampContrast(colors) {
 
   return {
     ...colors,
-    primary: clamp(colors.primary),
-    text: clamp(colors.text)
+    // Buttons and the announcement draw dark ink on the primary, so on a dark
+    // ground it lightens until that reads too.
+    primary: clamp(
+      colors.primary,
+      direction > 0 ? [ground, Color(INKS.dark)] : [ground]
+    ),
+    text: clamp(colors.text, [ground])
   };
 }
