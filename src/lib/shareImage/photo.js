@@ -19,7 +19,9 @@ const cardCrop = (image) => cloudinaryTransform(stillOf(image), CARD);
 export async function loadPhoto(image) {
   try {
     // Strict transformations cut the new card crop only for the site's Referer.
-    const res = await fetch(cardCrop(image), { headers: { Referer: baseUrl } });
+    const res = await fetch(cardCrop(image), {
+      headers: { Referer: `${baseUrl}/` }
+    });
     if (!res.ok) throw new Error(`CDN answered ${res.status}`);
     return await sharp(Buffer.from(await res.arrayBuffer()))
       .flatten({ background: '#ffffff' })

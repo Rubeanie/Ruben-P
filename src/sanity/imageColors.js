@@ -13,7 +13,9 @@ export const COLOR_FIELDS = [
 // The server's theme rule run in the browser: same rendition, palette and maths.
 export async function readImageColors(url) {
   const { Vibrant } = await import('node-vibrant/browser');
-  const palette = await Vibrant.from(themeRendition(url)).getPalette();
+  const palette = await Vibrant.from(themeRendition(url))
+    .quality(1)
+    .getPalette();
   const colors = deriveThemeColorsFromPalette(palette);
   return colors && clampContrast(colors);
 }

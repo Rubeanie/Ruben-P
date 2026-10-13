@@ -21,13 +21,13 @@ test('nextThemeAfter steps in list order, wraps, and starts at the first', () =>
 test('themeRendition shrinks Cloudinary photos', () => {
   expect(
     themeRendition('https://res.cloudinary.com/c/image/upload/v1/a.png')
-  ).toBe('https://res.cloudinary.com/c/image/upload/w_800,f_jpg,q_80/v1/a.png');
+  ).toBe('https://res.cloudinary.com/c/image/upload/w_200,f_png/v1/a.png');
   expect(
     themeRendition(
       'https://res.cloudinary.com/c/image/upload/t_x/f_avif,w_2000/v12/d/a.avif'
     )
   ).toBe(
-    'https://res.cloudinary.com/c/image/upload/t_x/f_avif,w_2000/w_800,f_jpg,q_80/v12/d/a.avif'
+    'https://res.cloudinary.com/c/image/upload/t_x/f_avif,w_2000/w_200,f_png/v12/d/a.avif'
   );
   expect(() => themeRendition('https://example.com/a.png')).toThrow();
 });
@@ -189,7 +189,7 @@ test('themeGate escapes markup in theme data', () => {
 test('a Cloudinary video themes the page as a looping animation, six seconds at most', () => {
   const video = 'https://res.cloudinary.com/c/video/upload/v1/d/a.mp4';
   expect(themeRendition(video)).toBe(
-    'https://res.cloudinary.com/c/video/upload/so_0,w_800,f_jpg,q_80/v1/d/a.mp4'
+    'https://res.cloudinary.com/c/video/upload/so_0,w_200,f_png/v1/d/a.mp4'
   );
   expect(landscapeRendition(video)).toBe(
     'https://res.cloudinary.com/c/video/upload/du_6/c_limit,w_1920/fps_15/e_loop/fl_animated,fl_awebp,f_webp/v1/d/a.mp4'
