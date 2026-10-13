@@ -15,13 +15,13 @@ export const style = {
   components: {
     input: ThemeStyleInput
   },
-  // Blank colours are worked out in each visitor's browser; saved ones load instantly.
+  // Blank colours are read from the photo on the server; saved ones skip that.
   validation: (Rule) =>
     Rule.custom((value) => {
       if (!value?.image) return true;
       const blank = COLOR_FIELDS.filter(({ field }) => !value[field]?.hex);
       if (!blank.length) return true;
-      return `${blank.length} colour${blank.length > 1 ? 's are' : ' is'} blank, so the site works ${blank.length > 1 ? 'them' : 'it'} out in each visitor's browser. Press Generate missing to save ${blank.length > 1 ? 'them' : 'it'} now.`;
+      return `${blank.length} colour${blank.length > 1 ? 's are' : ' is'} blank, so the server reads ${blank.length > 1 ? 'them' : 'it'} from the photo. Press Generate missing to save ${blank.length > 1 ? 'them' : 'it'} now.`;
     }).warning(),
   fieldsets: [
     {
