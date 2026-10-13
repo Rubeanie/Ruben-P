@@ -201,7 +201,7 @@ export function ThemeStyleInput(props) {
         readOnly,
         status
       }}>
-      <Stack space={4}>
+      <Stack gap={4}>
         <ThemePreview url={imageUrl} value={value} />
         {renderDefault(props)}
       </Stack>
@@ -226,7 +226,7 @@ export function ThemeColorGeneratorInput() {
   } = themeStyle;
 
   return (
-    <Stack space={2}>
+    <Stack gap={2}>
       <Flex align='center' gap={2} wrap='wrap'>
         <Button
           text='Generate missing'

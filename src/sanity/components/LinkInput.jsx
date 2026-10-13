@@ -46,9 +46,9 @@ export function LinkInput(props) {
     ...props,
     renderField: (field) =>
       field.name === 'internal' && headings.length > 0 ? (
-        <Stack space={3}>
+        <Stack gap={3}>
           {renderField(field)}
-          <Stack space={2}>
+          <Stack gap={2}>
             <Text as='label' htmlFor={id} size={1} weight='medium'>
               Section
             </Text>

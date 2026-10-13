@@ -71,9 +71,9 @@ export function SharePreviewInput(props) {
     );
 
   return (
-    <Stack space={5}>
-      <Stack space={3}>
-        <Stack space={2}>
+    <Stack gap={5}>
+      <Stack gap={3}>
+        <Stack gap={2}>
           <Text size={1} weight='medium'>
             Share preview
           </Text>

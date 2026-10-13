@@ -151,7 +151,7 @@ const clamp = (lines) => ({
 function PhoneMock({ url, colors, title, message }) {
   const logo = useSiteLogo(useClient({ apiVersion }));
   return (
-    <Stack space={2} style={{ width: 110, flex: 'none' }}>
+    <Stack gap={2} style={{ width: 110, flex: 'none' }}>
       <Frame
         src={url && portraitRendition(url)}
         colors={colors}
@@ -212,7 +212,7 @@ export function ThemePreview({ url, value }) {
 
   return (
     <Card radius={3} style={{ maxWidth: 560 }}>
-      <Stack space={2}>
+      <Stack gap={2}>
         <Flex gap={3} align='flex-start' wrap='wrap'>
           <div style={{ flex: '1 1 260px', minWidth: 0 }}>
             <ThemeMock

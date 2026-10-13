@@ -114,7 +114,7 @@ const DONE = { opacity: 0.45, transition: 'opacity 200ms ease-out' };
 function Entry({ label, source, done, children }) {
   return (
     <Card padding={3} radius={2} border style={done ? DONE : undefined}>
-      <Stack space={3}>
+      <Stack gap={3}>
         <Flex gap={3} align='center' justify='space-between'>
           <Text size={0} muted>
             {label}
@@ -268,7 +268,7 @@ function Fix({ fix, apply }) {
         {before[2]}
       </Text>
       {better ? (
-        <Stack space={2}>
+        <Stack gap={2}>
           <Row
             copy={fix.suggestion}
             edit={fixEdit(fix)}
@@ -319,7 +319,7 @@ function Fix({ fix, apply }) {
 function IgnoredMatch({ match, apply }) {
   const [state, run] = useApply(apply);
   return (
-    <Stack as='li' space={2}>
+    <Stack as='li' gap={2}>
       <InContext match={match} compact />
       <Text size={0} muted>
         {`“${match.text.slice(match.offset, match.offset + match.length)}”, kept. LanguageTool said: ${match.message}`}
@@ -341,7 +341,7 @@ function Ignored({ matches, apply }) {
   const [open, setOpen] = useState(false);
   if (!matches?.length) return null;
   return (
-    <Stack space={2}>
+    <Stack gap={2}>
       <Box>
         <Button
           mode='bleed'
@@ -353,7 +353,7 @@ function Ignored({ matches, apply }) {
         />
       </Box>
       {open && (
-        <Stack as='ul' space={4} style={{ margin: 0, paddingLeft: 12 }}>
+        <Stack as='ul' gap={4} style={{ margin: 0, paddingLeft: 12 }}>
           {matches.map((match) => (
             <IgnoredMatch key={matchId(match)} match={match} apply={apply} />
           ))}
@@ -369,7 +369,7 @@ export function ProofreadResults({ spelling, wording, order, apply }) {
   const findings = inPageOrder(spelling.matches, wording.fixes, order);
   const notes = [spelling.error, wording.note].filter(Boolean);
   return (
-    <Stack space={4} padding={4}>
+    <Stack gap={4} padding={4}>
       <svg className='proofread-gradient' aria-hidden='true'>
         <linearGradient id='proofread-ai-gradient' x1='0' y1='0' x2='1' y2='1'>
           <stop offset='0' />
@@ -383,7 +383,7 @@ export function ProofreadResults({ spelling, wording, order, apply }) {
         </Text>
       ))}
       {findings.length ? (
-        <Stack space={2}>
+        <Stack gap={2}>
           {findings.map(({ source, finding }) =>
             source === 'spelling' ? (
               <Match
@@ -407,7 +407,7 @@ export function ProofreadResults({ spelling, wording, order, apply }) {
           </Text>
         )
       )}
-      <Stack space={3}>
+      <Stack gap={3}>
         <Ignored matches={spelling.ignored} apply={apply} />
         {spelling.partial && (
           <Text size={1} muted>

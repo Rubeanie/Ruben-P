@@ -34,9 +34,9 @@ export default function SharePreview({ preview }) {
       </Text>
     );
   return (
-    <Stack space={3} className={`${notoSans.variable} ${lato.variable}`}>
+    <Stack gap={3} className={`${notoSans.variable} ${lato.variable}`}>
       <div className={styles.tabs} ref={row}>
-        <TabList space={1}>
+        <TabList gap={1}>
           {PLATFORMS.map((p) => (
             <Tab
               key={p.id}
@@ -65,11 +65,11 @@ export default function SharePreview({ preview }) {
         </TabList>
       </div>
       <TabPanel id={`${id}-panel`} aria-labelledby={`${id}-tab-${tab}`}>
-        <Stack space={3} paddingTop={2}>
+        <Stack gap={3} paddingTop={2}>
           <Replica d={preview} />
           {statuses[tab].length > 0 && (
             <Card padding={2} radius={2} tone='caution' border>
-              <Stack space={2}>
+              <Stack gap={2}>
                 {statuses[tab].map((s) => (
                   <Text key={s} size={1}>
                     {s}

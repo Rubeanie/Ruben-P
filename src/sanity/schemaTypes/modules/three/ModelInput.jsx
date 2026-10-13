@@ -32,7 +32,7 @@ export default function ModelInput(props) {
   // unless it's a raw upload, which the plugin already shows as a file.
   const showFile = value?.public_id && value.resource_type !== 'raw';
   return (
-    <Stack space={3}>
+    <Stack gap={3}>
       {showFile && (
         <Flex align='center' gap={2}>
           <LuFileBox />

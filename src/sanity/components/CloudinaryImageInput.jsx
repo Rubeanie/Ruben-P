@@ -100,7 +100,7 @@ export function CloudinaryImageInput(props) {
   }, [key, readOnly, value?.derivedFrom, complete]);
 
   return (
-    <Stack space={3}>
+    <Stack gap={3}>
       {props.renderDefault(props)}
       {failed && (
         <Text size={1} muted>

@@ -31,7 +31,7 @@ export function Legend() {
     ['missing', 'Missing']
   ];
   return (
-    <Inline space={3}>
+    <Inline gap={3}>
       {items.map(([kind, label]) => (
         <Text key={kind} size={1} muted>
           <span className={styles.mark} data-kind={kind}>
