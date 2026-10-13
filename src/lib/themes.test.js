@@ -1,5 +1,6 @@
 import { expect, test } from 'bun:test';
 import {
+  DEFAULT_THEME_COLORS,
   landscapeRendition,
   nextThemeAfter,
   portraitRendition,
@@ -76,7 +77,10 @@ test('themeGate hands each theme its portrait crop', () => {
 
 // Runs the inline gate against a stand-in page. `random` stands in for
 // Math.random; `last` is the theme the previous visit showed.
-function gatePage(themes, { last, random = 0, bar = '#0f182d' } = {}) {
+function gatePage(
+  themes,
+  { last, random = 0, bar = DEFAULT_THEME_COLORS.background } = {}
+) {
   const properties = {};
   const inserted = [];
   const finished = [];

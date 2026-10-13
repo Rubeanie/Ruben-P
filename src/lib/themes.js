@@ -10,10 +10,10 @@ import {
 } from './imageLoader';
 
 export const DEFAULT_THEME_COLORS = {
-  primary: '#ed5f68',
-  secondary: '#33456d',
-  background: '#0f182d',
-  text: '#eaf6ff'
+  primary: '#ed5f69',
+  secondary: '#2f4269',
+  background: '#0d172c',
+  text: '#c7d7f5'
 };
 
 export const DEFAULT_THEME_URL =

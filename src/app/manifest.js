@@ -1,5 +1,6 @@
 import { stegaClean } from '@sanity/client/stega';
 import { getSite } from '@/lib/sanity/queries';
+import { DEFAULT_THEME_COLORS } from '@/lib/themes';
 
 export default async function manifest() {
   const site = await getSite();
@@ -11,8 +12,8 @@ export default async function manifest() {
     id: '/',
     start_url: '/',
     display: 'standalone',
-    background_color: '#0f182d',
-    theme_color: '#0f182d',
+    background_color: DEFAULT_THEME_COLORS.background,
+    theme_color: DEFAULT_THEME_COLORS.background,
     icons: [
       {
         src: '/pwa/PWA-192x192.png',

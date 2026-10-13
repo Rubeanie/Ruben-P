@@ -6,8 +6,8 @@ import { hierarchy, pack } from 'd3-hierarchy';
 
 const SIZE = 1000;
 const MARGIN = 20;
-const BACKGROUND = '#0f182d';
-const TEXT = '#eaf6ff';
+const BACKGROUND = '#0d172c';
+const TEXT = '#c7d7f5';
 const MUTED = '#a9b6c9';
 const FONT = `-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif`;
 
@@ -16,7 +16,7 @@ const SKIP =
   /(^|\/)(bun\.lock|diagram\.svg)$|\.(woff2?|ttf|otf|glb|png|jpe?g|ico|webp|gif)$/;
 
 const KINDS = [
-  { name: 'JavaScript', colour: '#ed5f68', test: /\.(m|c)?jsx?$/ },
+  { name: 'JavaScript', colour: '#ed5f69', test: /\.(m|c)?jsx?$/ },
   { name: 'Styles', colour: '#7f9cf5', test: /\.s?css$/ },
   { name: 'Config', colour: '#e8b86d', test: /\.(json|ya?ml)$|(^|\/)\.[^/]+$/ },
   { name: 'Docs', colour: '#7fd1b9', test: /\.(md|txt)$/ },

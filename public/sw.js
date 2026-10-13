@@ -3,7 +3,7 @@
 //   - /_next/static assets: cache first (filenames are content-hashed)
 //   - images, fonts, css: stale-while-revalidate
 // Bump VERSION to drop every cache once the new worker activates.
-const VERSION = 'v4';
+const VERSION = 'v5';
 const OFFLINE_CACHE = `rubenp-offline-${VERSION}`;
 const OFFLINE_URL = '/offline.html';
 const RUNTIME_CACHEABLE = new Set(['image', 'font', 'style']);
