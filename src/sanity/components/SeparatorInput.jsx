@@ -69,7 +69,7 @@ export function SeparatorInput({
     <Grid
       role='radiogroup'
       aria-label={schemaType.title}
-      columns={[3, 4, 6]}
+      gridTemplateColumns={[3, 4, 6]}
       gap={2}
       onKeyDown={onKeyDown}>
       {SEPARATORS.map((separator, i) => {
@@ -102,7 +102,7 @@ export function SeparatorInput({
             tone={selected ? 'primary' : 'default'}
             selected={selected}
             __unstable_focusRing>
-            <Stack space={3}>
+            <Stack gap={3}>
               <span className='separator-tile' aria-hidden='true'>
                 {separator.value === 'none' ? (
                   <Megaphone />

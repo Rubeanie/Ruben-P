@@ -175,7 +175,7 @@ export function SeoFeedbackInput(props) {
       set(value, [field])
     ]);
   return (
-    <Stack space={5}>
+    <Stack gap={5}>
       <SeoFeedback doc={doc} fields={props.value} onUse={write} />
       {props.renderDefault(props)}
     </Stack>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Button, Stack, Text, useToast } from '@sanity/ui';
+import { Button, Stack, Text } from '@sanity/ui';
+import { useToast } from '@sanity/ui/toast';
 import { set, useClient, useFormValue } from 'sanity';
 import { apiVersion } from '@/lib/env';
 import { folderFor } from '@/lib/cloudinaryFolder';
@@ -79,7 +80,7 @@ export default function PosterInput(props) {
   };
 
   return (
-    <Stack space={3}>
+    <Stack gap={3}>
       {/* A field's own input replaces its type's, so the shared one that
           fills the derived data is rendered here by hand. */}
       <CloudinaryImageInput {...props} />

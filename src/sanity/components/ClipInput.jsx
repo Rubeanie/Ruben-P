@@ -105,10 +105,10 @@ export function ClipInput(props) {
     : `up to ~${megabytes(guess.video)}`;
 
   return (
-    <Stack space={4}>
+    <Stack gap={4}>
       {props.renderDefault(props)}
       {src && (
-        <Stack space={3}>
+        <Stack gap={3}>
           <Text size={1} muted>
             Video {video} · as animated image up to ~{megabytes(guess.image)}
           </Text>

@@ -52,9 +52,9 @@ function Item({ level, children }) {
 function Section({ title, detail, action, children }) {
   return (
     <Card borderTop paddingTop={4}>
-      <Stack space={4}>
+      <Stack gap={4}>
         <Flex align='center' gap={3}>
-          <Stack space={2} flex={1}>
+          <Stack gap={2} flex={1}>
             <Text size={1} weight='medium'>
               {title}
             </Text>
@@ -96,7 +96,7 @@ function Suggestion({ label, text, chosen, onUse }) {
   return (
     <Card padding={3} radius={2} tone='transparent' border>
       <Flex gap={2} align='flex-start'>
-        <Stack space={2} flex={1}>
+        <Stack gap={2} flex={1}>
           <Text size={0} muted>
             {label} ·{' '}
             <span style={fits ? undefined : { color: COLOURS.warn }}>
@@ -116,7 +116,7 @@ function LiveResult({ result }) {
   const level =
     result.score >= 90 ? 'good' : result.score >= 50 ? 'warn' : 'bad';
   return (
-    <Stack space={3}>
+    <Stack gap={3}>
       <Flex align='center' gap={2}>
         <Dot level={level} />
         <Text size={1} weight='medium'>
@@ -124,7 +124,7 @@ function LiveResult({ result }) {
         </Text>
       </Flex>
       {result.failing.length ? (
-        <Stack as='ul' space={3} style={{ margin: 0, padding: 0 }}>
+        <Stack as='ul' gap={3} style={{ margin: 0, padding: 0 }}>
           {result.failing.map((title) => (
             <Item key={title} level='bad'>
               {title}
@@ -144,7 +144,7 @@ function Keyphrase({ phrase, reason, chosen, onUse }) {
   return (
     <Card padding={3} radius={2} tone='transparent' border>
       <Flex gap={2} align='center'>
-        <Stack space={2} flex={1}>
+        <Stack gap={2} flex={1}>
           <Text size={1} weight='medium'>
             {phrase}
           </Text>
@@ -169,7 +169,7 @@ function AiResult({ result, changed, fields, onUse }) {
   const current = fields?.focusKeyphrase?.trim().toLowerCase();
   const holds = (field, text) => fields?.[field]?.trim() === text;
   return (
-    <Stack space={4}>
+    <Stack gap={4}>
       {outdated ? (
         <Text size={1} muted>
           Your copy has changed since this read. Get suggestions again for a
@@ -184,7 +184,7 @@ function AiResult({ result, changed, fields, onUse }) {
         </Flex>
       )}
       {notes.length > 0 && (
-        <Stack as='ul' space={3} style={{ margin: 0, padding: 0 }}>
+        <Stack as='ul' gap={3} style={{ margin: 0, padding: 0 }}>
           {notes.map((note) => (
             <Item key={`${note.about}:${note.text}`} level={level}>
               {note.text}
@@ -209,7 +209,7 @@ function AiResult({ result, changed, fields, onUse }) {
         />
       )}
       {result.keyphrases?.length > 0 && (
-        <Stack space={2}>
+        <Stack gap={2}>
           <Text size={0} muted>
             Focus keyphrase ideas
           </Text>
@@ -247,7 +247,7 @@ export function SeoPanel({
 
   return (
     <Card padding={4} radius={3} border>
-      <Stack space={4}>
+      <Stack gap={4}>
         <Flex align='center' gap={3}>
           <Dot level={VERDICT_LEVEL[report.verdict]} size={10} />
           <Text size={2} weight='semibold'>
@@ -257,7 +257,7 @@ export function SeoPanel({
             {toLook ? `${toLook} to look at` : 'Nothing to fix'}
           </Text>
         </Flex>
-        <Stack as='ul' space={3} style={{ margin: 0, padding: 0 }}>
+        <Stack as='ul' gap={3} style={{ margin: 0, padding: 0 }}>
           {report.items.map(({ level, text }) => (
             <Item key={text} level={level}>
               {text}
