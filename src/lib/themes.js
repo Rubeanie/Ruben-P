@@ -11,9 +11,9 @@ import {
 
 export const DEFAULT_THEME_COLORS = {
   primary: '#ed5f68',
-  secondary: '#33456d',
-  background: '#0f182d',
-  text: '#eaf6ff'
+  secondary: '#2f446b',
+  background: '#0d182d',
+  text: '#ccdbf7'
 };
 
 export const DEFAULT_THEME_URL =

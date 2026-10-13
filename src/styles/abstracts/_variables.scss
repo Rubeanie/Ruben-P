@@ -6,9 +6,9 @@ $color-text: var(--color-text);
 // The default theme's (DEFAULT_THEME_COLORS in src/lib/themes.js).
 $default-theme-colors: (
   '--color-primary': #ed5f68,
-  '--color-secondary': #33456d,
-  '--color-background': #0f182d,
-  '--color-text': #eaf6ff
+  '--color-secondary': #2f446b,
+  '--color-background': #0d182d,
+  '--color-text': #ccdbf7
 );
 // The photo as globals.scss picks it for the screen's shape.
 $image-background: var(--image-background-fit);

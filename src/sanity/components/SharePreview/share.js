@@ -3,6 +3,7 @@ import { resolveMetadata } from '@/lib/resolveMetadata';
 import { SHARE_IMAGE } from '@/lib/shareImage/layout';
 import { shareImageUrl } from '@/lib/shareImage/url';
 import { templateSlugs } from '@/lib/slug';
+import { DEFAULT_THEME_COLORS } from '@/lib/themes';
 
 // Next percent-encodes the address and drops a bare origin's trailing slash.
 const encoded = (url) =>
@@ -79,7 +80,7 @@ function sourcesOf(page, site, tags) {
 
 // Stands in for the generated card until the page has a published version to draw it from.
 const UNPUBLISHED_CARD = `data:image/svg+xml,${encodeURIComponent(
-  '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" fill="#0f182d"/><text x="600" y="315" fill="#eaf6ff" fill-opacity="0.7" font-family="sans-serif" font-size="40" text-anchor="middle" dominant-baseline="middle">Generated card appears after publishing</text></svg>'
+  `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630"><rect width="1200" height="630" fill="${DEFAULT_THEME_COLORS.background}"/><text x="600" y="315" fill="${DEFAULT_THEME_COLORS.text}" fill-opacity="0.7" font-family="sans-serif" font-size="40" text-anchor="middle" dominant-baseline="middle">Generated card appears after publishing</text></svg>`
 )}`;
 
 // A share image's facts as the head ships it: its still, the size of the asset.

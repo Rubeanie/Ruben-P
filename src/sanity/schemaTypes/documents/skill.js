@@ -1,5 +1,6 @@
 import { IoMdHammer } from 'react-icons/io';
 import { InlineSvgPreviewComponent } from '@focus-reactive/sanity-plugin-inline-svg-input';
+import { DEFAULT_THEME_COLORS } from '@/lib/themes';
 
 export const PreviewComponent = ({
   logo,
@@ -40,7 +41,7 @@ export const skill = {
       title: 'Brand color',
       type: 'color',
       options: {
-        colorList: [{ hex: '#ed5f68' }]
+        colorList: [{ hex: DEFAULT_THEME_COLORS.primary }]
       },
       group: 'content'
     },
