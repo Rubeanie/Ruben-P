@@ -40,6 +40,6 @@ bun test
 
 ## The codebase at a glance
 
-Redrawn by a GitHub Action on every push to master.
+Redrawn by a GitHub Action on the 1st of each month.
 
 <img alt="Visualization of the codebase" src="./diagram.svg">

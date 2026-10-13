@@ -1,5 +1,5 @@
 // Draws diagram.svg, the circle-packing map of the codebase in the README.
-// Run with `bun run diagram`; CI redraws it after every push to master.
+// Run with `bun run diagram`; CI redraws it on the 1st of each month.
 import { execFileSync } from 'node:child_process';
 import { writeFileSync } from 'node:fs';
 import { hierarchy, pack } from 'd3-hierarchy';

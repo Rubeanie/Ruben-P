@@ -1,12 +1,12 @@
 name: Diagram
 
-# Redraws diagram.svg, the codebase map in the README, after each push to the
-# default branch. Pushes made with GITHUB_TOKEN don't retrigger workflows.
+# Redraws diagram.svg, the codebase map in the README, once a month. Circles are
+# sized by bytes, so any edit nudges the layout; redrawing per push left master
+# a bot commit ahead of beta every time.
 on:
   workflow_dispatch:
-  push:
-    branches: [master]
-    paths-ignore: [diagram.svg]
+  schedule:
+    - cron: '17 3 1 * *'
 
 concurrency:
   group: diagram
