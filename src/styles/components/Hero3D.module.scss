@@ -85,7 +85,9 @@
   display: grid;
   place-items: center;
   height: calc(100lvh - var(--announce-height));
-  padding: var.$nav-clearance-flow var.$hero-pad;
+  // The band pushes the top down; the full clearance below keeps the name
+  // centred on the viewport, where the mark is.
+  padding: var.$nav-clearance-flow var.$hero-pad var(--nav-clearance);
 }
 
 .name {
