@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import BackgroundCredit from '@/components/BackgroundCredit';
 import Logo from '@/components/Logo';
 import { resolveLink } from '@/lib/processUrl';
 import styles from '@/styles/components/Footer.module.scss';
@@ -31,6 +32,7 @@ export default function Footer({ menu, logo, author }) {
         )}
         <p className={styles.copyright}>
           © {new Date().getFullYear()} {author}
+          <BackgroundCredit />
         </p>
       </div>
     </footer>

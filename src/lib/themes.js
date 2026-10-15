@@ -22,6 +22,10 @@ export const DEFAULT_THEME_URL =
 export const DEFAULT_THEME = {
   url: DEFAULT_THEME_URL,
   colors: DEFAULT_THEME_COLORS,
+  credit: {
+    name: 'Paolo Celentano',
+    href: 'https://www.instagram.com/paolo_celentano85/'
+  },
   source: 'default',
   status: 'ready'
 };
