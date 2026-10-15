@@ -4,6 +4,7 @@ import { seoQuery } from './metadata';
 import { linkQuery } from './fragments/link';
 import { themesQuery } from './fragments/themes';
 import { announcementQuery } from './fragments/announcement';
+import { resolveLink } from '@/lib/processUrl';
 import {
   themeFromImage,
   themeHasAllColors,
@@ -52,7 +53,16 @@ export async function getThemes() {
 
   // the site theme and a hero photo derive their colours the same way
   return Promise.all(
-    site.themes.map(async (style) => {
+    site.themes.map(async ({ author, photoSource, ...row }) => {
+      // The footer credits whoever took the photo on screen, linked to their
+      // own page when there is one, else to the photo's.
+      const style = {
+        ...row,
+        credit: author && {
+          name: author.name,
+          href: resolveLink(author.link) ?? photoSource
+        }
+      };
       if (!style.image || themeHasAllColors(style)) {
         return style;
       }

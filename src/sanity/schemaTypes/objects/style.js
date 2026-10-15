@@ -35,17 +35,23 @@ export const style = {
   ],
   fields: [
     {
-      name: 'title',
-      type: 'string'
-    },
-    {
       name: 'image',
       type: 'cloudinary.asset',
       validation: (Rule) => Rule.required()
     },
     {
-      name: 'message',
-      type: 'string'
+      name: 'author',
+      type: 'reference',
+      to: [{ type: 'author' }],
+      description: 'Credited in the footer while this photo is the background',
+      validation: (Rule) =>
+        Rule.required().warning('No author, so the footer shows no credit.')
+    },
+    {
+      name: 'source',
+      type: 'url',
+      description: 'The photo’s own page, linked when the author has no link',
+      validation: (Rule) => Rule.uri()
     },
     {
       name: 'colorGenerator',
@@ -107,15 +113,15 @@ export const style = {
   ],
   preview: {
     select: {
-      title: 'title',
-      subtitle: 'message',
+      publicId: 'image.public_id',
+      author: 'author.name',
       url: 'image.secure_url'
     },
-    prepare({ title, subtitle, url }) {
+    // Photos keep the name they were downloaded with: photographer and photo id.
+    prepare({ publicId, author, url }) {
       return {
-        title: title || 'Untitled Style',
-        subtitle,
-
+        title: publicId?.split('/').pop() || 'Untitled style',
+        subtitle: author,
         media: url !== undefined ? <CloudinaryPreview url={url} /> : null
       };
     }

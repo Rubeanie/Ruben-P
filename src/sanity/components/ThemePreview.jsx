@@ -105,7 +105,7 @@ function Navbar({ logo, logoHeight = 14, primary, children }) {
 
 // What a desktop paints, so opening a theme also builds its background before
 // the first visitor asks.
-function ThemeMock({ url, colors, title, message }) {
+function ThemeMock({ url, colors }) {
   const logo = useSiteLogo(useClient({ apiVersion }));
   return (
     <Frame
@@ -119,11 +119,9 @@ function ThemeMock({ url, colors, title, message }) {
       </Navbar>
       <div style={{ margin: 'auto 0', display: 'grid', gap: 6 }}>
         <div style={{ ...heading(colors.primary), fontSize: 22 }}>
-          {title || 'Untitled style'}
+          A heading over the photo
         </div>
-        <div style={{ fontSize: 11 }}>
-          {message || 'A line of body text over the photo.'}
-        </div>
+        <div style={{ fontSize: 11 }}>A line of body text over the photo.</div>
         <span
           style={{
             ...button(colors.primary),
@@ -145,7 +143,7 @@ const clamp = (lines) => ({
 });
 
 // What a portrait phone paints: the 3:4 crop, covering a tall screen.
-function PhoneMock({ url, colors, title, message }) {
+function PhoneMock({ url, colors }) {
   const logo = useSiteLogo(useClient({ apiVersion }));
   return (
     <Stack gap={2} style={{ width: 110, flex: 'none' }}>
@@ -171,10 +169,10 @@ function PhoneMock({ url, colors, title, message }) {
               ...heading(colors.primary),
               fontSize: 13
             }}>
-            {title || 'Untitled style'}
+            A heading over the photo
           </div>
           <div style={{ ...clamp(3), fontSize: 8 }}>
-            {message || 'A line of body text over the photo.'}
+            A line of body text over the photo.
           </div>
           <span
             style={{
@@ -208,19 +206,9 @@ export function ThemePreview({ url, value }) {
       <Stack gap={2}>
         <Flex gap={3} align='flex-start' wrap='wrap'>
           <div style={{ flex: '1 1 260px', minWidth: 0 }}>
-            <ThemeMock
-              url={url}
-              colors={colors}
-              title={value?.title}
-              message={value?.message}
-            />
+            <ThemeMock url={url} colors={colors} />
           </div>
-          <PhoneMock
-            url={url}
-            colors={colors}
-            title={value?.title}
-            message={value?.message}
-          />
+          <PhoneMock url={url} colors={colors} />
         </Flex>
         <Text size={0} muted>
           Rough preview. Blank colours show what the site fills in from the
