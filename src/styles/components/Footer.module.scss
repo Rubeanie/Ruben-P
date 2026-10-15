@@ -82,6 +82,17 @@
   opacity: 0.7; // 0.5 fell to the contrast floor at this size
 }
 
+// A step behind the name it follows; over the brightest theme it still clears
+// 4.5:1. Focus lifts it, so the ring is not faded with it.
+.dot,
+.credit {
+  opacity: 0.8;
+}
+
+.credit:focus-within {
+  opacity: 1;
+}
+
 // The photographer's name rings like the menu links above it.
 .credit a {
   border-radius: 4px;
