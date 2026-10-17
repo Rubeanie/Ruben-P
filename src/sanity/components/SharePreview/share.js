@@ -46,8 +46,7 @@ function sourcesOf(page, site, tags) {
   return {
     title: pick(tags.title, [
       [p.metaTitle, 'page', 'Meta title'],
-      [page?.title, 'page', 'Page title'],
-      [s.metaTitle, 'site', 'Site settings']
+      [page?.title, 'page', 'Page title']
     ]),
     description: pick(tags.description, [
       [p.metaDescription, 'page', 'Meta description'],
@@ -57,9 +56,7 @@ function sourcesOf(page, site, tags) {
     ogTitle: pick(tags.ogTitle, [
       [p.openGraph?.title, 'page', 'Open Graph title'],
       [p.metaTitle, 'page', 'Meta title'],
-      [page?.title, 'page', 'Page title'],
-      [s.openGraph?.title, 'site', 'Site settings'],
-      [s.metaTitle, 'site', 'Site settings, meta title']
+      [page?.title, 'page', 'Page title']
     ]),
     ogDescription: pick(tags.ogDescription, [
       [p.openGraph?.description, 'page', 'Open Graph description'],
@@ -70,8 +67,7 @@ function sourcesOf(page, site, tags) {
     ]),
     ogImage: pick(tags.ogImage, [
       [stillOf(p.openGraph?.image), 'page', 'Share image'],
-      [shareImageUrl(page?.metadata?.slug), 'generated', 'Generated card'],
-      [stillOf(s.openGraph?.image), 'site', 'Site settings']
+      [shareImageUrl(page?.metadata?.slug), 'generated', 'Generated card']
     ]),
     ogSiteName: pick(tags.ogSiteName, [
       [p.openGraph?.siteName, 'page', 'Site name'],
@@ -107,7 +103,7 @@ export function sharePreviewOf(
 ) {
   const tags = shareTags(resolveMetadata(page, site), themeColor);
   const image =
-    [...(page?.shareImages ?? []), ...(site?.shareImages ?? [])]
+    (page?.shareImages ?? [])
       .map(imageFacts)
       .find(({ url }) => url && url === tags.ogImage) ??
     // The generated card, drawn from the published page; its size is only known once drawn.

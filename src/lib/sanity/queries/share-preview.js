@@ -19,6 +19,6 @@ export const sharePageQuery = groq`*[_id == $id][0]{
 }`;
 
 export const shareSiteQuery = groq`*[_type == 'site'][0]{
-  ${seoQuery},
-  "shareImages": [seo.openGraph.image${shareImageFacts}]
+  title,
+  ${seoQuery}
 }`;

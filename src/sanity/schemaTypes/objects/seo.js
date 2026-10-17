@@ -2,6 +2,9 @@ import { MdLabel, MdCode } from 'react-icons/md';
 import { SeoFeedbackInput } from '../../components/SeoFeedback/SeoFeedbackInput';
 import { DESCRIPTION_LENGTH, TITLE_LENGTH } from '@/lib/studioReviewLimits';
 
+// Titles and the share image are each page's own; Site settings supplies no default.
+const onSite = ({ document }) => document?._type === 'site';
+
 export const seoMetaFields = {
   name: 'seoMetaFields',
   title: 'SEO',
@@ -12,7 +15,7 @@ export const seoMetaFields = {
       name: 'focusKeyphrase',
       title: 'Focus keyphrase',
       type: 'string',
-      hidden: ({ document }) => document?._type === 'site',
+      hidden: onSite,
       description:
         'The search phrase this page should be found for, like "car photography Melbourne". The panel checks it appears where search engines look.'
     },
@@ -20,6 +23,7 @@ export const seoMetaFields = {
       name: 'metaTitle',
       title: 'Meta title',
       type: 'string',
+      hidden: onSite,
       description: `The title used in search results and browser tabs. Recommended length: ${TITLE_LENGTH.join('-')} characters.`
     },
     {
@@ -39,7 +43,7 @@ export const seoMetaFields = {
       name: 'priority',
       title: 'Sitemap priority',
       type: 'number',
-      hidden: ({ document }) => document?._type === 'site',
+      hidden: onSite,
       validation: (Rule) => Rule.min(0).max(1).precision(1),
       description:
         'Leave empty for the default: home 1.0, then 0.2 less for each level down (0.8, 0.6, 0.4, never below 0.2); posts 0.6.'
@@ -82,11 +86,13 @@ export const openGraph = {
     {
       name: 'image',
       type: 'cloudinaryImage',
+      hidden: onSite,
       description: 'Recommended size: 1200x630 pixels.'
     },
     {
       name: 'title',
       type: 'string',
+      hidden: onSite,
       description: 'Overrides the meta title when this page is shared.'
     },
     {

@@ -35,12 +35,11 @@ const getMetaAttribute = (attrs) =>
 const bare = (url) => url.replace(/^(https?:\/\/[^/]+)\/$/, '$1');
 
 // A hand-set share image wins; any other page gets its generated card, which draws its cover or hero.
-function shareImages(pageSeo, og, path) {
+function shareImages(pageSeo, path) {
   const handSet = stillOf(pageSeo.openGraph?.image);
   if (handSet) return [{ url: handSet }];
   if (isPagePath(path)) return [{ url: shareImageUrl(path), ...SHARE_IMAGE }];
-  const site = stillOf(og?.image);
-  return site ? [{ url: site }] : [];
+  return [];
 }
 
 // Every tag is spelled out, including what Next would otherwise inherit, so the Studio
@@ -49,13 +48,13 @@ export function resolveMetadata(page, site) {
   const url = bare(processUrl(page));
 
   const pageSeo = page?.metadata?.seo || {};
-  // The document's own title, e.g. "About"; stands between its meta title and the site's.
+  // The document's own title, e.g. "About"; follows its meta title.
   const pageTitle = stegaClean(page?.title) || '';
 
   // GROQ projects an absent field as null, so withDefaults falls back with `??`.
   const { additionalMetaTags, metaDescription, nofollowAttributes } =
     withDefaults(pageSeo, site?.seo);
-  const title = pageSeo.metaTitle || pageTitle || site?.seo?.metaTitle || '';
+  const title = pageSeo.metaTitle || pageTitle || '';
   // A post's summary comes after the page's own description, before the site's.
   const description =
     pageSeo.metaDescription || page?.summary || metaDescription || '';
@@ -68,19 +67,12 @@ export function resolveMetadata(page, site) {
   let og = withDefaults(pageSeo.openGraph, site?.seo?.openGraph);
   // A page's card ships even when neither the page nor the site sets any Open Graph.
   if (!og && isPagePath(path)) og = {};
-  const images = shareImages(pageSeo, og, path);
+  const images = shareImages(pageSeo, path);
 
   // A share preview always points at the page itself.
   const openGraph = og && {
-    // Own Open Graph title, then own meta title, then the document's own title,
-    // before either falls to the site's.
-    title:
-      pageSeo.openGraph?.title ||
-      pageSeo.metaTitle ||
-      pageTitle ||
-      site?.seo?.openGraph?.title ||
-      title ||
-      undefined,
+    // Own Open Graph title, then own meta title, then the document's own title.
+    title: pageSeo.openGraph?.title || title || undefined,
     // Same order as the title, one level shallower.
     description:
       pageSeo.openGraph?.description ||

@@ -8,15 +8,12 @@ const img = (name) => ({ asset: { secure_url: CDN + name } });
 
 const site = {
   seo: {
-    metaTitle: 'Site title',
     metaDescription: 'Site description',
     nofollowAttributes: true,
     seoKeywords: ['site'],
     openGraph: {
-      title: 'Site OG title',
       description: null,
-      siteName: 'Site name',
-      image: img('site.jpg')
+      siteName: 'Site name'
     },
     twitter: {
       handle: '@site',
@@ -48,9 +45,10 @@ test("the head title falls back to the document's own title before Site settings
   expect(m.title).toBe('About');
 });
 
-test('the head title falls to Site settings when the document has no title of its own', () => {
+test('the head title is empty when the document has no title of its own', () => {
   const m = resolveMetadata(pageWith({ metaTitle: null }), site);
-  expect(m.title).toBe('Site title');
+  expect(m.title).toBe('');
+  expect(m.openGraph.title).toBeUndefined();
 });
 
 test("Open Graph title prefers the page's own Open Graph title over everything else", () => {
@@ -86,25 +84,6 @@ test("Open Graph title falls back to the page's own title before Site settings",
     site
   );
   expect(m.openGraph.title).toBe('Page title');
-});
-
-test("the site's Open Graph title wins when the page has no title of its own", () => {
-  const m = resolveMetadata(
-    pageWith({ metaTitle: null, openGraph: { title: null } }),
-    site
-  );
-  expect(m.openGraph.title).toBe('Site OG title');
-});
-
-test('Open Graph title falls all the way to the Site settings meta title when nothing else is set', () => {
-  const bareSite = {
-    seo: { ...site.seo, openGraph: { ...site.seo.openGraph, title: null } }
-  };
-  const m = resolveMetadata(
-    pageWith({ metaTitle: null, openGraph: { title: null } }),
-    bareSite
-  );
-  expect(m.openGraph.title).toBe('Site title');
 });
 
 test("Open Graph description prefers the page's own Open Graph description over everything else", () => {
@@ -245,15 +224,10 @@ test('a page with no open graph anywhere still ships its card', () => {
   expect(m.openGraph.images).toHaveLength(1);
 });
 
-test('without an address there is no card, so the site default stands', () => {
-  const m = resolveMetadata({ metadata: { seo: {} } }, site);
-  expect(m.openGraph.images).toEqual([{ url: CDN + 'site.jpg' }]);
-  const none = resolveMetadata(
-    { metadata: { slug: '404', seo: {} } },
-    { seo: { ...site.seo, openGraph: { title: 'T' } } }
-  );
-  expect(none.openGraph.images).toEqual([]);
-  expect(none.twitter.images).toEqual([]);
+test('without an address there is no card', () => {
+  const m = resolveMetadata({ metadata: { slug: '404', seo: {} } }, site);
+  expect(m.openGraph.images).toEqual([]);
+  expect(m.twitter.images).toEqual([]);
 });
 
 test('og:url and canonical are the page address, a bare origin for home', () => {
