@@ -9,7 +9,11 @@ export const cta = {
   fields: [
     {
       name: 'link',
-      type: 'link'
+      type: 'link',
+      validation: (Rule) =>
+        Rule.required().custom((link) =>
+          link?.type ? true : 'Pick a link type.'
+        )
     },
     {
       name: 'variant',

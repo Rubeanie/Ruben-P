@@ -20,11 +20,12 @@ export const redirect = {
       title: 'Redirect to',
       type: 'link',
       validation: (Rule) =>
-        Rule.required().custom((link) =>
-          link?.type === 'redirect'
+        Rule.required().custom((link) => {
+          if (!link?.type) return 'Pick where to redirect to.';
+          return link.type === 'redirect'
             ? 'A redirect cannot point at another redirect.'
-            : true
-        )
+            : true;
+        })
     },
     {
       name: 'permanent',
