@@ -50,8 +50,12 @@ export async function getRedirect(path) {
     const resolved = resolveLink(destination);
     if (!resolved) continue;
     const url = matchRedirect({ source, destination: resolved }, path);
-    if (url)
-      return { url, label: destination.label ?? null, permanent: !!permanent };
+    // An unlabelled destination's label is its URL, which may be a template.
+    const label =
+      stegaClean(destination.label) === stegaClean(destination.external)
+        ? null
+        : (destination.label ?? null);
+    if (url) return { url, label, permanent: !!permanent };
   }
   return null;
 }
