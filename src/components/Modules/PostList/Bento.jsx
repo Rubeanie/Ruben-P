@@ -197,14 +197,16 @@ export default function Bento({ id, posts, filters }) {
       });
     }, DEBOUNCE);
   };
-  const clear = () => {
+  const clear = (event) => {
     clearTimeout(debounce.current);
     setText('');
     changeFilters((p) => {
       p.delete('category');
       p.delete('q');
     });
-    searchInput.current?.focus();
+    // Only a keyboard press keeps focus in the search; a tap would raise the
+    // phone keyboard over the restored grid.
+    if (event.detail === 0) searchInput.current?.focus();
   };
   const loadMore = () => {
     // A page appended under a running morph would be dropped by the queued commit.
