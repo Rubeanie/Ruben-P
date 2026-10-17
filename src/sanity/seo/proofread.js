@@ -38,7 +38,6 @@ const TEXT_FIELDS = new Set([
   'heading',
   'description'
 ]);
-const SKIP_TYPES = new Set(['code', 'reference', 'slug', 'youTube']);
 
 const capitalise = (word) => word[0].toUpperCase() + word.slice(1);
 const hasWords = (text) => /\p{L}{2}/u.test(text ?? '');
@@ -86,8 +85,7 @@ export function proofreadItems(doc) {
           title
         )
       );
-    if (!value || typeof value !== 'object' || SKIP_TYPES.has(value._type))
-      return;
+    if (!value || typeof value !== 'object') return;
     if (value._type === 'block')
       return add(
         key,
