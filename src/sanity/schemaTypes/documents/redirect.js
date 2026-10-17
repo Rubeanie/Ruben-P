@@ -11,9 +11,11 @@ export const redirect = {
       description: 'Local path to redirect, e.g. /old-path or /old-path/:slug',
       type: 'string',
       validation: (Rule) =>
-        Rule.required().regex(/^\/(?![/\\])/, {
-          name: 'local path starting with /'
-        })
+        Rule.required()
+          .regex(/^(\/[^/\\?#\s]+)+$/)
+          .error(
+            'A path like /old-page or /old/:slug, with no trailing slash, ? or #.'
+          )
     },
     {
       name: 'destination',
@@ -32,7 +34,7 @@ export const redirect = {
       type: 'boolean',
       initialValue: true,
       description:
-        '308: clients and search engines cache the redirect forever. Off: 307, temporary and uncached.'
+        'Only for destinations on this site. On: 308, browsers and search engines remember the move. Off: 307, temporary. Other destinations always show the redirect screen.'
     }
   ],
   preview: {
