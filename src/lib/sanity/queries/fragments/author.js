@@ -6,5 +6,6 @@ export const authorQuery = groq`
   _id,
   name,
   photo { ${cloudinaryImageQuery} },
-  link { ${linkQuery} }
+  link { ${linkQuery} },
+  jobTitle
 `;

@@ -107,7 +107,8 @@ export default function JsonLd({ page, path }) {
             return {
               '@type': 'Person',
               name: clean(byline.name),
-              url: absolute(resolveLink(byline.link))
+              url: absolute(resolveLink(byline.link)),
+              jobTitle: clean(byline.jobTitle)
             };
           })
         : undefined,

@@ -9,6 +9,6 @@ export const identityQuery = groq`
   copyrightNotice,
   license,
   acquireLicensePage,
-  author->{ ${authorQuery}, jobTitle },
+  author->{ ${authorQuery} },
   "sameAs": array::compact(*[_type == 'social' && redirect->destination.type == 'external'].redirect->destination.external)
 `;
