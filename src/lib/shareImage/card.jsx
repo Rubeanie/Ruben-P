@@ -140,7 +140,7 @@ export async function shareCard(card) {
       figtree.capHeight * DESCRIPTION_SIZE);
   const facts = await factsRow(card.facts, muted);
 
-  // A photo that fails to load leaves the card on its no-photo ground rather than failing it.
+  // A photo that is gone leaves the card on its no-photo ground; a transient failure throws.
   const photo = card.photo && (await loadPhoto(card.photo));
   const { cx, cy } = LOGO_CENTRE;
   const radii = ringRadii(card.id);

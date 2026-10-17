@@ -15,15 +15,24 @@ const CARD = `c_fill,g_auto,w_${W},h_${H},q_85`;
 const cardCrop = (image) => cloudinaryTransform(stillOf(image), CARD);
 
 // The CDN won't upscale a small image, so it is brought to size here. Null when the photo
-// can't be fetched or decoded.
+// is gone or won't decode, which leaves the card on its no-photo ground. A transient failure
+// (offline, a 5xx, rate limiting) throws instead, so /og answers an uncached 500 and the next
+// request draws the card again, rather than keeping a photo-less one until the next publish.
 export async function loadPhoto(image) {
+  // Strict transformations cut the new card crop only for the site's Referer.
+  const res = await fetch(cardCrop(image), {
+    headers: { Referer: `${baseUrl}/` }
+  });
+  if (res.status >= 500 || res.status === 408 || res.status === 429)
+    throw new Error(`CDN answered ${res.status}`);
+  if (!res.ok) {
+    console.error(`Share card photo failed: ${stillOf(image)}`, res.status);
+    return null;
+  }
+  // A body that breaks after a 200 is as transient as a 5xx, so it throws too.
+  const body = Buffer.from(await res.arrayBuffer());
   try {
-    // Strict transformations cut the new card crop only for the site's Referer.
-    const res = await fetch(cardCrop(image), {
-      headers: { Referer: `${baseUrl}/` }
-    });
-    if (!res.ok) throw new Error(`CDN answered ${res.status}`);
-    return await sharp(Buffer.from(await res.arrayBuffer()))
+    return await sharp(body)
       .flatten({ background: '#ffffff' })
       .resize(W, H, { fit: 'cover' })
       .jpeg({ quality: 92 })

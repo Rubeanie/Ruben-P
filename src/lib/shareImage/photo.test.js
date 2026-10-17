@@ -13,17 +13,38 @@ afterEach(() => {
   console.error = realError;
 });
 
-test('a photo that fails to load, answers an error or will not decode comes back null', async () => {
+test('a photo that is gone or will not decode comes back null', async () => {
   console.error = mock(() => {});
   for (const failure of [
-    () => Promise.reject(new Error('offline')),
     () => Promise.resolve(new Response('gone', { status: 404 })),
     () => Promise.resolve(new Response('not an image', { status: 200 }))
   ]) {
     globalThis.fetch = mock(failure);
     expect(await loadPhoto(image)).toBeNull();
   }
-  expect(console.error).toHaveBeenCalledTimes(3);
+  expect(console.error).toHaveBeenCalledTimes(2);
+});
+
+test('a transient failure throws, so the card is not drawn without its photo', async () => {
+  for (const failure of [
+    () => Promise.reject(new Error('offline')),
+    () => Promise.resolve(new Response('', { status: 503 })),
+    () => Promise.resolve(new Response('', { status: 429 }))
+  ]) {
+    globalThis.fetch = mock(failure);
+    await expect(loadPhoto(image)).rejects.toThrow();
+  }
+});
+
+test('a body that breaks after a 200 throws too', async () => {
+  globalThis.fetch = mock(() =>
+    Promise.resolve(
+      new Response(
+        new ReadableStream({ pull: (c) => c.error(new Error('reset')) })
+      )
+    )
+  );
+  await expect(loadPhoto(image)).rejects.toThrow();
 });
 
 test('the Start frame of a clip is cut to the card around its subject', async () => {
