@@ -1,5 +1,6 @@
 import { IoMdMegaphone } from 'react-icons/io';
 import { getBlockText } from '@/sanity/utils';
+import { apiVersion } from '@/lib/env';
 import { SEPARATORS } from '@/lib/announcement';
 import { richBlock } from '../fragments/text-block';
 import { link } from '../objects/link';
@@ -27,6 +28,16 @@ export const announcement = {
   icon: IoMdMegaphone,
   type: 'document',
   fieldsets: [{ name: 'schedule', options: { columns: 2 } }],
+  validation: (Rule) =>
+    Rule.custom(async (doc, { getClient }) => {
+      const listed = await getClient({ apiVersion }).fetch(
+        `count(*[_type == 'site' && $id in announcements[]._ref])`,
+        { id: doc._id.replace(/^drafts\./, '') }
+      );
+      return listed > 0
+        ? true
+        : 'Not in Site settings > Announcements, so it never shows.';
+    }).warning(),
   fields: [
     {
       name: 'content',
