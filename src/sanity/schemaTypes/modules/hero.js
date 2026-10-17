@@ -28,7 +28,7 @@ export const hero = {
     },
     {
       name: 'ctas',
-      title: 'Call-to-actions',
+      title: 'Calls to action',
       type: 'array',
       of: [{ type: 'cta' }],
       group: 'content'

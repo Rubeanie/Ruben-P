@@ -3,7 +3,11 @@ export const textAlign = {
   type: 'string',
   options: {
     layout: 'radio',
-    list: ['left', 'center', 'right']
+    list: [
+      { title: 'Left', value: 'left' },
+      { title: 'Centre', value: 'center' },
+      { title: 'Right', value: 'right' }
+    ]
   },
   initialValue: 'center',
   group: 'options'

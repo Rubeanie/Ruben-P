@@ -21,10 +21,10 @@ export const cta = {
       initialValue: 'action',
       options: {
         list: [
-          'action',
+          { title: 'Filled', value: 'action' },
           { title: 'Outline', value: 'action-outline' },
-          'ghost',
-          'link'
+          { title: 'Ghost', value: 'ghost' },
+          { title: 'Text link', value: 'link' }
         ]
       }
     }

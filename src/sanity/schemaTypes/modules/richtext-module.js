@@ -5,7 +5,7 @@ import { uidField } from '../fragments/fields/uid';
 
 export const richtextModule = {
   name: 'richtext-module',
-  title: 'Richtext Module',
+  title: 'Rich text',
   icon: MdArticle,
   type: 'object',
   fields: [
@@ -35,7 +35,7 @@ export const richtextModule = {
     prepare({ content }) {
       return {
         title: getBlockText(content),
-        subtitle: 'Richtext Module'
+        subtitle: 'Rich text'
       };
     }
   }

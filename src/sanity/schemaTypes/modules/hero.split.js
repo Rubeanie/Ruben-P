@@ -29,7 +29,7 @@ export const heroSplit = {
     },
     {
       name: 'ctas',
-      title: 'Call-to-actions',
+      title: 'Calls to action',
       type: 'array',
       of: [{ type: 'cta' }],
       group: 'content'
