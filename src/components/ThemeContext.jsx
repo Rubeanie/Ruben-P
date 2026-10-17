@@ -101,12 +101,15 @@ export function ThemeProvider({ children, initialThemes: availableThemes }) {
   }, [availableThemes, requestTheme, theme.url]);
 
   const nextTheme = useCallback(() => {
-    const next = nextThemeAfter(availableThemes, theme.url);
+    const next = nextThemeAfter(
+      availableThemes,
+      (requestedTheme ?? theme).url
+    );
 
     if (next) {
       requestTheme(next);
     }
-  }, [availableThemes, requestTheme, theme.url]);
+  }, [availableThemes, requestTheme, requestedTheme, theme]);
 
   useEffect(() => {
     if (hasRequestedInitialTheme.current || availableThemes.length === 0) {

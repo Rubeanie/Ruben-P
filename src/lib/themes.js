@@ -304,7 +304,7 @@ export function loadThemeImage(url) {
     image.decoding = 'async';
 
     image.onload = () => resolve(image);
-    image.onerror = (event) => reject(event);
+    image.onerror = () => reject(new Error(`Theme image failed: ${url}`));
     image.src = url;
   });
 }
