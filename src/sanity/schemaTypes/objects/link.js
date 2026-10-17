@@ -89,7 +89,7 @@ export const link = {
           return `No heading #${fragment} on ${target.title}. The link opens the page at the top.`;
         }).warning()
       ],
-      hidden: ({ parent }) => !parent?.type || parent.type === 'redirect'
+      hidden: ({ parent }) => parent?.type !== 'internal'
     }
   ],
   preview: {

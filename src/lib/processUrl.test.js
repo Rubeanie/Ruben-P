@@ -83,14 +83,34 @@ test.each([
   ).toBe(expected);
 });
 
-test('resolveLink appends only a query or fragment to an external link', () => {
-  expect(
-    resolveLink({ type: 'external', external: 'https://x.dev', params: '#a' })
-  ).toBe('https://x.dev#a');
-  expect(
-    resolveLink({ type: 'external', external: 'https://x.dev', params: 'b' })
-  ).toBe('https://x.dev');
+test('resolveLink merges only a query or fragment into an external link', () => {
+  const merge = (external, params) =>
+    resolveLink({ type: 'external', external, params });
+  expect(merge('https://x.dev/p', '#a')).toBe('https://x.dev/p#a');
+  expect(merge('https://x.dev/p', 'b')).toBe('https://x.dev/p');
+  expect(merge('https://x.dev/p?a=1', '?b=2')).toBe('https://x.dev/p?a=1&b=2');
+  expect(merge('https://x.dev/p?a=1#old', '?b=2#new')).toBe(
+    'https://x.dev/p?a=1&b=2#new'
+  );
+  expect(merge('/p?a=1', '?b=2')).toBe('/p?a=1&b=2');
 });
+
+test.each([
+  ['https://x.com/?flag', '?b=2', 'https://x.com/?flag&b=2'],
+  ['https://x.dev/search?q=:id', '?b=2', 'https://x.dev/search?q=:id&b=2'],
+  ['https://x.dev/p&', '?b=2', 'https://x.dev/p&?b=2'],
+  ['https://x.dev/p?', '?b=2', 'https://x.dev/p?b=2'],
+  ['https://x.dev/?q=a%20b', '?b=2', 'https://x.dev/?q=a%20b&b=2'],
+  ['https://x.dev/#a', '#b', 'https://x.dev/#b'],
+  ['https://x.dev/p', '?b=2#c', 'https://x.dev/p?b=2#c'],
+  ['//host/p', '?b=2', '//host/p?b=2'],
+  ['https://x.dev', '#a', 'https://x.dev#a']
+])(
+  'an external link %p + %p keeps its own text: %p',
+  (external, params, out) => {
+    expect(resolveLink({ type: 'external', external, params })).toBe(out);
+  }
+);
 
 const redirectTo = (destination, source = '/github') => ({
   type: 'redirect',
