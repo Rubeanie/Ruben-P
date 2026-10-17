@@ -120,3 +120,16 @@ export function initials(name) {
 export function sameDay(a, b) {
   return String(a).slice(0, 10) === String(b).slice(0, 10);
 }
+
+// The calendar day of an instant in an IANA zone (en-CA prints YYYY-MM-DD).
+// No zone, or one the runtime rejects, reads as UTC; a draft preview's zone
+// carries stega, which is cleaned first.
+export function dayIn(iso, zone) {
+  try {
+    return new Intl.DateTimeFormat('en-CA', {
+      timeZone: stegaClean(zone) || 'UTC'
+    }).format(new Date(iso));
+  } catch {
+    return String(iso).slice(0, 10);
+  }
+}

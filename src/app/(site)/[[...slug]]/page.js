@@ -138,6 +138,7 @@ const loadPage = cache((path) =>
     ][0]{
       _type,
       _updatedAt,
+      editedZone,
       headingLinks,
       animateModules,
       ${postCardQuery},

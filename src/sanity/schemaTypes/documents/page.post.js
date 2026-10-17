@@ -95,6 +95,8 @@ export const pagePost = {
       group: 'options',
       initialValue: false
     },
+    // Written by the publish action: the zone the editor was in, for the day of the edit.
+    { name: 'editedZone', type: 'string', hidden: true, readOnly: true },
     headingLinksField({ group: 'options' }),
     animateModulesField,
     {
