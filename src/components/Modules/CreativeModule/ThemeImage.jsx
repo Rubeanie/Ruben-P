@@ -53,6 +53,7 @@ function useMarch(ref, moving) {
 
 export default function ThemeImage({ label }) {
   const id = useId();
+  const titleId = `${id}-title`;
   const zone = useRef(null);
   const input = useRef(null);
   const drop = useImageTheme();
@@ -71,6 +72,7 @@ export default function ThemeImage({ label }) {
         data-drag={drop.dragging || undefined}
         aria-busy={drop.busy}
         aria-disabled={drop.busy}
+        aria-labelledby={titleId}
         aria-describedby={id}
         onClick={() => !drop.busy && input.current?.click()}
         {...drop.zone}>
@@ -81,7 +83,9 @@ export default function ThemeImage({ label }) {
           <LuImagePlus strokeWidth={1.5} aria-hidden='true' />
         </span>
         <span className={styles.copy}>
-          <span className={styles.title}>{title}</span>
+          <span id={titleId} className={styles.title}>
+            {title}
+          </span>
           <span
             id={id}
             className={styles.hint}
