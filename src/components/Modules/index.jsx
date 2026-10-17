@@ -33,7 +33,8 @@ const ModuleRenderer = ({
   dataAttribute,
   lead,
   entries,
-  besideRail
+  besideRail,
+  draft
 }) => {
   switch (module._type) {
     case 'accordion-list':
@@ -91,8 +92,10 @@ const ModuleRenderer = ({
       return <ThreeScene {...module} />;
     default:
       // Render errors are caught by the surrounding ErrorBoundary; an unknown
-      // type isn't a throw, just a config mistake , show it inline.
-      return (
+      // type isn't a throw, just a config mistake. Editors see it inline,
+      // visitors get nothing.
+      console.error(`Unknown module type '${module._type}' (${module._key})`);
+      return draft ? (
         <div className='alert error' role='alert'>
           <LuCircleAlert aria-hidden='true' />
           <span>
@@ -100,7 +103,7 @@ const ModuleRenderer = ({
             {`Data type mismatch, '${module._type}' does not exist`}
           </span>
         </div>
-      );
+      ) : null;
   }
 };
 
@@ -108,9 +111,9 @@ export async function Modules({ modules: fetched, page }) {
   const { modules, headings } = anchors(fetched, { links: page?.headingLinks });
   // In the Presentation tool each module gets a wrapper it can be opened from;
   // production markup stays untouched.
-  const { isEnabled } = await draftMode();
+  const { isEnabled: draft } = await draftMode();
   const sanity =
-    isEnabled &&
+    draft &&
     page?._id &&
     createDataAttribute({
       baseUrl: '/admin',
@@ -129,14 +132,16 @@ export async function Modules({ modules: fetched, page }) {
           <ErrorBoundary
             key={module._key}
             fallback={
-              <div className='alert warning' role='alert'>
-                <LuTriangleAlert aria-hidden='true' />
-                <span>
-                  <strong>Warning: </strong>
-                  An error occurred while rendering this module. Please check
-                  the module configuration.
-                </span>
-              </div>
+              draft ? (
+                <div className='alert warning' role='alert'>
+                  <LuTriangleAlert aria-hidden='true' />
+                  <span>
+                    <strong>Warning: </strong>
+                    An error occurred while rendering this module. Please check
+                    the module configuration.
+                  </span>
+                </div>
+              ) : null
             }>
             <ModuleRenderer
               module={module}
@@ -144,6 +149,7 @@ export async function Modules({ modules: fetched, page }) {
               dataAttribute={scoped}
               lead={module === lead}
               besideRail={railed.has(module)}
+              draft={draft}
               entries={
                 module._type === 'table-of-contents'
                   ? tocEntries(headings, modules.slice(index + 1))
