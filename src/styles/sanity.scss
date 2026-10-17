@@ -54,6 +54,8 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
+  // The caret follows currentColor, which is transparent here.
+  caret-color: var(--card-fg-color, CanvasText);
   filter: brightness(1.15) contrast(0.6) saturate(1.5);
 }
 
