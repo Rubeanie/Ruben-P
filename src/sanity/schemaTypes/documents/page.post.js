@@ -78,6 +78,8 @@ export const pagePost = {
           to: [{ type: 'post.category' }]
         }
       ],
+      // Order comes from Site settings.
+      options: { sortable: false },
       group: 'options'
     },
     {

@@ -21,6 +21,7 @@ import Reveal from '@/components/Reveal';
 import JsonLd from '@/components/JsonLd';
 import { themeFromImage } from '@/lib/imageTheme';
 import { isPagePath } from '@/lib/slug';
+import { orderCategories } from '@/lib/posts';
 import { getShareCard, getVanitySocial } from '@/lib/shareImage/data';
 import { DISCORD_SEGMENT } from '@/lib/shareImage/discord.cjs';
 
@@ -130,8 +131,8 @@ async function getPage(params) {
 
 // Once per render: the page, its metadata and its viewport all ask. The query is
 // long enough to go out as a POST, which fetch memoisation skips.
-const loadPage = cache((path) =>
-  fetchSanity(
+const loadPage = cache(async (path) => {
+  const page = await fetchSanity(
     groq`*[
       _type in ['page', 'page.post'] &&
       metadata.slug.current == $path
@@ -147,6 +148,7 @@ const loadPage = cache((path) =>
         count(authors) > 0 => authors[]->{ ${authorQuery} },
         [*[_type == 'site'][0].author->{ ${authorQuery} }]
       )),
+      "categoryOrder": *[_type == 'site'][0].postCategories[]{ "_id": _ref },
       modules[]{ ${modulesQuery} },
       "identity": *[_type == 'site'][0]{ ${identityQuery} },
       ${metadataQuery}
@@ -155,5 +157,15 @@ const loadPage = cache((path) =>
       params: { path },
       tags: ['pages', 'posts', 'authors', 'site', 'socials']
     }
-  )
-);
+  );
+  // Chips follow Site settings, like the tiles; GROQ can't sort without dropping unlisted ones.
+  return (
+    page && {
+      ...page,
+      categories: orderCategories(
+        page.categories ?? [],
+        page.categoryOrder ?? []
+      )
+    }
+  );
+});
