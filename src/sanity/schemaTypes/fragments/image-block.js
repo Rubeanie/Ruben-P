@@ -43,16 +43,7 @@ export const imageBlock = {
             : 'Without alt text screen readers skip this image. Fine for decoration.'
         ).warning()
     },
-    ...blockLayoutFields({ fieldset: 'options' }),
-    {
-      name: 'loading',
-      type: 'string',
-      options: {
-        list: ['lazy', 'eager']
-      },
-      initialValue: 'lazy',
-      fieldset: 'options'
-    }
+    ...blockLayoutFields({ fieldset: 'options' })
   ],
   preview: {
     select: {
