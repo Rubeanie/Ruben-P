@@ -87,6 +87,20 @@ export const threeJs = {
       group: 'content'
     },
     {
+      name: 'alt',
+      title: 'Alt text',
+      type: 'string',
+      description:
+        'What the model shows; read out on the button that loads it. Leave empty if it is only decoration.',
+      validation: (Rule) =>
+        Rule.custom((alt, { parent }) =>
+          parent?.loadOnClick && !alt
+            ? 'The load button needs a description of the model.'
+            : true
+        ),
+      group: 'content'
+    },
+    {
       name: 'caption',
       type: 'text',
       rows: 2,

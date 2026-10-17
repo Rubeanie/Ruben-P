@@ -123,12 +123,11 @@ const carouselScene = {
     reuse(threeJs, 'vignette'),
     reuse(threeJs, 'orbitControls'),
     reuse(threeJs, 'zoom'),
-    {
-      name: 'alt',
-      type: 'string',
+    // A carousel scene always loads on click.
+    reuse(threeJs, 'alt', {
       description: 'What the model shows; read out on its load button.',
       validation: required
-    },
+    }),
     caption,
     source
   ],

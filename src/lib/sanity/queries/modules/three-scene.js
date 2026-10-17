@@ -10,5 +10,5 @@ export const threeSceneQuery = groq`
   "loadOnClick": coalesce(loadOnClick, false),
   loadOnClick == true => { ${sceneFacadeQuery} },
   ${sceneLookQuery},
-  aspectRatio, size, align, caption, source,
+  aspectRatio, size, align, alt, caption, source,
 `;

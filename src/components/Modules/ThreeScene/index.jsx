@@ -19,6 +19,7 @@ export default function ThreeScene(props) {
     aspectRatio,
     size,
     align,
+    alt,
     caption,
     source,
     environmentSource,
@@ -70,7 +71,7 @@ export default function ThreeScene(props) {
             poster={scenePoster(poster)}
             blockSize={layout['data-size']}
             modelBytes={modelBytes}
-            label={stegaClean(caption)}
+            label={stegaClean(alt)}
           />
         </div>
         <FigureCaption caption={caption} source={source} />
