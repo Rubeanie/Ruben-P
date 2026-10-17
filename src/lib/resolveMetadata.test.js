@@ -141,6 +141,24 @@ test('Open Graph description falls back to the page meta description before Site
   expect(m.openGraph.description).toBe('Page meta description');
 });
 
+test("a post's summary follows its own description in both chains, ahead of Site settings", () => {
+  const own = resolveMetadata(
+    pageWith(
+      { metaDescription: 'Page meta description' },
+      { summary: 'Post summary' }
+    ),
+    site
+  );
+  expect(own.description).toBe('Page meta description');
+  const m = resolveMetadata(
+    pageWith({ metaDescription: null }, { summary: 'Post summary' }),
+    site
+  );
+  expect(m.description).toBe('Post summary');
+  expect(m.openGraph.description).toBe('Post summary');
+  expect(m.twitter.description).toBe('Post summary');
+});
+
 test("Site settings' Open Graph description wins when the page has none of its own", () => {
   const siteWithOgDescription = {
     seo: {

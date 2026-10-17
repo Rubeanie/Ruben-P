@@ -51,6 +51,7 @@ function sourcesOf(page, site, tags) {
     ]),
     description: pick(tags.description, [
       [p.metaDescription, 'page', 'Meta description'],
+      [page?.summary, 'page', 'Summary'],
       [s.metaDescription, 'site', 'Site settings']
     ]),
     ogTitle: pick(tags.ogTitle, [
@@ -63,6 +64,7 @@ function sourcesOf(page, site, tags) {
     ogDescription: pick(tags.ogDescription, [
       [p.openGraph?.description, 'page', 'Open Graph description'],
       [p.metaDescription, 'page', 'Meta description'],
+      [page?.summary, 'page', 'Summary'],
       [s.openGraph?.description, 'site', 'Site settings'],
       [s.metaDescription, 'site', 'Site settings, meta description']
     ]),

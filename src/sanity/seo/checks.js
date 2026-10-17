@@ -239,7 +239,10 @@ export function seoChecks(doc, site, { keyphraseUsedBy = [] } = {}) {
   const own = doc?.metadata?.seo ?? {};
   const findings = [
     titleItem(meta.title.trim()),
-    descriptionItem(own.metaDescription?.trim(), meta.description.trim()),
+    descriptionItem(
+      (own.metaDescription || doc?.summary)?.trim(),
+      meta.description.trim()
+    ),
     shareItem(doc ?? {}),
     ...headingItems(headingsOf(doc?.modules)),
     ...keyphraseItems(doc, meta, keyphraseUsedBy)

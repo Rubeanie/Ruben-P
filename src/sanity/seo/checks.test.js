@@ -102,6 +102,10 @@ test('short descriptions, site defaults and skipped levels are flagged', () => {
   expect(texts(withSeo({ metaDescription: 'Too short by far.' }))).toContain(
     'Description is 17 characters; aim for 120-160.'
   );
+  const summary = 'A post summary that stands in as its own description.';
+  expect(texts({ ...withSeo({ metaDescription: null }), summary })).toContain(
+    'Description is 53 characters; aim for 120-160.'
+  );
   expect(texts(withSeo({ metaDescription: null }))).toContain(
     'No description of its own; the Site settings one ships, the same on every such page.'
   );

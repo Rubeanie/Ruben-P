@@ -56,7 +56,9 @@ export function resolveMetadata(page, site) {
   const { additionalMetaTags, metaDescription, nofollowAttributes } =
     withDefaults(pageSeo, site?.seo);
   const title = pageSeo.metaTitle || pageTitle || site?.seo?.metaTitle || '';
-  const description = metaDescription || '';
+  // A post's summary comes after the page's own description, before the site's.
+  const description =
+    pageSeo.metaDescription || page?.summary || metaDescription || '';
 
   // Twitter and Open Graph fall back to the site field by field.
   const twitter = withDefaults(pageSeo.twitter, site?.seo?.twitter);
@@ -79,10 +81,11 @@ export function resolveMetadata(page, site) {
       site?.seo?.openGraph?.title ||
       title ||
       undefined,
-    // Same order as the title, one level shallower: no document-level description exists.
+    // Same order as the title, one level shallower.
     description:
       pageSeo.openGraph?.description ||
       pageSeo.metaDescription ||
+      page?.summary ||
       site?.seo?.openGraph?.description ||
       description ||
       undefined,
