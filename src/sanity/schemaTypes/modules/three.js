@@ -1,6 +1,7 @@
 import { IoMdCube } from 'react-icons/io';
 import { blockLayoutFields } from '../fragments/fields/block-layout';
 import { uidField } from '../fragments/fields/uid';
+import { sourceDescription } from '../fragments/image-block';
 import { assetPreview } from '../../components/CloudinaryPreview';
 import ModelInput, { modelPreview } from './three/ModelInput';
 import PosterInput from './three/PosterInput';
@@ -93,7 +94,7 @@ export const threeJs = {
     {
       name: 'source',
       type: 'url',
-      description: 'Credit link shown in the caption',
+      description: sourceDescription,
       group: 'content'
     },
     {

@@ -5,10 +5,10 @@ import { blockLayoutFields } from '../fields/block-layout';
 import { imageBlock } from '../image-block';
 
 // The image block's caption and source, moved into this block's content group.
-const reuse = (name) => {
-  const { fieldset, ...field } = imageBlock.fields.find((f) => f.name === name);
-  return { ...field, group: 'content' };
-};
+const reuse = (name) => ({
+  ...imageBlock.fields.find((f) => f.name === name),
+  group: 'content'
+});
 
 export const youTubeUrl = (Rule) =>
   Rule.custom((url) =>

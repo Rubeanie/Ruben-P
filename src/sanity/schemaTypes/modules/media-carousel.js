@@ -21,9 +21,7 @@ const required = (Rule) => Rule.required();
 const caption = reuse(imageBlock, 'caption', {
   description: 'Shows under the carousel while this item is in front.'
 });
-const source = reuse(imageBlock, 'source', {
-  description: 'Credit link; the caption becomes the link.'
-});
+const source = reuse(imageBlock, 'source');
 
 // An item's picture, from its stored value, for the list and the module's
 // preview: the item's own preview selects the same paths the stored item has.
@@ -50,7 +48,10 @@ const carouselImage = {
   icon: LuImage,
   fields: [
     reuse(imageBlock, 'image'),
-    reuse(imageBlock, 'alt', { validation: required }),
+    reuse(imageBlock, 'alt', {
+      description: 'What the image shows, read out by screen readers.',
+      validation: required
+    }),
     caption,
     source
   ],
