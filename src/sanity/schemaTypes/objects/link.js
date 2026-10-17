@@ -99,11 +99,28 @@ export const link = {
       slug: 'internal.metadata.slug.current',
       external: 'external',
       redirect: 'redirect.source',
+      redirectLabel: 'redirect.destination.label',
+      redirectTitle: 'redirect.destination.internal.title',
       params: 'params'
     },
-    prepare({ label, title, slug, external, redirect, params }) {
+    prepare({
+      label,
+      title,
+      slug,
+      external,
+      redirect,
+      redirectLabel,
+      redirectTitle,
+      params
+    }) {
       return {
-        title: label || title || redirect,
+        title:
+          label ||
+          title ||
+          external ||
+          redirectLabel ||
+          redirectTitle ||
+          redirect,
         subtitle: [external || slug || redirect, params]
           .filter(Boolean)
           .join('')

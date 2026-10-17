@@ -13,6 +13,7 @@ export const linkQuery = groq`
     label,
     internal->title,
     external,
+    redirect->destination.label,
     redirect->destination.internal->title,
     redirect->source
   ),
