@@ -99,7 +99,7 @@ export function resolveMetadata(page, site) {
       title: openGraph?.title || title || undefined,
       description: openGraph?.description || description || undefined,
       images: openGraph?.images ?? [],
-      creator: twitter?.handle || twitter?.creator,
+      creator: twitter?.handle,
       site: twitter?.site,
       // Unset means the large card when there is an image; Next alone would ship summary.
       card:

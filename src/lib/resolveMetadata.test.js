@@ -21,8 +21,7 @@ const site = {
     twitter: {
       handle: '@site',
       site: '@publisher',
-      cardType: null,
-      creator: null
+      cardType: null
     }
   }
 };
@@ -179,10 +178,10 @@ test('Twitter spells out what Next would copy from Open Graph', () => {
   });
 });
 
-test('a set card type ships as is; a handle beats the creator', () => {
+test('a set card type ships as is, with the handle as creator', () => {
   const m = resolveMetadata(
     pageWith({
-      twitter: { cardType: 'summary_large_image', handle: null, creator: '@me' }
+      twitter: { cardType: 'summary_large_image', handle: '@me' }
     }),
     { seo: { ...site.seo, twitter: {} } }
   );

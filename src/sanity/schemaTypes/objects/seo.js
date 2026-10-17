@@ -102,6 +102,9 @@ export const openGraph = {
   ]
 };
 
+const handleRule = (Rule) =>
+  Rule.regex(/^@\w{1,15}$/).warning('An @handle, like @rubeanie.');
+
 export const twitter = {
   name: 'twitter',
   title: 'Twitter / X',
@@ -109,13 +112,16 @@ export const twitter = {
   fields: [
     {
       name: 'handle',
+      title: 'Creator @handle',
       type: 'string',
-      description: 'The @handle of the content author.'
+      description: 'The @handle of the content author.',
+      validation: handleRule
     },
     {
       name: 'site',
       type: 'string',
-      description: 'The @handle of the website or publisher.'
+      description: 'The @handle of the website or publisher.',
+      validation: handleRule
     },
     {
       name: 'cardType',
@@ -130,12 +136,6 @@ export const twitter = {
         ],
         layout: 'radio'
       }
-    },
-    {
-      name: 'creator',
-      type: 'string',
-      description:
-        'The @handle of the content creator, if different from the author.'
     }
   ]
 };

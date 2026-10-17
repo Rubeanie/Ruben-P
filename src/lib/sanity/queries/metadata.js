@@ -21,7 +21,6 @@ const openGraphQuery = groq`
 const twitterQuery = groq`
   _type,
   site,
-  creator,
   cardType,
   handle
 `;
