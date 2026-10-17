@@ -8,12 +8,6 @@ export const mont = localFont({
       style: 'normal'
     },
     {
-      path: './trt/trt-mont-broz-extra-light.woff2',
-      weight: '200',
-      style: 'normal'
-    },
-    { path: './trt/trt-mont-broz-light.woff2', weight: '300', style: 'normal' },
-    {
       path: './trt/trt-mont-broz-extra-bold.woff2',
       weight: '800',
       style: 'normal'
@@ -25,7 +19,7 @@ export const mont = localFont({
   // Its Verdana stand-ins are in globals.scss: Next only offers one Arial or
   // Times face for every weight.
   adjustFontFallback: false,
-  // Mont's 800/300 win metrics leave 150 more units below caps than above, so
+  // Mont's 800 win metrics leave 150 more units below caps than above, so
   // caps sit high in the line box. Rebalanced around the 650 cap height; the
   // total stays 1100 so line boxes keep their size. Next only takes literals
   // here, so montCritical and $mont-ascent/$mont-descent in Sass repeat it.
