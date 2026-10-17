@@ -4,6 +4,7 @@ import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { Canvas as R3FCanvas, useThree } from '@react-three/fiber';
 import { PerformanceMonitor, Preload } from '@react-three/drei';
 import { WebGLRenderTarget } from 'three';
+import ErrorBoundary from '@/components/ErrorBoundary';
 
 const STEP = 0.05;
 
@@ -57,6 +58,7 @@ export default function Canvas({
   style,
   onReady,
   onOverload,
+  onError,
   frameloop,
   composed = false,
   dprRange = [0.5, 1.1],
@@ -96,46 +98,49 @@ export default function Canvas({
       ref={containerRef}
       className={className}
       style={{ pointerEvents: 'none', ...style }}>
-      <R3FCanvas
-        gl={{ precision: 'lowp', powerPreference: 'high-performance' }}
-        dpr={dpr}
-        frameloop={loop}
-        {...props}
-        onCreated={(state) => {
-          // R3F loses the context on unmount, while the canvas is still on
-          // screen; Vivaldi and Helium then show one white frame. Released a
-          // moment later the GPU memory still goes, without the flash.
-          const lose = state.gl.forceContextLoss.bind(state.gl);
-          state.gl.forceContextLoss = () => setTimeout(lose, 500);
-          // A restored context starts blank, and a 'demand' loop won't redraw
-          // it by itself.
-          state.gl.domElement.addEventListener('webglcontextrestored', () =>
-            state.invalidate()
-          );
-          props.onCreated?.(state);
-        }}>
-        <Suspense fallback={null}>
-          {children}
-          <Ready composed={composed} onReady={markReady} />
-        </Suspense>
-        <Preload all />
-        {loop === 'always' && (
-          <PerformanceMonitor
-            ms={200}
-            iterations={7}
-            step={STEP}
-            // Only read on mount: a remount resumes from what it learned.
-            factor={factor}
-            onChange={({ factor }) => setFactor(factor)}
-            onIncline={() => (floor.current = false)}
-            onDecline={({ factor }) => {
-              if (floor.current) onOverload?.();
-              floor.current = factor < STEP / 2;
-              if (floor.current) setFactor(0);
-            }}
-          />
-        )}
-      </R3FCanvas>
+      {/* R3F rethrows a failed context or asset; it stops here, not at the module. */}
+      <ErrorBoundary fallback={null} onError={onError}>
+        <R3FCanvas
+          gl={{ precision: 'lowp', powerPreference: 'high-performance' }}
+          dpr={dpr}
+          frameloop={loop}
+          {...props}
+          onCreated={(state) => {
+            // R3F loses the context on unmount, while the canvas is still on
+            // screen; Vivaldi and Helium then show one white frame. Released a
+            // moment later the GPU memory still goes, without the flash.
+            const lose = state.gl.forceContextLoss.bind(state.gl);
+            state.gl.forceContextLoss = () => setTimeout(lose, 500);
+            // A restored context starts blank, and a 'demand' loop won't redraw
+            // it by itself.
+            state.gl.domElement.addEventListener('webglcontextrestored', () =>
+              state.invalidate()
+            );
+            props.onCreated?.(state);
+          }}>
+          <Suspense fallback={null}>
+            {children}
+            <Ready composed={composed} onReady={markReady} />
+          </Suspense>
+          <Preload all />
+          {loop === 'always' && (
+            <PerformanceMonitor
+              ms={200}
+              iterations={7}
+              step={STEP}
+              // Only read on mount: a remount resumes from what it learned.
+              factor={factor}
+              onChange={({ factor }) => setFactor(factor)}
+              onIncline={() => (floor.current = false)}
+              onDecline={({ factor }) => {
+                if (floor.current) onOverload?.();
+                floor.current = factor < STEP / 2;
+                if (floor.current) setFactor(0);
+              }}
+            />
+          )}
+        </R3FCanvas>
+      </ErrorBoundary>
     </div>
   );
 }

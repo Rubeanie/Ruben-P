@@ -75,7 +75,8 @@ export default function Stage({ grain }) {
   useEffect(() => {
     if (!load) return undefined;
     const slow = setTimeout(() => {
-      if (!ref.current?.dataset.ready) setLoader('on');
+      const { ready, failed } = ref.current?.dataset ?? {};
+      if (!ready && !failed) setLoader('on');
     }, SLOW);
     const giveUp = setTimeout(
       () => setLoader((state) => state && 'out'),
@@ -108,6 +109,12 @@ export default function Stage({ grain }) {
     if (ref.current) ref.current.dataset.ready = 'true';
     setLoader((state) => state && 'out');
   }, []);
+  // A scene that threw: the loader bows out and the hero stays a photo. The
+  // mark keeps a loader that has not shown yet from showing later.
+  const onError = useCallback(() => {
+    if (ref.current) ref.current.dataset.failed = 'true';
+    setLoader((state) => state && 'out');
+  }, []);
 
   return (
     <>
@@ -124,6 +131,7 @@ export default function Stage({ grain }) {
             stage={ref}
             grain={grain}
             onReady={onReady}
+            onError={onError}
           />
         )}
         <div ref={vignette} className={styles.vignette} />
