@@ -1,4 +1,5 @@
 import { MdOutlineCallSplit } from 'react-icons/md';
+import { apiVersion } from '@/lib/env';
 
 export const redirect = {
   name: 'redirect',
@@ -10,12 +11,22 @@ export const redirect = {
       title: 'Redirect from',
       description: 'Local path to redirect, e.g. /old-path or /old-path/:slug',
       type: 'string',
-      validation: (Rule) =>
+      validation: (Rule) => [
         Rule.required()
           .regex(/^(\/[^/\\?#\s]+)+$/)
           .error(
             'A path like /old-page or /old/:slug, with no trailing slash, ? or #.'
-          )
+          ),
+        // A page at the same path is served first, so the redirect would never run.
+        Rule.custom(async (source, { getClient }) => {
+          if (!source) return true;
+          const taken = await getClient({ apiVersion }).fetch(
+            `count(*[_type in ['page', 'page.post'] && metadata.slug.current == $source]) > 0`,
+            { source }
+          );
+          return taken ? `A page already has the path ${source}.` : true;
+        })
+      ]
     },
     {
       name: 'destination',
