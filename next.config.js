@@ -3,11 +3,6 @@
 const path = require('path');
 const { DISCORD_SEGMENT } = require('./src/lib/shareImage/discord.cjs');
 
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled:
-    process.env.ANALYZE === 'true' && process.env.NODE_ENV === 'production'
-});
-
 const nextConfig = {
   poweredByHeader: false,
   // Extra hosts allowed to reach the dev server (e.g. a phone on the LAN), comma-separated
@@ -87,4 +82,4 @@ const nextConfig = {
   }
 };
 
-module.exports = withBundleAnalyzer(nextConfig);
+module.exports = nextConfig;
