@@ -9,10 +9,6 @@ export const customHtml = {
   fields: [
     uidField(),
     {
-      name: 'className',
-      type: 'string'
-    },
-    {
       name: 'html',
       title: 'HTML',
       type: 'code',

@@ -2,18 +2,16 @@ import { PHASE_PRODUCTION_BUILD } from 'next/constants';
 import { draftMode } from 'next/headers';
 import client from './client';
 import { sanityFetch } from './live';
+import { SANITY_TAG } from './tag';
 
 export { default as groq } from 'groq';
 
-// Keeps the existing fetchSanity signature; extra options such as perspective
-// and stega pass straight through.
-export async function fetchSanity(
-  query,
-  { params = {}, tags = [], ...options } = {}
-) {
+// Fetches one Sanity read under the shared cache tag; extra options such as
+// perspective and stega pass straight through.
+export async function fetchSanity(query, { params = {}, ...options } = {}) {
   // Published reads skip sanityFetch: it first makes an uncached request for
   // sync tags that only SanityLive outside draft mode would use, and the
-  // webhook revalidates by our own tags instead.
+  // webhook revalidates our own tag instead.
   if (!(await draftMode()).isEnabled)
     return client.fetch(query, params, {
       perspective: 'published',
@@ -26,10 +24,15 @@ export async function fetchSanity(
           ? undefined
           : 'noStale',
       ...options,
-      next: { revalidate: false, tags }
+      next: { revalidate: false, tags: [SANITY_TAG] }
     });
 
   // Draft mode: sanityFetch handles the drafts perspective and stega.
-  const { data } = await sanityFetch({ query, params, tags, ...options });
+  const { data } = await sanityFetch({
+    query,
+    params,
+    tags: [SANITY_TAG],
+    ...options
+  });
   return data;
 }

@@ -5,12 +5,21 @@ import styles from '@/styles/components/FigureCaption.module.scss';
 
 // The caption's words, carrying the source link when there is one so the media
 // itself is not a tab stop; null when there is neither. The media carousel
-// sets these in its own caption row.
+// sets these in its own caption row. Web links open in a new tab.
 export function captionText({ caption, source }) {
   const href = stegaClean(source);
-  // mailto: and tel: are safe hrefs but make no sense as a credit link.
-  const linked = href && isSafeHref(href) && /^(https?:|\/)/.test(href);
+  // tel: and the like are safe hrefs but make no sense as a credit link.
+  const email = /^mailto:/i.test(href);
+  const linked =
+    href && isSafeHref(href) && (email || /^(https?:|\/)/i.test(href));
   if (!linked) return caption || null;
+  // An email link opens in place, with no external icon.
+  if (email)
+    return (
+      <a href={href} className={styles.source}>
+        {caption || 'Email'}
+      </a>
+    );
   return (
     <a
       href={href}

@@ -51,7 +51,10 @@ $column: 11.25rem;
   bottom: -1.5rem;
   font-size: $mark-size;
   // lifted toward white so near-black brands still surface
-  color: color-mix(in srgb, var(--brand) 70%, var.$color-on-dark);
+  color: var(
+    --brand-ink,
+    color-mix(in srgb, var(--brand) 70%, var.$color-on-dark)
+  );
   opacity: 0.2;
   transition: opacity 0.25s var.$ease-out;
   pointer-events: none;

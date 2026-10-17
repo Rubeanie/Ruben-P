@@ -120,7 +120,7 @@ export function ClipInput(props) {
                   builds it.
                 </span>
               </Text>
-              {current?.busy ? (
+              {attempt?.busy ? (
                 <Text size={1} muted>
                   Preparing…
                 </Text>

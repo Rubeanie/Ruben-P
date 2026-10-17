@@ -1,13 +1,19 @@
 import { MdPlayArrow } from 'react-icons/md';
+import { getYouTubeId } from '@/lib/youtube';
 import { YouTubePreview } from './YouTubePreview';
 import { blockLayoutFields } from '../fields/block-layout';
 import { imageBlock } from '../image-block';
 
 // The image block's caption and source, moved into this block's content group.
-const reuse = (name) => {
-  const { fieldset, ...field } = imageBlock.fields.find((f) => f.name === name);
-  return { ...field, group: 'content' };
-};
+const reuse = (name) => ({
+  ...imageBlock.fields.find((f) => f.name === name),
+  group: 'content'
+});
+
+export const youTubeUrl = (Rule) =>
+  Rule.custom((url) =>
+    !url || getYouTubeId(url) ? true : 'Not a YouTube video link.'
+  );
 
 export const youTubeBlock = {
   name: 'youtube',
@@ -21,10 +27,12 @@ export const youTubeBlock = {
       type: 'url',
       title: 'URL',
       placeholder: 'https://youtu.be/<video_id>',
-      validation: (Rule) =>
+      validation: (Rule) => [
         Rule.uri({
           scheme: ['http', 'https']
         }),
+        youTubeUrl(Rule)
+      ],
       group: 'content'
     },
     reuse('caption'),

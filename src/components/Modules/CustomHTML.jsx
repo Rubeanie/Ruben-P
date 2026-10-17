@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react';
 import { isQuietHtml } from '@/lib/modules';
 import styles from '@/styles/components/CustomHTML.module.scss';
 
-export default function CustomHTML({ className, html, ...props }) {
+export default function CustomHTML({ html, ...props }) {
   const ref = useRef(null);
   const injectedRef = useRef(false);
   const code = html?.code;
@@ -23,20 +23,24 @@ export default function CustomHTML({ className, html, ...props }) {
   }, [code]);
 
   if (!code) return null;
-  const classes = `${styles.html} ${stegaClean(className) ?? ''}`.trim();
   const quiet = isQuietHtml(code) || undefined;
 
   if (!/<script/i.test(code))
     return (
       <section
         id={uid(props)}
-        className={classes}
+        className={styles.html}
         data-quiet={quiet}
         dangerouslySetInnerHTML={{ __html: stegaClean(code) }}
       />
     );
 
   return (
-    <section ref={ref} id={uid(props)} className={classes} data-quiet={quiet} />
+    <section
+      ref={ref}
+      id={uid(props)}
+      className={styles.html}
+      data-quiet={quiet}
+    />
   );
 }

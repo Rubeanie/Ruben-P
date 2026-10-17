@@ -2,16 +2,11 @@ import { IoMdHammer } from 'react-icons/io';
 import { InlineSvgPreviewComponent } from '@focus-reactive/sanity-plugin-inline-svg-input';
 import { DEFAULT_THEME_COLORS } from '@/lib/themes';
 
-export const PreviewComponent = ({
-  logo,
-  foregroundColor,
-  backgroundColor
-}) => {
+export const PreviewComponent = ({ logo, backgroundColor }) => {
   return (
     <InlineSvgPreviewComponent
       value={logo}
       style={{
-        color: foregroundColor?.hex,
         backgroundColor: backgroundColor?.hex
       }}
       className='skill-svg'
@@ -38,21 +33,13 @@ export const skill = {
     },
     {
       name: 'baseColor',
-      title: 'Brand color',
+      title: 'Brand colour',
       type: 'color',
       options: {
+        disableAlpha: true,
         colorList: [{ hex: DEFAULT_THEME_COLORS.primary }]
       },
       group: 'content'
-    },
-    {
-      name: 'textColor',
-      title: 'Text color',
-      type: 'color',
-      options: {
-        colorList: [{ hex: '#121212' }]
-      },
-      group: 'options'
     },
     {
       name: 'url',
@@ -65,19 +52,12 @@ export const skill = {
     select: {
       title: 'title',
       logo: 'logo',
-      textColor: 'textColor',
       baseColor: 'baseColor'
     },
-    prepare({ title, logo, textColor, baseColor }) {
+    prepare({ title, logo, baseColor }) {
       return {
         title,
-        media: (
-          <PreviewComponent
-            logo={logo}
-            foregroundColor={textColor}
-            backgroundColor={baseColor}
-          />
-        )
+        media: <PreviewComponent logo={logo} backgroundColor={baseColor} />
       };
     }
   }

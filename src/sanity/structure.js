@@ -25,7 +25,7 @@ const structure = (S, context) =>
         S.documentTypeListItem('artist').title('Artists'),
         S.documentTypeListItem('skill').title('Skills'),
         S.documentTypeListItem('social').title('Socials'),
-        S.documentTypeListItem('theme').title('Themes')
+        S.documentTypeListItem('theme').title('Theme groups')
       ]).icon(MdMiscellaneousServices)
     ]);
 

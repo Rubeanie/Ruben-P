@@ -1,9 +1,10 @@
 import { MdArtTrack } from 'react-icons/md';
 import { getBlockText } from '@/sanity/utils';
-import { textBlock } from '../fragments/text-block';
+import { heroText } from '../fragments/text-block';
 import { scrollHintField } from '../fragments/fields/scroll-hint';
 import { uidField } from '../fragments/fields/uid';
 import { assetPreview } from '../../components/CloudinaryPreview';
+import { imageRequired } from '../objects/cloudinary-image';
 
 export const heroSplit = {
   name: 'hero.split',
@@ -18,21 +19,25 @@ export const heroSplit = {
   fields: [
     {
       name: 'pretitle',
-      type: 'string'
+      type: 'string',
+      group: 'content'
     },
     {
       name: 'content',
-      ...textBlock
+      ...heroText,
+      group: 'content'
     },
     {
       name: 'ctas',
-      title: 'Call-to-actions',
+      title: 'Calls to action',
       type: 'array',
-      of: [{ type: 'cta' }]
+      of: [{ type: 'cta' }],
+      group: 'content'
     },
     {
       name: 'image',
       type: 'cloudinaryImage',
+      validation: imageRequired,
       group: 'image'
     },
     {

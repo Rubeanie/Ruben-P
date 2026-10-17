@@ -1,12 +1,10 @@
 import { stegaClean } from '@sanity/client/stega';
+import { slugify } from './anchors';
 
-// Chip and URL value for a category: lowercase words joined by hyphens.
+// Chip and URL value for a category: lowercase words joined by hyphens, in
+// any script.
 export function categorySlug(title) {
-  return String(title ?? '')
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
+  return String(title ?? '').trim() ? slugify(title) : '';
 }
 
 // Title order, the tail order for categories the site list leaves out.
@@ -119,4 +117,17 @@ export function initials(name) {
 // Whether two ISO timestamps fall on the same calendar day.
 export function sameDay(a, b) {
   return String(a).slice(0, 10) === String(b).slice(0, 10);
+}
+
+// The calendar day of an instant in an IANA zone (en-CA prints YYYY-MM-DD).
+// No zone, or one the runtime rejects, reads as UTC; a draft preview's zone
+// carries stega, which is cleaned first.
+export function dayIn(iso, zone) {
+  try {
+    return new Intl.DateTimeFormat('en-CA', {
+      timeZone: stegaClean(zone) || 'UTC'
+    }).format(new Date(iso));
+  } catch {
+    return String(iso).slice(0, 10);
+  }
 }

@@ -1,7 +1,9 @@
 import { IoMdMegaphone } from 'react-icons/io';
 import { getBlockText } from '@/sanity/utils';
+import { apiVersion } from '@/lib/env';
 import { SEPARATORS } from '@/lib/announcement';
 import { richBlock } from '../fragments/text-block';
+import { link } from '../objects/link';
 import {
   SeparatorInput,
   SeparatorMedia
@@ -11,11 +13,12 @@ import {
 // links, and no marks that need a larger size to read.
 const bandBlock = {
   ...richBlock,
+  of: [],
   styles: richBlock.styles.filter(({ value }) => value === 'normal'),
   lists: [],
   marks: {
     decorators: richBlock.marks.decorators.filter(
-      ({ value }) => value !== 'imgHeading' && value !== 'code'
+      ({ value }) => !['imgHeading', 'code', 'dlig', 'ss01'].includes(value)
     ),
     annotations: []
   }
@@ -26,6 +29,16 @@ export const announcement = {
   icon: IoMdMegaphone,
   type: 'document',
   fieldsets: [{ name: 'schedule', options: { columns: 2 } }],
+  validation: (Rule) =>
+    Rule.custom(async (doc, { getClient }) => {
+      const listed = await getClient({ apiVersion }).fetch(
+        `count(*[_type == 'site' && $id in announcements[]._ref])`,
+        { id: doc._id.replace(/^drafts\./, '') }
+      );
+      return listed > 0
+        ? true
+        : 'Not in Site settings > Announcements, so it never shows.';
+    }).warning(),
   fields: [
     {
       name: 'content',
@@ -74,16 +87,23 @@ export const announcement = {
   preview: {
     select: {
       content: 'content',
-      label: 'link.label',
-      page: 'link.internal.title',
+      ...Object.fromEntries(
+        Object.entries(link.preview.select).map(([key, path]) => [
+          key,
+          `link.${path}`
+        ])
+      ),
       separator: 'separator',
       start: 'start',
       end: 'end'
     },
-    prepare({ content, label, page, separator, start, end }) {
+    prepare({ content, separator, start, end, ...target }) {
       return {
         title: getBlockText(content),
-        subtitle: [label ?? page, (start || end) && 'Scheduled']
+        subtitle: [
+          link.preview.prepare(target).title,
+          (start || end) && 'Scheduled'
+        ]
           .filter(Boolean)
           .join(' · '),
         media: <SeparatorMedia name={separator ?? 'dot'} />

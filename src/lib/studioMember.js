@@ -11,6 +11,9 @@ const MAX_PENDING = 20;
 // What memberOf answers when too many checks are already in flight.
 export const BUSY = Symbol('busy');
 
+// What memberOf answers when Sanity could not say: an outage is not a sign-out.
+export const UNAVAILABLE = Symbol('unavailable');
+
 export const json = (body, status = 200) => Response.json(body, { status });
 
 const hashToken = (token) => createHash('sha256').update(token).digest('hex');
@@ -41,7 +44,7 @@ export function createRateLimit({ limit, window, now = Date.now }) {
   };
 }
 
-// Who is asking, as a Sanity user id, null, or BUSY. Only someone who can edit this
+// Who is asking, as a Sanity user id, null, BUSY or UNAVAILABLE. Only someone who can edit this
 // project passes. A viewer is turned away: that includes the site's read
 // token, which preview sessions hand the browser. `fresh` asks Sanity every
 // time, so a revoked member is out at once.
@@ -63,7 +66,10 @@ export function createMemberCheck({
         signal: AbortSignal.timeout(5000)
       }
     ).catch(() => null);
-    if (res?.status !== 200) return null;
+    // Only a refusal turns the caller away; no answer, a server error or
+    // throttling is Sanity being down.
+    if (!res || res.status >= 500 || res.status === 429) return UNAVAILABLE;
+    if (res.status !== 200) return null;
     const me = await res.json().catch(() => null);
     const canEdit =
       Array.isArray(me?.roles) &&
@@ -87,7 +93,8 @@ export function createMemberCheck({
       );
     }
     const id = await pending.get(hash);
-    if (id && !fresh) {
+    // An outage is never remembered: the next check asks again.
+    if (typeof id === 'string' && !fresh) {
       if (verified.size >= MAX_CACHED)
         verified.delete(verified.keys().next().value);
       verified.set(hash, { id, expires: now() + TOKEN_TTL });

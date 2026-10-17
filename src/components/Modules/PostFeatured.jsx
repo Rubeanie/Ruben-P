@@ -1,7 +1,9 @@
+import { Suspense } from 'react';
 import { tileBands } from '@/lib/bento';
 import { featuredFirst, relatedPosts } from '@/lib/posts';
 import { getPostIndex } from '@/lib/sanity/queries/posts';
 import uid from '@/lib/uid';
+import { PostIntent } from './PostList';
 import Tile from './PostList/Tile';
 import styles from '@/styles/components/PostFeatured.module.scss';
 
@@ -22,6 +24,9 @@ export default async function PostFeatured({ limit, page, ...props }) {
           <Tile key={post._id} post={post} band={bands[i]} wide />
         ))}
       </div>
+      <Suspense fallback={null}>
+        <PostIntent posts={shown} />
+      </Suspense>
     </section>
   );
 }

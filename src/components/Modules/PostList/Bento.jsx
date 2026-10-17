@@ -12,6 +12,8 @@ import accordion from '@/styles/components/AccordionList.module.scss';
 import styles from '@/styles/components/PostList.module.scss';
 
 const DEBOUNCE = 120;
+// As the page's lead media, this many covers load at once instead of lazily.
+const EAGER = 4;
 // How many tiles the URL shows: the first page, or the count Load more has reached.
 const visibleCount = (params) => {
   const requested = Number(params.get('count'));
@@ -41,7 +43,7 @@ function updateSearch(mutate) {
   for (const callback of listeners) callback();
 }
 
-export default function Bento({ id, posts, filters }) {
+export default function Bento({ id, posts, filters, lead }) {
   const search = useSyncExternalStore(subscribe, getSearch, getServerSearch);
   const params = new URLSearchParams(search);
   const categories = (filters ?? []).map((c) => ({
@@ -197,14 +199,16 @@ export default function Bento({ id, posts, filters }) {
       });
     }, DEBOUNCE);
   };
-  const clear = () => {
+  const clear = (event) => {
     clearTimeout(debounce.current);
     setText('');
     changeFilters((p) => {
       p.delete('category');
       p.delete('q');
     });
-    searchInput.current?.focus();
+    // Only a keyboard press keeps focus in the search; a tap would raise the
+    // phone keyboard over the restored grid.
+    if (event.detail === 0) searchInput.current?.focus();
   };
   const loadMore = () => {
     // A page appended under a running morph would be dropped by the queued commit.
@@ -247,6 +251,7 @@ export default function Bento({ id, posts, filters }) {
             mobileShape={mobile[i]}
             active={category}
             morphing={morphing}
+            eager={lead && i < EAGER}
           />
         ))}
         {visible.length === 0 && (

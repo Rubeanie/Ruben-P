@@ -18,18 +18,18 @@ function chipCategories(posts, categories) {
 
 // Only the first page of tiles is on screen to be hovered. Streamed so the
 // lookup never holds up the list.
-async function PostIntent({ posts }) {
+export async function PostIntent({ posts }) {
   const hrefs = posts.slice(0, PAGE_SIZE).map((post) => stegaClean(post.slug));
   return <IntentImages images={await introImages(hrefs)} />;
 }
 
-export default async function PostList({ displayFilters, ...props }) {
+export default async function PostList({ displayFilters, lead, ...props }) {
   const { posts, categories } = await getPostIndex();
   if (!posts.length) return null;
   const filters = displayFilters ? chipCategories(posts, categories) : null;
   return (
     <>
-      <Bento id={uid(props)} posts={posts} filters={filters} />
+      <Bento id={uid(props)} posts={posts} filters={filters} lead={lead} />
       <Suspense fallback={null}>
         <PostIntent posts={posts} />
       </Suspense>

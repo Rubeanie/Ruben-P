@@ -5,10 +5,6 @@
   font-variant-ligatures: discretionary-ligatures;
 }
 
-@mixin ot-no-liga {
-  font-variant-ligatures: no-common-ligatures;
-}
-
 // Headings meet their gaps at the cap line and baseline, not at Mont's tall line box.
 @mixin trim-to-ink {
   text-box: trim-both cap alphabetic;

@@ -1,6 +1,7 @@
 import { IoMdCube } from 'react-icons/io';
 import { blockLayoutFields } from '../fragments/fields/block-layout';
 import { uidField } from '../fragments/fields/uid';
+import { sourceDescription } from '../fragments/image-block';
 import { assetPreview } from '../../components/CloudinaryPreview';
 import ModelInput, { modelPreview } from './three/ModelInput';
 import PosterInput from './three/PosterInput';
@@ -80,8 +81,23 @@ export const threeJs = {
       name: 'lights',
       title: 'Ambient light',
       type: 'color',
+      options: { disableAlpha: true },
       description:
         'Optional ambient fill light (helps if the model looks dark).',
+      group: 'content'
+    },
+    {
+      name: 'alt',
+      title: 'Alt text',
+      type: 'string',
+      description:
+        'What the model shows; read out on the button that loads it. Leave empty if it is only decoration.',
+      validation: (Rule) =>
+        Rule.custom((alt, { parent }) =>
+          parent?.loadOnClick && !alt
+            ? 'The load button needs a description of the model.'
+            : true
+        ),
       group: 'content'
     },
     {
@@ -93,13 +109,14 @@ export const threeJs = {
     {
       name: 'source',
       type: 'url',
-      description: 'Credit link shown in the caption',
+      description: sourceDescription,
       group: 'content'
     },
     {
       name: 'background',
       type: 'color',
-      description: 'Background color',
+      options: { disableAlpha: true },
+      description: 'Background colour',
       group: 'options'
     },
     {

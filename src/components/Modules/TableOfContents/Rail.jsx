@@ -26,7 +26,6 @@ export default function Rail({
         ref={navRef}
         className={styles.rail}
         data-hidden={!shown || undefined}
-        inert={!shown || undefined}
         aria-label='On this page'>
         <p className={styles.label}>On this page</p>
         <div className={styles.track} ref={trackRef}>

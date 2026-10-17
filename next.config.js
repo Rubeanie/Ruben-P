@@ -1,12 +1,6 @@
 /** @type {import('next').NextConfig} */
 
-const path = require('path');
 const { DISCORD_SEGMENT } = require('./src/lib/shareImage/discord.cjs');
-
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled:
-    process.env.ANALYZE === 'true' && process.env.NODE_ENV === 'production'
-});
 
 const nextConfig = {
   poweredByHeader: false,
@@ -35,9 +29,6 @@ const nextConfig = {
         search: ''
       }
     ]
-  },
-  sassOptions: {
-    includePaths: [path.join(__dirname, 'styles')]
   },
   async headers() {
     // Only same-origin framing: the Studio is embedded, so Presentation's preview is same-origin.
@@ -87,4 +78,4 @@ const nextConfig = {
   }
 };
 
-module.exports = withBundleAnalyzer(nextConfig);
+module.exports = nextConfig;

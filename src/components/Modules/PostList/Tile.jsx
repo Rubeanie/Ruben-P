@@ -139,7 +139,8 @@ export default function Tile({
   mobileShape,
   active,
   wide = false,
-  morphing = false
+  morphing = false,
+  eager = false
 }) {
   const [span] = shapeSize(shape);
   const wanted = tileSizes({ shape, mobileShape, wide });
@@ -316,6 +317,8 @@ export default function Tile({
             alt=''
             fill
             sizes={sizes}
+            loading={eager ? 'eager' : undefined}
+            fetchPriority={eager ? 'high' : undefined}
             onLoad={() => {
               decoded.add(cover.still);
               setLoaded(true);

@@ -4,7 +4,6 @@ import { SharePreviewInput } from '../../components/SharePreview/SharePreviewInp
 export const metadata = (prefix = '') => {
   return {
     name: 'metadata',
-    description: 'For search engines',
     type: 'object',
     components: { input: SharePreviewInput },
     fields: [

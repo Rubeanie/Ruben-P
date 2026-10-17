@@ -1,5 +1,6 @@
 import { MdPerson } from 'react-icons/md';
 import { assetPreview } from '../../components/CloudinaryPreview';
+import { uniqueName } from '../fragments/unique-name';
 
 export const author = {
   name: 'author',
@@ -10,7 +11,7 @@ export const author = {
     {
       name: 'name',
       type: 'string',
-      validation: (Rule) => Rule.required()
+      validation: uniqueName
     },
     {
       name: 'photo',

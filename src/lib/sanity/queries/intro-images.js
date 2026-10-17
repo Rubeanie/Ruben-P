@@ -13,8 +13,8 @@ const picture = groq`image { ${cloudinaryStillQuery} }`;
 const blocks = groq`content[]{
   _type,
   _type == 'block' && ${heading} => { style, children[]{ text } },
-  _type == 'imageBlock' => { ${picture} },
-  _type == 'youtube' => { url, autoplay }
+  _type == 'imageBlock' => { size, ${picture} },
+  _type == 'youtube' => { url, autoplay, size }
 }`;
 
 // The pages at $paths, for the links that lead to them.
@@ -38,14 +38,15 @@ export const introImagesQuery = groq`*[_type in ['page', 'page.post'] && metadat
           _key,
           _type,
           _type == 'heading' => { text },
-          _type == 'imageBlock' => { ${picture} },
+          _type == 'imageBlock' => { size, ${picture} },
           _type == 'copy' => { ${blocks} }
         }
       }
     },
-    _type == 'three.js' => { loadOnClick, ${scenePosterQuery} },
+    _type == 'three.js' => { loadOnClick, size, ${scenePosterQuery} },
     _type == 'media-carousel' => {
       "loop": coalesce(loop, false),
+      size,
       // Every item, as the carousel counts only those it can draw.
       items[]{
         _type,

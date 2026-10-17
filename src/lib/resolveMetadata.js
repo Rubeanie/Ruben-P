@@ -13,34 +13,21 @@ import { shareImageUrl } from '@/lib/shareImage/url';
 // The RSS feed, advertised in every page head.
 export const feedTypes = { 'application/rss+xml': FEED_PATH };
 
-const getMetaObjects = (tags) =>
-  tags.reduce((mergedObject, tag) => {
-    const metaTag = getMetaAttribute(tag?.metaAttributes);
-    return metaTag ? { ...mergedObject, ...metaTag } : mergedObject;
-  }, {});
-
-const getMetaAttribute = (attrs) =>
-  attrs?.filter(Boolean).reduce(
-    (obj, i) => ({
-      ...obj,
-      [i?.attributeKey]:
-        i.attributeType === 'image'
-          ? (stillOf(i?.attributeValueImage) ?? '')
-          : i.attributeValueString
-    }),
-    {}
+// Site settings' additional meta tags, as Next's `other`.
+export const metaTagsOf = (tags) =>
+  Object.fromEntries(
+    (tags ?? []).filter((t) => t?.name).map((t) => [t.name, t.value])
   );
 
 // Next drops the trailing slash of a bare origin; doing it here keeps the object equal to the head.
 const bare = (url) => url.replace(/^(https?:\/\/[^/]+)\/$/, '$1');
 
 // A hand-set share image wins; any other page gets its generated card, which draws its cover or hero.
-function shareImages(pageSeo, og, path) {
+function shareImages(pageSeo, path) {
   const handSet = stillOf(pageSeo.openGraph?.image);
   if (handSet) return [{ url: handSet }];
   if (isPagePath(path)) return [{ url: shareImageUrl(path), ...SHARE_IMAGE }];
-  const site = stillOf(og?.image);
-  return site ? [{ url: site }] : [];
+  return [];
 }
 
 // Every tag is spelled out, including what Next would otherwise inherit, so the Studio
@@ -49,47 +36,47 @@ export function resolveMetadata(page, site) {
   const url = bare(processUrl(page));
 
   const pageSeo = page?.metadata?.seo || {};
-  // The document's own title, e.g. "About"; stands between its meta title and the site's.
+  // The document's own title, e.g. "About"; follows its meta title.
   const pageTitle = stegaClean(page?.title) || '';
 
   // GROQ projects an absent field as null, so withDefaults falls back with `??`.
-  const { additionalMetaTags, metaDescription, nofollowAttributes } =
-    withDefaults(pageSeo, site?.seo);
-  const title = pageSeo.metaTitle || pageTitle || site?.seo?.metaTitle || '';
-  const description = metaDescription || '';
+  const { metaDescription, nofollowAttributes } = withDefaults(
+    pageSeo,
+    site?.seo
+  );
+  const title = pageSeo.metaTitle || pageTitle || '';
+  // A post's summary comes after the page's own description, before the site's.
+  const description =
+    pageSeo.metaDescription || page?.summary || metaDescription || '';
 
   // Twitter and Open Graph fall back to the site field by field.
   const twitter = withDefaults(pageSeo.twitter, site?.seo?.twitter);
 
-  const tags = additionalMetaTags ? getMetaObjects(additionalMetaTags) : {};
   const path = slugOf(page);
-  let og = withDefaults(pageSeo.openGraph, site?.seo?.openGraph);
   // A page's card ships even when neither the page nor the site sets any Open Graph.
-  if (!og && isPagePath(path)) og = {};
-  const images = shareImages(pageSeo, og, path);
+  const hasOg =
+    withDefaults(pageSeo.openGraph, site?.seo?.openGraph) || isPagePath(path);
+  const images = shareImages(pageSeo, path);
 
   // A share preview always points at the page itself.
-  const openGraph = og && {
-    // Own Open Graph title, then own meta title, then the document's own title,
-    // before either falls to the site's.
-    title:
-      pageSeo.openGraph?.title ||
-      pageSeo.metaTitle ||
-      pageTitle ||
-      site?.seo?.openGraph?.title ||
-      title ||
-      undefined,
-    // Same order as the title, one level shallower: no document-level description exists.
-    description:
-      pageSeo.openGraph?.description ||
-      pageSeo.metaDescription ||
-      site?.seo?.openGraph?.description ||
-      description ||
-      undefined,
-    siteName: og.siteName,
-    url,
-    images
-  };
+  const openGraph = hasOg
+    ? {
+        // Own Open Graph title, then own meta title, then the document's own title.
+        title: pageSeo.openGraph?.title || title || undefined,
+        // Its own description, then the page's meta description and summary, then the site's.
+        description:
+          pageSeo.openGraph?.description ||
+          pageSeo.metaDescription ||
+          page?.summary ||
+          site?.seo?.openGraph?.description ||
+          description ||
+          undefined,
+        // Only Site settings names the site, falling back to its title.
+        siteName: site?.seo?.openGraph?.siteName || site?.title || undefined,
+        url,
+        images
+      }
+    : undefined;
 
   return {
     metadataBase: new URL(baseUrl),
@@ -99,12 +86,10 @@ export function resolveMetadata(page, site) {
       title: openGraph?.title || title || undefined,
       description: openGraph?.description || description || undefined,
       images: openGraph?.images ?? [],
-      creator: twitter?.handle || twitter?.creator,
+      creator: twitter?.handle,
       site: twitter?.site,
-      // Unset means the large card when there is an image; Next alone would ship summary.
-      card:
-        twitter?.cardType ||
-        (openGraph?.images?.length ? 'summary_large_image' : 'summary')
+      // The generated card is built for the large layout; Next alone would ship summary.
+      card: 'summary_large_image'
     },
     robots: {
       index: !nofollowAttributes,
@@ -116,8 +101,7 @@ export function resolveMetadata(page, site) {
       types: feedTypes
     },
     // The page's one focus keyphrase; Google ignores the tag, others may glance at it.
-    keywords: stegaClean(pageSeo.focusKeyphrase) || undefined,
-    other: tags
+    keywords: stegaClean(pageSeo.focusKeyphrase) || undefined
   };
 }
 

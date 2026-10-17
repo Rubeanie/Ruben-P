@@ -29,7 +29,15 @@ const top = (ratio) => Math.max(1, Math.min(ratio, 2));
 // across pages, rather than flip back on and slow down again.
 let overloaded = false;
 
-function Scene({ frameloop, progress, vignette, stage, grain, onReady }) {
+function Scene({
+  frameloop,
+  progress,
+  vignette,
+  stage,
+  grain,
+  onReady,
+  onError
+}) {
   const [ratio, setRatio] = useState(() => devicePixelRatio);
   const [shed, setShed] = useState(overloaded);
   const reduced = useReducedMotion();
@@ -52,6 +60,7 @@ function Scene({ frameloop, progress, vignette, stage, grain, onReady }) {
       // div, so the layer never takes clicks meant for the page.
       eventSource={stage}
       onReady={onReady}
+      onError={onError}
       // Held still, every frame is the same one: draw only when something changes.
       frameloop={reduced && frameloop === 'always' ? 'demand' : frameloop}
       composed={composed}

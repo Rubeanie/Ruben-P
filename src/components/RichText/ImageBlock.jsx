@@ -26,7 +26,7 @@ export default function ImageBlock({
   if (!resolved) return null;
 
   const { src, still, width, height, clip, placeholder } = resolved;
-  const { caption, alt, source, loading, size, align } = value;
+  const { caption, alt, source, size, align } = value;
   const layout = blockLayout(stegaClean(size), stegaClean(align));
   const blockSizes = sizedSizes(sizes, layout['data-size']);
 
@@ -38,7 +38,7 @@ export default function ImageBlock({
       height={height || FALLBACK_HEIGHT}
       alt={stegaClean(alt) || ''}
       sizes={blockSizes}
-      loading={lead ? 'eager' : stegaClean(loading) || 'lazy'}
+      loading={lead ? 'eager' : undefined}
       fetchPriority={lead ? 'high' : undefined}
       placeholder={placeholder}
     />

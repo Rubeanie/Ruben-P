@@ -15,10 +15,7 @@ import { cardText, pathLine } from './copy';
 
 export async function getVanitySocial(path) {
   return stegaClean(
-    await fetchSanity(shareImageSocialQuery, {
-      params: { path },
-      tags: ['socials']
-    })
+    await fetchSanity(shareImageSocialQuery, { params: { path } })
   );
 }
 
@@ -47,11 +44,8 @@ async function colours(page, photo, social) {
 export async function getShareCard(path) {
   const [page, siteSettings] = stegaClean(
     await Promise.all([
-      fetchSanity(shareImagePageQuery, {
-        params: { path },
-        tags: ['pages', 'posts']
-      }),
-      fetchSanity(shareImageSiteQuery, { tags: ['site'] })
+      fetchSanity(shareImagePageQuery, { params: { path } }),
+      fetchSanity(shareImageSiteQuery)
     ])
   );
   // No Site Settings yet: the card still draws, without the site's logo.

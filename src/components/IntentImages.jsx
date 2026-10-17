@@ -14,10 +14,14 @@ const started = new Set();
 function onIntent({ target }) {
   const link = target instanceof Element && target.closest('a[href]');
   if (!link || link.origin !== location.origin || saveData()) return;
+  let path;
+  try {
+    path = decodeURI(link.pathname);
+  } catch {
+    return;
+  }
   // A link to a heading has its own entry; any other uses its page's opening.
-  const key = known.has(link.pathname + link.hash)
-    ? link.pathname + link.hash
-    : link.pathname;
+  const key = known.has(path + link.hash) ? path + link.hash : path;
   const entry = known.get(key);
   if (!entry || started.has(key)) return;
   started.add(key);

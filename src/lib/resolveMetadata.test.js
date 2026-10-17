@@ -1,6 +1,6 @@
 import { expect, test } from 'bun:test';
 import { baseUrl } from '@/lib/env';
-import { heroThemeImage, resolveMetadata } from './resolveMetadata';
+import { heroThemeImage, metaTagsOf, resolveMetadata } from './resolveMetadata';
 
 // Image fields hold Cloudinary URLs only.
 const CDN = 'https://res.cloudinary.com/demo/image/upload/v1/';
@@ -8,21 +8,15 @@ const img = (name) => ({ asset: { secure_url: CDN + name } });
 
 const site = {
   seo: {
-    metaTitle: 'Site title',
     metaDescription: 'Site description',
     nofollowAttributes: true,
-    seoKeywords: ['site'],
     openGraph: {
-      title: 'Site OG title',
       description: null,
-      siteName: 'Site name',
-      image: img('site.jpg')
+      siteName: 'Site name'
     },
     twitter: {
       handle: '@site',
-      site: '@publisher',
-      cardType: null,
-      creator: null
+      site: '@publisher'
     }
   }
 };
@@ -49,9 +43,10 @@ test("the head title falls back to the document's own title before Site settings
   expect(m.title).toBe('About');
 });
 
-test('the head title falls to Site settings when the document has no title of its own', () => {
+test('the head title is empty when the document has no title of its own', () => {
   const m = resolveMetadata(pageWith({ metaTitle: null }), site);
-  expect(m.title).toBe('Site title');
+  expect(m.title).toBe('');
+  expect(m.openGraph.title).toBeUndefined();
 });
 
 test("Open Graph title prefers the page's own Open Graph title over everything else", () => {
@@ -78,6 +73,13 @@ test('Open Graph title falls back to the page meta title before the page title o
   expect(m.openGraph.siteName).toBe('Site name');
 });
 
+test('the site name is the Site settings one, then the site title, never the page', () => {
+  const page = pageWith({ openGraph: { siteName: 'Page site name' } });
+  expect(resolveMetadata(page, site).openGraph.siteName).toBe('Site name');
+  const bare = { title: 'Ruben-P', seo: {} };
+  expect(resolveMetadata(page, bare).openGraph.siteName).toBe('Ruben-P');
+});
+
 test("Open Graph title falls back to the page's own title before Site settings", () => {
   const m = resolveMetadata(
     pageWith(
@@ -87,25 +89,6 @@ test("Open Graph title falls back to the page's own title before Site settings",
     site
   );
   expect(m.openGraph.title).toBe('Page title');
-});
-
-test("the site's Open Graph title wins when the page has no title of its own", () => {
-  const m = resolveMetadata(
-    pageWith({ metaTitle: null, openGraph: { title: null } }),
-    site
-  );
-  expect(m.openGraph.title).toBe('Site OG title');
-});
-
-test('Open Graph title falls all the way to the Site settings meta title when nothing else is set', () => {
-  const bareSite = {
-    seo: { ...site.seo, openGraph: { ...site.seo.openGraph, title: null } }
-  };
-  const m = resolveMetadata(
-    pageWith({ metaTitle: null, openGraph: { title: null } }),
-    bareSite
-  );
-  expect(m.openGraph.title).toBe('Site title');
 });
 
 test("Open Graph description prefers the page's own Open Graph description over everything else", () => {
@@ -140,6 +123,24 @@ test('Open Graph description falls back to the page meta description before Site
     siteWithOgDescription
   );
   expect(m.openGraph.description).toBe('Page meta description');
+});
+
+test("a post's summary follows its own description in both chains, ahead of Site settings", () => {
+  const own = resolveMetadata(
+    pageWith(
+      { metaDescription: 'Page meta description' },
+      { summary: 'Post summary' }
+    ),
+    site
+  );
+  expect(own.description).toBe('Page meta description');
+  const m = resolveMetadata(
+    pageWith({ metaDescription: null }, { summary: 'Post summary' }),
+    site
+  );
+  expect(m.description).toBe('Post summary');
+  expect(m.openGraph.description).toBe('Post summary');
+  expect(m.twitter.description).toBe('Post summary');
 });
 
 test("Site settings' Open Graph description wins when the page has none of its own", () => {
@@ -179,13 +180,10 @@ test('Twitter spells out what Next would copy from Open Graph', () => {
   });
 });
 
-test('a set card type ships as is; a handle beats the creator', () => {
-  const m = resolveMetadata(
-    pageWith({
-      twitter: { cardType: 'summary_large_image', handle: null, creator: '@me' }
-    }),
-    { seo: { ...site.seo, twitter: {} } }
-  );
+test('the card is always the large one, with the handle as creator', () => {
+  const m = resolveMetadata(pageWith({ twitter: { handle: '@me' } }), {
+    seo: { ...site.seo, twitter: {} }
+  });
   expect(m.twitter.card).toBe('summary_large_image');
   expect(m.twitter.creator).toBe('@me');
 });
@@ -228,15 +226,10 @@ test('a page with no open graph anywhere still ships its card', () => {
   expect(m.openGraph.images).toHaveLength(1);
 });
 
-test('without an address there is no card, so the site default stands', () => {
-  const m = resolveMetadata({ metadata: { seo: {} } }, site);
-  expect(m.openGraph.images).toEqual([{ url: CDN + 'site.jpg' }]);
-  const none = resolveMetadata(
-    { metadata: { slug: '404', seo: {} } },
-    { seo: { ...site.seo, openGraph: { title: 'T' } } }
-  );
-  expect(none.openGraph.images).toEqual([]);
-  expect(none.twitter.images).toEqual([]);
+test('without an address there is no card', () => {
+  const m = resolveMetadata({ metadata: { slug: '404', seo: {} } }, site);
+  expect(m.openGraph.images).toEqual([]);
+  expect(m.twitter.images).toEqual([]);
 });
 
 test('og:url and canonical are the page address, a bare origin for home', () => {
@@ -273,19 +266,14 @@ test('no Open Graph anywhere ships none, and Twitter takes the meta fields', () 
     title: 'Page title',
     description: 'D',
     images: [],
-    card: 'summary'
+    card: 'summary_large_image'
   });
 });
 
 test('keywords are the focus keyphrase alone', () => {
   expect(
-    resolveMetadata(
-      pageWith({
-        focusKeyphrase: 'night car photography',
-        seoKeywords: ['old']
-      }),
-      site
-    ).keywords
+    resolveMetadata(pageWith({ focusKeyphrase: 'night car photography' }), site)
+      .keywords
   ).toBe('night car photography');
   expect(resolveMetadata(pageWith({}), site).keywords).toBeUndefined();
 });
@@ -301,4 +289,15 @@ test('heroThemeImage reads only the first hero or glass hero photo', () => {
     heroThemeImage({ modules: [{ _type: 'hero.split', image: img('c') }] })
   ).toBeNull();
   expect(heroThemeImage({ modules: [] })).toBeNull();
+});
+
+test('Site settings meta tags become the layout metadata, nameless ones dropped', () => {
+  expect(
+    metaTagsOf([
+      { name: 'theme-x', value: 'a' },
+      { name: null, value: 'b' }
+    ])
+  ).toEqual({ 'theme-x': 'a' });
+  expect(metaTagsOf(null)).toEqual({});
+  expect(resolveMetadata(pageWith({}), site).other).toBeUndefined();
 });

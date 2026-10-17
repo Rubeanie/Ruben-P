@@ -212,13 +212,12 @@ $track-pad: 0.875rem;
   line-height: var.$lh-small;
   text-align: start;
   pointer-events: auto;
-  transition:
-    opacity 0.2s var.$ease-out,
-    visibility 0.2s;
+  transition: opacity 0.2s var.$ease-out;
 
-  &[data-hidden] {
+  // Hidden, not inert: Tab still reaches the links, which bring the rail into view.
+  &[data-hidden]:not(:focus-within) {
     opacity: 0;
-    visibility: hidden;
+    pointer-events: none;
   }
 }
 

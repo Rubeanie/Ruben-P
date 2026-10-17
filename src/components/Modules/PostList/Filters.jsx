@@ -105,6 +105,7 @@ function SearchField({ value, onChange, inputRef }) {
         placeholder='Search…'
         aria-label='Search projects'
         autoComplete='off'
+        enterKeyHint='search'
         spellCheck={false}
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -119,6 +120,9 @@ function SearchField({ value, onChange, inputRef }) {
         onKeyDown={(event) => {
           // Search inputs clear on Escape natively; an accidental press must not wipe the query.
           if (event.key === 'Escape') event.preventDefault();
+          // Return dismisses the phone keyboard to reveal the results.
+          if (event.key === 'Enter' && !event.nativeEvent.isComposing)
+            event.currentTarget.blur();
         }}
       />
       {/* Always in its slot so the text area never changes width; it fades in as feedback once there is text. */}

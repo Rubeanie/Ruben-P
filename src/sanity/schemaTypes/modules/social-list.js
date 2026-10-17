@@ -10,7 +10,8 @@ export const socialList = {
     {
       name: 'socials',
       type: 'array',
-      of: [{ type: 'reference', to: [{ type: 'social' }] }]
+      of: [{ type: 'reference', to: [{ type: 'social' }] }],
+      validation: (Rule) => Rule.unique()
     },
     {
       name: 'maxColumns',

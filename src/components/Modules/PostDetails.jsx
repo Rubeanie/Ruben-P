@@ -1,10 +1,11 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { stegaClean } from '@sanity/client/stega';
 import { placeholderFor, resolveImage } from '@/lib/imageBlock';
 import { cloudinaryTransform } from '@/lib/imageLoader';
 import { resolveLink } from '@/lib/processUrl';
 import uid from '@/lib/uid';
-import { formatDate, initials, inkFor, sameDay } from '@/lib/posts';
+import { dayIn, formatDate, initials, inkFor, sameDay } from '@/lib/posts';
 import styles from '@/styles/components/PostDetails.module.scss';
 
 // Six discs is the ceiling; the stylesheet keys its hover rules on it.
@@ -69,9 +70,11 @@ export default function PostDetails({
     : [];
   const publishDate = stegaClean(page.publishDate);
   const publishedOn = published && publishDate ? publishDate : null;
-  // An edit on the day of publishing is not worth a second date.
+  // The day of the edit is the editor's, not UTC's. One on the day of
+  // publishing is not worth a second date.
+  const editedDay = page._updatedAt && dayIn(page._updatedAt, page.editedZone);
   const editedOn =
-    edited && page._updatedAt && !sameDay(publishDate, page._updatedAt)
+    edited && editedDay && !sameDay(publishDate, editedDay)
       ? page._updatedAt
       : null;
   const categories = showCategories ? (page.categories ?? []) : [];
@@ -86,7 +89,7 @@ export default function PostDetails({
       {authors.length > 0 && (
         <div className={styles.discs}>
           {authors.map((author, i) => {
-            const Tag = author.href ? 'a' : 'span';
+            const Tag = author.href ? Link : 'span';
             return (
               <Tag
                 key={author._id}
@@ -110,12 +113,12 @@ export default function PostDetails({
               {authors.map((author, i) => (
                 <span key={author._id} className={styles.nameItem}>
                   {author.href ? (
-                    <a
+                    <Link
                       href={author.href}
                       className={`${styles.name} ${styles.nameLink}`}
                       data-author={i + 1}>
                       {author.name}
-                    </a>
+                    </Link>
                   ) : (
                     <span className={styles.name} data-author={i + 1}>
                       {author.name}
@@ -135,7 +138,7 @@ export default function PostDetails({
             {publishedOn && editedOn && <Sep />}
             {editedOn && (
               <span>
-                Edited <time dateTime={editedOn}>{formatDate(editedOn)}</time>
+                Edited <time dateTime={editedOn}>{formatDate(editedDay)}</time>
               </span>
             )}
           </span>

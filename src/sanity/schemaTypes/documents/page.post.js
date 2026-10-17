@@ -5,15 +5,7 @@ import { pageBlock } from '../fragments/page-block';
 import { metadata } from '../fragments/metadata';
 import { headingLinksField } from '../fragments/fields/heading-links';
 import { animateModulesField } from '../fragments/fields/animate-modules';
-
-// Module types that carry a heading of their own.
-const HEADED = new Set([
-  'hero',
-  'hero.saas',
-  'hero.split',
-  'hero.3d',
-  'richtext-module'
-]);
+import { headingsOf } from '../../seo/checks';
 
 export const pagePost = {
   name: 'page.post',
@@ -42,7 +34,8 @@ export const pagePost = {
     {
       name: 'summary',
       type: 'string',
-      description: 'One sentence, shown on tiles and under the title',
+      description:
+        'One sentence. Shown on large tiles and in the feed, and used on share cards when no SEO description is set.',
       validation: (Rule) => Rule.required().max(160),
       group: 'content'
     },
@@ -54,9 +47,9 @@ export const pagePost = {
       validation: (Rule) => [
         ...pageBlock.validation(Rule),
         Rule.custom((modules) =>
-          (modules ?? []).some((module) => HEADED.has(module._type))
+          headingsOf(modules).some((heading) => heading.level === 1)
             ? true
-            : 'A post needs one heading: add a hero or a rich text block with a heading'
+            : 'No Heading 1. Give the hero or the first rich text block one.'
         ).warning()
       ],
       group: 'content'
@@ -78,6 +71,9 @@ export const pagePost = {
           to: [{ type: 'post.category' }]
         }
       ],
+      // Order comes from Site settings.
+      options: { sortable: false },
+      validation: (Rule) => Rule.unique(),
       group: 'options'
     },
     {
@@ -95,6 +91,8 @@ export const pagePost = {
       group: 'options',
       initialValue: false
     },
+    // Written by the publish action: the zone the editor was in, for the day of the edit.
+    { name: 'editedZone', type: 'string', hidden: true, readOnly: true },
     headingLinksField({ group: 'options' }),
     animateModulesField,
     {

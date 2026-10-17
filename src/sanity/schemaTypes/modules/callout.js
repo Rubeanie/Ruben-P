@@ -24,7 +24,7 @@ export const callout = {
     },
     {
       name: 'cta',
-      title: 'Call-to-action',
+      title: 'Calls to action',
       type: 'array',
       of: [{ type: 'cta' }],
       validation: (Rule) => Rule.max(2)

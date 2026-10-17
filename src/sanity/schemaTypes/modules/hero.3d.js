@@ -1,6 +1,6 @@
 import { Md3dRotation } from 'react-icons/md';
 import { getBlockText } from '@/sanity/utils';
-import { textBlock } from '../fragments/text-block';
+import { heroText, beatText } from '../fragments/text-block';
 import { scrollHintField } from '../fragments/fields/scroll-hint';
 import { uidField } from '../fragments/fields/uid';
 
@@ -12,7 +12,7 @@ export const hero3d = {
   fields: [
     {
       name: 'content',
-      ...textBlock,
+      ...heroText,
       description: 'The name and the line under it'
     },
     {
@@ -38,7 +38,7 @@ export const hero3d = {
             },
             {
               name: 'content',
-              ...textBlock,
+              ...beatText,
               description: 'A heading and one paragraph'
             }
           ],
@@ -65,7 +65,7 @@ export const hero3d = {
           !beats?.length ||
           beats.some((beat) => getBlockText(beat.content).trim())
             ? true
-            : 'Both beats are empty; the hero will have nothing to say'
+            : 'No beat has any text; the hero will have nothing to say'
         ).warning()
       ],
       description: 'One for the turn, one for the approach'

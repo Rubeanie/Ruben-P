@@ -104,7 +104,6 @@ export default function createBeats(progress, section) {
       heading: el.querySelector('[data-heading]'),
       words: [...el.querySelectorAll('[data-word]')],
       lead: el.querySelector('[data-lead]'),
-      hidden: null,
       out: 0,
       latch: null
     }));
@@ -157,14 +156,10 @@ export default function createBeats(progress, section) {
         beat.out += Math.max(-dt / EXIT, Math.min(dt / EXIT, goal - beat.out));
       if (Math.abs(goal - beat.out) > 1e-4) moving = true;
       const tout = Math.max(beat.out, clamp01(1 - gap / GUARD));
-      const hidden = tin === 0 || tout === 1;
-      if (hidden !== beat.hidden)
-        write(
-          beat.el,
-          'visibility',
-          (beat.hidden = hidden) ? 'hidden' : 'visible'
-        );
-      if (!hidden) reveal(beat, tin, tout);
+      // Never hidden, only faded to nothing: the layer can't be scrolled, so
+      // a hidden beat would be out of reach of a screen reader or find.
+      write(beat.el, 'visibility', 'visible');
+      reveal(beat, tin, tout);
     }
     return moving;
   }
@@ -174,7 +169,7 @@ export default function createBeats(progress, section) {
     styled = false;
     stale = true;
     for (const beat of beats) {
-      Object.assign(beat, { hidden: null, latch: null });
+      beat.latch = null;
       for (const el of [beat.el, beat.heading, beat.lead, ...beat.words]) {
         el.removeAttribute('style');
         written.delete(el);

@@ -52,7 +52,11 @@ test('a hero contributes its photos, a video any block position', () => {
       sizes: '(max-width: 43.75rem) 100vw, 50vw',
       media: undefined
     },
-    { kind: 'youtube', id: 'dQw4w9WgXcQ' }
+    {
+      kind: 'youtube',
+      id: 'dQw4w9WgXcQ',
+      sizes: '(max-width: 43.75rem) 100vw, 65rem'
+    }
   ]);
   expect(picks([text('b', { ...video, autoplay: true })])).toEqual([]);
 });
@@ -166,6 +170,8 @@ test('splitHref keeps a page path and its fragment, and refuses the rest', () =>
   });
   expect(splitHref('/about?x=1')).toEqual({ path: '/about', hash: '' });
   expect(splitHref('/')).toEqual({ path: '/', hash: '' });
+  expect(splitHref('/café#x')).toEqual({ path: '/café', hash: '#x' });
+  expect(splitHref('/100%')).toBeNull();
   expect(splitHref('https://example.com/a')).toBeNull();
   expect(splitHref('//example.com/a')).toBeNull();
   expect(splitHref('#top')).toBeNull();
@@ -192,9 +198,9 @@ test('pageHrefs finds CTA, link block and rich-text links, not the current page'
         {
           _type: 'block',
           markDefs: [
-            { _type: 'link', href: '/about#mixtape' },
-            { _type: 'link', href: 'https://example.com' },
-            { _type: 'link', href: '/here' }
+            { _type: 'linkMark', ...internal('/about', '#mixtape') },
+            { _type: 'linkMark', type: 'external', external: 'https://a.co' },
+            { _type: 'linkMark', ...internal('/here') }
           ]
         }
       ]

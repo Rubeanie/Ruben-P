@@ -191,11 +191,6 @@ li {
   @include var.image-text(var.$image-background);
 }
 
-/* TRT Mont Broz OpenType feature utility class — opt-in only, never global */
-.ot-ss01 {
-  @include var.ot-ss01;
-}
-
 h1,
 h2,
 h3,

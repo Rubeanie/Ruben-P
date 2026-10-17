@@ -28,13 +28,16 @@ const dropBackground = {
   }
 };
 
+// Shiki knows these under other names.
+const alias = { golang: 'go', mysql: 'sql', batchfile: 'bat' };
+
 async function highlight(code, lang) {
   const options = {
     theme: 'github-dark-high-contrast',
     transformers: [dropBackground]
   };
   try {
-    return await codeToHtml(code, { ...options, lang });
+    return await codeToHtml(code, { ...options, lang: alias[lang] ?? lang });
   } catch {
     return codeToHtml(code, { ...options, lang: 'text' });
   }

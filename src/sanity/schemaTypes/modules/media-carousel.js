@@ -2,7 +2,7 @@ import { LuBox, LuGalleryHorizontal, LuImage, LuYoutube } from 'react-icons/lu';
 import { getYouTubeId } from '@/lib/youtube';
 import { assetPreview } from '../../components/CloudinaryPreview';
 import { imageBlock } from '../fragments/image-block';
-import { youTubeBlock } from '../fragments/youTubeBlock';
+import { youTubeBlock, youTubeUrl } from '../fragments/youTubeBlock';
 import { blockLayoutFields } from '../fragments/fields/block-layout';
 import { uidField } from '../fragments/fields/uid';
 import { threeJs } from './three';
@@ -21,9 +21,7 @@ const required = (Rule) => Rule.required();
 const caption = reuse(imageBlock, 'caption', {
   description: 'Shows under the carousel while this item is in front.'
 });
-const source = reuse(imageBlock, 'source', {
-  description: 'Credit link; the caption becomes the link.'
-});
+const source = reuse(imageBlock, 'source');
 
 // An item's picture, from its stored value, for the list and the module's
 // preview: the item's own preview selects the same paths the stored item has.
@@ -50,7 +48,10 @@ const carouselImage = {
   icon: LuImage,
   fields: [
     reuse(imageBlock, 'image'),
-    reuse(imageBlock, 'alt', { validation: required }),
+    reuse(imageBlock, 'alt', {
+      description: 'What the image shows, read out by screen readers.',
+      validation: required
+    }),
     caption,
     source
   ],
@@ -75,12 +76,7 @@ const carouselYouTube = {
   icon: LuYoutube,
   fields: [
     reuse(youTubeBlock, 'url', {
-      validation: (Rule) => [
-        Rule.required(),
-        Rule.custom((url) =>
-          !url || getYouTubeId(url) ? true : 'Not a YouTube video link.'
-        )
-      ]
+      validation: (Rule) => youTubeUrl(Rule).required()
     }),
     caption,
     source
@@ -127,12 +123,11 @@ const carouselScene = {
     reuse(threeJs, 'vignette'),
     reuse(threeJs, 'orbitControls'),
     reuse(threeJs, 'zoom'),
-    {
-      name: 'alt',
-      type: 'string',
+    // A carousel scene always loads on click.
+    reuse(threeJs, 'alt', {
       description: 'What the model shows; read out on its load button.',
       validation: required
-    },
+    }),
     caption,
     source
   ],

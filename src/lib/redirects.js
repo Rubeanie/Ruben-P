@@ -1,6 +1,7 @@
 import { stegaClean } from '@sanity/client/stega';
 import groq from 'groq';
 import { isSafeHref, resolveLink } from './processUrl';
+import { SANITY_TAG } from './sanity/tag';
 
 // Match a request path against a redirect doc's source pattern
 // ('/old-path', '/old-path/:slug') and fill params into the destination.
@@ -42,7 +43,7 @@ export async function getRedirect(path) {
     {
       perspective: 'published',
       cache: 'force-cache',
-      next: { tags: ['redirects'] }
+      next: { tags: [SANITY_TAG] }
     }
   );
 
@@ -50,8 +51,12 @@ export async function getRedirect(path) {
     const resolved = resolveLink(destination);
     if (!resolved) continue;
     const url = matchRedirect({ source, destination: resolved }, path);
-    if (url)
-      return { url, label: destination.label ?? null, permanent: !!permanent };
+    // An unlabelled destination's label is its URL, which may be a template.
+    const label =
+      stegaClean(destination.label) === stegaClean(destination.external)
+        ? null
+        : (destination.label ?? null);
+    if (url) return { url, label, permanent: !!permanent };
   }
   return null;
 }

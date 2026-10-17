@@ -3,48 +3,47 @@ import { blockLayoutFields } from './fields/block-layout';
 import { assetPreview } from '../../components/CloudinaryPreview';
 import { imageRequired } from '../objects/cloudinary-image';
 
+export const sourceDescription =
+  'Credit link; the caption becomes the link, or reads “Source” without one.';
+
 export const imageBlock = {
   name: 'imageBlock',
   title: 'Image',
   type: 'object',
   icon: MdImage,
   fieldsets: [
-    { name: 'info', options: { collapsible: true, collapsed: true } },
     { name: 'options', options: { collapsible: true, collapsed: false } }
   ],
   fields: [
     {
       name: 'image',
       type: 'cloudinaryImage',
-      validation: imageRequired,
-      fieldset: 'info'
+      validation: imageRequired
     },
     {
       name: 'caption',
       type: 'text',
-      rows: 2,
-      fieldset: 'info'
-    },
-    {
-      name: 'alt',
-      type: 'string',
-      fieldset: 'info'
+      rows: 2
     },
     {
       name: 'source',
       type: 'url',
-      fieldset: 'options'
+      description: sourceDescription
     },
-    ...blockLayoutFields({ fieldset: 'options' }),
     {
-      name: 'loading',
+      name: 'alt',
+      title: 'Alt text',
       type: 'string',
-      options: {
-        list: ['lazy', 'eager']
-      },
-      initialValue: 'lazy',
-      fieldset: 'options'
-    }
+      description:
+        'What the image shows, read out by screen readers. Leave empty if it is only decoration.',
+      validation: (Rule) =>
+        Rule.custom((alt) =>
+          alt?.trim()
+            ? true
+            : 'Without alt text screen readers skip this image. Fine for decoration.'
+        ).warning()
+    },
+    ...blockLayoutFields({ fieldset: 'options' })
   ],
   preview: {
     select: {

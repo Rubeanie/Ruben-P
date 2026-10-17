@@ -33,19 +33,21 @@ export const social = {
     },
     {
       name: 'baseColor',
-      title: 'Brand color',
+      title: 'Brand colour',
       type: 'color',
       options: {
+        disableAlpha: true,
         colorList: [{ hex: DEFAULT_THEME_COLORS.primary }]
       }
     },
     {
       name: 'redirect',
       description:
-        "The social's vanity redirect (e.g. /socials/discord → the profile). Cards link to its source path, so the redirect is the single owner of the destination URL.",
+        'The social’s vanity redirect (e.g. /socials/discord to the profile). Cards link straight to the page when it points at one, otherwise through its path.',
       type: 'reference',
       to: [{ type: 'redirect' }],
-      validation: (Rule) => Rule.required().warning()
+      validation: (Rule) =>
+        Rule.required().warning('No redirect, so the card links nowhere.')
     }
   ],
   preview: {

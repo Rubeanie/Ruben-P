@@ -8,6 +8,7 @@ import { inlineSvgInput } from '@focus-reactive/sanity-plugin-inline-svg-input';
 import { codeInput } from '@sanity/code-input';
 import { colorInput } from '@sanity/color-input';
 import { schemaTypes } from '@/sanity/schemaTypes';
+import { publishWithZone } from '@/sanity/publishWithZone';
 import { StudioLogo } from '@/sanity/components/StudioLogo';
 import { proofreadInspector } from '@/sanity/components/Proofread/ProofreadInspector';
 import { cloudinarySchemaPlugin } from 'sanity-plugin-cloudinary';
@@ -76,7 +77,11 @@ export default defineConfig({
               action &&
               ['publish', 'discardChanges', 'restore'].includes(action)
           )
-        : input,
+        : schemaType === 'page.post'
+          ? input.map((action) =>
+              action.action === 'publish' ? publishWithZone(action) : action
+            )
+          : input,
     inspectors: (input, { documentType }) =>
       proofreadTypes.includes(documentType)
         ? [...input, proofreadInspector]

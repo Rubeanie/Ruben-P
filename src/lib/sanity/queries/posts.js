@@ -16,7 +16,7 @@ export const postIndexQuery = groq`{
 
 // Each post's categories come back in the site order, so tiles never sort them again.
 export async function getPostIndex() {
-  const index = await fetchSanity(postIndexQuery, { tags: ['posts', 'site'] });
+  const index = await fetchSanity(postIndexQuery);
   const categories = index?.categories ?? [];
   const posts = (index?.posts ?? []).map((post) => ({
     ...post,

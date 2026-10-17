@@ -76,7 +76,13 @@ const copy = {
         {
           ...richBlock,
           styles: [{ title: 'Normal', value: 'normal' }],
-          lists: []
+          lists: [],
+          marks: {
+            ...richBlock.marks,
+            decorators: richBlock.marks.decorators.filter(
+              ({ value }) => !['dlig', 'ss01'].includes(value)
+            )
+          }
         }
       ],
       validation: (Rule) => Rule.required()

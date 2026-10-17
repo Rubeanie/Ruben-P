@@ -1,5 +1,6 @@
 import { getBlockText } from '@/sanity/utils';
 import { MdQuestionMark } from 'react-icons/md';
+import { linkAnnotation } from '../fragments/text-block';
 import { uidField } from '../fragments/fields/uid';
 
 export const accordionList = {
@@ -18,12 +19,24 @@ export const accordionList = {
           fields: [
             {
               name: 'summary',
-              type: 'string'
+              title: 'Question',
+              type: 'string',
+              validation: (Rule) =>
+                Rule.required().warning(
+                  'Without a question the row is not shown'
+                )
             },
             {
               name: 'content',
+              title: 'Answer',
               type: 'array',
-              of: [{ type: 'block' }]
+              of: [
+                {
+                  type: 'block',
+                  styles: [{ title: 'Normal', value: 'normal' }],
+                  marks: { annotations: [linkAnnotation] }
+                }
+              ]
             },
             {
               name: 'open',

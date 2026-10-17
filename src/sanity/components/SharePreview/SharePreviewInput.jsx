@@ -39,6 +39,12 @@ function useListen(store, query, params, perspective, skip) {
   return state;
 }
 
+// Site settings preview the home page's card for a page that sets nothing of its own.
+const standIn = (site) => ({
+  title: site?.title,
+  metadata: { slug: '/' }
+});
+
 // Sits above the SEO fields; Site settings preview a page that sets nothing of its own.
 export function SharePreviewInput(props) {
   const store = useDocumentStore();
@@ -56,7 +62,11 @@ export function SharePreviewInput(props) {
   const siteDraft = useListen(store, SITE_DRAFT, NO_PARAMS, 'raw', isSite);
   const published = useListen(store, PUBLISHED, params, 'raw', isSite);
   // A document not saved yet has nothing of its own either.
-  const shown = isSite || page.value === null ? {} : page.value;
+  const shown = isSite
+    ? standIn(site.value)
+    : page.value === null
+      ? {}
+      : page.value;
   const heroTheme = useImageColors(heroThemeImage(shown));
   const error = page.error || site.error;
   const preview =

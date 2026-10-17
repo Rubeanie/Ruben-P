@@ -93,10 +93,17 @@
   opacity: 1;
 }
 
-// The photographer's name rings like the menu links above it.
+// The names ring like the menu links above them.
+.name,
 .credit a {
   border-radius: 4px;
   @include var.focus-ring(4px);
+}
+
+// The 44px target overhangs the text line, so the line keeps its height.
+.name {
+  @include var.touch-target;
+  margin-block: calc((1lh - #{var.$touch-target}) / 2);
 }
 
 // Anchored to the top so the glyph bleeds off the bottom-right corner however

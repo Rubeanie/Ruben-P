@@ -21,7 +21,7 @@ export default function BackgroundCredit() {
   const { source, credit } = theme;
   const by =
     source === 'visitor'
-      ? 'from your upload'
+      ? 'from your device'
       : credit && (
           <>by {captionText({ caption: credit.name, source: credit.href })}</>
         );

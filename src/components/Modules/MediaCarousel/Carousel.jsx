@@ -108,6 +108,9 @@ export default function Carousel({
     const by = { ArrowLeft: -1, ArrowRight: 1 }[event.key];
     if (!by) return;
     event.preventDefault();
+    // The old card is about to go inert; focus waits on the section, not <body>.
+    if (event.target.closest('[aria-roledescription="slide"]'))
+      event.currentTarget.focus();
     // Holding an arrow steps once, so the live region isn't flooded.
     if (!event.repeat) step(by);
   };
@@ -169,6 +172,7 @@ export default function Carousel({
       {...layout}
       aria-roledescription='carousel'
       aria-label='Media'
+      tabIndex={-1}
       style={{ '--aspect': aspect, '--room': room, '--count': count }}
       onKeyDown={onKeyDown}>
       <StackTrack

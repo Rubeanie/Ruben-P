@@ -4,24 +4,13 @@ import { createDataAttribute } from 'next-sanity';
 import { draftMode } from 'next/headers';
 import { announcementGate } from '@/lib/announcement';
 import { resolveLink } from '@/lib/processUrl';
-import DynamicValue from './RichText/DynamicValue';
 import AnnouncementBand from './AnnouncementBand';
 import AnnouncementSeparator from './AnnouncementSeparator';
 import styles from '@/styles/components/Announcement.module.scss';
 
-const span = (className) => {
-  const Mark = ({ children }) => <span className={className}>{children}</span>;
-  return Mark;
-};
-
 // One line inside a link: no paragraph box and no nested anchors.
 const components = {
-  block: { normal: ({ children }) => children },
-  marks: {
-    dlig: span(styles.dlig),
-    ss01: span(styles.ss01)
-  },
-  types: { dynamicValue: DynamicValue }
+  block: { normal: ({ children }) => children }
 };
 
 export default async function Announcement({ announcement, logo }) {

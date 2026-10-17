@@ -1,6 +1,9 @@
-import { MdLabel, MdCode } from 'react-icons/md';
 import { SeoFeedbackInput } from '../../components/SeoFeedback/SeoFeedbackInput';
+import { NoIndexInput } from '../../components/NoIndexInput';
 import { DESCRIPTION_LENGTH, TITLE_LENGTH } from '@/lib/studioReviewLimits';
+
+// Titles and the share image are each page's own; Site settings supplies no default.
+const onSite = ({ document }) => document?._type === 'site';
 
 export const seoMetaFields = {
   name: 'seoMetaFields',
@@ -12,7 +15,7 @@ export const seoMetaFields = {
       name: 'focusKeyphrase',
       title: 'Focus keyphrase',
       type: 'string',
-      hidden: ({ document }) => document?._type === 'site',
+      hidden: onSite,
       description:
         'The search phrase this page should be found for, like "car photography Melbourne". The panel checks it appears where search engines look.'
     },
@@ -20,6 +23,7 @@ export const seoMetaFields = {
       name: 'metaTitle',
       title: 'Meta title',
       type: 'string',
+      hidden: onSite,
       description: `The title used in search results and browser tabs. Recommended length: ${TITLE_LENGTH.join('-')} characters.`
     },
     {
@@ -32,14 +36,15 @@ export const seoMetaFields = {
       name: 'nofollowAttributes',
       title: 'Prevent indexing',
       type: 'boolean',
+      components: { input: NoIndexInput },
       description:
-        'Asks search engines not to index or follow links (adds noindex, nofollow). On a page, leave it unset to follow Site settings; on Site settings it is the default for every page.'
+        'Asks search engines not to index or follow links (adds noindex, nofollow). On a page, Follow Site settings clears it so the Site settings value applies; on Site settings it is the default for every page.'
     },
     {
       name: 'priority',
       title: 'Sitemap priority',
       type: 'number',
-      hidden: ({ document }) => document?._type === 'site',
+      hidden: onSite,
       validation: (Rule) => Rule.min(0).max(1).precision(1),
       description:
         'Leave empty for the default: home 1.0, then 0.2 less for each level down (0.8, 0.6, 0.4, never below 0.2); posts 0.6.'
@@ -59,17 +64,18 @@ export const seoMetaFields = {
       name: 'additionalMetaTags',
       title: 'Additional meta tags',
       type: 'array',
-      of: [{ type: 'metaTag' }],
-      description: 'Extra meta tags to add to the page head.'
-    },
-    // Left over from the old SEO plugin on a few pages; kept hidden so the Studio doesn't flag it.
-    { name: 'seoStatus', type: 'string', hidden: true },
-    // The keywords tag now comes from the focus keyphrase; old lists stay hidden.
-    {
-      name: 'seoKeywords',
-      type: 'array',
-      of: [{ type: 'string' }],
-      hidden: true
+      hidden: ({ document }) => document?._type !== 'site',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'name', type: 'string' },
+            { name: 'value', title: 'Text value', type: 'string' }
+          ],
+          preview: { select: { title: 'name', subtitle: 'value' } }
+        }
+      ],
+      description: 'Extra meta tags added to the head of every page.'
     }
   ]
 };
@@ -82,11 +88,13 @@ export const openGraph = {
     {
       name: 'image',
       type: 'cloudinaryImage',
+      hidden: onSite,
       description: 'Recommended size: 1200x630 pixels.'
     },
     {
       name: 'title',
       type: 'string',
+      hidden: onSite,
       description: 'Overrides the meta title when this page is shared.'
     },
     {
@@ -97,10 +105,16 @@ export const openGraph = {
     {
       name: 'siteName',
       title: 'Site name',
-      type: 'string'
+      type: 'string',
+      hidden: ({ document }) => document?._type !== 'site',
+      description:
+        'The site name some platforms show above the title. Leave empty to use the site title.'
     }
   ]
 };
+
+const handleRule = (Rule) =>
+  Rule.regex(/^@\w{1,15}$/).warning('An @handle, like @rubeanie.');
 
 export const twitter = {
   name: 'twitter',
@@ -109,104 +123,16 @@ export const twitter = {
   fields: [
     {
       name: 'handle',
+      title: 'Creator @handle',
       type: 'string',
-      description: 'The @handle of the content author.'
+      description: 'The @handle of the content author.',
+      validation: handleRule
     },
     {
       name: 'site',
       type: 'string',
-      description: 'The @handle of the website or publisher.'
-    },
-    {
-      name: 'cardType',
-      title: 'Card type',
-      type: 'string',
-      description:
-        'How X, Discord and Slack show the share image. Leave unset to follow Site settings.',
-      options: {
-        list: [
-          { title: 'Summary (small image)', value: 'summary' },
-          { title: 'Summary with large image', value: 'summary_large_image' }
-        ],
-        layout: 'radio'
-      }
-    },
-    {
-      name: 'creator',
-      type: 'string',
-      description:
-        'The @handle of the content creator, if different from the author.'
+      description: 'The @handle of the website or publisher.',
+      validation: handleRule
     }
   ]
-};
-
-export const metaTag = {
-  name: 'metaTag',
-  title: 'Meta tag',
-  icon: MdLabel,
-  type: 'object',
-  fields: [
-    {
-      name: 'metaAttributes',
-      title: 'Attributes',
-      type: 'array',
-      of: [{ type: 'metaAttribute' }]
-    }
-  ],
-  preview: {
-    select: {
-      metaTags: 'metaAttributes'
-    },
-    prepare({ metaTags }) {
-      return {
-        title:
-          metaTags?.[0]?.attributeKey ||
-          metaTags?.[0]?.attributeValueString ||
-          'Meta tag'
-      };
-    }
-  }
-};
-
-export const metaAttribute = {
-  name: 'metaAttribute',
-  title: 'Meta attribute',
-  icon: MdCode,
-  type: 'object',
-  fields: [
-    {
-      name: 'attributeKey',
-      title: 'Key',
-      type: 'string',
-      description: 'The meta attribute name, e.g. og:image or twitter:label1.'
-    },
-    {
-      name: 'attributeType',
-      title: 'Type',
-      type: 'string',
-      options: {
-        list: ['string', 'image'],
-        layout: 'radio',
-        direction: 'horizontal'
-      },
-      initialValue: 'image'
-    },
-    {
-      name: 'attributeValueImage',
-      title: 'Image value',
-      type: 'cloudinaryImage',
-      hidden: ({ parent }) => parent?.attributeType !== 'image'
-    },
-    {
-      name: 'attributeValueString',
-      title: 'Text value',
-      type: 'string',
-      hidden: ({ parent }) => parent?.attributeType !== 'string'
-    }
-  ],
-  preview: {
-    select: {
-      title: 'attributeKey'
-    }
-  }
 };

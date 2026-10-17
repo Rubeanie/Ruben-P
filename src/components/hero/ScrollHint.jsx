@@ -126,5 +126,5 @@ export default function ScrollHint({ next, align = 'center', delay = 1100 }) {
 }
 
 export function ScrollTarget({ id }) {
-  return <span id={id} className={styles.target} aria-hidden='true' />;
+  return <span id={id} className={styles.target} />;
 }

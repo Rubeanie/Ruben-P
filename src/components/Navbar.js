@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { stegaClean } from '@sanity/client/stega';
 import Logo from '@/components/Logo';
 import styles from '@/styles/components/Navbar.module.scss';
 
@@ -76,7 +77,10 @@ const Navbar = ({ lead, links, logo }) => {
           close();
       }}>
       <div className={styles.container}>
-        <Link href={lead?.href ?? '/'} title={lead?.label} onClick={close}>
+        <Link
+          href={lead?.href ?? '/'}
+          aria-label={stegaClean(lead?.label) || 'Home'}
+          onClick={close}>
           <Logo svg={logo} />
         </Link>
         <div className={styles.links} ref={linksRef} data-nav-links>

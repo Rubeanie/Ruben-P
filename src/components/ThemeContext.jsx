@@ -37,9 +37,7 @@ export function ThemeProvider({ children, initialThemes: availableThemes }) {
     const painted =
       typeof document !== 'undefined' &&
       availableThemes[document.documentElement.dataset.theme];
-    return painted
-      ? { ...painted, source: 'cms', status: 'ready' }
-      : DEFAULT_THEME;
+    return painted || DEFAULT_THEME;
   });
   const [requestedTheme, setRequestedTheme] = useState(null);
   const [isResolving, setIsResolving] = useState(false);
@@ -101,12 +99,12 @@ export function ThemeProvider({ children, initialThemes: availableThemes }) {
   }, [availableThemes, requestTheme, theme.url]);
 
   const nextTheme = useCallback(() => {
-    const next = nextThemeAfter(availableThemes, theme.url);
+    const next = nextThemeAfter(availableThemes, (requestedTheme ?? theme).url);
 
     if (next) {
       requestTheme(next);
     }
-  }, [availableThemes, requestTheme, theme.url]);
+  }, [availableThemes, requestTheme, requestedTheme, theme]);
 
   useEffect(() => {
     if (hasRequestedInitialTheme.current || availableThemes.length === 0) {

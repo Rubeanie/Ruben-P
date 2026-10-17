@@ -17,7 +17,8 @@ export const sitemapQuery = groq`{
     'heroes': modules[_type in ['hero', 'hero.saas', 'hero.split']]{ _type, ${heroImageQuery} },
     'images': [
       ...modules[_type == 'richtext-module'].content[_type == 'imageBlock'].image{ ${cloudinaryStillQuery} },
-      ...modules[_type == 'creative-module'].columns[].blocks[_type == 'imageBlock'].image{ ${cloudinaryStillQuery} }
+      ...modules[_type == 'creative-module'].columns[].blocks[_type == 'imageBlock'].image{ ${cloudinaryStillQuery} },
+      ...modules[_type == 'media-carousel'].items[_type == 'carouselImage'].image{ ${cloudinaryStillQuery} }
     ]
   },
   'site': *[_type == 'site'][0]{ 'noindex': seo.nofollowAttributes }

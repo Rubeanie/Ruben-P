@@ -13,6 +13,7 @@ export const linkQuery = groq`
     label,
     internal->title,
     external,
+    redirect->destination.label,
     redirect->destination.internal->title,
     redirect->source
   ),
@@ -20,8 +21,6 @@ export const linkQuery = groq`
   external,
   params,
   internal->{
-    _type,
-    title,
     metadata { "slug": slug.current }
   },
   redirect->{ ${redirectLinkQuery} }

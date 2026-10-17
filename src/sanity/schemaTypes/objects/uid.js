@@ -7,7 +7,7 @@ import { FIXED_IDS, moduleIds } from '@/lib/anchors';
 export const uid = {
   name: 'uid',
   title: 'Unique Identifier',
-  description: 'Used for anchor/jump links (HTML `id` attribute).',
+  description: 'Used for anchor/jump links (HTML id attribute).',
   type: 'string',
   validation: (Rule) => [
     Rule.regex(/^[a-zA-Z0-9-]+$/g).error(

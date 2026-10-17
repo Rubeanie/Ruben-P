@@ -29,7 +29,7 @@ export const slug = (prefix = '') => {
       }
     },
     validation: (Rule) =>
-      Rule.required().custom((value) => {
+      Rule.required().custom(async (value, { getClient }) => {
         const current = value?.current ?? '';
         // A prefixed slug (e.g. posts) must stay under its own prefix, never a bare page path.
         // Template slugs ('404', 'redirect') don't start with a prefix either, so this
@@ -42,6 +42,12 @@ export const slug = (prefix = '') => {
         if (current === '/index') return 'The home page is /.';
         if (!isPagePath(current) && !templateSlugs.includes(current))
           return 'Start with a slash, e.g. /about. Letters, numbers, dashes and underscores only, no trailing or doubled slashes.';
+        // The page would win over a redirect from the same path, which would never run.
+        const redirected = await getClient({ apiVersion }).fetch(
+          `count(*[_type == 'redirect' && source == $slug]) > 0`,
+          { slug: current }
+        );
+        if (redirected) return `A redirect already starts at ${current}.`;
         return true;
       })
   };

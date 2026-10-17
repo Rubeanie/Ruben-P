@@ -15,12 +15,14 @@ import { Modules } from '@/components/Modules';
 import { getSite } from '@/lib/sanity/queries';
 import { heroThemeImage, resolveMetadata } from '@/lib/resolveMetadata';
 import { getRedirect } from '@/lib/redirects';
+import { isInternalHref } from '@/lib/processUrl';
 import IntentImages from '@/components/IntentImages';
 import Redirecting from '@/components/Redirecting';
 import Reveal from '@/components/Reveal';
 import JsonLd from '@/components/JsonLd';
 import { themeFromImage } from '@/lib/imageTheme';
 import { isPagePath } from '@/lib/slug';
+import { orderCategories } from '@/lib/posts';
 import { getShareCard, getVanitySocial } from '@/lib/shareImage/data';
 import { DISCORD_SEGMENT } from '@/lib/shareImage/discord.cjs';
 
@@ -32,7 +34,7 @@ export default async function Page({ params }) {
       // No page: check the CMS redirects. Internal targets redirect natively,
       // external ones get the interstitial.
       const target = await getRedirect(path);
-      if (target?.url.startsWith('/'))
+      if (target && isInternalHref(target.url))
         (target.permanent ? permanentRedirect : redirect)(target.url);
       if (target) return <Redirecting url={target.url} label={target.label} />;
       // The redirect screen has no address of its own, so Presentation edits it here.
@@ -130,14 +132,15 @@ async function getPage(params) {
 
 // Once per render: the page, its metadata and its viewport all ask. The query is
 // long enough to go out as a POST, which fetch memoisation skips.
-const loadPage = cache((path) =>
-  fetchSanity(
+const loadPage = cache(async (path) => {
+  const page = await fetchSanity(
     groq`*[
       _type in ['page', 'page.post'] &&
       metadata.slug.current == $path
     ][0]{
       _type,
       _updatedAt,
+      editedZone,
       headingLinks,
       animateModules,
       ${postCardQuery},
@@ -146,13 +149,21 @@ const loadPage = cache((path) =>
         count(authors) > 0 => authors[]->{ ${authorQuery} },
         [*[_type == 'site'][0].author->{ ${authorQuery} }]
       )),
+      "categoryOrder": *[_type == 'site'][0].postCategories[]{ "_id": _ref },
       modules[]{ ${modulesQuery} },
       "identity": *[_type == 'site'][0]{ ${identityQuery} },
       ${metadataQuery}
     }`,
-    {
-      params: { path },
-      tags: ['pages', 'posts', 'authors', 'site', 'socials']
+    { params: { path } }
+  );
+  // Chips follow Site settings, like the tiles; GROQ can't sort without dropping unlisted ones.
+  return (
+    page && {
+      ...page,
+      categories: orderCategories(
+        page.categories ?? [],
+        page.categoryOrder ?? []
+      )
     }
-  )
-);
+  );
+});

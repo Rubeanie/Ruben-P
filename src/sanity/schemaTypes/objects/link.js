@@ -1,8 +1,25 @@
 import { IoMdLink } from 'react-icons/io';
 import { apiVersion } from '@/lib/env';
 import { decodeFragment } from '@/lib/anchors';
+import { isSafeHref } from '@/lib/processUrl';
 import { LinkInput } from '@/sanity/components/LinkInput';
 import { splitParams, targetAnchors } from '@/sanity/utils';
+
+const requiredFor = (type, message) => (Rule) =>
+  Rule.custom((value, { parent }) =>
+    parent?.type === type && !value ? message : true
+  );
+
+// Hidden fields keep their values, so each check only runs for the active
+// type; otherwise a stale value would block publishing.
+const validUrl = (url) => {
+  try {
+    new URL(url, 'https://relative.invalid');
+  } catch {
+    return 'Enter a valid URL.';
+  }
+  return isSafeHref(url) || 'This kind of link can’t be used.';
+};
 
 export const link = {
   name: 'link',
@@ -15,7 +32,9 @@ export const link = {
   fields: [
     {
       name: 'label',
-      type: 'string'
+      type: 'string',
+      // A rich-text link is worded by the text it covers.
+      hidden: ({ parent }) => parent?._type === 'linkMark'
     },
     {
       name: 'type',
@@ -41,6 +60,7 @@ export const link = {
       ],
       // Template pages (404, redirect) have no path to link to.
       options: { filter: 'string::startsWith(metadata.slug.current, "/")' },
+      validation: requiredFor('internal', 'Pick a page.'),
       hidden: ({ parent }) => parent?.type !== 'internal'
     },
     {
@@ -49,18 +69,19 @@ export const link = {
       to: [{ type: 'redirect' }],
       // A pattern source (/old/:slug) is no URL to link to.
       options: { filter: 'count(string::split(source, ":")) == 1' },
+      validation: requiredFor('redirect', 'Pick a redirect.'),
       hidden: ({ parent }) => parent?.type !== 'redirect'
     },
     {
       name: 'external',
-      type: 'url',
+      // A string, not url: url fields add a fixed uri rule that runs even
+      // while hidden and refuses app schemes like steam://.
+      type: 'string',
       placeholder: 'https://example.com',
       validation: (Rule) =>
-        Rule.uri({
-          // any scheme except the executable ones; mirrors isSafeHref in
-          // src/lib/processUrl.js
-          scheme: /^(?!(?:javascript|data|vbscript|blob|file)$)/i,
-          allowRelative: true
+        Rule.custom((url, { parent }) => {
+          if (parent?.type !== 'external') return true;
+          return url ? validUrl(url) : 'Add a URL.';
         }),
       hidden: ({ parent }) => parent?.type !== 'external'
     },
@@ -70,8 +91,10 @@ export const link = {
       placeholder: 'e.g. #jump-link or ?foo=bar',
       type: 'string',
       validation: (Rule) => [
-        Rule.regex(/^[?#]/, { name: 'query or fragment' }).error(
-          'Start with ? or #.'
+        Rule.custom((params, { parent }) =>
+          parent?.type !== 'internal' || !params || /^[?#]/.test(params)
+            ? true
+            : 'Start with ? or #.'
         ),
         Rule.custom(async (params, { parent, getClient }) => {
           const { fragment } = splitParams(params);
@@ -86,10 +109,10 @@ export const link = {
             'published'
           );
           if (!target || target.ids.has(id)) return true;
-          return `No heading #${fragment} on ${target.title}. The link opens the page at the top.`;
+          return `No heading #${fragment} on the published page “${target.title}”. Until there is one, the link opens the page at the top.`;
         }).warning()
       ],
-      hidden: ({ parent }) => !parent?.type || parent.type === 'redirect'
+      hidden: ({ parent }) => parent?.type !== 'internal'
     }
   ],
   preview: {
@@ -99,11 +122,28 @@ export const link = {
       slug: 'internal.metadata.slug.current',
       external: 'external',
       redirect: 'redirect.source',
+      redirectLabel: 'redirect.destination.label',
+      redirectTitle: 'redirect.destination.internal.title',
       params: 'params'
     },
-    prepare({ label, title, slug, external, redirect, params }) {
+    prepare({
+      label,
+      title,
+      slug,
+      external,
+      redirect,
+      redirectLabel,
+      redirectTitle,
+      params
+    }) {
       return {
-        title: label || title || redirect,
+        title:
+          label ||
+          title ||
+          external ||
+          redirectLabel ||
+          redirectTitle ||
+          redirect,
         subtitle: [external || slug || redirect, params]
           .filter(Boolean)
           .join('')

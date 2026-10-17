@@ -1,9 +1,10 @@
 import { MdVrpano } from 'react-icons/md';
 import { getBlockText } from '@/sanity/utils';
-import { textBlock } from '../fragments/text-block';
+import { heroText } from '../fragments/text-block';
 import { scrollHintField } from '../fragments/fields/scroll-hint';
 import { uidField } from '../fragments/fields/uid';
 import { assetPreview } from '../../components/CloudinaryPreview';
+import { imageRequired } from '../objects/cloudinary-image';
 
 export const hero = {
   name: 'hero',
@@ -22,12 +23,12 @@ export const hero = {
     },
     {
       name: 'content',
-      ...textBlock,
+      ...heroText,
       group: 'content'
     },
     {
       name: 'ctas',
-      title: 'Call-to-actions',
+      title: 'Calls to action',
       type: 'array',
       of: [{ type: 'cta' }],
       group: 'content'
@@ -36,6 +37,7 @@ export const hero = {
       name: 'bgImage',
       title: 'Background Image',
       type: 'cloudinaryImage',
+      validation: imageRequired,
       group: 'image'
     },
     {

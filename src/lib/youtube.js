@@ -1,4 +1,5 @@
 import { preconnect } from 'react-dom';
+import { SANITY_TAG } from './sanity/tag';
 
 // Video ids are 11 characters of the URL-safe alphabet; anything else is a
 // mistyped link rather than a video.
@@ -157,7 +158,7 @@ export async function getThumb(id) {
     const response = await fetch(maxres, {
       method: 'HEAD',
       cache: 'force-cache',
-      next: { tags: ['pages'] }
+      next: { tags: [SANITY_TAG] }
     });
     if (response.ok) return maxres;
   } catch {
@@ -173,7 +174,7 @@ export async function getTitle(id) {
     const response = await fetch(
       `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`,
       // Refreshed by the publish webhook, like the page around it.
-      { cache: 'force-cache', next: { tags: ['pages'] } }
+      { cache: 'force-cache', next: { tags: [SANITY_TAG] } }
     );
     if (!response.ok) return fallback;
     const data = await response.json();

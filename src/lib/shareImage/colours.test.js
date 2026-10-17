@@ -93,6 +93,16 @@ test('the card shows the share image, then the cover, then the hero', () => {
   );
   const empty = { asset: null };
   expect(sharePhoto({ sharePhotos: [null, empty, null] })).toBeNull();
+  const hero = photo('#222222');
+  const modules = [
+    { _type: 'custom-html', html: { code: '<style>a{}</style>' } },
+    { _type: 'hero', bgImage: hero }
+  ];
+  expect(sharePhoto({ sharePhotos: [null, empty], modules })).toBe(hero);
+  expect(sharePhoto({ sharePhotos: [null, cover], modules })).toBe(cover);
+  // A drawn first module that is not a hero leaves no hero photo.
+  const embed = { _type: 'callout', image: photo('#333333') };
+  expect(sharePhoto({ modules: [embed, ...modules] })).toBeNull();
 });
 
 test('the ring reads the stored vibrant, then dominant, then the theme primary', () => {

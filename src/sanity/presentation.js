@@ -22,7 +22,7 @@ export const locations = (params, context) => {
         return {
           locations: [
             {
-              title: doc.title || doc.metadata?.title || 'untitled',
+              title: doc.title || 'untitled',
               href
             }
           ]

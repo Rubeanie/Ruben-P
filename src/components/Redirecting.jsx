@@ -11,8 +11,7 @@ export default async function Redirecting({ url, label, preview }) {
   const page = await fetchSanity(
     groq`*[_type == 'page' && metadata.slug.current == 'redirect'][0]{
       modules[]{ ${modulesQuery} }
-    }`,
-    { tags: ['redirect-page'] }
+    }`
   );
 
   return (

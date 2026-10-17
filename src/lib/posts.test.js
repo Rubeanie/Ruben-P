@@ -2,6 +2,7 @@ import { expect, test } from 'bun:test';
 import {
   byCategory,
   categorySlug,
+  dayIn,
   featuredFirst,
   formatDate,
   initials,
@@ -25,6 +26,11 @@ test('featuredFirst lifts featured posts and keeps date order in each group', ()
 
 test('categorySlug lowercases and hyphenates', () => {
   expect(categorySlug('3D Printing!')).toBe('3d-printing');
+});
+
+test('categorySlug keeps letters from any script', () => {
+  expect(categorySlug('Café Racers')).toBe('cafe-racers');
+  expect(categorySlug('日本語 Tips')).toBe('日本語-tips');
 });
 
 test('categorySlug handles empty and undefined', () => {
@@ -184,4 +190,16 @@ test('initials takes the first letter of the first two words', () => {
 test('sameDay compares calendar days, not times', () => {
   expect(sameDay('2026-09-22', '2026-09-22T23:59:00Z')).toBe(true);
   expect(sameDay('2026-09-22', '2026-09-23T00:00:00Z')).toBe(false);
+});
+
+test('dayIn names the day in the editor zone, UTC when it is missing or invalid', () => {
+  const at = '2026-09-22T20:00:00Z';
+  expect(dayIn(at, 'Australia/Perth')).toBe('2026-09-23');
+  expect(dayIn(at, 'America/Los_Angeles')).toBe('2026-09-22');
+  expect(dayIn(at)).toBe('2026-09-22');
+  expect(dayIn(at, 'Not/AZone')).toBe('2026-09-22');
+  // A draft preview's zone arrives with invisible stega characters.
+  expect(
+    dayIn(at, 'Australia/Perth\u200b\u200c\u200d\u200b\u200c\u200d\u200b\u200c')
+  ).toBe('2026-09-23');
 });

@@ -26,9 +26,11 @@ export const site = {
     },
     {
       name: 'themes',
+      title: 'Theme groups',
       type: 'array',
       group: 'general',
-      of: [{ name: 'theme', type: 'reference', to: [{ type: 'theme' }] }]
+      of: [{ name: 'theme', type: 'reference', to: [{ type: 'theme' }] }],
+      validation: (Rule) => Rule.unique()
     },
     {
       name: 'postCategories',
@@ -80,7 +82,8 @@ export const site = {
       name: 'alternateName',
       type: 'string',
       group: 'seo',
-      description: 'A short name search engines can use for the site'
+      description:
+        'A short name for the site. Search engines can show it, and it labels the home-screen icon, so keep it short.'
     },
     {
       name: 'copyrightNotice',
@@ -91,14 +94,14 @@ export const site = {
     },
     {
       name: 'license',
-      title: 'License URL',
+      title: 'Licence URL',
       type: 'url',
       group: 'seo',
       description: 'Where the terms for reusing the images are published'
     },
     {
       name: 'acquireLicensePage',
-      title: 'Get license page',
+      title: 'Get licence page',
       type: 'url',
       group: 'seo',
       description: 'Where someone can ask to use the images'

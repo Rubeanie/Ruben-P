@@ -71,14 +71,17 @@ export default function SceneCanvas({
     return () => observer.disconnect();
   }, [active, loadOnClick]);
 
+  const handleError = useCallback(() => {
+    keepFocus();
+    setReady(false);
+    setTimedOut(true);
+  }, [keepFocus]);
+
   useEffect(() => {
     if (!active || ready) return undefined;
-    const timeout = setTimeout(() => {
-      keepFocus();
-      setTimedOut(true);
-    }, LOAD_TIMEOUT);
+    const timeout = setTimeout(handleError, LOAD_TIMEOUT);
     return () => clearTimeout(timeout);
-  }, [active, ready, keepFocus]);
+  }, [active, ready, handleError]);
 
   const unmountFacade = (event) => {
     if (event.target === event.currentTarget) setFacade(false);
@@ -93,11 +96,15 @@ export default function SceneCanvas({
         ref={ref}
         className={styles.canvas}
         data-loaded={ready ? '' : undefined}>
-        {active && <Scene {...props} onReady={handleReady} />}
+        {active && (
+          <Scene {...props} onReady={handleReady} onError={handleError} />
+        )}
       </div>
       {!ready &&
         (timedOut ? (
-          <div className={styles.error}>
+          <div
+            className={styles.error}
+            role={loadOnClick ? 'alert' : undefined}>
             <p>The 3D model could not be loaded.</p>
           </div>
         ) : (
