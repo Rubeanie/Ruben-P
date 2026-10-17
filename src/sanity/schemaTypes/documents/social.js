@@ -33,7 +33,7 @@ export const social = {
     },
     {
       name: 'baseColor',
-      title: 'Brand color',
+      title: 'Brand colour',
       type: 'color',
       options: {
         colorList: [{ hex: DEFAULT_THEME_COLORS.primary }]

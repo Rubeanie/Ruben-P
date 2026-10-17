@@ -112,7 +112,11 @@ export function ThemeStyleInput(props) {
         if (getStyleImageUrl(latestValueRef.current) !== imageUrl) return;
 
         if (!colors) {
-          throw new Error('No colors were generated for this image.');
+          setStatus({
+            tone: 'critical',
+            text: 'Couldn’t find any colours in this image.'
+          });
+          return;
         }
 
         const currentMissingColorFields = missingColorFields.filter(
@@ -134,14 +138,14 @@ export function ThemeStyleInput(props) {
         setStatus({
           tone: 'positive',
           text: automatic
-            ? `Auto-generated ${currentMissingColorFields.length} missing theme color${currentMissingColorFields.length === 1 ? '' : 's'}.`
-            : `Generated ${currentMissingColorFields.length} missing theme color${currentMissingColorFields.length === 1 ? '' : 's'}.`
+            ? `Auto-generated ${currentMissingColorFields.length} missing theme colour${currentMissingColorFields.length === 1 ? '' : 's'}.`
+            : `Generated ${currentMissingColorFields.length} missing theme colour${currentMissingColorFields.length === 1 ? '' : 's'}.`
         });
       } catch (error) {
         console.error('Error generating theme colors in Sanity Studio:', error);
         setStatus({
           tone: 'critical',
-          text: 'Could not generate colors from this image.'
+          text: 'Could not generate colours from this image.'
         });
       } finally {
         setIsGenerating(false);

@@ -38,7 +38,7 @@ export const skill = {
     },
     {
       name: 'baseColor',
-      title: 'Brand color',
+      title: 'Brand colour',
       type: 'color',
       options: {
         colorList: [{ hex: DEFAULT_THEME_COLORS.primary }]
@@ -47,7 +47,7 @@ export const skill = {
     },
     {
       name: 'textColor',
-      title: 'Text color',
+      title: 'Text colour',
       type: 'color',
       options: {
         colorList: [{ hex: '#121212' }]

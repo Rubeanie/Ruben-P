@@ -100,7 +100,7 @@ export const threeJs = {
     {
       name: 'background',
       type: 'color',
-      description: 'Background color',
+      description: 'Background colour',
       group: 'options'
     },
     {

@@ -21,12 +21,12 @@ export const style = {
       if (!value?.image) return true;
       const blank = COLOR_FIELDS.filter(({ field }) => !value[field]?.hex);
       if (!blank.length) return true;
-      return `${blank.length} colour${blank.length > 1 ? 's are' : ' is'} blank, so the server reads ${blank.length > 1 ? 'them' : 'it'} from the photo. Press Generate missing to save ${blank.length > 1 ? 'them' : 'it'} now.`;
+      return `${blank.length} colour${blank.length > 1 ? 's are' : ' is'} blank, so the server reads ${blank.length > 1 ? 'them' : 'it'} from the photo. Open Colour overrides and press Generate missing to save ${blank.length > 1 ? 'them' : 'it'} now.`;
     }).warning(),
   fieldsets: [
     {
       name: 'themeColors',
-      title: 'Color overrides',
+      title: 'Colour overrides',
       options: {
         collapsible: true,
         collapsed: true
@@ -64,8 +64,8 @@ export const style = {
     },
     {
       name: 'primaryColor',
-      title: 'Primary color',
-      description: 'Overrides primary color.',
+      title: 'Primary colour',
+      description: 'Overrides primary colour.',
       type: 'color',
       fieldset: 'themeColors',
       options: {
@@ -82,8 +82,8 @@ export const style = {
     },
     {
       name: 'secondaryColor',
-      title: 'Secondary color',
-      description: 'Overrides secondary color.',
+      title: 'Secondary colour',
+      description: 'Overrides secondary colour.',
       type: 'color',
       fieldset: 'themeColors',
       options: {
@@ -92,8 +92,8 @@ export const style = {
     },
     {
       name: 'backgroundColor',
-      title: 'Background color',
-      description: 'Overrides background color.',
+      title: 'Background colour',
+      description: 'Overrides background colour.',
       type: 'color',
       fieldset: 'themeColors',
       options: {
@@ -102,8 +102,8 @@ export const style = {
     },
     {
       name: 'textColor',
-      title: 'Text color',
-      description: 'Overrides text color.',
+      title: 'Text colour',
+      description: 'Overrides text colour.',
       type: 'color',
       fieldset: 'themeColors',
       options: {

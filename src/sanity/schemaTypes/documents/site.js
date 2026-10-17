@@ -92,14 +92,14 @@ export const site = {
     },
     {
       name: 'license',
-      title: 'License URL',
+      title: 'Licence URL',
       type: 'url',
       group: 'seo',
       description: 'Where the terms for reusing the images are published'
     },
     {
       name: 'acquireLicensePage',
-      title: 'Get license page',
+      title: 'Get licence page',
       type: 'url',
       group: 'seo',
       description: 'Where someone can ask to use the images'
