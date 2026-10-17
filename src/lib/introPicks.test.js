@@ -170,6 +170,8 @@ test('splitHref keeps a page path and its fragment, and refuses the rest', () =>
   });
   expect(splitHref('/about?x=1')).toEqual({ path: '/about', hash: '' });
   expect(splitHref('/')).toEqual({ path: '/', hash: '' });
+  expect(splitHref('/café#x')).toEqual({ path: '/café', hash: '#x' });
+  expect(splitHref('/100%')).toBeNull();
   expect(splitHref('https://example.com/a')).toBeNull();
   expect(splitHref('//example.com/a')).toBeNull();
   expect(splitHref('#top')).toBeNull();

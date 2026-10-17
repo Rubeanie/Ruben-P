@@ -36,9 +36,14 @@ export function splitHref(href) {
   const clean = stegaClean(href);
   if (!isInternalHref(clean)) return null;
   const { pathname, hash } = new URL(clean, 'http://x');
-  return isPagePath(pathname)
-    ? { path: pathname, hash: hash.length > 1 ? hash : '' }
-    : null;
+  // The URL API percent-encodes non-ASCII slugs; a stray % can't be decoded.
+  let path;
+  try {
+    path = decodeURI(pathname);
+  } catch {
+    return null;
+  }
+  return isPagePath(path) ? { path, hash: hash.length > 1 ? hash : '' } : null;
 }
 
 // Thin chrome that never holds media: the contents sit beside the page (a bar
