@@ -194,10 +194,9 @@ $caption-min: 7.5rem;
   display: flex;
   // On a narrow bar the caption takes the row and the pill wraps below it.
   flex-wrap: wrap;
-  row-gap: var.$space-2;
   // A long caption grows downwards from the pill's top edge.
   align-items: flex-start;
-  gap: var.$space-3;
+  gap: var.$space-2 var.$space-3;
   margin-block-start: var.$space-3;
   // The front card's width, so the pill ends where the card does.
   max-inline-size: calc(100% * (1 - var(--room)));
