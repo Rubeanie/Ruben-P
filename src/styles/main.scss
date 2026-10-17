@@ -18,20 +18,14 @@ main {
     overflow-x: clip;
   }
 
-  .hero {
+  .hero-no-padding {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: var.$padding-safe;
-    padding-top: var.$navbar-height;
     min-height: calc(100lvh - var(--announce-height));
     transition: min-height 0.2s ease;
-  }
-
-  .hero-no-padding {
-    @extend .hero;
-    padding-top: unset;
   }
 
   // 44px tap target, like every text link.
