@@ -1,12 +1,10 @@
 import { stegaClean } from '@sanity/client/stega';
+import { slugify } from './anchors';
 
-// Chip and URL value for a category: lowercase words joined by hyphens.
+// Chip and URL value for a category: lowercase words joined by hyphens, in
+// any script.
 export function categorySlug(title) {
-  return String(title ?? '')
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
+  return String(title ?? '').trim() ? slugify(title) : '';
 }
 
 // Title order, the tail order for categories the site list leaves out.

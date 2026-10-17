@@ -28,6 +28,11 @@ test('categorySlug lowercases and hyphenates', () => {
   expect(categorySlug('3D Printing!')).toBe('3d-printing');
 });
 
+test('categorySlug keeps letters from any script', () => {
+  expect(categorySlug('Café Racers')).toBe('cafe-racers');
+  expect(categorySlug('日本語 Tips')).toBe('日本語-tips');
+});
+
 test('categorySlug handles empty and undefined', () => {
   expect(categorySlug('')).toBe('');
   expect(categorySlug(undefined)).toBe('');
