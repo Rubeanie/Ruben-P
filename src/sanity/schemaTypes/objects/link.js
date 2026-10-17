@@ -107,7 +107,7 @@ export const link = {
             'published'
           );
           if (!target || target.ids.has(id)) return true;
-          return `No heading #${fragment} on ${target.title}. The link opens the page at the top.`;
+          return `No heading #${fragment} on the published page “${target.title}”. Until there is one, the link opens the page at the top.`;
         }).warning()
       ],
       hidden: ({ parent }) => parent?.type !== 'internal'

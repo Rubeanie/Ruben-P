@@ -81,7 +81,8 @@ export const site = {
       name: 'alternateName',
       type: 'string',
       group: 'seo',
-      description: 'A short name search engines can use for the site'
+      description:
+        'A short name for the site. Search engines can show it, and it labels the home-screen icon, so keep it short.'
     },
     {
       name: 'copyrightNotice',

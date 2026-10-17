@@ -65,7 +65,7 @@ export const hero3d = {
           !beats?.length ||
           beats.some((beat) => getBlockText(beat.content).trim())
             ? true
-            : 'Both beats are empty; the hero will have nothing to say'
+            : 'No beat has any text; the hero will have nothing to say'
         ).warning()
       ],
       description: 'One for the turn, one for the approach'

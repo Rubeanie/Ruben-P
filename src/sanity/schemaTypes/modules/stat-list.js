@@ -19,15 +19,21 @@ export const statList = {
           fields: [
             {
               name: 'value',
-              type: 'string'
+              title: 'Value',
+              type: 'string',
+              description: 'Big figure. Numbers count up, e.g. 50, $12k, 1,200.'
             },
             {
               name: 'subValue',
-              type: 'string'
+              title: 'Unit',
+              type: 'string',
+              description: 'Small text after the value, e.g. years, /10.'
             },
             {
               name: 'text',
-              type: 'string'
+              title: 'Label',
+              type: 'string',
+              description: 'Shown under the value.'
             }
           ],
           preview: {

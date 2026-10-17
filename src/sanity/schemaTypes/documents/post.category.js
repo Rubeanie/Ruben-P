@@ -15,7 +15,8 @@ export const postCategory = {
       name: 'color',
       type: 'color',
       options: { disableAlpha: true },
-      description: 'Tints the active filter chip and the dot before the name'
+      description:
+        'Tints the category’s filter chip, its dot on post tiles and its capsule on the post page'
     }
   ],
   preview: {

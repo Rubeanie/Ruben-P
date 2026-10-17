@@ -34,7 +34,8 @@ export const pagePost = {
     {
       name: 'summary',
       type: 'string',
-      description: 'One sentence, shown on tiles and under the title',
+      description:
+        'One sentence. Shown on large tiles and in the feed, and used on share cards when no SEO description is set.',
       validation: (Rule) => Rule.required().max(160),
       group: 'content'
     },
