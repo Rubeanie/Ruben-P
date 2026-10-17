@@ -1,18 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { LuCopy, LuCheck } from 'react-icons/lu';
 import { copyText } from '@/lib/clipboard';
 import styles from '@/styles/components/RichText.module.scss';
 
 export default function CopyButton({ code }) {
+  const timer = useRef(0);
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => () => clearTimeout(timer.current), []);
 
   const copy = async () => {
     try {
       await copyText(code);
       setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
+      clearTimeout(timer.current);
+      timer.current = setTimeout(() => setCopied(false), 1500);
     } catch {
       // Clipboard access can be denied; the code is still selectable.
     }
