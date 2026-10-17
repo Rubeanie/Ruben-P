@@ -58,7 +58,7 @@ const ModuleRenderer = ({
     case 'post-featured':
       return <PostFeatured {...module} page={page} />;
     case 'post-list':
-      return <PostList {...module} page={page} />;
+      return <PostList {...module} page={page} lead={lead} />;
     case 'hero':
       return <Hero {...module} />;
     case 'hero.saas':

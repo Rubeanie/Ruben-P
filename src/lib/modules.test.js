@@ -42,4 +42,6 @@ test('leadModule is the first module with an image or video', () => {
   const video = { _type: 'richtext-module', content: [{ _type: 'youtube' }] };
   expect(leadModule([html, text, video, { _type: 'hero' }])).toBe(video);
   expect(leadModule([text])).toBeUndefined();
+  const posts = { _type: 'post-list' };
+  expect(leadModule([text, posts, video])).toBe(posts);
 });

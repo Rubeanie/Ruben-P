@@ -23,13 +23,13 @@ async function PostIntent({ posts }) {
   return <IntentImages images={await introImages(hrefs)} />;
 }
 
-export default async function PostList({ displayFilters, ...props }) {
+export default async function PostList({ displayFilters, lead, ...props }) {
   const { posts, categories } = await getPostIndex();
   if (!posts.length) return null;
   const filters = displayFilters ? chipCategories(posts, categories) : null;
   return (
     <>
-      <Bento id={uid(props)} posts={posts} filters={filters} />
+      <Bento id={uid(props)} posts={posts} filters={filters} lead={lead} />
       <Suspense fallback={null}>
         <PostIntent posts={posts} />
       </Suspense>

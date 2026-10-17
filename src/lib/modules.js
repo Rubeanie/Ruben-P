@@ -23,7 +23,8 @@ const MEDIA = new Set([
   'hero.saas',
   'hero.split',
   'hero.3d',
-  'media-carousel'
+  'media-carousel',
+  'post-list'
 ]);
 const hasMedia = (m) =>
   MEDIA.has(m._type) ||
