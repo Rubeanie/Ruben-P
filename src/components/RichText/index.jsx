@@ -49,11 +49,6 @@ const components = {
     imgHeading: span('image-text'),
     dlig: span(styles.dlig),
     ss01: span(styles.ss01)
-  },
-  types: {
-    imageBlock: ImageBlock,
-    youtube: YouTube,
-    code: Code
   }
 };
 
@@ -77,7 +72,6 @@ export default function RichText({ value, values, dataAttribute, lead }) {
       components={{
         ...components,
         types: {
-          ...components.types,
           imageBlock: (props) => (
             <ImageBlock
               {...props}
