@@ -2,17 +2,19 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useTheme } from '@/components/ThemeContext';
-import { DEFAULT_THEME, colorsFromImage } from '@/lib/themes';
+import { colorsFromImage } from '@/lib/themes';
 
 const MAX_BYTES = 100 * 1024 * 1024;
 
 const DECODE_ERROR = 'Couldn’t read that one. Try another photo.';
 const SIZE_ERROR = 'That one’s over 100 MB. Try a smaller photo.';
+const PALETTE_ERROR =
+  'Couldn’t find any colours in that one. Try another photo.';
 
 const hasFiles = (event) => event.dataTransfer?.types.includes('Files');
 
 // The palette reads a downsized copy; the page gets the original file, so a GIF
-// keeps moving and a PNG keeps its transparency.
+// keeps moving and a PNG keeps its transparency. Null when no palette reads.
 async function themeFromFile(file) {
   const url = URL.createObjectURL(file);
   const img = new Image();
@@ -28,10 +30,10 @@ async function themeFromFile(file) {
     const colors = await colorsFromImage(img);
     if (colors) return { url, colors, source: 'visitor' };
   } catch {
-    // a flat or tiny picture has no palette to read
+    // Vibrant throws on a picture it cannot sample
   }
   URL.revokeObjectURL(url);
-  return DEFAULT_THEME;
+  return null;
 }
 
 // Pick or drop a photo; its palette is read on the device and applied as an override.
@@ -74,7 +76,12 @@ export default function useImageTheme() {
     handed.current = null;
     try {
       const next = await themeFromFile(file);
-      if (next !== DEFAULT_THEME) handed.current = next.url;
+      if (!next) {
+        setError(PALETTE_ERROR);
+        setPhase(null);
+        return;
+      }
+      handed.current = next.url;
       overrideTheme(next);
       setPhase('applying');
     } catch {
