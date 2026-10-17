@@ -103,7 +103,10 @@ export const openGraph = {
     {
       name: 'siteName',
       title: 'Site name',
-      type: 'string'
+      type: 'string',
+      hidden: ({ document }) => document?._type !== 'site',
+      description:
+        'The site name some platforms show above the title. Leave empty to use the site title.'
     }
   ]
 };

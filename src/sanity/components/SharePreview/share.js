@@ -70,8 +70,8 @@ function sourcesOf(page, site, tags) {
       [shareImageUrl(page?.metadata?.slug), 'generated', 'Generated card']
     ]),
     ogSiteName: pick(tags.ogSiteName, [
-      [p.openGraph?.siteName, 'page', 'Site name'],
-      [s.openGraph?.siteName, 'site', 'Site settings']
+      [s.openGraph?.siteName, 'site', 'Site settings'],
+      [site?.title, 'site', 'Site title']
     ])
   };
 }

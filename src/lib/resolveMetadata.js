@@ -64,27 +64,30 @@ export function resolveMetadata(page, site) {
 
   const tags = additionalMetaTags ? getMetaObjects(additionalMetaTags) : {};
   const path = slugOf(page);
-  let og = withDefaults(pageSeo.openGraph, site?.seo?.openGraph);
   // A page's card ships even when neither the page nor the site sets any Open Graph.
-  if (!og && isPagePath(path)) og = {};
+  const hasOg =
+    withDefaults(pageSeo.openGraph, site?.seo?.openGraph) || isPagePath(path);
   const images = shareImages(pageSeo, path);
 
   // A share preview always points at the page itself.
-  const openGraph = og && {
-    // Own Open Graph title, then own meta title, then the document's own title.
-    title: pageSeo.openGraph?.title || title || undefined,
-    // Same order as the title, one level shallower.
-    description:
-      pageSeo.openGraph?.description ||
-      pageSeo.metaDescription ||
-      page?.summary ||
-      site?.seo?.openGraph?.description ||
-      description ||
-      undefined,
-    siteName: og.siteName,
-    url,
-    images
-  };
+  const openGraph = hasOg
+    ? {
+        // Own Open Graph title, then own meta title, then the document's own title.
+        title: pageSeo.openGraph?.title || title || undefined,
+        // Its own description, then the page's meta description and summary, then the site's.
+        description:
+          pageSeo.openGraph?.description ||
+          pageSeo.metaDescription ||
+          page?.summary ||
+          site?.seo?.openGraph?.description ||
+          description ||
+          undefined,
+        // Only Site settings names the site, falling back to its title.
+        siteName: site?.seo?.openGraph?.siteName || site?.title || undefined,
+        url,
+        images
+      }
+    : undefined;
 
   return {
     metadataBase: new URL(baseUrl),

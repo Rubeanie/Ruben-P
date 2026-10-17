@@ -75,6 +75,13 @@ test('Open Graph title falls back to the page meta title before the page title o
   expect(m.openGraph.siteName).toBe('Site name');
 });
 
+test('the site name is the Site settings one, then the site title, never the page', () => {
+  const page = pageWith({ openGraph: { siteName: 'Page site name' } });
+  expect(resolveMetadata(page, site).openGraph.siteName).toBe('Site name');
+  const bare = { title: 'Ruben-P', seo: {} };
+  expect(resolveMetadata(page, bare).openGraph.siteName).toBe('Ruben-P');
+});
+
 test("Open Graph title falls back to the page's own title before Site settings", () => {
   const m = resolveMetadata(
     pageWith(
