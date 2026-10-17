@@ -18,17 +18,20 @@ export const heroSplit = {
   fields: [
     {
       name: 'pretitle',
-      type: 'string'
+      type: 'string',
+      group: 'content'
     },
     {
       name: 'content',
-      ...textBlock
+      ...textBlock,
+      group: 'content'
     },
     {
       name: 'ctas',
       title: 'Call-to-actions',
       type: 'array',
-      of: [{ type: 'cta' }]
+      of: [{ type: 'cta' }],
+      group: 'content'
     },
     {
       name: 'image',
