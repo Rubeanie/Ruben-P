@@ -1,5 +1,6 @@
 import { MdLabel, MdCode } from 'react-icons/md';
 import { SeoFeedbackInput } from '../../components/SeoFeedback/SeoFeedbackInput';
+import { NoIndexInput } from '../../components/NoIndexInput';
 import { DESCRIPTION_LENGTH, TITLE_LENGTH } from '@/lib/studioReviewLimits';
 
 // Titles and the share image are each page's own; Site settings supplies no default.
@@ -36,8 +37,9 @@ export const seoMetaFields = {
       name: 'nofollowAttributes',
       title: 'Prevent indexing',
       type: 'boolean',
+      components: { input: NoIndexInput },
       description:
-        'Asks search engines not to index or follow links (adds noindex, nofollow). On a page, leave it unset to follow Site settings; on Site settings it is the default for every page.'
+        'Asks search engines not to index or follow links (adds noindex, nofollow). On a page, Follow Site settings clears it so the Site settings value applies; on Site settings it is the default for every page.'
     },
     {
       name: 'priority',
