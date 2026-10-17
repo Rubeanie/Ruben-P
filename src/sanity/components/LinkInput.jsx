@@ -1,6 +1,6 @@
 import { useEffect, useId, useState } from 'react';
-import { Select, Stack, Text } from '@sanity/ui';
-import { set, unset, useClient } from 'sanity';
+import { Button, Select, Stack, Text } from '@sanity/ui';
+import { set, setIfMissing, unset, useClient } from 'sanity';
 import { apiVersion } from '@/lib/env';
 import { splitParams, targetAnchors } from '@/sanity/utils';
 
@@ -24,9 +24,13 @@ function useHeadings(ref) {
 }
 
 // Internal links offer the target page's headings under the reference;
-// picking one writes #slug into the params, which stay typeable.
+// picking one writes #slug into the params, which stay typeable. A host that
+// allows a single type (options.types) skips the type picker, offering an
+// Add link button while the link is empty, since the type decides which fields show.
 export function LinkInput(props) {
-  const { value, onChange, readOnly, renderField } = props;
+  const { value, onChange, readOnly, renderField, schemaType } = props;
+  const types = schemaType.options?.types;
+  const single = types?.length === 1;
   const id = useId();
   const internal = value?.type === 'internal' && value.internal?._ref;
   const [target, refresh] = useHeadings(internal);
@@ -44,8 +48,29 @@ export function LinkInput(props) {
 
   return props.renderDefault({
     ...props,
-    renderField: (field) =>
-      field.name === 'internal' && headings.length > 0 ? (
+    renderField: (field) => {
+      // A type outside the allowed one keeps its picker, so it can be switched.
+      if (single && field.name === 'type' && value?.type)
+        return value.type === types[0] ? null : renderField(field);
+      if (single && field.name === 'type')
+        return (
+          <Button
+            text='Add link'
+            mode='ghost'
+            fontSize={1}
+            padding={2}
+            disabled={readOnly}
+            onClick={() =>
+              onChange([
+                setIfMissing({ _type: schemaType.name }),
+                set(types[0], ['type'])
+              ])
+            }
+          />
+        );
+      if (field.name !== 'internal' || headings.length === 0)
+        return renderField(field);
+      return (
         <Stack gap={3}>
           {renderField(field)}
           <Stack gap={2}>
@@ -68,8 +93,7 @@ export function LinkInput(props) {
             </Select>
           </Stack>
         </Stack>
-      ) : (
-        renderField(field)
-      )
+      );
+    }
   });
 }
