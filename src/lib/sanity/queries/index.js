@@ -22,7 +22,9 @@ export async function getSite() {
 				headerMenu->{ ${navigationQuery} },
 				footerMenu->{ ${navigationQuery} },
 				"announcements": array::compact(announcements[]->{ ${announcementQuery} }),
-        ${seoQuery}
+        ${seoQuery},
+        // Site-wide only: the layout emits them, no page carries its own.
+        "additionalMetaTags": seo.additionalMetaTags[]{ name, value }
 			}
 		`,
     { tags: ['site'] }

@@ -29,13 +29,13 @@ import { normalizeTheme } from '@/lib/themeColors';
 import { liveAnnouncement } from '@/lib/announcement';
 import { resolveLink } from '@/lib/processUrl';
 import { navLinks } from '@/lib/navLinks';
-import { feedTypes } from '@/lib/resolveMetadata';
+import { feedTypes, metaTagsOf } from '@/lib/resolveMetadata';
 import { navGate } from '@/lib/navGate';
 import { reloadScroll } from '@/lib/reloadScroll';
 import skip from '@/styles/components/SkipLink.module.scss';
 
 export async function generateMetadata() {
-  const { author } = await getSite();
+  const { author, additionalMetaTags } = await getSite();
   const name = stegaClean(author?.name);
   const link = resolveLink(author?.link);
   return {
@@ -43,6 +43,7 @@ export async function generateMetadata() {
     authors: [{ name, url: link ? new URL(link, baseUrl).href : undefined }],
     alternates: { types: feedTypes },
     other: {
+      ...metaTagsOf(additionalMetaTags),
       'darkreader-lock': true
     }
   };

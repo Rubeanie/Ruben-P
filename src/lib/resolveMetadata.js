@@ -13,22 +13,10 @@ import { shareImageUrl } from '@/lib/shareImage/url';
 // The RSS feed, advertised in every page head.
 export const feedTypes = { 'application/rss+xml': FEED_PATH };
 
-const getMetaObjects = (tags) =>
-  tags.reduce((mergedObject, tag) => {
-    const metaTag = getMetaAttribute(tag?.metaAttributes);
-    return metaTag ? { ...mergedObject, ...metaTag } : mergedObject;
-  }, {});
-
-const getMetaAttribute = (attrs) =>
-  attrs?.filter(Boolean).reduce(
-    (obj, i) => ({
-      ...obj,
-      [i?.attributeKey]:
-        i.attributeType === 'image'
-          ? (stillOf(i?.attributeValueImage) ?? '')
-          : i.attributeValueString
-    }),
-    {}
+// Site settings' additional meta tags, as Next's `other`.
+export const metaTagsOf = (tags) =>
+  Object.fromEntries(
+    (tags ?? []).filter((t) => t?.name).map((t) => [t.name, t.value])
   );
 
 // Next drops the trailing slash of a bare origin; doing it here keeps the object equal to the head.
@@ -52,8 +40,10 @@ export function resolveMetadata(page, site) {
   const pageTitle = stegaClean(page?.title) || '';
 
   // GROQ projects an absent field as null, so withDefaults falls back with `??`.
-  const { additionalMetaTags, metaDescription, nofollowAttributes } =
-    withDefaults(pageSeo, site?.seo);
+  const { metaDescription, nofollowAttributes } = withDefaults(
+    pageSeo,
+    site?.seo
+  );
   const title = pageSeo.metaTitle || pageTitle || '';
   // A post's summary comes after the page's own description, before the site's.
   const description =
@@ -62,7 +52,6 @@ export function resolveMetadata(page, site) {
   // Twitter and Open Graph fall back to the site field by field.
   const twitter = withDefaults(pageSeo.twitter, site?.seo?.twitter);
 
-  const tags = additionalMetaTags ? getMetaObjects(additionalMetaTags) : {};
   const path = slugOf(page);
   // A page's card ships even when neither the page nor the site sets any Open Graph.
   const hasOg =
@@ -112,8 +101,7 @@ export function resolveMetadata(page, site) {
       types: feedTypes
     },
     // The page's one focus keyphrase; Google ignores the tag, others may glance at it.
-    keywords: stegaClean(pageSeo.focusKeyphrase) || undefined,
-    other: tags
+    keywords: stegaClean(pageSeo.focusKeyphrase) || undefined
   };
 }
 

@@ -39,13 +39,7 @@ import { cloudinaryImage } from './objects/cloudinary-image';
 import { cta } from './objects/cta';
 import { dynamicValue } from './objects/dynamic-value';
 import { link } from './objects/link';
-import {
-  metaAttribute,
-  metaTag,
-  openGraph,
-  seoMetaFields,
-  twitter
-} from './objects/seo';
+import { openGraph, seoMetaFields, twitter } from './objects/seo';
 import { style } from './objects/style';
 import { uid } from './objects/uid';
 
@@ -91,8 +85,6 @@ export const schemaTypes = [
   cta,
   dynamicValue,
   link,
-  metaAttribute,
-  metaTag,
   openGraph,
   seoMetaFields,
   style,

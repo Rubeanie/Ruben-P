@@ -1,14 +1,6 @@
 import groq from 'groq';
 import { cloudinaryStillQuery } from './fragments/cloudinary';
 
-const metaAttributesQuery = groq`
-  _type,
-  attributeValueString,
-  attributeType,
-  attributeKey,
-  attributeValueImage{ ${cloudinaryStillQuery} }
-`;
-
 const openGraphQuery = groq`
   _type,
   siteName,
@@ -35,12 +27,6 @@ const seoFieldsQuery = groq`
   },
   twitter{
     ${twitterQuery}
-  },
-  additionalMetaTags[]{
-    _type,
-    metaAttributes[]{
-      ${metaAttributesQuery}
-    }
   }
 `;
 

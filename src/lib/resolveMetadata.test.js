@@ -1,6 +1,6 @@
 import { expect, test } from 'bun:test';
 import { baseUrl } from '@/lib/env';
-import { heroThemeImage, resolveMetadata } from './resolveMetadata';
+import { heroThemeImage, metaTagsOf, resolveMetadata } from './resolveMetadata';
 
 // Image fields hold Cloudinary URLs only.
 const CDN = 'https://res.cloudinary.com/demo/image/upload/v1/';
@@ -296,4 +296,15 @@ test('heroThemeImage reads only the first hero or glass hero photo', () => {
     heroThemeImage({ modules: [{ _type: 'hero.split', image: img('c') }] })
   ).toBeNull();
   expect(heroThemeImage({ modules: [] })).toBeNull();
+});
+
+test('Site settings meta tags become the layout metadata, nameless ones dropped', () => {
+  expect(
+    metaTagsOf([
+      { name: 'theme-x', value: 'a' },
+      { name: null, value: 'b' }
+    ])
+  ).toEqual({ 'theme-x': 'a' });
+  expect(metaTagsOf(null)).toEqual({});
+  expect(resolveMetadata(pageWith({}), site).other).toBeUndefined();
 });

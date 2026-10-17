@@ -1,4 +1,3 @@
-import { MdLabel, MdCode } from 'react-icons/md';
 import { SeoFeedbackInput } from '../../components/SeoFeedback/SeoFeedbackInput';
 import { NoIndexInput } from '../../components/NoIndexInput';
 import { DESCRIPTION_LENGTH, TITLE_LENGTH } from '@/lib/studioReviewLimits';
@@ -65,8 +64,18 @@ export const seoMetaFields = {
       name: 'additionalMetaTags',
       title: 'Additional meta tags',
       type: 'array',
-      of: [{ type: 'metaTag' }],
-      description: 'Extra meta tags to add to the page head.'
+      hidden: ({ document }) => document?._type !== 'site',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'name', type: 'string' },
+            { name: 'value', title: 'Text value', type: 'string' }
+          ],
+          preview: { select: { title: 'name', subtitle: 'value' } }
+        }
+      ],
+      description: 'Extra meta tags added to the head of every page.'
     },
     // Left over from the old SEO plugin on a few pages; kept hidden so the Studio doesn't flag it.
     { name: 'seoStatus', type: 'string', hidden: true },
@@ -137,75 +146,4 @@ export const twitter = {
     // The card type is no longer chosen; old values stay hidden.
     { name: 'cardType', type: 'string', hidden: true }
   ]
-};
-
-export const metaTag = {
-  name: 'metaTag',
-  title: 'Meta tag',
-  icon: MdLabel,
-  type: 'object',
-  fields: [
-    {
-      name: 'metaAttributes',
-      title: 'Attributes',
-      type: 'array',
-      of: [{ type: 'metaAttribute' }]
-    }
-  ],
-  preview: {
-    select: {
-      metaTags: 'metaAttributes'
-    },
-    prepare({ metaTags }) {
-      return {
-        title:
-          metaTags?.[0]?.attributeKey ||
-          metaTags?.[0]?.attributeValueString ||
-          'Meta tag'
-      };
-    }
-  }
-};
-
-export const metaAttribute = {
-  name: 'metaAttribute',
-  title: 'Meta attribute',
-  icon: MdCode,
-  type: 'object',
-  fields: [
-    {
-      name: 'attributeKey',
-      title: 'Key',
-      type: 'string',
-      description: 'The meta attribute name, e.g. og:image or twitter:label1.'
-    },
-    {
-      name: 'attributeType',
-      title: 'Type',
-      type: 'string',
-      options: {
-        list: ['string', 'image'],
-        layout: 'radio',
-        direction: 'horizontal'
-      },
-      initialValue: 'image'
-    },
-    {
-      name: 'attributeValueImage',
-      title: 'Image value',
-      type: 'cloudinaryImage',
-      hidden: ({ parent }) => parent?.attributeType !== 'image'
-    },
-    {
-      name: 'attributeValueString',
-      title: 'Text value',
-      type: 'string',
-      hidden: ({ parent }) => parent?.attributeType !== 'string'
-    }
-  ],
-  preview: {
-    select: {
-      title: 'attributeKey'
-    }
-  }
 };
