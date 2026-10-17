@@ -10,7 +10,6 @@ const site = {
   seo: {
     metaDescription: 'Site description',
     nofollowAttributes: true,
-    seoKeywords: ['site'],
     openGraph: {
       description: null,
       siteName: 'Site name'
@@ -182,10 +181,9 @@ test('Twitter spells out what Next would copy from Open Graph', () => {
 });
 
 test('the card is always the large one, with the handle as creator', () => {
-  const m = resolveMetadata(
-    pageWith({ twitter: { cardType: 'summary', handle: '@me' } }),
-    { seo: { ...site.seo, twitter: {} } }
-  );
+  const m = resolveMetadata(pageWith({ twitter: { handle: '@me' } }), {
+    seo: { ...site.seo, twitter: {} }
+  });
   expect(m.twitter.card).toBe('summary_large_image');
   expect(m.twitter.creator).toBe('@me');
 });
@@ -274,13 +272,8 @@ test('no Open Graph anywhere ships none, and Twitter takes the meta fields', () 
 
 test('keywords are the focus keyphrase alone', () => {
   expect(
-    resolveMetadata(
-      pageWith({
-        focusKeyphrase: 'night car photography',
-        seoKeywords: ['old']
-      }),
-      site
-    ).keywords
+    resolveMetadata(pageWith({ focusKeyphrase: 'night car photography' }), site)
+      .keywords
   ).toBe('night car photography');
   expect(resolveMetadata(pageWith({}), site).keywords).toBeUndefined();
 });

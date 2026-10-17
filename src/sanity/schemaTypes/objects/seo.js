@@ -76,15 +76,6 @@ export const seoMetaFields = {
         }
       ],
       description: 'Extra meta tags added to the head of every page.'
-    },
-    // Left over from the old SEO plugin on a few pages; kept hidden so the Studio doesn't flag it.
-    { name: 'seoStatus', type: 'string', hidden: true },
-    // The keywords tag now comes from the focus keyphrase; old lists stay hidden.
-    {
-      name: 'seoKeywords',
-      type: 'array',
-      of: [{ type: 'string' }],
-      hidden: true
     }
   ]
 };
@@ -142,8 +133,6 @@ export const twitter = {
       type: 'string',
       description: 'The @handle of the website or publisher.',
       validation: handleRule
-    },
-    // The card type is no longer chosen; old values stay hidden.
-    { name: 'cardType', type: 'string', hidden: true }
+    }
   ]
 };
