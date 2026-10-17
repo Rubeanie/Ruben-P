@@ -1,5 +1,6 @@
 import { getBlockText } from '@/sanity/utils';
 import { MdQuestionMark } from 'react-icons/md';
+import { linkAnnotation } from '../fragments/text-block';
 import { uidField } from '../fragments/fields/uid';
 
 export const accordionList = {
@@ -32,7 +33,8 @@ export const accordionList = {
               of: [
                 {
                   type: 'block',
-                  styles: [{ title: 'Normal', value: 'normal' }]
+                  styles: [{ title: 'Normal', value: 'normal' }],
+                  marks: { annotations: [linkAnnotation] }
                 }
               ]
             },

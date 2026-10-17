@@ -1,7 +1,7 @@
 import { PortableText, toPlainText } from '@portabletext/react';
 import { stegaClean } from '@sanity/client/stega';
 import NextLink from 'next/link';
-import { isInternalHref, isSafeHref } from '@/lib/processUrl';
+import { isInternalHref, resolveLink } from '@/lib/processUrl';
 import DynamicValue from './DynamicValue';
 import ImageBlock from './ImageBlock';
 import YouTube from './YouTube';
@@ -14,10 +14,10 @@ const span = (className) => {
   return Mark;
 };
 
-// The Studio's url rule stops bad schemes at entry; this holds on the site too.
+// Resolves like a CTA, scheme check included.
 const Link = ({ value, children }) => {
-  const href = stegaClean(value?.href);
-  if (!href || !isSafeHref(href)) return children;
+  const href = resolveLink(value);
+  if (!href) return children;
   // Internal paths get Next's prefetch and a client navigation instead of a reload.
   const Anchor = isInternalHref(href) ? NextLink : 'a';
   return <Anchor href={href}>{children}</Anchor>;
@@ -45,7 +45,7 @@ const components = {
     h3: heading('h3')
   },
   marks: {
-    link: Link,
+    linkMark: Link,
     imgHeading: span('image-text'),
     dlig: span(styles.dlig),
     ss01: span(styles.ss01)

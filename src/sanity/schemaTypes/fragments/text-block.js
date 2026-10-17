@@ -8,6 +8,15 @@ const ImageDecorator = (props) => (
   <span className='image-heading'>{props.children}</span>
 );
 
+// The site's link object, so a prose link resolves like a CTA. Not named
+// 'link': an annotation cannot share the name of the type it extends.
+export const linkAnnotation = {
+  name: 'linkMark',
+  type: 'link',
+  validation: (Rule) =>
+    Rule.custom((link) => (link?.type ? true : 'Pick a link type.'))
+};
+
 export const richBlock = {
   type: 'block',
   of: [{ type: 'dynamicValue' }],
@@ -32,7 +41,8 @@ export const richBlock = {
         component: ImageDecorator
       },
       ...otDecorators
-    ]
+    ],
+    annotations: [linkAnnotation]
   }
 };
 

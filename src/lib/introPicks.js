@@ -237,11 +237,7 @@ export function pageHrefs(modules, current) {
   const visit = (node) => {
     if (Array.isArray(node)) return node.forEach(visit);
     if (!node || typeof node !== 'object') return;
-    const href =
-      stegaClean(node._type) === 'link' && typeof node.href === 'string'
-        ? node.href
-        : resolveLink(node);
-    const target = splitHref(href);
+    const target = splitHref(resolveLink(node));
     if (target && target.path !== current) found.add(target.path + target.hash);
     Object.values(node).forEach(visit);
   };

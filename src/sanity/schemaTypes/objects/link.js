@@ -32,7 +32,9 @@ export const link = {
   fields: [
     {
       name: 'label',
-      type: 'string'
+      type: 'string',
+      // A rich-text link is worded by the text it covers.
+      hidden: ({ parent }) => parent?._type === 'linkMark'
     },
     {
       name: 'type',

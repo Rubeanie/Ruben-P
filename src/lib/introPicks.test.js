@@ -198,9 +198,9 @@ test('pageHrefs finds CTA, link block and rich-text links, not the current page'
         {
           _type: 'block',
           markDefs: [
-            { _type: 'link', href: '/about#mixtape' },
-            { _type: 'link', href: 'https://example.com' },
-            { _type: 'link', href: '/here' }
+            { _type: 'linkMark', ...internal('/about', '#mixtape') },
+            { _type: 'linkMark', type: 'external', external: 'https://a.co' },
+            { _type: 'linkMark', ...internal('/here') }
           ]
         }
       ]
