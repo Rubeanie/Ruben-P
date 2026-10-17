@@ -8,6 +8,17 @@ import {
 import { COLOR_FIELDS } from '../../imageColors';
 import { CloudinaryPreview } from '../../components/CloudinaryPreview';
 
+// Checked only when both colours are saved.
+const contrastWithBackground = (field, label, ratio) => (value) => {
+  const a = value?.[field]?.hex;
+  const b = value?.backgroundColor?.hex;
+  if (!a || !b) return true;
+  return (
+    Color(a).contrast(Color(b)) >= ratio ||
+    `${label} is too close to the background colour (under ${ratio}:1).`
+  );
+};
+
 export const style = {
   name: 'style',
   type: 'object',
@@ -16,13 +27,20 @@ export const style = {
     input: ThemeStyleInput
   },
   // Blank colours are read from the photo on the server; saved ones skip that.
-  validation: (Rule) =>
+  validation: (Rule) => [
     Rule.custom((value) => {
       if (!value?.image) return true;
       const blank = COLOR_FIELDS.filter(({ field }) => !value[field]?.hex);
       if (!blank.length) return true;
       return `${blank.length} colour${blank.length > 1 ? 's are' : ' is'} blank, so the server reads ${blank.length > 1 ? 'them' : 'it'} from the photo. Open Colour overrides and press Generate missing to save ${blank.length > 1 ? 'them' : 'it'} now.`;
     }).warning(),
+    Rule.custom(
+      contrastWithBackground('textColor', 'Text colour', 4.5)
+    ).warning(),
+    Rule.custom(
+      contrastWithBackground('primaryColor', 'Primary colour', 3)
+    ).warning()
+  ],
   fieldsets: [
     {
       name: 'themeColors',
