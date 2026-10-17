@@ -18,12 +18,23 @@ export const accordionList = {
           fields: [
             {
               name: 'summary',
-              type: 'string'
+              title: 'Question',
+              type: 'string',
+              validation: (Rule) =>
+                Rule.required().warning(
+                  'Without a question the row is not shown'
+                )
             },
             {
               name: 'content',
+              title: 'Answer',
               type: 'array',
-              of: [{ type: 'block' }]
+              of: [
+                {
+                  type: 'block',
+                  styles: [{ title: 'Normal', value: 'normal' }]
+                }
+              ]
             },
             {
               name: 'open',
