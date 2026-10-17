@@ -21,6 +21,7 @@ const contrastWithBackground = (field, label, ratio) => (value) => {
 
 export const style = {
   name: 'style',
+  title: 'Theme',
   type: 'object',
   icon: IoMdColorFill,
   components: {
@@ -138,7 +139,7 @@ export const style = {
     // Photos keep the name they were downloaded with: photographer and photo id.
     prepare({ publicId, artist, url }) {
       return {
-        title: publicId?.split('/').pop() || 'Untitled style',
+        title: publicId?.split('/').pop() || 'Untitled theme',
         subtitle: artist,
         media: url !== undefined ? <CloudinaryPreview url={url} /> : null
       };

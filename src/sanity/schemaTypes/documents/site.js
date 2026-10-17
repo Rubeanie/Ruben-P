@@ -26,6 +26,7 @@ export const site = {
     },
     {
       name: 'themes',
+      title: 'Theme groups',
       type: 'array',
       group: 'general',
       of: [{ name: 'theme', type: 'reference', to: [{ type: 'theme' }] }],
