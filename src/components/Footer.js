@@ -5,6 +5,7 @@ import { resolveLink } from '@/lib/processUrl';
 import styles from '@/styles/components/Footer.module.scss';
 
 export default function Footer({ menu, logo, author }) {
+  const lead = resolveLink(menu?.leadLink);
   const links = (menu?.items ?? [])
     // an item still being added in the Studio can be null
     .filter(Boolean)
@@ -31,7 +32,14 @@ export default function Footer({ menu, logo, author }) {
           </nav>
         )}
         <p className={styles.copyright}>
-          © {new Date().getFullYear()} {author}
+          © {new Date().getFullYear()}{' '}
+          {lead ? (
+            <Link href={lead} className={styles.name}>
+              {author}
+            </Link>
+          ) : (
+            author
+          )}
           <BackgroundCredit />
         </p>
       </div>

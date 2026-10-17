@@ -15,7 +15,7 @@ export const navigation = {
       name: 'leadLink',
       title: 'Lead link',
       description:
-        "Where the navbar logo goes. Its label names the logo link and lists it in the dropdown; blank uses the page's title.",
+        'Navbar menu: where the logo goes. Its label names the logo link and lists it in the dropdown; blank uses the page’s title. Footer menu: where the name in the copyright line goes; blank leaves it as plain text.',
       type: 'link'
     },
     {

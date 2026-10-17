@@ -62,7 +62,7 @@ export const viewport = {
 // The menu's destinations, warmed when a visitor reaches for a link. Streamed
 // so the lookup never holds up the page.
 async function MenuIntent({ site }) {
-  const hrefs = menuHrefs(site.headerMenu, site.footerMenu);
+  const hrefs = menuHrefs(site.headerMenu, { ...site.footerMenu, cta: null });
   return <IntentImages images={await introImages(hrefs)} />;
 }
 
