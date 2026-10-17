@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { folderFor } from '@/lib/cloudinaryFolder';
 import {
   BUSY,
+  UNAVAILABLE,
   createMemberCheck,
   createRateLimit,
   ipOf,
@@ -63,6 +64,7 @@ export function createSignHandler({
     if (ipOverLimit(ipOf(request)))
       return json({ error: 'too many requests' }, 429);
     const user = await memberOf(request);
+    if (user === UNAVAILABLE) return json({ error: 'sanity unavailable' }, 502);
     if (!user) return json({ error: 'unauthorised' }, 401);
     if (user === BUSY || memberOverLimit(user))
       return json({ error: 'too many requests' }, 429);

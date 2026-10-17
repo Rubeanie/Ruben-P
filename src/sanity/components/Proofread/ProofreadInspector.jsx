@@ -47,14 +47,14 @@ async function wordingOf(items, token) {
   const fixes = [];
   const dismissals = [];
   for (const batch of batches(items)) {
-    const { status, data } = await askReview(token, {
+    const { status, data, down } = await askReview(token, {
       task: 'proofread',
       items: batch
     });
     if (status === 503)
       return { note: "AI wording suggestions aren't set up." };
     if (status !== 200)
-      return { fixes, dismissals, note: reviewProblem(status) };
+      return { fixes, dismissals, note: reviewProblem(status, down) };
     const batchDismissals = dismissalsOf(batch, data.dismissed);
     fixes.push(...data.fixes);
     dismissals.push(...batchDismissals);

@@ -16,10 +16,17 @@ import {
   seoChecks,
   seoReviewInput
 } from '../../seo/checks';
-import { askReview, reviewProblem, SIGNED_OUT } from '../../seo/review';
+import {
+  askReview,
+  reviewProblem,
+  SANITY_DOWN,
+  sanityDown,
+  SIGNED_OUT
+} from '../../seo/review';
 import { SeoPanel } from './SeoPanel';
 
 const LIVE_PROBLEMS = {
+  down: SANITY_DOWN,
   401: 'Sign out and back in to run the live check.',
   429: 'That is a lot of checks; try again in a few minutes.',
   500: 'Google rejected the PageSpeed key; check PAGESPEED_API_KEY and that the PageSpeed Insights API is enabled for it.',
@@ -120,13 +127,14 @@ function SeoFeedback({ doc, fields, onUse }) {
       signal: AbortSignal.timeout(60_000)
     }).catch(() => null);
     const result = res?.ok && (await res.json().catch(() => null));
+    const down = res && !res.ok && (await sanityDown(res));
     setLive(
       result
         ? { state: 'done', result }
         : {
             state: 'error',
             error:
-              LIVE_PROBLEMS[res?.status] ??
+              LIVE_PROBLEMS[down ? 'down' : res?.status] ??
               'Google could not check the page; try again in a moment.'
           }
     );
@@ -135,11 +143,14 @@ function SeoFeedback({ doc, fields, onUse }) {
   const suggest = async () => {
     setAi({ state: 'busy' });
     const input = seoReviewInput(doc, site);
-    const { status, data } = await askReview(token, { task: 'seo', ...input });
+    const { status, data, down } = await askReview(token, {
+      task: 'seo',
+      ...input
+    });
     if (status === 200) setAi({ state: 'done', result: data, read: input });
     else if (status === 503) setAi({ state: 'off' });
     else if (status === 401) setAi({ state: 'signedOut', notice: SIGNED_OUT });
-    else setAi({ state: 'error', error: reviewProblem(status) });
+    else setAi({ state: 'error', error: reviewProblem(status, down) });
   };
 
   return (

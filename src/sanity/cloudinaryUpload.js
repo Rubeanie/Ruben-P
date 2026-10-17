@@ -16,7 +16,11 @@ export async function uploadToCloudinary(blob, { path, scene, token }) {
   });
   if (!signing.ok)
     throw new Error(
-      signing.status === 401 ? SIGNED_OUT : 'The upload could not be signed.'
+      signing.status === 401
+        ? SIGNED_OUT
+        : signing.status === 502
+          ? 'Sanity is unavailable, so the upload could not be signed. Try again in a moment.'
+          : 'The upload could not be signed.'
     );
   const { cloudName, apiKey, params, signature } = await signing.json();
 

@@ -1,5 +1,10 @@
 import { expect, test } from 'bun:test';
-import { BUSY, createMemberCheck, createRateLimit } from './studioMember';
+import {
+  BUSY,
+  UNAVAILABLE,
+  createMemberCheck,
+  createRateLimit
+} from './studioMember';
 
 test('a full table of live keys drops the oldest instead of refusing newcomers', () => {
   const overLimit = createRateLimit({
@@ -35,4 +40,33 @@ test('too many checks in flight at once are refused', async () => {
   expect(await ask('one-more')).toBe(BUSY);
   release();
   expect(await Promise.all(waiting)).toEqual(Array(20).fill(null));
+});
+
+test('an outage is UNAVAILABLE, not a refusal, and is asked again', async () => {
+  let answer = new Response('down', { status: 503 });
+  const memberOf = createMemberCheck({ fetch: async () => answer });
+  const ask = () =>
+    memberOf(
+      new Request('http://localhost/', {
+        headers: { Authorization: 'Bearer t' }
+      })
+    );
+  expect(await ask()).toBe(UNAVAILABLE);
+  answer = Response.json({ id: 'u1', roles: [{ name: 'editor' }] });
+  expect(await ask()).toBe('u1');
+  answer = Response.json({ statusCode: 401 }, { status: 401 });
+  // The verified id is cached for a minute, so the refusal is not seen yet.
+  expect(await ask()).toBe('u1');
+});
+
+test('a failed request is UNAVAILABLE', async () => {
+  const memberOf = createMemberCheck({
+    fetch: async () => {
+      throw new Error('offline');
+    }
+  });
+  const request = new Request('http://localhost/', {
+    headers: { Authorization: 'Bearer t' }
+  });
+  expect(await memberOf(request)).toBe(UNAVAILABLE);
 });
