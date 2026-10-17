@@ -1,10 +1,5 @@
 {
   "files.exclude": {},
   "cmake.configureOnOpen": false,
-  "prettier.trailingComma": "none",
-  "prettier.singleQuote": true,
-  "prettier.semi": false,
-  "prettier.jsxSingleQuote": true,
-  "prettier.bracketSameLine": true,
   "prettier.prettierPath": "./node_modules/prettier"
 }
