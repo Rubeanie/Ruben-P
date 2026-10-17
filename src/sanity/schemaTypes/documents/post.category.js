@@ -33,6 +33,7 @@ export const postCategory = {
       name: 'color',
       type: 'color',
       options: { disableAlpha: true },
+      validation: (Rule) => Rule.required(),
       description:
         'Tints the category’s filter chip, its dot on post tiles and its capsule on the post page'
     }
