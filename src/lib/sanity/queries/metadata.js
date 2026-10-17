@@ -2,7 +2,6 @@ import groq from 'groq';
 import { cloudinaryStillQuery } from './fragments/cloudinary';
 
 const openGraphQuery = groq`
-  _type,
   siteName,
   description,
   title,
@@ -11,13 +10,11 @@ const openGraphQuery = groq`
 `;
 
 const twitterQuery = groq`
-  _type,
   site,
   handle
 `;
 
 const seoFieldsQuery = groq`
-  _type,
   metaTitle,
   nofollowAttributes,
   focusKeyphrase,
@@ -35,7 +32,6 @@ export const seoQuery = groq`seo{
 }`;
 
 export const metadataQuery = groq`metadata{
-  _type,
   "slug":slug.current,
   ${seoQuery}
 }`;

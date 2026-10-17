@@ -8,7 +8,7 @@ export const socialListQuery = groq`
     title,
     username,
     logo,
-    baseColor { hex, rgb { r, g, b, a } },
+    baseColor { hex },
     redirect->{ ${redirectLinkQuery} }
   }
 `;

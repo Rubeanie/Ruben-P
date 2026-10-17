@@ -2,12 +2,9 @@ import groq from 'groq';
 import { clipQuery } from './clip';
 
 export const cloudinaryQuery = groq`
-  public_id,
   secure_url,
   width,
   height,
-  format,
-  resource_type,
   "derived_url": derived[0].secure_url,
   // Set in the Media Library on someone else's picture.
   "credit": context.custom.credit

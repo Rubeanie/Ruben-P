@@ -21,8 +21,6 @@ export const linkQuery = groq`
   external,
   params,
   internal->{
-    _type,
-    title,
     metadata { "slug": slug.current }
   },
   redirect->{ ${redirectLinkQuery} }
