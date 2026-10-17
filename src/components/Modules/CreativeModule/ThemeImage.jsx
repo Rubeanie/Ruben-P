@@ -90,7 +90,7 @@ export default function ThemeImage({ label }) {
             {drop.error || (
               <>
                 <span className={styles.fine}>Or drop one here. </span>
-                Local only.
+                Your photo never leaves your device.
               </>
             )}
           </span>
