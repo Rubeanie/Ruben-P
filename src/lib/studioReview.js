@@ -431,6 +431,12 @@ export function createReviewHandler({
       // answer. Stops short of the route's own limit so the Studio hears why.
       signal: AbortSignal.any([request.signal, AbortSignal.timeout(55_000)])
     }).catch(() => null);
+    if (res && !res.ok)
+      console.error(
+        'OpenRouter answered',
+        res.status,
+        await res.text().catch(() => '')
+      );
     if (!res?.ok) return json({ error: 'model unavailable' }, 502);
 
     const data = await res.json().catch(() => null);

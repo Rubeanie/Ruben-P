@@ -13,6 +13,7 @@ const cachedThemeFromImage = unstable_cache(
       cache: 'no-store',
       headers: { Referer: `${baseUrl}/` }
     });
+    if (!res.ok) throw new Error(`CDN answered ${res.status}`);
     const buffer = Buffer.from(await res.arrayBuffer());
     const { Vibrant } = await import('node-vibrant/node');
     const palette = await Vibrant.from(buffer).quality(1).getPalette();

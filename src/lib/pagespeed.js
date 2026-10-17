@@ -76,6 +76,12 @@ export function createPageSpeedHandler({
       cache: 'no-store',
       signal: AbortSignal.any([request.signal, AbortSignal.timeout(50_000)])
     }).catch(() => null);
+    if (res && !res.ok)
+      console.error(
+        'PageSpeed answered',
+        res.status,
+        await res.text().catch(() => '')
+      );
     if (res?.status === 429) return json({ error: 'quota' }, 503);
     // Retrying never fixes a key Google turns away.
     if (res?.status === 400 || res?.status === 403)
