@@ -41,6 +41,7 @@ export const skill = {
       title: 'Brand colour',
       type: 'color',
       options: {
+        disableAlpha: true,
         colorList: [{ hex: DEFAULT_THEME_COLORS.primary }]
       },
       group: 'content'
@@ -50,6 +51,7 @@ export const skill = {
       title: 'Text colour',
       type: 'color',
       options: {
+        disableAlpha: true,
         colorList: [{ hex: '#121212' }]
       },
       group: 'options'

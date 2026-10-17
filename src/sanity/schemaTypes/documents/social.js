@@ -36,6 +36,7 @@ export const social = {
       title: 'Brand colour',
       type: 'color',
       options: {
+        disableAlpha: true,
         colorList: [{ hex: DEFAULT_THEME_COLORS.primary }]
       }
     },

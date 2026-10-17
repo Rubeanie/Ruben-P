@@ -81,6 +81,7 @@ export const threeJs = {
       name: 'lights',
       title: 'Ambient light',
       type: 'color',
+      options: { disableAlpha: true },
       description:
         'Optional ambient fill light (helps if the model looks dark).',
       group: 'content'
@@ -100,6 +101,7 @@ export const threeJs = {
     {
       name: 'background',
       type: 'color',
+      options: { disableAlpha: true },
       description: 'Background colour',
       group: 'options'
     },
