@@ -93,7 +93,9 @@ const contentPicks = (content) =>
       const id = stegaClean(block.autoplay)
         ? null
         : getYouTubeId(stegaClean(block.url));
-      return id && { kind: 'youtube', id };
+      return (
+        id && { kind: 'youtube', id, sizes: blockSizes(PROSE_SIZES, block) }
+      );
     })
     .filter(Boolean)
     .slice(0, PER_MODULE);

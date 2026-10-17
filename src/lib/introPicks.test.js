@@ -52,7 +52,11 @@ test('a hero contributes its photos, a video any block position', () => {
       sizes: '(max-width: 43.75rem) 100vw, 50vw',
       media: undefined
     },
-    { kind: 'youtube', id: 'dQw4w9WgXcQ' }
+    {
+      kind: 'youtube',
+      id: 'dQw4w9WgXcQ',
+      sizes: '(max-width: 43.75rem) 100vw, 65rem'
+    }
   ]);
   expect(picks([text('b', { ...video, autoplay: true })])).toEqual([]);
 });
