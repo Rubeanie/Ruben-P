@@ -4,7 +4,6 @@ import { createDataAttribute } from 'next-sanity';
 import { draftMode } from 'next/headers';
 import { announcementGate } from '@/lib/announcement';
 import { resolveLink } from '@/lib/processUrl';
-import DynamicValue from './RichText/DynamicValue';
 import AnnouncementBand from './AnnouncementBand';
 import AnnouncementSeparator from './AnnouncementSeparator';
 import styles from '@/styles/components/Announcement.module.scss';
@@ -20,8 +19,7 @@ const components = {
   marks: {
     dlig: span(styles.dlig),
     ss01: span(styles.ss01)
-  },
-  types: { dynamicValue: DynamicValue }
+  }
 };
 
 export default async function Announcement({ announcement, logo }) {

@@ -13,6 +13,7 @@ import {
 // links, and no marks that need a larger size to read.
 const bandBlock = {
   ...richBlock,
+  of: [],
   styles: richBlock.styles.filter(({ value }) => value === 'normal'),
   lists: [],
   marks: {
