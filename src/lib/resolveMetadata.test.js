@@ -17,8 +17,7 @@ const site = {
     },
     twitter: {
       handle: '@site',
-      site: '@publisher',
-      cardType: null
+      site: '@publisher'
     }
   }
 };
@@ -182,11 +181,9 @@ test('Twitter spells out what Next would copy from Open Graph', () => {
   });
 });
 
-test('a set card type ships as is, with the handle as creator', () => {
+test('the card is always the large one, with the handle as creator', () => {
   const m = resolveMetadata(
-    pageWith({
-      twitter: { cardType: 'summary_large_image', handle: '@me' }
-    }),
+    pageWith({ twitter: { cardType: 'summary', handle: '@me' } }),
     { seo: { ...site.seo, twitter: {} } }
   );
   expect(m.twitter.card).toBe('summary_large_image');
@@ -271,7 +268,7 @@ test('no Open Graph anywhere ships none, and Twitter takes the meta fields', () 
     title: 'Page title',
     description: 'D',
     images: [],
-    card: 'summary'
+    card: 'summary_large_image'
   });
 });
 

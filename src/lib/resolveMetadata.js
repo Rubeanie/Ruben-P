@@ -99,10 +99,8 @@ export function resolveMetadata(page, site) {
       images: openGraph?.images ?? [],
       creator: twitter?.handle,
       site: twitter?.site,
-      // Unset means the large card when there is an image; Next alone would ship summary.
-      card:
-        twitter?.cardType ||
-        (openGraph?.images?.length ? 'summary_large_image' : 'summary')
+      // The generated card is built for the large layout; Next alone would ship summary.
+      card: 'summary_large_image'
     },
     robots: {
       index: !nofollowAttributes,
