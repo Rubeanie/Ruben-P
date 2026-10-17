@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 
-const path = require('path');
 const { DISCORD_SEGMENT } = require('./src/lib/shareImage/discord.cjs');
 
 const nextConfig = {
@@ -30,9 +29,6 @@ const nextConfig = {
         search: ''
       }
     ]
-  },
-  sassOptions: {
-    includePaths: [path.join(__dirname, 'styles')]
   },
   async headers() {
     // Only same-origin framing: the Studio is embedded, so Presentation's preview is same-origin.
