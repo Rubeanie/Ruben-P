@@ -25,9 +25,7 @@ export const DEFAULT_THEME = {
   credit: {
     name: 'Paolo Celentano',
     href: 'https://www.instagram.com/paolo_celentano85/'
-  },
-  source: 'default',
-  status: 'ready'
+  }
 };
 
 // Colours arrive as hex already: the server normalises them (themeColors.js)
@@ -37,13 +35,7 @@ export function normalizeThemeDefinition(input) {
     return null;
   }
 
-  if (typeof input === 'string') {
-    return {
-      url: input,
-      colors: null,
-      source: 'override'
-    };
-  }
+  if (typeof input === 'string') return { url: input, colors: null };
 
   const url = input.url || input.image || null;
   const colors = input.colors || null;
@@ -283,17 +275,9 @@ export function portraitRendition(url) {
     return url;
   }
 
-  if (parsed.hostname === 'res.cloudinary.com') {
-    // The phone hero's cut, sized last like themeRendition.
-    return cloudinaryTransform(
-      portraitCrop(url),
-      'c_limit,h_1600,f_auto,q_auto'
-    );
-  } else {
-    return url;
-  }
-
-  return parsed.toString();
+  if (parsed.hostname !== 'res.cloudinary.com') return url;
+  // The phone hero's cut, sized last like themeRendition.
+  return cloudinaryTransform(portraitCrop(url), 'c_limit,h_1600,f_auto,q_auto');
 }
 
 export function loadThemeImage(url) {
@@ -316,15 +300,7 @@ export async function resolveThemeDefinition(theme) {
     return null;
   }
 
-  if (!normalizedTheme.url) {
-    return normalizedTheme.colors
-      ? {
-          ...normalizedTheme,
-          source: normalizedTheme.source || 'custom',
-          status: 'ready'
-        }
-      : null;
-  }
+  if (!normalizedTheme.url) return normalizedTheme;
 
   // Warm the rendition the stylesheet will pick, so the swap doesn't flash.
   const image = await loadThemeImage(
@@ -343,12 +319,7 @@ export async function resolveThemeDefinition(theme) {
     );
   }
 
-  return {
-    ...normalizedTheme,
-    colors,
-    source: normalizedTheme.source || 'cms',
-    status: 'ready'
-  };
+  return { ...normalizedTheme, colors };
 }
 
 // Read on the device from a decoded image, through the same derivation as the
