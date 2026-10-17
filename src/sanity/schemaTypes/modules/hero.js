@@ -1,6 +1,6 @@
 import { MdVrpano } from 'react-icons/md';
 import { getBlockText } from '@/sanity/utils';
-import { textBlock } from '../fragments/text-block';
+import { heroText } from '../fragments/text-block';
 import { scrollHintField } from '../fragments/fields/scroll-hint';
 import { uidField } from '../fragments/fields/uid';
 import { assetPreview } from '../../components/CloudinaryPreview';
@@ -22,7 +22,7 @@ export const hero = {
     },
     {
       name: 'content',
-      ...textBlock,
+      ...heroText,
       group: 'content'
     },
     {
