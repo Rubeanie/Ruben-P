@@ -35,7 +35,13 @@ export const imageBlock = {
       title: 'Alt text',
       type: 'string',
       description:
-        'What the image shows, read out by screen readers. Leave empty if it is only decoration.'
+        'What the image shows, read out by screen readers. Leave empty if it is only decoration.',
+      validation: (Rule) =>
+        Rule.custom((alt) =>
+          alt?.trim()
+            ? true
+            : 'Without alt text screen readers skip this image. Fine for decoration.'
+        ).warning()
     },
     ...blockLayoutFields({ fieldset: 'options' }),
     {
