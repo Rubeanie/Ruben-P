@@ -18,7 +18,7 @@ function chipCategories(posts, categories) {
 
 // Only the first page of tiles is on screen to be hovered. Streamed so the
 // lookup never holds up the list.
-async function PostIntent({ posts }) {
+export async function PostIntent({ posts }) {
   const hrefs = posts.slice(0, PAGE_SIZE).map((post) => stegaClean(post.slug));
   return <IntentImages images={await introImages(hrefs)} />;
 }
