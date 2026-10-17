@@ -1,17 +1,22 @@
 import groq from 'groq';
 import { cloudinaryImageQuery } from './fragments/cloudinary';
-import { heroImageQuery } from './fragments/hero-image';
 
-// The share card's photo candidates in order: the hand-set share image, the post cover, the hero.
+// The share card's photo candidates in order: the hand-set share image, then the post cover.
 export const sharePhotosQuery = groq`
   "sharePhotos": [
     metadata.seo.openGraph.image{ ${cloudinaryImageQuery} },
-    cover{ ${cloudinaryImageQuery} },
-    select(
-      modules[0]._type == 'hero' => modules[0].bgImage{ ${cloudinaryImageQuery} },
-      modules[0]._type in ['hero.saas', 'hero.split'] => modules[0].image{ ${cloudinaryImageQuery} }
-    )
+    cover{ ${cloudinaryImageQuery} }
   ]
+`;
+
+// The opening modules, whose hero is the last candidate (sharePhoto) and sets the card's theme.
+export const shareModulesQuery = groq`
+  "modules": modules[0...4]{
+    _type,
+    html{ code },
+    bgImage{ ${cloudinaryImageQuery} },
+    image{ ${cloudinaryImageQuery} }
+  }
 `;
 
 export const shareImagePageQuery = groq`*[
@@ -29,7 +34,7 @@ export const shareImagePageQuery = groq`*[
     metaDescription,
     openGraph{ title, description }
   },
-  "modules": modules[0...4]{ _type, html{ code }, ${heroImageQuery} },
+  ${shareModulesQuery},
   ${sharePhotosQuery}
 }`;
 
