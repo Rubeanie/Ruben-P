@@ -5,15 +5,7 @@ import { pageBlock } from '../fragments/page-block';
 import { metadata } from '../fragments/metadata';
 import { headingLinksField } from '../fragments/fields/heading-links';
 import { animateModulesField } from '../fragments/fields/animate-modules';
-
-// Module types that carry a heading of their own.
-const HEADED = new Set([
-  'hero',
-  'hero.saas',
-  'hero.split',
-  'hero.3d',
-  'richtext-module'
-]);
+import { headingsOf } from '../../seo/checks';
 
 export const pagePost = {
   name: 'page.post',
@@ -54,9 +46,9 @@ export const pagePost = {
       validation: (Rule) => [
         ...pageBlock.validation(Rule),
         Rule.custom((modules) =>
-          (modules ?? []).some((module) => HEADED.has(module._type))
+          headingsOf(modules).some((heading) => heading.level === 1)
             ? true
-            : 'A post needs one heading: add a hero or a rich text block with a heading'
+            : 'No Heading 1. Give the hero or the first rich text block one.'
         ).warning()
       ],
       group: 'content'
