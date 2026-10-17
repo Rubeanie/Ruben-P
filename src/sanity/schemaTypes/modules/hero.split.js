@@ -4,6 +4,7 @@ import { heroText } from '../fragments/text-block';
 import { scrollHintField } from '../fragments/fields/scroll-hint';
 import { uidField } from '../fragments/fields/uid';
 import { assetPreview } from '../../components/CloudinaryPreview';
+import { imageRequired } from '../objects/cloudinary-image';
 
 export const heroSplit = {
   name: 'hero.split',
@@ -36,6 +37,7 @@ export const heroSplit = {
     {
       name: 'image',
       type: 'cloudinaryImage',
+      validation: imageRequired,
       group: 'image'
     },
     {
