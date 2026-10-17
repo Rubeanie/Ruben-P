@@ -34,15 +34,32 @@ const suffixOf = (params) => {
   return /^[?#]/.test(clean ?? '') ? clean : '';
 };
 
-// Resolve a `link` GROQ fragment (internal page reference or external URL) to an href.
+// A redirect doc as a link target: an internal destination goes straight to
+// its page, anything else through the vanity source (never the external URL).
+export function resolveRedirect(redirect) {
+  const { source, destination } = redirect ?? {};
+  if (stegaClean(destination?.type) === 'internal') {
+    const href = resolveLink(destination);
+    if (href) return href;
+  }
+  // A pattern source (/old/:slug) is no URL.
+  const path = stegaClean(source);
+  return isInternalHref(path) && !path.includes(':') && isSafeHref(path)
+    ? path
+    : null;
+}
+
+// Resolve a `link` GROQ fragment (internal page reference, external URL or redirect) to an href.
 export function resolveLink(link) {
-  const { type, external, params, internal } = link ?? {};
+  const { type, external, params, internal, redirect } = link ?? {};
   const cleanType = stegaClean(type);
   // No safe path for a malformed or template-only slug.
   if (cleanType === 'internal')
     return isPagePath(slugOf(internal))
       ? processUrl(internal, { base: false, params })
       : null;
+  // The destination's own params apply; the vanity path would drop any added here.
+  if (cleanType === 'redirect') return resolveRedirect(redirect);
   if (cleanType === 'external' && external) {
     const url = stegaClean(external) + suffixOf(params);
     return isSafeHref(url) ? url : null;
@@ -58,5 +75,5 @@ export default function processUrl(page, { base = true, params } = {}) {
 }
 
 // A site path, not a protocol-relative URL, a hash anchor or another scheme.
-export const isInternalHref = (href) =>
-  href?.startsWith('/') && !href.startsWith('//');
+// Browsers read /\ as //, another host.
+export const isInternalHref = (href) => /^\/(?![/\\])/.test(href ?? '');

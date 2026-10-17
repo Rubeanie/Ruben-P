@@ -23,7 +23,8 @@ export const link = {
       options: {
         list: [
           { title: 'Internal', value: 'internal' },
-          { title: 'External', value: 'external' }
+          { title: 'External', value: 'external' },
+          { title: 'Redirect', value: 'redirect' }
         ]
       }
     },
@@ -41,6 +42,14 @@ export const link = {
       // Template pages (404, redirect) have no path to link to.
       options: { filter: 'string::startsWith(metadata.slug.current, "/")' },
       hidden: ({ parent }) => parent?.type !== 'internal'
+    },
+    {
+      name: 'redirect',
+      type: 'reference',
+      to: [{ type: 'redirect' }],
+      // A pattern source (/old/:slug) is no URL to link to.
+      options: { filter: 'count(string::split(source, ":")) == 1' },
+      hidden: ({ parent }) => parent?.type !== 'redirect'
     },
     {
       name: 'external',
@@ -80,7 +89,7 @@ export const link = {
           return `No heading #${fragment} on ${target.title}. The link opens the page at the top.`;
         }).warning()
       ],
-      hidden: ({ parent }) => !parent?.type
+      hidden: ({ parent }) => !parent?.type || parent.type === 'redirect'
     }
   ],
   preview: {
@@ -89,12 +98,15 @@ export const link = {
       title: 'internal.title',
       slug: 'internal.metadata.slug.current',
       external: 'external',
+      redirect: 'redirect.source',
       params: 'params'
     },
-    prepare({ label, title, slug, external, params }) {
+    prepare({ label, title, slug, external, redirect, params }) {
       return {
-        title: label || title,
-        subtitle: [external || slug, params].filter(Boolean).join('')
+        title: label || title || redirect,
+        subtitle: [external || slug || redirect, params]
+          .filter(Boolean)
+          .join('')
       };
     }
   }

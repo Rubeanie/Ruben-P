@@ -11,13 +11,20 @@ export const redirect = {
       description: 'Local path to redirect, e.g. /old-path or /old-path/:slug',
       type: 'string',
       validation: (Rule) =>
-        Rule.required().regex(/^\//, { name: 'local path starting with /' })
+        Rule.required().regex(/^\/(?![/\\])/, {
+          name: 'local path starting with /'
+        })
     },
     {
       name: 'destination',
       title: 'Redirect to',
       type: 'link',
-      validation: (Rule) => Rule.required()
+      validation: (Rule) =>
+        Rule.required().custom((link) =>
+          link?.type === 'redirect'
+            ? 'A redirect cannot point at another redirect.'
+            : true
+        )
     },
     {
       name: 'permanent',

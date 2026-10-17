@@ -19,8 +19,12 @@ export default async function SkillList({ skills, ...props }) {
       data-reveal-children='items'>
       {skills.map(({ _key, title, baseColor, url }, i) => {
         const href = resolveLink(url);
-        // Skill sites open in a new tab; an internal page stays in this one.
-        const external = stegaClean(url?.type) === 'external';
+        // Skill sites open in a new tab, through a redirect too; an internal page stays in this one.
+        const target =
+          stegaClean(url?.type) === 'redirect'
+            ? url.redirect?.destination
+            : url;
+        const external = stegaClean(target?.type) === 'external';
         const card = (
           <Skill
             heading={title}

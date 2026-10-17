@@ -1,4 +1,5 @@
 import { groq } from '../../fetch';
+import { redirectLinkQuery } from '../fragments/link';
 
 export const socialListQuery = groq`
   maxColumns,
@@ -8,9 +9,6 @@ export const socialListQuery = groq`
     username,
     logo,
     baseColor { hex, rgb { r, g, b, a } },
-    redirect->{
-      source,
-      destination{ type, params, internal->{ metadata { "slug": slug.current } } }
-    }
+    redirect->{ ${redirectLinkQuery} }
   }
 `;

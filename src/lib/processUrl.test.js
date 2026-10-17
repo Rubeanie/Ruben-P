@@ -1,6 +1,10 @@
 import { expect, test } from 'bun:test';
 import { baseUrl } from '@/lib/env';
-import processUrl, { isSafeHref, resolveLink } from './processUrl';
+import processUrl, {
+  isInternalHref,
+  isSafeHref,
+  resolveLink
+} from './processUrl';
 
 test('processUrl resolves the home page slug to /', () => {
   expect(
@@ -86,4 +90,59 @@ test('resolveLink appends only a query or fragment to an external link', () => {
   expect(
     resolveLink({ type: 'external', external: 'https://x.dev', params: 'b' })
   ).toBe('https://x.dev');
+});
+
+const redirectTo = (destination, source = '/github') => ({
+  type: 'redirect',
+  redirect: { source, destination }
+});
+
+test('resolveLink sends a redirect with an internal destination straight to the page', () => {
+  expect(
+    resolveLink(
+      redirectTo({
+        type: 'internal',
+        internal: { metadata: { slug: { current: '/about' } } }
+      })
+    )
+  ).toBe('/about');
+});
+
+test('resolveLink sends a redirect with an external destination through its source', () => {
+  expect(
+    resolveLink(
+      redirectTo({ type: 'external', external: 'https://github.com/x' })
+    )
+  ).toBe('/github');
+});
+
+test('resolveLink returns null for a missing redirect or a pattern source', () => {
+  expect(resolveLink({ type: 'redirect' })).toBe(null);
+  expect(resolveLink({ type: 'redirect', redirect: null })).toBe(null);
+  expect(resolveLink(redirectTo({ type: 'external' }, '/old/:slug'))).toBe(
+    null
+  );
+});
+
+test('resolveLink keeps only the destination params on a redirect link', () => {
+  const internal = { metadata: { slug: { current: '/about' } } };
+  expect(
+    resolveLink({
+      ...redirectTo({ type: 'internal', internal, params: '#team' }),
+      params: '#top'
+    })
+  ).toBe('/about#team');
+  expect(
+    resolveLink({
+      ...redirectTo({ type: 'external', external: 'https://github.com/x' }),
+      params: '#top'
+    })
+  ).toBe('/github');
+});
+
+test('a backslash after the slash is another host, not a site path', () => {
+  expect(isInternalHref('/\\evil.example')).toBe(false);
+  expect(resolveLink(redirectTo({ type: 'external' }, '/\\evil.example'))).toBe(
+    null
+  );
 });

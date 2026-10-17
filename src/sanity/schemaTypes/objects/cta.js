@@ -1,4 +1,5 @@
 import { MdAdsClick } from 'react-icons/md';
+import { link } from './link';
 
 export const cta = {
   name: 'cta',
@@ -25,17 +26,12 @@ export const cta = {
     }
   ],
   preview: {
-    select: {
-      label: 'link.label',
-      pageTitle: 'link.internal.title',
-      internal: 'link.internal.metadata.slug.current',
-      external: 'link.external'
-    },
-    prepare({ label, pageTitle, internal, external }) {
-      return {
-        title: label || pageTitle,
-        subtitle: external || internal
-      };
-    }
+    select: Object.fromEntries(
+      Object.entries(link.preview.select).map(([key, path]) => [
+        key,
+        `link.${path}`
+      ])
+    ),
+    prepare: link.preview.prepare
   }
 };

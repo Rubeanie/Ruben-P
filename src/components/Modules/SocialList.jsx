@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { stegaClean } from '@sanity/client/stega';
 import Social from '@/components/Social';
-import { resolveLink } from '@/lib/processUrl';
+import { resolveRedirect } from '@/lib/processUrl';
 import uid from '@/lib/uid';
 import { sanitizeLogo } from '@/lib/cachedLogo';
 import styles from '@/styles/components/Social.module.scss';
@@ -25,11 +25,7 @@ export default async function SocialList({
           style={{ '--max-cols': maxColumns }}
           data-reveal-children='items'>
           {items.map(({ _id, title, username, baseColor, redirect }, i) => {
-            // Internal destinations link direct; external ones go through the vanity path
-            // (the query leaves `external` out on purpose).
-            const href =
-              resolveLink(redirect?.destination) ??
-              stegaClean(redirect?.source);
+            const href = resolveRedirect(redirect);
             const card = (
               <Social
                 heading={title}
