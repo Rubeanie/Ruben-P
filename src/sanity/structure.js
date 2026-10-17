@@ -22,6 +22,7 @@ const structure = (S, context) =>
       S.divider(),
       group(S, 'Miscellaneous', [
         S.documentTypeListItem('author').title('Authors'),
+        S.documentTypeListItem('artist').title('Artists'),
         S.documentTypeListItem('skill').title('Skills'),
         S.documentTypeListItem('social').title('Socials'),
         S.documentTypeListItem('theme').title('Themes')

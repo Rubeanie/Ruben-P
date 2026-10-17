@@ -40,17 +40,17 @@ export const style = {
       validation: (Rule) => Rule.required()
     },
     {
-      name: 'author',
+      name: 'artist',
       type: 'reference',
-      to: [{ type: 'author' }],
+      to: [{ type: 'artist' }],
       description: 'Credited in the footer while this photo is the background',
       validation: (Rule) =>
-        Rule.required().warning('No author, so the footer shows no credit.')
+        Rule.required().warning('No artist, so the footer shows no credit.')
     },
     {
       name: 'source',
       type: 'url',
-      description: 'The photo’s own page, linked when the author has no link',
+      description: 'The photo’s own page, linked when the artist has no link',
       validation: (Rule) => Rule.uri()
     },
     {
@@ -114,14 +114,14 @@ export const style = {
   preview: {
     select: {
       publicId: 'image.public_id',
-      author: 'author.name',
+      artist: 'artist.name',
       url: 'image.secure_url'
     },
     // Photos keep the name they were downloaded with: photographer and photo id.
-    prepare({ publicId, author, url }) {
+    prepare({ publicId, artist, url }) {
       return {
         title: publicId?.split('/').pop() || 'Untitled style',
-        subtitle: author,
+        subtitle: artist,
         media: url !== undefined ? <CloudinaryPreview url={url} /> : null
       };
     }

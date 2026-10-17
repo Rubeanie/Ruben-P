@@ -53,14 +53,14 @@ export async function getThemes() {
 
   // the site theme and a hero photo derive their colours the same way
   return Promise.all(
-    site.themes.map(async ({ author, photoSource, ...row }) => {
-      // The footer credits whoever took the photo on screen, linked to their
+    site.themes.map(async ({ artist, photoSource, ...row }) => {
+      // The footer credits the artist behind the photo on screen, linked to their
       // own page when there is one, else to the photo's.
       const style = {
         ...row,
-        credit: author && {
-          name: author.name,
-          href: resolveLink(author.link) ?? photoSource
+        credit: artist && {
+          name: artist.name,
+          href: resolveLink(artist.link) ?? photoSource
         }
       };
       if (!style.image || themeHasAllColors(style)) {

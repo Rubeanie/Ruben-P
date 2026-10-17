@@ -9,7 +9,7 @@ export const themesQuery = groq`
       "secondaryColor": secondaryColor.hex,
       "backgroundColor": backgroundColor.hex,
       "textColor": textColor.hex,
-      "author": author->{ name, link { ${linkQuery} } },
+      "artist": artist->{ name, link { ${linkQuery} } },
       "photoSource": source
     }
   }.styles[])

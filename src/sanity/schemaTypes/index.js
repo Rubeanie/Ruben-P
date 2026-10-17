@@ -1,5 +1,6 @@
 // documents
 import { announcement } from './documents/announcement';
+import { artist } from './documents/artist';
 import { author } from './documents/author';
 import { navigation } from './documents/navigation';
 import { page } from './documents/page';
@@ -51,6 +52,7 @@ import { uid } from './objects/uid';
 export const schemaTypes = [
   // documents
   announcement,
+  artist,
   author,
   navigation,
   page,
