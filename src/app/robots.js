@@ -4,7 +4,6 @@ import { baseUrl } from '@/lib/env';
 
 export default async function robots() {
   const site = await fetchSanity(robotsQuery, {
-    tags: ['site'],
     perspective: 'published',
     stega: false
   });

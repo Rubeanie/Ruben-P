@@ -5,11 +5,10 @@ import { isIndexable } from '@/lib/slug';
 import { stillOf } from '@/lib/imageBlock';
 import { heroPhoto } from '@/lib/heroPhotos';
 
-// Every indexable CMS page and post (home included). The same tags as the
-// pages themselves, so a publish refreshes the sitemap too.
+// Every indexable CMS page and post (home included). Tagged like the pages
+// themselves, so a publish refreshes the sitemap too.
 export default async function sitemap() {
   const { pages, site } = await fetchSanity(sitemapQuery, {
-    tags: ['pages', 'posts', 'site'],
     perspective: 'published',
     stega: false
   });

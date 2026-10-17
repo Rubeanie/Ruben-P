@@ -1,6 +1,7 @@
 import { stegaClean } from '@sanity/client/stega';
 import groq from 'groq';
 import { isSafeHref, resolveLink } from './processUrl';
+import { SANITY_TAG } from './sanity/tag';
 
 // Match a request path against a redirect doc's source pattern
 // ('/old-path', '/old-path/:slug') and fill params into the destination.
@@ -42,7 +43,7 @@ export async function getRedirect(path) {
     {
       perspective: 'published',
       cache: 'force-cache',
-      next: { tags: ['redirects'] }
+      next: { tags: [SANITY_TAG] }
     }
   );
 

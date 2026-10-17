@@ -4,12 +4,11 @@ import { baseUrl } from '@/lib/env';
 import { isIndexable } from '@/lib/slug';
 import { rssXml } from '@/lib/feed';
 
-// Prerendered like the sitemap; a publish refreshes it through the posts and site tags.
+// Prerendered like the sitemap; a publish refreshes it through the Sanity tag.
 export const dynamic = 'force-static';
 
 export async function GET() {
   const { site, posts } = await fetchSanity(feedQuery, {
-    tags: ['posts', 'site'],
     perspective: 'published',
     stega: false
   });

@@ -27,7 +27,6 @@ async function get404() {
   return await fetchSanity(
     groq`*[_type == 'page' && metadata.slug.current == '404'][0]{
       modules[]{ ${modulesQuery} }
-    }`,
-    { tags: ['404'] }
+    }`
   );
 }

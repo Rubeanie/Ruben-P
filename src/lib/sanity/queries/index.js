@@ -26,8 +26,7 @@ export async function getSite() {
         // Site-wide only: the layout emits them, no page carries its own.
         "additionalMetaTags": seo.additionalMetaTags[]{ name, value }
 			}
-		`,
-    { tags: ['site'] }
+		`
   );
 
   // A fresh dataset has no Site Settings yet; the site still builds, bare, so
@@ -41,8 +40,7 @@ export async function getThemes() {
 			*[_type == 'site'][0]{
         ${themesQuery}
 			}
-		`,
-    { tags: ['theme'] }
+		`
   );
 
   if (

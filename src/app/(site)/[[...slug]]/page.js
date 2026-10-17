@@ -154,10 +154,7 @@ const loadPage = cache(async (path) => {
       "identity": *[_type == 'site'][0]{ ${identityQuery} },
       ${metadataQuery}
     }`,
-    {
-      params: { path },
-      tags: ['pages', 'posts', 'authors', 'site', 'socials']
-    }
+    { params: { path } }
   );
   // Chips follow Site settings, like the tiles; GROQ can't sort without dropping unlisted ones.
   return (

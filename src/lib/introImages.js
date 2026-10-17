@@ -87,8 +87,7 @@ async function destinations(hrefs) {
     .sort();
   if (!targets.length) return {};
   const pages = await fetchSanity(introImagesQuery, {
-    params: { paths: targets },
-    tags: ['pages', 'posts']
+    params: { paths: targets }
   });
   const byPath = new Map(
     (pages ?? []).map((page) => [stegaClean(page.path), page])
