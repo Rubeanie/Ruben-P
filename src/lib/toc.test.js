@@ -150,6 +150,12 @@ test('the Studio warns about an opening hero placed after another module', () =>
   ]);
 });
 
+test('a quiet custom HTML embed does not push the hero off the opening spot', () => {
+  const quiet = { _type: 'custom-html', html: { code: '<script></script>' } };
+  const hero = { _type: 'hero', _key: 'h' };
+  expect(misplacedHeroes([quiet, hero])).toEqual([]);
+});
+
 test('the Studio refuses a second table of contents on a page', () => {
   const [check] = pageBlock.validation({
     custom: (fn) => Object.assign(fn, { warning: () => fn })

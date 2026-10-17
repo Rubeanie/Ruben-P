@@ -1,10 +1,11 @@
 import { tocCount } from '@/lib/toc';
+import { drawnModules } from '@/lib/modules';
 
 // These heroes pin the first screen and scroll away from it, so they only work as the opening module.
 const OPENING_HEROES = new Set(['hero', 'hero.saas', 'hero.3d']);
 
 export const misplacedHeroes = (modules) =>
-  (modules ?? []).filter(
+  drawnModules(modules).filter(
     (module, index) => index > 0 && OPENING_HEROES.has(module._type)
   );
 
