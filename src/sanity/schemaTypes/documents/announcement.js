@@ -18,7 +18,7 @@ const bandBlock = {
   lists: [],
   marks: {
     decorators: richBlock.marks.decorators.filter(
-      ({ value }) => value !== 'imgHeading' && value !== 'code'
+      ({ value }) => !['imgHeading', 'code', 'dlig', 'ss01'].includes(value)
     ),
     annotations: []
   }
