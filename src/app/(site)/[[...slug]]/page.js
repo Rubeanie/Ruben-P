@@ -15,6 +15,7 @@ import { Modules } from '@/components/Modules';
 import { getSite } from '@/lib/sanity/queries';
 import { heroThemeImage, resolveMetadata } from '@/lib/resolveMetadata';
 import { getRedirect } from '@/lib/redirects';
+import { isInternalHref } from '@/lib/processUrl';
 import IntentImages from '@/components/IntentImages';
 import Redirecting from '@/components/Redirecting';
 import Reveal from '@/components/Reveal';
@@ -33,7 +34,7 @@ export default async function Page({ params }) {
       // No page: check the CMS redirects. Internal targets redirect natively,
       // external ones get the interstitial.
       const target = await getRedirect(path);
-      if (target?.url.startsWith('/'))
+      if (target && isInternalHref(target.url))
         (target.permanent ? permanentRedirect : redirect)(target.url);
       if (target) return <Redirecting url={target.url} label={target.label} />;
       // The redirect screen has no address of its own, so Presentation edits it here.
