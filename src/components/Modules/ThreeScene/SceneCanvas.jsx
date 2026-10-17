@@ -102,7 +102,9 @@ export default function SceneCanvas({
       </div>
       {!ready &&
         (timedOut ? (
-          <div className={styles.error}>
+          <div
+            className={styles.error}
+            role={loadOnClick ? 'alert' : undefined}>
             <p>The 3D model could not be loaded.</p>
           </div>
         ) : (
