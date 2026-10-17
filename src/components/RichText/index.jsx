@@ -24,11 +24,10 @@ const Link = ({ value, children }) => {
 };
 
 // Ids come from the page's anchors pass, so they are unique across modules.
-const heading = (Tag, size) => {
+const heading = (Tag) => {
   const Heading = ({ value, children }) => (
     <Tag
       id={value.anchor}
-      data-size={size}
       className={value.anchorLink ? styles.linked : undefined}>
       {children}
       {value.anchorLink && (
@@ -42,7 +41,6 @@ const heading = (Tag, size) => {
 const components = {
   block: {
     h1: heading('h1'),
-    h1Large: heading('h1', 'large'),
     h2: heading('h2'),
     h3: heading('h3')
   },

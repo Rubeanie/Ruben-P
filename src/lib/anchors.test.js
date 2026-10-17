@@ -29,7 +29,7 @@ test('headings are unique across the page, in document order', () => {
   const { headings } = anchors([
     rich(
       'a',
-      block('h1Large', 'Title'),
+      block('h1', 'Title'),
       block('h2', 'Overview'),
       block('normal', 'Copy')
     ),

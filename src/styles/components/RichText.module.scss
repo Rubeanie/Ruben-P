@@ -30,10 +30,6 @@ $copy-inset: 0.375rem;
     font-size: var.$h1-article-size;
   }
 
-  > h1[data-size='large'] {
-    font-size: var.$h1-size;
-  }
-
   > h1,
   > h2 {
     margin-block: var.$heading-gap var.$space-3;

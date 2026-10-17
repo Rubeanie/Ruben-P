@@ -6,7 +6,7 @@ import { baseUrl } from '@/lib/env';
 import { DESCRIPTION_LENGTH, TITLE_LENGTH } from '@/lib/studioReviewLimits';
 import { blockText } from './text';
 
-const LEVELS = { h1: 1, h1Large: 1, h2: 2, h3: 3 };
+const LEVELS = { h1: 1, h2: 2, h3: 3 };
 // Info items are hints, so they sit last and never count against the verdict.
 const RANK = { bad: 0, warn: 1, good: 2, info: 3 };
 // The page's verdict from its worst item.

@@ -3,7 +3,7 @@ import { cloudinaryStillQuery } from './fragments/cloudinary';
 import { sceneModelQuery, scenePosterQuery } from './fragments/scene';
 
 // Just enough of each linked page to tell what it shows first.
-const heading = groq`style in ['h1', 'h1Large', 'h2', 'h3']`;
+const heading = groq`style in ['h1', 'h2', 'h3']`;
 // Headings only: they decide which module an anchor belongs to.
 const headings = groq`content[_type == 'block' && ${heading}]{ _type, style, children[]{ text } }`;
 const picture = groq`image { ${cloudinaryStillQuery} }`;
