@@ -2,7 +2,7 @@ import { LuBox, LuGalleryHorizontal, LuImage, LuYoutube } from 'react-icons/lu';
 import { getYouTubeId } from '@/lib/youtube';
 import { assetPreview } from '../../components/CloudinaryPreview';
 import { imageBlock } from '../fragments/image-block';
-import { youTubeBlock } from '../fragments/youTubeBlock';
+import { youTubeBlock, youTubeUrl } from '../fragments/youTubeBlock';
 import { blockLayoutFields } from '../fragments/fields/block-layout';
 import { uidField } from '../fragments/fields/uid';
 import { threeJs } from './three';
@@ -75,12 +75,7 @@ const carouselYouTube = {
   icon: LuYoutube,
   fields: [
     reuse(youTubeBlock, 'url', {
-      validation: (Rule) => [
-        Rule.required(),
-        Rule.custom((url) =>
-          !url || getYouTubeId(url) ? true : 'Not a YouTube video link.'
-        )
-      ]
+      validation: (Rule) => youTubeUrl(Rule).required()
     }),
     caption,
     source
