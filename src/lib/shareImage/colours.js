@@ -1,5 +1,5 @@
 import Color from 'color';
-import { brandInk } from '@/components/Social';
+import { brandInk } from '@/lib/brandInk';
 import { heroPhoto } from '@/lib/heroPhotos';
 import { stillOf } from '@/lib/imageBlock';
 import { firstModule } from '@/lib/modules';
@@ -19,7 +19,7 @@ const evalColorMix = (css) => {
   return m ? mix(m[1], Number(m[2]), m[3]) : css;
 };
 
-// The site's social card colours: Social.js's brandInk, and Social.module.scss's plate
+// The site's social card colours: lib/brandInk, and Social.module.scss's plate
 // (color-mix brand 22% into #0a0e1a) and watermark ink (brand 70% into white). Keep them in step.
 export function socialColours(brand) {
   const ink = brandInk(brand);
