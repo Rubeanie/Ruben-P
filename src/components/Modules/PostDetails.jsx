@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { stegaClean } from '@sanity/client/stega';
 import { placeholderFor, resolveImage } from '@/lib/imageBlock';
 import { cloudinaryTransform } from '@/lib/imageLoader';
@@ -88,7 +89,7 @@ export default function PostDetails({
       {authors.length > 0 && (
         <div className={styles.discs}>
           {authors.map((author, i) => {
-            const Tag = author.href ? 'a' : 'span';
+            const Tag = author.href ? Link : 'span';
             return (
               <Tag
                 key={author._id}
@@ -112,12 +113,12 @@ export default function PostDetails({
               {authors.map((author, i) => (
                 <span key={author._id} className={styles.nameItem}>
                   {author.href ? (
-                    <a
+                    <Link
                       href={author.href}
                       className={`${styles.name} ${styles.nameLink}`}
                       data-author={i + 1}>
                       {author.name}
-                    </a>
+                    </Link>
                   ) : (
                     <span className={styles.name} data-author={i + 1}>
                       {author.name}
