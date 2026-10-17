@@ -1,6 +1,5 @@
 /* Sass Colors */
 $color-primary: var(--color-primary);
-$color-secondary: var(--color-secondary);
 $color-background: var(--color-background);
 $color-text: var(--color-text);
 // The default theme's (DEFAULT_THEME_COLORS in src/lib/themes.js).
@@ -96,8 +95,6 @@ $ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
 
 /* Safe Padding */
 $padding-safe: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
-$inverted-padding-safe: 0 calc(-1 * env(safe-area-inset-right)) 0
-  calc(-1 * env(safe-area-inset-left));
 
 /* Font Faces */
 $h-font: var(--font-mont), 'mont Fallback', sans-serif;
