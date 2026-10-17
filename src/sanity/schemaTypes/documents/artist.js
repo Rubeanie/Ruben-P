@@ -1,4 +1,5 @@
 import { MdBrush } from 'react-icons/md';
+import { uniqueName } from '../fragments/unique-name';
 
 export const artist = {
   name: 'artist',
@@ -9,7 +10,7 @@ export const artist = {
     {
       name: 'name',
       type: 'string',
-      validation: (Rule) => Rule.required()
+      validation: uniqueName
     },
     {
       name: 'link',

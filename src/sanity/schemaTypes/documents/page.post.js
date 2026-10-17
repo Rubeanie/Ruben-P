@@ -72,6 +72,7 @@ export const pagePost = {
       ],
       // Order comes from Site settings.
       options: { sortable: false },
+      validation: (Rule) => Rule.unique(),
       group: 'options'
     },
     {

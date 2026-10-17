@@ -28,7 +28,8 @@ export const site = {
       name: 'themes',
       type: 'array',
       group: 'general',
-      of: [{ name: 'theme', type: 'reference', to: [{ type: 'theme' }] }]
+      of: [{ name: 'theme', type: 'reference', to: [{ type: 'theme' }] }],
+      validation: (Rule) => Rule.unique()
     },
     {
       name: 'postCategories',
