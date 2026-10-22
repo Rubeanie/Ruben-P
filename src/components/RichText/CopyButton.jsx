@@ -25,7 +25,7 @@ export default function CopyButton({ code }) {
   return (
     <button
       type='button'
-      className={styles.copy}
+      className={styles.codeAction}
       aria-label='Copy code'
       data-copied={copied || undefined}
       onClick={copy}>

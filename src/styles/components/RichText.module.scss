@@ -3,6 +3,8 @@
 // The copy control sits inset equally on both axes inside the code header,
 // so its corner stays concentric with the block's corner.
 $copy-inset: 0.375rem;
+// How far a wrapped row's continuation hangs past the line's indent.
+$wrap-hang: 2ch;
 
 .richtext {
   max-width: var.$measure-wide;
@@ -504,6 +506,20 @@ $copy-inset: 0.375rem;
   }
 }
 
+// Long lines scroll until the reader asks for them to wrap.
+.code[data-wrap] code {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+// Continuation rows hang past the line's own indent, so a wrapped line cannot
+// pass for a new one at the same depth.
+.code[data-wrap] :global(.line) {
+  $hang: calc(var(--indent, 0ch) + #{$wrap-hang});
+  padding-inline-start: $hang;
+  text-indent: calc(-1 * #{$hang});
+}
+
 .codeNoGutter pre {
   padding-inline-start: var.$space-3;
 }
@@ -512,9 +528,16 @@ $copy-inset: 0.375rem;
   content: none;
 }
 
+// Spaced by the same inset that holds them off the header's edge.
+.codeActions {
+  display: flex;
+  flex: none;
+  gap: $copy-inset;
+}
+
 // A 2rem control inside the 2.75rem header; the hit area, not the box, reaches 44px.
 // Colour feedback only: scaling a 2rem control resamples the glyph and reads as a wobble.
-.copy {
+.codeAction {
   position: relative;
   display: inline-grid;
   place-items: center;
@@ -540,6 +563,17 @@ $copy-inset: 0.375rem;
     inset: -$copy-inset;
   }
 
+  // Side by side, the gap belongs to the right-hand hit area and the left one
+  // reaches as far into the header instead, so both keep 44px.
+  &:has(+ .codeAction:not([hidden]))::before {
+    inset-inline: calc(#{$copy-inset} * -2) 0;
+  }
+
+  // The display above would otherwise beat the attribute.
+  &[hidden] {
+    display: none;
+  }
+
   @media (hover: hover) and (pointer: fine) {
     &:hover {
       opacity: 1;
@@ -555,6 +589,25 @@ $copy-inset: 0.375rem;
     opacity: 1;
     color: var.$color-primary;
   }
+
+  // A held state reads as a filled tile; the primary colour stays the copy's
+  // passing confirmation.
+  &[aria-pressed='true'] {
+    opacity: 1;
+    background-color: var.$chip-lit-solid;
+  }
+
+  // The wrap control turns up after hydration, once a line is found to overflow.
+  &[aria-pressed] {
+    @starting-style {
+      opacity: 0;
+    }
+  }
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
 }
 
 .copyIcon {
@@ -562,8 +615,6 @@ $copy-inset: 0.375rem;
 
   svg {
     grid-area: 1 / 1;
-    width: 1rem;
-    height: 1rem;
     transition:
       opacity 0.16s ease,
       scale 0.16s var.$ease-out;
@@ -574,7 +625,7 @@ $copy-inset: 0.375rem;
     scale: 0.8;
   }
 
-  .copy[data-copied] & {
+  .codeAction[data-copied] & {
     svg:first-child {
       opacity: 0;
       scale: 0.8;
@@ -596,8 +647,8 @@ $copy-inset: 0.375rem;
   // alone but neither icon jumps.
   .copyIcon svg,
   .copyIcon svg:last-child,
-  .copy[data-copied] .copyIcon svg:first-child,
-  .copy[data-copied] .copyIcon svg:last-child {
+  .codeAction[data-copied] .copyIcon svg:first-child,
+  .codeAction[data-copied] .copyIcon svg:last-child {
     scale: 1;
   }
 }

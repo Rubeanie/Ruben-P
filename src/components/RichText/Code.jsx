@@ -1,6 +1,7 @@
 import { codeToHtml } from 'shiki';
 import { stegaClean } from '@sanity/client/stega';
 import CopyButton from './CopyButton';
+import WrapButton from './WrapButton';
 import styles from '@/styles/components/RichText.module.scss';
 
 // Shiki inlines its theme background on <pre>; the plate under it is ours.
@@ -28,13 +29,27 @@ const dropBackground = {
   }
 };
 
+// Each line carries its own indent, so a wrapped row hangs past it the way an
+// editor's does (tabs stop every two columns, as tab-size does).
+const indentLines = (rows) => ({
+  line(node, line) {
+    const lead = rows[line - 1].match(/^[ \t]*/)[0];
+    const indent = [...lead].reduce(
+      (column, char) =>
+        char === '\t' ? column + 2 - (column % 2) : column + 1,
+      0
+    );
+    if (indent) node.properties.style = `--indent:${indent}ch`;
+  }
+});
+
 // Shiki knows these under other names.
 const alias = { golang: 'go', mysql: 'sql', batchfile: 'bat' };
 
 async function highlight(code, lang) {
   const options = {
     theme: 'github-dark-high-contrast',
-    transformers: [dropBackground]
+    transformers: [dropBackground, indentLines(code.split('\n'))]
   };
   try {
     return await codeToHtml(code, { ...options, lang: alias[lang] ?? lang });
@@ -74,7 +89,10 @@ export default async function Code({ value, sanity }) {
         ) : (
           <span className={styles.codeLang}>{lang}</span>
         )}
-        <CopyButton code={code} />
+        <div className={styles.codeActions}>
+          <WrapButton />
+          <CopyButton code={code} />
+        </div>
       </div>
       {/* Shiki escapes the source it highlights, so its output is trusted. */}
       <div
