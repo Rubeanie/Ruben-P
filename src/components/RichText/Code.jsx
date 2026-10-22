@@ -43,13 +43,24 @@ const indentLines = (rows) => ({
   }
 });
 
+// The Studio stores the lines picked in the editor's gutter, counted from 1 like Shiki's.
+const markLines = (picked) => ({
+  line(node, line) {
+    if (picked.has(line)) this.addClassToHast(node, 'highlighted');
+  }
+});
+
 // Shiki knows these under other names.
 const alias = { golang: 'go', mysql: 'sql', batchfile: 'bat' };
 
-async function highlight(code, lang) {
+async function highlight(code, lang, picked) {
   const options = {
     theme: 'github-dark-high-contrast',
-    transformers: [dropBackground, indentLines(code.split('\n'))]
+    transformers: [
+      dropBackground,
+      indentLines(code.split('\n')),
+      markLines(picked)
+    ]
   };
   try {
     return await codeToHtml(code, { ...options, lang: alias[lang] ?? lang });
@@ -63,22 +74,34 @@ export default async function Code({ value, sanity }) {
   if (!code) return null;
 
   const lang = stegaClean(value.language) || 'text';
-  const html = await highlight(code, lang);
+  const html = await highlight(
+    code,
+    lang,
+    new Set(value.highlightedLines ?? [])
+  );
 
-  const filename = stegaClean(value.filename) || '';
+  // An excerpt names where it starts the way an editor does, path/to/file.js:42;
+  // the gutter shows the line, so the header drops it.
+  const [, filename = '', from] =
+    (stegaClean(value.filename) || '').trim().match(/^(.*?)(?::(\d+))?$/) ?? [];
+  const start = Number(from) || 1;
   const cut = filename.lastIndexOf('/');
   const dir = cut > -1 ? filename.slice(0, cut + 1) : '';
   const base = cut > -1 ? filename.slice(cut + 1) : filename;
 
-  // Short snippets read as noise with a gutter beside them.
+  // Short snippets read as noise with a gutter beside them, unless they are
+  // an excerpt and the numbers say where from.
   const lines = code.split('\n').length;
-  const noGutter = lines < 4;
+  const noGutter = lines < 4 && start === 1;
 
   return (
     <div
       className={`${styles.code}${noGutter ? ` ${styles.codeNoGutter}` : ''}`}
       // The gutter grows with the widest line number.
-      style={{ '--gutter': `${Math.max(2, String(lines).length)}ch` }}
+      style={{
+        '--gutter': `${Math.max(2, String(start + lines - 1).length)}ch`,
+        '--line-from': start - 1
+      }}
       {...(sanity && { 'data-sanity': sanity })}>
       <div className={styles.codeHeader}>
         {filename ? (

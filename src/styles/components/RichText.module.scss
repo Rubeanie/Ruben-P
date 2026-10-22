@@ -3,6 +3,8 @@
 // The copy control sits inset equally on both axes inside the code header,
 // so its corner stays concentric with the block's corner.
 $copy-inset: 0.375rem;
+// How far a code row holds its text in from the row's edges.
+$line-inset: 0.75ch;
 // How far a wrapped row's continuation hangs past the line's indent.
 $wrap-hang: 2ch;
 
@@ -461,8 +463,9 @@ $wrap-hang: 2ch;
     margin: 0;
     // 14px padding and type, matching shadcn's block; the size is fixed so a
     // 19px body cannot scale the code with it.
-    padding: 0.875rem var.$space-3 0.875rem
-      calc(var.$space-3 + var(--gutter) + 1.5ch);
+    // The rows carry part of the inline padding (see .line).
+    padding: 0.875rem calc(var.$space-3 - $line-inset) 0.875rem
+      calc(var.$space-3 + var(--gutter) + 1.5ch - $line-inset);
     // The numbers hang off the pre, not the lines: the code below scrolls on
     // its own and they stay put with no mask over the glass.
     position: relative;
@@ -470,11 +473,14 @@ $wrap-hang: 2ch;
     font-size: 0.875rem;
     line-height: 1.55;
     tab-size: 2;
-    counter-reset: line;
+    // An excerpt counts on from the line it starts at.
+    counter-reset: line var(--line-from, 0);
   }
 
+  // A grid, so every row is as wide as the longest and a highlight runs the
+  // whole scrolled width, not just its own line's.
   code {
-    display: block;
+    display: grid;
     overflow-x: auto;
     // The UA gives code its own monospace, which would win over the face above.
     font-family: inherit;
@@ -489,8 +495,11 @@ $wrap-hang: 2ch;
   }
 }
 
+// Rows hold their text a little in from their edges, so a highlight has air
+// before the first character.
 .codeBody :global(.line) {
   display: block;
+  padding-inline: $line-inset;
   counter-increment: line;
 
   // Positioned against the pre, so the scroller cannot clip or move it; top stays
@@ -506,6 +515,17 @@ $wrap-hang: 2ch;
   }
 }
 
+// Lines picked in the Studio.
+.codeBody :global(.line.highlighted) {
+  background: var.$press-tint;
+  box-shadow: inset 2px 0 0 var.$color-primary;
+
+  &::before {
+    opacity: 1;
+    color: var.$color-primary;
+  }
+}
+
 // Long lines scroll until the reader asks for them to wrap.
 .code[data-wrap] code {
   white-space: pre-wrap;
@@ -516,12 +536,12 @@ $wrap-hang: 2ch;
 // pass for a new one at the same depth.
 .code[data-wrap] :global(.line) {
   $hang: calc(var(--indent, 0ch) + #{$wrap-hang});
-  padding-inline-start: $hang;
+  padding-inline-start: calc(#{$line-inset} + #{$hang});
   text-indent: calc(-1 * #{$hang});
 }
 
 .codeNoGutter pre {
-  padding-inline-start: var.$space-3;
+  padding-inline-start: calc(var.$space-3 - $line-inset);
 }
 
 .codeNoGutter :global(.line)::before {

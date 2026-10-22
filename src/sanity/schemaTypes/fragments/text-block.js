@@ -2,6 +2,7 @@ import { MdOutlineImage } from 'react-icons/md';
 import { imageBlock } from './image-block';
 import { youTubeBlock } from './youTubeBlock';
 import { otDecorators } from './ot-decorators';
+import { CodeHintInput } from '../../components/CodeHintInput';
 
 // Styled in styles/sanity.scss so the photo URL lives in one place with the site's.
 const ImageDecorator = (props) => (
@@ -100,7 +101,8 @@ export const textBlock = {
       type: 'code',
       options: {
         withFilename: true
-      }
+      },
+      components: { input: CodeHintInput }
     }
   ]
 };
