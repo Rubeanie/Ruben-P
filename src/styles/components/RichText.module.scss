@@ -459,7 +459,8 @@ $copy-inset: 0.375rem;
     margin: 0;
     // 14px padding and type, matching shadcn's block; the size is fixed so a
     // 19px body cannot scale the code with it.
-    padding: 0.875rem var.$space-3 0.875rem calc(var.$space-3 + 3.5ch);
+    padding: 0.875rem var.$space-3 0.875rem
+      calc(var.$space-3 + var(--gutter) + 1.5ch);
     // The numbers hang off the pre, not the lines: the code below scrolls on
     // its own and they stay put with no mask over the glass.
     position: relative;
@@ -496,7 +497,7 @@ $copy-inset: 0.375rem;
     content: counter(line);
     position: absolute;
     left: var.$space-3;
-    width: 2ch;
+    width: var(--gutter);
     text-align: end;
     opacity: 0.7;
     user-select: none;

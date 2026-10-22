@@ -56,11 +56,14 @@ export default async function Code({ value, sanity }) {
   const base = cut > -1 ? filename.slice(cut + 1) : filename;
 
   // Short snippets read as noise with a gutter beside them.
-  const noGutter = code.split('\n').length < 4;
+  const lines = code.split('\n').length;
+  const noGutter = lines < 4;
 
   return (
     <div
       className={`${styles.code}${noGutter ? ` ${styles.codeNoGutter}` : ''}`}
+      // The gutter grows with the widest line number.
+      style={{ '--gutter': `${Math.max(2, String(lines).length)}ch` }}
       {...(sanity && { 'data-sanity': sanity })}>
       <div className={styles.codeHeader}>
         {filename ? (
