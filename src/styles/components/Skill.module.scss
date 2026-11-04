@@ -38,9 +38,7 @@ $column: 11.25rem;
   border-radius: var.$common-border-radius;
   background: color-mix(in srgb, var(--brand) 14%, var.$color-plate-dark);
   // hairline ring, brighter along the top edge
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.14),
-    var.$hairline;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), var.$hairline;
   color: var.$color-on-dark;
   transition: transform 0.12s var.$ease-out;
 }

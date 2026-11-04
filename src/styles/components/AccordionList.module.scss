@@ -98,9 +98,7 @@ $hairline: color-mix(in srgb, #fff 15%, transparent);
   width: 1.5rem;
   height: 1.5rem;
   opacity: var.$muted;
-  transition:
-    rotate 0.2s var.$ease-out,
-    opacity 0.15s ease;
+  transition: rotate 0.2s var.$ease-out, opacity 0.15s ease;
 }
 
 .item[open] > .summary .chevron {
@@ -181,9 +179,7 @@ $hairline: color-mix(in srgb, #fff 15%, transparent);
     opacity: 0;
     // content-visibility must stay paired with the fade, or closing hides
     // the content before it can fade out.
-    transition:
-      opacity 0.15s ease,
-      content-visibility 0.15s allow-discrete;
+    transition: opacity 0.15s ease, content-visibility 0.15s allow-discrete;
   }
 
   .item[open]::details-content {
@@ -224,9 +220,7 @@ $hairline: color-mix(in srgb, #fff 15%, transparent);
 
   @media (prefers-reduced-motion: reduce) {
     .item::details-content {
-      transition:
-        opacity 0.15s ease,
-        visibility 0.15s;
+      transition: opacity 0.15s ease, visibility 0.15s;
     }
   }
 }

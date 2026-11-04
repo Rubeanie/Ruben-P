@@ -96,7 +96,7 @@ export default async function snapshotScene({ aspectRatio, ...scene }) {
 
     const start = three().clock.elapsedTime;
     let pose = '';
-    for (let still = 0; still < STILL_FRAMES;) {
+    for (let still = 0; still < STILL_FRAMES; ) {
       if (Date.now() > deadline) throw failed;
       await frame();
       const next = three().camera.matrixWorld.elements.join();

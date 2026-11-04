@@ -44,8 +44,8 @@ $p-font: 'error-figtree', sans-serif;
     position: fixed;
     inset: 0 0 auto;
     height: 100lvh;
-    background: var.$color-background url(var.$image-background-url) center /
-      cover no-repeat;
+    background: var.$color-background url(var.$image-background-url)
+      center / cover no-repeat;
     opacity: 0.35;
     z-index: -1;
   }

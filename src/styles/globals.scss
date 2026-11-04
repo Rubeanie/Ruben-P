@@ -219,7 +219,7 @@ body {
   // Lining figures everywhere; the fonts' old-style sets stay off.
   font-variant-numeric: lining-nums;
 
-  @media (max-aspect-ratio: 3/4) {
+  @media (max-aspect-ratio: 3 / 4) {
     --image-background-fit: var(
       --image-background-portrait,
       var(--image-background)
@@ -234,7 +234,7 @@ body {
       var(--image-background)
     );
 
-    @media (max-aspect-ratio: 3/4) {
+    @media (max-aspect-ratio: 3 / 4) {
       --image-background-fit: var(
         --image-background-still,
         var(--image-background-portrait, var(--image-background))

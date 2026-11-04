@@ -61,7 +61,7 @@ export default function findCounter(geometry, [gx, gy]) {
     [-1, 1],
     [-1, -1]
   ];
-  for (let step = 0.01; step > 1e-5;) {
+  for (let step = 0.01; step > 1e-5; ) {
     let moved = false;
     for (const [dx, dy] of around) {
       const x = best.x + dx * step;

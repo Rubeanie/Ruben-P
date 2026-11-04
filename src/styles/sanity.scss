@@ -77,7 +77,8 @@ $ai-pink: #d96570;
 $proofread-ai: $ai-blue, $ai-purple, $ai-pink;
 
 @function ai-tint($blue, $purple, $pink) {
-  @return color.change($ai-blue, $alpha: $blue),
+  @return
+    color.change($ai-blue, $alpha: $blue),
     color.change($ai-purple, $alpha: $purple),
     color.change($ai-pink, $alpha: $pink);
 }

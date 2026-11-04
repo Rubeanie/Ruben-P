@@ -33,9 +33,7 @@ $row-radius: calc(#{var.$common-border-radius} - #{var.$space-2});
     flex: none;
     inline-size: var.$space-3;
     block-size: var.$space-3;
-    transition:
-      rotate 0.2s var.$ease-out,
-      color 0.15s ease;
+    transition: rotate 0.2s var.$ease-out, color 0.15s ease;
   }
 }
 
@@ -76,9 +74,7 @@ $row-radius: calc(#{var.$common-border-radius} - #{var.$space-2});
       transparent
     );
     text-decoration: none;
-    transition:
-      background-color 0.2s var.$ease-out,
-      color 0.2s var.$ease-out;
+    transition: background-color 0.2s var.$ease-out, color 0.2s var.$ease-out;
 
     &:active {
       background-color: var.$press-tint;
@@ -140,7 +136,8 @@ $rail-gap: var.$space-4;
 $rail-min: 10rem;
 $rail-max: 16rem;
 // The prose column, both gutters and the narrowest rail with its gap on each side.
-$rail-from: var.$measure + 2 * var.$inline-pad-max + 2 * ($rail-min + $rail-gap);
+$rail-from: var.$measure + 2 * var.$inline-pad-max +
+  2 * ($rail-min + $rail-gap);
 $track-pad: 0.875rem;
 
 .margin {

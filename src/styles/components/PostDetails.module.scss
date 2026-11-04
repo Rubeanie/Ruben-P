@@ -87,9 +87,7 @@ $cut-left: calc(#{$overlap} - #{$avatar-size} / 2);
   @include var.touch-target;
   color: var.$color-text;
   margin-block: calc(-1 * #{$name-reach});
-  transition:
-    opacity 0.15s var.$ease-out,
-    text-decoration-color 0.15s ease;
+  transition: opacity 0.15s var.$ease-out, text-decoration-color 0.15s ease;
 }
 
 .when {

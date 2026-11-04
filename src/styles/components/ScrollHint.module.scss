@@ -9,10 +9,8 @@ $loops: calc(var(--loop-wait, var(--hint-delay)) + 500ms);
   position: absolute;
   z-index: 2;
   top: calc(
-    min(100%, 100svh - var(--announce-height)) - max(
-        24px,
-        env(safe-area-inset-bottom) + 16px
-      )
+    min(100%, 100svh - var(--announce-height)) -
+      max(24px, env(safe-area-inset-bottom) + 16px)
   );
   left: 50%;
   display: flex;

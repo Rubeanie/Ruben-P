@@ -38,9 +38,7 @@ $menu-button-height: 3.125rem;
   height: 0;
   padding: var.$nav-float-gap var.$nav-float-gap 0; // floats the pill off the edges
   margin-block-end: -(var.$nav-float-gap);
-  transition:
-    padding 0.3s var.$ease-out,
-    margin 0.3s var.$ease-out;
+  transition: padding 0.3s var.$ease-out, margin 0.3s var.$ease-out;
 
   .container {
     display: flex;
@@ -143,9 +141,7 @@ $menu-button-height: 3.125rem;
         white-space: nowrap;
         // for the focus ring: concentric at the link's own line height
         border-radius: var.concentric(var.$p2-size * var.$lh-body);
-        transition:
-          opacity 0.15s ease,
-          transform 0.12s var.$ease-out;
+        transition: opacity 0.15s ease, transform 0.12s var.$ease-out;
 
         // the logo row's height, so it sits the bar's inset off every edge
         &.cta {
@@ -272,9 +268,7 @@ $menu-button-height: 3.125rem;
         border-radius: 9em;
         background: var.$color-primary;
         // closing: uncross first, then spread; plain ease-out, $ease-out snaps each short phase
-        transition:
-          translate 0.15s ease-out 0.15s,
-          rotate 0.15s ease-out;
+        transition: translate 0.15s ease-out 0.15s, rotate 0.15s ease-out;
       }
 
       &::before {
@@ -319,9 +313,7 @@ $menu-button-height: 3.125rem;
   padding: 0.45em 1.1em;
   border-radius: var.$button-radius;
   @include var.candy;
-  transition:
-    transform 0.12s var.$ease-out,
-    --candy-lift 0.2s var.$ease-out;
+  transition: transform 0.12s var.$ease-out, --candy-lift 0.2s var.$ease-out;
 
   &:active {
     transform: scale(0.97);
@@ -399,7 +391,8 @@ html[data-nav-dropdown='true'] {
         // on share the fifth row's delay, so a longer CMS menu stays brief.
         transition-delay:
           calc(40ms + min(var(--i), 4) * 50ms),
-          calc(40ms + min(var(--i), 4) * 50ms), 0s;
+          calc(40ms + min(var(--i), 4) * 50ms),
+          0s;
 
         &:active {
           scale: 0.97;
