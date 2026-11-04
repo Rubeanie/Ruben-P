@@ -26,6 +26,7 @@ export default async function SkillList({ skills, ...props }) {
             : url;
         const external = stegaClean(target?.type) === 'external';
         const card = (
+          // biome-ignore lint/correctness/useJsxKeyInIterable: the wrapper returned below carries the key.
           <Skill
             heading={title}
             logo={

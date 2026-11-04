@@ -62,7 +62,7 @@ export default function ClipVideo({
   if (refused) {
     const shown = matchMedia(PHONE).matches ? PHONE_CLIP_WIDTH : width;
     return (
-      // eslint-disable-next-line @next/next/no-img-element -- a Cloudinary animated WebP, already sized
+      // biome-ignore lint/performance/noImgElement: a Cloudinary animated WebP, already sized
       <img
         className={className}
         style={style}

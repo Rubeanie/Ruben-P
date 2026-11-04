@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useEffectEvent, useRef, useState } from 'react';
 import { Stack, Text } from '@sanity/ui';
 import { set, unset } from 'sanity';
 import { resolveImage } from '@/lib/imageBlock';
@@ -37,12 +37,12 @@ export function CloudinaryImageInput(props) {
   // What was in the form when it opened, which is already built or never will be.
   const warmed = useRef(still);
   const pending = useRef(null);
-  const flush = () => {
+  const flush = useEffectEvent(() => {
     if (!pending.current) return;
     warmed.current = pending.current;
     warm([pending.current]);
     pending.current = null;
-  };
+  });
   useEffect(() => {
     pending.current = null;
     if (readOnly || still === warmed.current) return;
@@ -60,6 +60,7 @@ export function CloudinaryImageInput(props) {
     };
   }, []);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: value and onChange change on every edit; the key and what's stored say what matters.
   useEffect(() => {
     if (readOnly) return;
     if (!key) {
@@ -95,8 +96,6 @@ export function CloudinaryImageInput(props) {
       live = false;
       clearTimeout(timer);
     };
-    // value and onChange change on every edit; the key and what's stored say what matters.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key, readOnly, value?.derivedFrom, complete]);
 
   return (

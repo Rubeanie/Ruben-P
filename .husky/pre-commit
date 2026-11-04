@@ -1,3 +1,2 @@
-# Format staged files with Prettier (config in .lintstagedrc).
-# NOTE: still on Prettier instead of Biome because Biome can't format SCSS yet
+# Format staged files with Biome (config in .lintstagedrc and biome.json).
 bunx lint-staged

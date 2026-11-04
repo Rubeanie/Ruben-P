@@ -39,6 +39,7 @@ export function useSpy(entries, { block, nav, track, mark }) {
   const [active, setActive] = useState(null);
   const [shown, setShown] = useState(false);
   const key = structureKey(entries);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: re-runs only when the outline's structure changes.
   useEffect(() => {
     const ids = entries.map((entry) => entry.id);
     const els = ids.map((id) => document.getElementById(id));
@@ -76,6 +77,6 @@ export function useSpy(entries, { block, nav, track, mark }) {
     };
     const sections = trackEl.querySelectorAll('[data-sub]');
     return follow(frame, () => (cache = null), [trackEl, ...sections]);
-  }, [key]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [key]);
   return { active, shown };
 }

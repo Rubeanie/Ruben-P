@@ -221,9 +221,7 @@ $caption-min: 7.5rem;
   opacity: 0;
   visibility: hidden;
   // The old line clears before the new one arrives.
-  transition:
-    opacity 0.12s ease-out,
-    visibility 0s 0.12s;
+  transition: opacity 0.12s ease-out, visibility 0s 0.12s;
 
   @supports not (text-box: trim-start cap alphabetic) {
     margin-block-start: calc(-1 * #{$half-leading});
@@ -348,16 +346,16 @@ $caption-min: 7.5rem;
       position: relative;
       // Mirrors the pill's width.
       --pill-width: calc(
-        #{$plate-inset * 2 + $plate-inset * 2 + $slim-inline * 2 +
-          $dot-active} + (var(--count) - 1) * #{$dot + $narrow-dot-gap}
+        #{$plate-inset * 2 + $plate-inset * 2 + $slim-inline * 2 + $dot-active}
+          + (var(--count) - 1) * #{$dot + $narrow-dot-gap}
       );
       // 1 when crowded, else 0.
       --crowded: max(
         0,
         sign(
-          #{$caption-min + var.$space-3} + var(--pill-width) - 100cqi *
-            (1 - var(--room))
-        )
+            #{$caption-min + var.$space-3} + var(--pill-width) - 100cqi *
+              (1 - var(--room))
+          )
       );
       // How far the pill rises above the caption so it centres on the first two
       // lines; the caption stays where it sits on wider bars. In caption cap units.
@@ -369,8 +367,8 @@ $caption-min: 7.5rem;
     .captions ~ .controls {
       position: absolute;
       inset-block-start: calc(
-        var(--crowded) * (100% - #{$slim-plate}) - (1 - var(--crowded)) *
-          var(--lift)
+        var(--crowded) * (100% - #{$slim-plate}) -
+          (1 - var(--crowded)) * var(--lift)
       );
       // Sizes cap like the caption, for --lift.
       font-size: var.$p5-size;

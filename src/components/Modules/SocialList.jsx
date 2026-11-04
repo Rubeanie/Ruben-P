@@ -27,6 +27,7 @@ export default async function SocialList({
           {items.map(({ _id, title, username, baseColor, redirect }, i) => {
             const href = resolveRedirect(redirect);
             const card = (
+              // biome-ignore lint/correctness/useJsxKeyInIterable: the wrapper returned below carries the key.
               <Social
                 heading={title}
                 subheading={username}

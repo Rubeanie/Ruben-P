@@ -18,9 +18,11 @@ export default function HeadingLink({ id, label }) {
   useEffect(() => () => clearTimeout(timer.current), []);
 
   const copy = async (event) => {
-    // Copies in place: the reader keeps their scroll position.
+    // Copies in place: the reader keeps their scroll position. Fresh state so
+    // Next's history patch tells the router, or a Link back to the previous
+    // heading would read as no hash change and not scroll.
     event.preventDefault();
-    history.replaceState(history.state, '', `#${id}`);
+    history.replaceState(null, '', `#${id}`);
     try {
       await copyText(location.href);
     } catch {

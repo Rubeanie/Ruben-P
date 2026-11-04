@@ -7,7 +7,7 @@ $default-theme-colors: (
   '--color-primary': #ed5f68,
   '--color-secondary': #2f446b,
   '--color-background': #0d182d,
-  '--color-text': #ccdbf7
+  '--color-text': #ccdbf7,
 );
 // The photo as globals.scss picks it for the screen's shape.
 $image-background: var(--image-background-fit);

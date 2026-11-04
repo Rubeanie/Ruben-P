@@ -108,9 +108,7 @@ $ring:
   border-radius: var.$common-border-radius;
   color: var.$color-on-dark;
   isolation: isolate;
-  transition:
-    transform 0.12s var.$ease-out,
-    opacity 0.16s var.$ease-out;
+  transition: transform 0.12s var.$ease-out, opacity 0.16s var.$ease-out;
   @include var.focus-ring(4px);
 
   // The ring has to sit above the picture, and an inset shadow paints under children.
@@ -554,10 +552,8 @@ $plate: rgba(var.$color-plate-dark, 0.7);
     to right,
     #000
       calc(
-        100% - var(--feed-cut) - min(
-            #{$fade},
-            max(var(--chips-fade, 0px), var(--feed-cut))
-          )
+        100% - var(--feed-cut) -
+          min(#{$fade}, max(var(--chips-fade, 0px), var(--feed-cut)))
       ),
     transparent calc(100% - var(--feed-cut))
   );
@@ -897,15 +893,11 @@ $plate: rgba(var.$color-plate-dark, 0.7);
 $plate-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.14);
 
 .loadMore.loadMore {
-  box-shadow:
-    $plate-highlight,
-    inset 0 0 0 100vmax transparent;
+  box-shadow: $plate-highlight, inset 0 0 0 100vmax transparent;
   transition: box-shadow 0.2s var.$ease-out;
 
   &:active {
-    box-shadow:
-      $plate-highlight,
-      inset 0 0 0 100vmax var.$press-tint;
+    box-shadow: $plate-highlight, inset 0 0 0 100vmax var.$press-tint;
     transition-duration: 0s;
   }
 
@@ -967,9 +959,7 @@ $plate-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.14);
   }
 
   .loadMore.loadMore:hover {
-    box-shadow:
-      $plate-highlight,
-      inset 0 0 0 100vmax var.$press-tint;
+    box-shadow: $plate-highlight, inset 0 0 0 100vmax var.$press-tint;
   }
 
   .clear:hover {

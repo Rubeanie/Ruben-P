@@ -146,9 +146,7 @@
   opacity: 0.7;
   font: inherit;
   cursor: pointer;
-  transition:
-    opacity 0.15s ease,
-    background-color 0.15s ease;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
 
   @media (hover: hover) and (pointer: fine) {
     &:hover {

@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { useState } from 'react';
 import { Box, Button, Flex, Text, TextInput } from '@sanity/ui';
 import { MdCheck, MdContentCopy } from 'react-icons/md';

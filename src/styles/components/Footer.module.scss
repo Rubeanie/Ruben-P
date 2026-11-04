@@ -46,9 +46,7 @@
     letter-spacing: var.$track-small;
     color: var.$color-on-dark;
     opacity: 0.72;
-    transition:
-      opacity 0.15s ease,
-      transform 0.12s var.$ease-out;
+    transition: opacity 0.15s ease, transform 0.12s var.$ease-out;
 
     border-radius: 4px;
     @include var.focus-ring(4px);

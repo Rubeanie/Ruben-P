@@ -33,9 +33,7 @@ $lift: -0.035em;
     var(--announce-height) - var(--announce-scrolled)
   );
   // a dismissed band folds its height and the clearance follows it up
-  transition:
-    var.$theme-transitions,
-    --announce-height 0.3s var.$ease-out;
+  transition: var.$theme-transitions, --announce-height 0.3s var.$ease-out;
 
   @supports (animation-timeline: scroll()) {
     animation: announce-scrolled linear both;

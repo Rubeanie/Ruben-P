@@ -29,8 +29,6 @@ const SLOW = 1500;
 // Past this it is a hang, not a slow line: the loader bows out and the hero
 // stays a photo. A 3D scene module gives up after the same 20 s.
 const GIVE_UP = 20000;
-// The loader's fade (Hero3D.module.scss), then it unmounts.
-const FADE = 800;
 // The scroll hint's threshold: past it the move has begun, and the loader only
 // stands in for the mark at rest.
 const TOP = 40;
@@ -60,6 +58,7 @@ export default function Stage({ grain }) {
   );
   const ref = useRef(null);
   const vignette = useRef(null);
+  const loading = useRef(null);
   const done = useSyncExternalStore(
     subscribe,
     () => scrollY > RANGE * (ref.current?.clientHeight ?? innerHeight),
@@ -87,10 +86,23 @@ export default function Stage({ grain }) {
       clearTimeout(giveUp);
     };
   }, [load]);
+  // The loader unmounts once its fade-out (Hero3D.module.scss) has run; one
+  // already faded by scrolling away has nothing left to run.
   useEffect(() => {
     if (loader !== 'out') return undefined;
-    const gone = setTimeout(() => setLoader(null), FADE);
-    return () => clearTimeout(gone);
+    const fade = loading.current
+      ?.getAnimations()
+      .find((a) => a.transitionProperty === 'opacity');
+    if (!fade) {
+      setLoader(null);
+      return undefined;
+    }
+    let live = true;
+    const gone = () => live && setLoader(null);
+    fade.finished.then(gone, gone);
+    return () => {
+      live = false;
+    };
   }, [loader]);
   // The move's progress, shared by the rig and the text beats; it runs on its
   // own loop, so the beats settle even once the canvas has stopped.
@@ -138,6 +150,7 @@ export default function Stage({ grain }) {
       </div>
       {loader && (
         <div
+          ref={loading}
           className={styles.loading}
           data-out={loader === 'out' || !top || undefined}>
           <Loading />

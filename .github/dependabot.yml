@@ -8,10 +8,6 @@ updates:
     groups:
       all:
         patterns: ['*']
-    # ESLint is on its way out for Biome, once Biome reads SCSS.
-    ignore:
-      - dependency-name: eslint
-        update-types: ['version-update:semver-major']
   - package-ecosystem: github-actions
     directory: /
     schedule:

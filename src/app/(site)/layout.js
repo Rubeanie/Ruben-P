@@ -21,6 +21,7 @@ import { VisualEditingControls } from '@/components/VisualEditingControls';
 import { Telemetry } from '@/components/Telemetry';
 import { ServiceWorkerRegister } from '@/components/ServiceWorkerRegister';
 import { FontWarm } from '@/components/FontWarm';
+import { HashReclick } from '@/components/HashReclick';
 import { baseUrl } from '@/lib/env';
 import { stegaClean } from '@sanity/client/stega';
 import { sanitizeLogo } from '@/lib/cachedLogo';
@@ -124,6 +125,7 @@ export default async function RootLayout({ children }) {
           {draft ? <VisualEditingControls /> : <Telemetry />}
           <ServiceWorkerRegister />
           <FontWarm />
+          <HashReclick />
         </ThemeProvider>
       </body>
     </html>
