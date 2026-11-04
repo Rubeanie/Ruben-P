@@ -10,11 +10,15 @@ import findCounter from './counter';
 import createFit from './fit';
 
 const { clamp, damp, degToRad, smoothstep } = MathUtils;
-const REST_YAW = -0.065;
+const REST_YAW = 0;
 const TAU = Math.PI * 2;
 const Y = new Vector3(0, 1, 0);
 // The rest turn: once every 20s.
 const SPIN = TAU / 20;
+// The stage's running fade-in (Hero3D.module.scss); a CSS transition carries
+// its own clock.
+const fadeOf = (el) =>
+  el?.getAnimations().find((a) => a.transitionProperty === 'opacity');
 // The scroll turn lands back on the rest face; from there the counter's axis
 // runs straight away from the camera.
 const FACE = REST_YAW;
@@ -183,12 +187,15 @@ export default function Rig({ progress, vignette, stage, composed, levels }) {
   const rim = useRef(null);
   const facet = useRef(null);
   const streak = useRef(null);
-  // spin: the rest turn, integrated at omega; to: the face the scroll turn
-  // lands on, chosen while the page is at the top; look and filter: the
-  // vignette's and the stage's last written styles; e: last frame's progress.
+  // spin: the rest turn, integrated at omega; end: when the fade-in finishes;
+  // faded: it no longer steers the spin; to: the face the scroll turn lands
+  // on, chosen while the page is at the top; look and filter: the vignette's
+  // and the stage's last written styles; e: last frame's progress.
   const run = useRef({
     spin: REST_YAW,
     omega: SPIN,
+    end: null,
+    faded: false,
     to: null,
     yaw: null,
     view: {},
@@ -225,18 +232,35 @@ export default function Rig({ progress, vignette, stage, composed, levels }) {
     // turn on (180 to 540 degrees, always forwards), so velocity carries
     // through. Back at the top the spin picks up from wherever the mark is.
     const turn = turnAt(p);
-    if (r.to === null || p < 1e-5)
+    const top = p < 1e-5;
+    if (r.to === null || top)
       r.to = FACE + Math.round((r.spin + TAU - FACE) / TAU) * TAU;
     const idle = reduced
       ? 0
       : SPIN * Math.exp(-p / EASE_OUT) * clamp((r.to - r.spin) / MARGIN, 0, 1);
     r.omega = reduced ? 0 : damp(r.omega, idle, 4, delta);
     r.spin = reduced ? REST_YAW : Math.min(r.spin + r.omega * delta, r.to);
+    // While the stage fades in, the spin runs on the fade's clock, behind the
+    // rest face by what's left of it, so the mark comes square as it ends.
+    // Leaving the top or reduced motion hands it back for good.
+    const fade = !r.faded && !reduced && top && fadeOf(stage.current);
+    if (fade) {
+      const left =
+        fade.effect.getComputedTiming().endTime - (fade.currentTime ?? 0);
+      r.end = performance.now() + left;
+      r.spin = REST_YAW - (SPIN * left) / 1000;
+    } else if (!r.faded && stage.current?.dataset.ready) {
+      // The frame the fade ends on lands past the rest face by however long
+      // it has been since, even after a stall longer than a capped delta.
+      if (r.end !== null && !reduced && top)
+        r.spin = REST_YAW + (SPIN * (performance.now() - r.end)) / 1000;
+      r.faded = true;
+    }
     let yaw = r.spin + turn * (r.to - r.spin);
     // Near the top, scrolling back up doesn't unwind the turn: what it gives
     // back is folded into the spin, so there the mark only ever goes forwards.
     const keep = 1 - smoothstep(p, 0.05, 0.15);
-    if (!reduced && r.yaw !== null && keep > 0) {
+    if (!reduced && !fade && r.yaw !== null && keep > 0) {
       const floor = r.yaw + r.omega * delta * (1 - turn);
       if (yaw < floor) {
         yaw += keep * (floor - yaw);
