@@ -121,6 +121,7 @@ export default function YouTubeFacade({
   const claim = useEffectEvent(() => onPlay?.());
   const isPaused = useEffectEvent(() => paused);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: reveal is also the plain frame's onLoad, so it can't be an effect event; it only reads refs and sets state.
   useEffect(() => {
     if (mode !== 'api') return;
     const { PlayerState } = window.YT;
@@ -174,6 +175,7 @@ export default function YouTubeFacade({
   // A press that never turns into playback (the player didn't ready, or the
   // tap reached it and YouTube held back) shows the player's own controls,
   // where the next tap plays, rather than spinning on.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: reveal only reads refs and sets state.
   useEffect(() => {
     if (!active || loaded) return;
     const timer = setTimeout(() => {

@@ -10,12 +10,11 @@
     "node": "24.x"
   },
   "scripts": {
-    "prettier:check": "prettier --check --ignore-path .gitignore .",
-    "prettier:apply": "prettier --write --ignore-path .gitignore .",
+    "format": "biome format --write .",
     "dev": "cross-env NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint .",
+    "lint": "biome check .",
     "test": "bun test",
     "diagram": "bun scripts/diagram.js",
     "prepare": "husky"
@@ -57,14 +56,11 @@
     "three": "^0.187.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.6.4",
     "cross-env": "^10.1.0",
     "d3-hierarchy": "^3.1.3",
-    "eslint": "^9.39.5",
-    "eslint-config-next": "^16.4.5",
-    "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
-    "lint-staged": "^17.6.0",
-    "prettier": "^3.9.10"
+    "lint-staged": "^17.6.0"
   },
   "trustedDependencies": [
     "@parcel/watcher",

@@ -135,11 +135,11 @@ function ProofreadPanel({ documentId, documentType, onClose }) {
   // Opening the panel is the request, once the document has loaded;
   // unchanged passages come from the cache.
   const started = useRef(false);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: runs once, when the document first loads.
   useEffect(() => {
     if (!doc || started.current) return;
     started.current = true;
     check();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [doc]);
 
   const apply = {

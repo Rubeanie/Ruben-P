@@ -105,7 +105,7 @@ function Moving({ cover, width }) {
       />
     );
   return (
-    // eslint-disable-next-line @next/next/no-img-element -- a Cloudinary animation, already sized
+    // biome-ignore lint/performance/noImgElement: a Cloudinary animation, already sized
     <img
       className={styles.moving}
       src={

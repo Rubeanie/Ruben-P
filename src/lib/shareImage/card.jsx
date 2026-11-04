@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element -- Satori draws plain img elements */
+/** biome-ignore-all lint/performance/noImgElement: Satori draws plain img elements */
 import { alpha } from './colours';
 import { factsRow } from './facts';
 import { baseline, fitTitle, lineWidth } from './fit';

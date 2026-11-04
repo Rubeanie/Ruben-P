@@ -1,0 +1,77 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.6.4/schema.json",
+  "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+  "files": {
+    "ignoreUnknown": true,
+    "includes": ["**", "!public/sw.js", "!package.json", "!.vscode", "!.github"]
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "lineEnding": "auto"
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "jsxQuoteStyle": "single",
+      "trailingCommas": "none",
+      "bracketSameLine": true
+    }
+  },
+  "css": {
+    "formatter": { "quoteStyle": "single" }
+  },
+  "linter": {
+    "includes": ["**", "!public/**"],
+    "rules": {
+      "preset": "none",
+      "a11y": {
+        "noAriaUnsupportedElements": "warn",
+        "useAltText": "warn",
+        "useAriaPropsForRole": "warn",
+        "useAriaPropsSupportedByRole": "warn",
+        "useValidAriaProps": "warn",
+        "useValidAriaValues": "warn"
+      },
+      "correctness": {
+        "noBeforeInteractiveScriptOutsideDocument": "warn",
+        "noChildrenProp": "error",
+        "noNestedComponentDefinitions": "error",
+        "noReactPropAssignments": "error",
+        "noNextAsyncClientComponent": "warn",
+        "noRenderReturnValue": "error",
+        "useExhaustiveDependencies": {
+          "level": "warn",
+          "options": { "reportUnnecessaryDependencies": false }
+        },
+        "useHookAtTopLevel": "error",
+        "useInlineScriptId": "error",
+        "useJsxKeyInIterable": "error"
+      },
+      "performance": {
+        "noImgElement": "warn",
+        "noSyncScripts": "error",
+        "noUnwantedPolyfillio": "warn",
+        "useGoogleFontPreconnect": "warn"
+      },
+      "security": {
+        "noDangerouslySetInnerHtmlWithChildren": "error"
+      },
+      "style": { "noHeadElement": "warn" },
+      "suspicious": {
+        "noCommentText": "error",
+        "noDocumentImportInPage": "error",
+        "noDuplicateJsxProps": "error",
+        "noHeadImportInDocument": "error",
+        "noReactStringRefs": "error",
+        "useGoogleFontDisplay": "warn"
+      }
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["src/sanity/**"],
+      "linter": { "rules": { "performance": { "noImgElement": "off" } } }
+    }
+  ],
+  "assist": { "enabled": false }
+}
