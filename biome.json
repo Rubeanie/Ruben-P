@@ -39,6 +39,7 @@
         "noReactPropAssignments": "error",
         "noNextAsyncClientComponent": "warn",
         "noRenderReturnValue": "error",
+        "noUndeclaredVariables": "error",
         "useExhaustiveDependencies": {
           "level": "warn",
           "options": { "reportUnnecessaryDependencies": false }
