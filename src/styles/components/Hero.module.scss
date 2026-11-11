@@ -146,17 +146,6 @@ $card: inset(
 @media (max-width: var.$media-mobile-width) {
   .stick {
     --card-bottom: 52%;
-    align-items: center;
-    text-align: center;
-  }
-
-  .copy {
-    align-items: center;
-    text-align: center;
-
-    > div {
-      justify-content: center;
-    }
   }
 
   .photo picture img {

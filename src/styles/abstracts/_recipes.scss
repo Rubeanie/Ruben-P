@@ -83,11 +83,14 @@
 }
 
 /* Pretitle */
+// Figtree, not Mont: a label, not a heading.
 @mixin pretitle {
-  font-family: var.$h-font;
-  color: var.$color-primary;
+  font-family: var.$p-font;
+  font-weight: 600;
+  color: var.$color-text;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  filter: var.$photo-lift;
 }
 
 // Raised, glossy button surface on the theme colour.

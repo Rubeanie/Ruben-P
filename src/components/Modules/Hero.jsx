@@ -35,12 +35,7 @@ export default async function Hero(props) {
           loading='eager'
           fetchPriority='high'
         />
-        <Copy
-          pretitle={pretitle}
-          content={content}
-          ctas={ctas}
-          className={styles.copy}
-        />
+        <Copy pretitle={pretitle} content={content} ctas={ctas} />
         {scrollHint && (
           <ScrollHint next={`${id}-end`} align='start' delay={1100} />
         )}
