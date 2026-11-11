@@ -4,12 +4,13 @@
 $loops: calc(var(--loop-wait, var(--hint-delay)) + 500ms);
 
 // Sits in the hero's own layout (the hero is its positioning box), measured
-// from the small viewport's bottom so phone toolbars never cover it.
+// from the small viewport's bottom so phone toolbars never cover it. A hero
+// under the band starts that much higher.
 .hint {
   position: absolute;
   z-index: 2;
   top: calc(
-    min(100%, 100svh - var(--announce-height)) -
+    min(100%, 100svh - var(--announce-height) + var(--under-band, 0px)) -
       max(24px, env(safe-area-inset-bottom) + 16px)
   );
   left: 50%;

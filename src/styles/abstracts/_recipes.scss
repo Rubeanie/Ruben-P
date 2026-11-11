@@ -219,8 +219,9 @@ $_not-module: 'script, style, template, [data-quiet], [data-sanity]:empty, [data
   margin-block: var.$block-gap;
   margin-inline: calc(-1 * #{var.$inline-pad});
 
+  // A hero that sets --under-band also reaches up behind the announcement band.
   @include first-module {
-    margin-block-start: calc(-1 * #{var.$space-3});
+    margin-block-start: calc(-1 * #{var.$space-3} - var(--under-band, 0px));
   }
 }
 

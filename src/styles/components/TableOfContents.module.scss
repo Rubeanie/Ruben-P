@@ -2,6 +2,8 @@
 
 // The accordion row's tint radius: the plate's less the rows' inset.
 $row-radius: calc(#{var.$common-border-radius} - #{var.$space-2});
+// Where the rail sits below the pill, from the top of main and from the screen.
+$rail-top: calc(#{var.$navbar-height} + #{var.$space-3});
 
 .toc {
   margin-block: var.$block-gap;
@@ -180,23 +182,19 @@ $track-pad: 0.875rem;
     position: absolute;
     inset-block: 0;
     inset-inline: var.$inline-pad;
+    padding-block-start: $rail-top;
     pointer-events: none;
   }
 }
 
 .rail {
   position: sticky;
-  // Where the page's content starts, so it sticks from the first frame and
-  // never travels; the navbar docking does not move it either. A live
-  // announcement band pushes the pill down, and the rail with it.
-  inset-block-start: calc(
-    #{var.$navbar-height} + var(--announce-offset) + #{var.$space-3}
-  );
+  // Where the page's content starts, below the pill whether it floats or docks.
+  // A live announcement band starts it that much lower, to scroll up with the
+  // page until it sticks.
+  inset-block-start: $rail-top;
   width: var(--rail);
-  max-height: calc(
-    100dvh - #{var.$navbar-height} - var(--announce-offset) - #{var.$space-3} -
-      #{var.$space-5}
-  );
+  max-height: calc(100dvh - #{$rail-top} - #{var.$space-5});
   margin-inline-start: calc(50% + var(--cap) / 2 + #{$rail-gap});
   // Only an outline taller than that scrolls, with no visible bar; the
   // current link is kept in view from script.

@@ -3,13 +3,23 @@
 $blend-end: 28lvh;
 
 // A 12lvh runway under the sticky screen: the page starts moving almost at
-// once and arrives while the card settles.
+// once and arrives while the card settles. Reaching up under the band adds its
+// height, so the hero still ends, and hands back, where it would.
 .hero {
   position: relative;
   isolation: isolate;
-  height: 112lvh;
+  height: calc(112lvh + var(--under-band, 0px));
   @include var.hero-ground;
   @include var.hero-bleed;
+}
+
+// First on the page, the photo starts under the announcement band, which
+// paints over its top: it pins from the first frame, and the band scrolls off
+// it without resizing anything.
+.hero[data-hero-theme] {
+  @include var.first-module {
+    --under-band: var(--announce-height);
+  }
 }
 
 .stick {
@@ -21,8 +31,7 @@ $blend-end: 28lvh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  // the band's share of the first screen, until it scrolls away and the screen pins
-  height: calc(100lvh - var(--announce-offset));
+  height: 100lvh;
   padding: var.$hero-top var.$hero-bleed-pad var.$space-6;
   text-align: start;
 }
@@ -56,8 +65,10 @@ $blend-end: 28lvh;
   background-position: var(--position, 50% 50%);
 }
 
+// The pinned screen sits at the viewport's top, so the card clears the pill
+// itself, band or not. A clip is paint, so following the band costs no layout.
 $card: inset(
-  calc(#{var.$nav-clearance-flow} + #{var.$space-4}) var.$hero-bleed-pad
+  calc(var(--nav-clearance) + #{var.$space-4}) var.$hero-bleed-pad
     var(--card-bottom) round #{var.$common-border-radius}
 );
 
