@@ -238,6 +238,18 @@ $_not-module: 'script, style, template, [data-quiet], [data-sanity]:empty, [data
   }
 }
 
+// An iPhone draws the page on behind its floating bottom toolbar, past 100lvh,
+// and no unit measures that strip: full-screen layers run on by $screen-tail
+// there. Narrow screens only: an iPad matches the iOS test but has no such
+// toolbar (a narrow split-view window there still takes the overshoot).
+@mixin under-ios-toolbar {
+  @supports (-webkit-touch-callout: none) {
+    @media (max-width: var.$media-mobile-width) {
+      @content;
+    }
+  }
+}
+
 // A hero with a scroll hint keeps its bottom edge clear for it, lined up with the copy column.
 @mixin hint-room($inset: var.$hero-pad) {
   --hint-inset: #{$inset};

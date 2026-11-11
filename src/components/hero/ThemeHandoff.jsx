@@ -10,9 +10,9 @@ const pageBackground = () =>
     .trim();
 
 // Flips data-hero-theme off once the hero's bottom edge rises past `line`
-// (percent down the viewport; past 100 reaches below the fold for tall
-// sticky heroes); ThemeStyle's CSS does the rest. The theme-color meta follows
-// the colour in charge. No per-frame work. Without colours it is a plain section.
+// (percent down the viewport); ThemeStyle's CSS does the rest. The theme-color
+// meta follows the colour in charge. No per-frame work. Without colours it is
+// a plain section.
 export default function ThemeHandoff({
   id,
   className,

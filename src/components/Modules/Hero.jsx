@@ -18,14 +18,14 @@ export default async function Hero(props) {
   const colors = url ? await themeFromImage(url) : null;
 
   return (
-    // The section runs 112lvh; the flip sits halfway through the 28lvh settle.
+    // A screen and its 12lvh tail; the flip sits halfway through the blend.
     <ThemeHandoff
       id={id}
       className={styles.hero}
       colors={colors}
       end='28lvh'
       line={98}>
-      <div className={styles.stick}>
+      <div className={styles.screen}>
         {/* Eager at high priority. A lone photo also gets React's automatic
             preload; a pair relies on these two alone. */}
         <Photo

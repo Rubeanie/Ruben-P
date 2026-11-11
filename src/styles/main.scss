@@ -12,7 +12,7 @@ main {
   z-index: 1;
   // Nothing a module paints past the screen's edge (a 3D card, a blur's
   // overhang outside its clip-path) may widen the page. Clip, not hidden: no
-  // scroll container, so the sticky hero and rail still stick. Only while main
+  // scroll container, so the navbar and rail still stick. Only while main
   // spans the screen: wider, its edge isn't the screen's, and the photo heroes
   // that bleed past it clip at the root instead (hero-bleed).
   @media (max-width: #{var.$content-max-width}) {

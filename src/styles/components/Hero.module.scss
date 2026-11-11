@@ -2,32 +2,34 @@
 
 $blend-end: 28lvh;
 
-// A 12lvh runway under the sticky screen: the page starts moving almost at
-// once and arrives while the card settles. Reaching up under the band adds its
-// height, so the hero still ends, and hands back, where it would.
+// One screen that scrolls with the page: nothing pins, so the copy moves with
+// the scroll alone (a pinned screen shimmers on iOS while the photo animates).
 .hero {
   position: relative;
-  isolation: isolate;
-  height: calc(112lvh + var(--under-band, 0px));
   @include var.hero-ground;
   @include var.hero-bleed;
 }
 
-// First on the page, the photo starts under the announcement band, which
-// paints over its top: it pins from the first frame, and the band scrolls off
-// it without resizing anything.
 .hero[data-hero-theme] {
+  // Ground under the photo's screen, keeping the next module below the fold.
+  padding-block-end: var.$screen-tail;
+
+  // There the photo fills the tail too.
+  @include var.under-ios-toolbar {
+    --photo-tail: #{var.$screen-tail};
+  }
+
+  // First on the page, the photo starts under the announcement band, which
+  // paints over its top, and the band scrolls off it without resizing anything.
   @include var.first-module {
     --under-band: var(--announce-height);
   }
 }
 
-.stick {
-  --card-bottom: 44%;
-  position: sticky;
-  top: 0;
+.screen {
+  --card-bottom: 44lvh;
+  position: relative;
   isolation: isolate;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -38,7 +40,7 @@ $blend-end: 28lvh;
 
 .photo {
   position: absolute;
-  inset: 0;
+  inset: 0 0 calc(-1 * var(--photo-tail, 0px));
   z-index: -2;
   clip-path: inset(0 0 0 0 round 0);
 
@@ -50,8 +52,9 @@ $blend-end: 28lvh;
     inset: 0;
     background: linear-gradient(
       to top,
-      color-mix(in srgb, var(--color-background) 85%, transparent),
-      transparent 60%
+      color-mix(in srgb, var(--color-background) 85%, transparent)
+        var(--photo-tail, 0px),
+      transparent calc(var(--photo-tail, 0px) + 60lvh)
     );
   }
 }
@@ -65,11 +68,12 @@ $blend-end: 28lvh;
   background-position: var(--position, 50% 50%);
 }
 
-// The pinned screen sits at the viewport's top, so the card clears the pill
-// itself, band or not. A clip is paint, so following the band costs no layout.
+// The card's top sits where it clears the pill at the top of the page, under
+// the band too, and scrolls with the screen from there.
 $card: inset(
-  calc(var(--nav-clearance) + #{var.$space-4}) var.$hero-bleed-pad
-    var(--card-bottom) round #{var.$common-border-radius}
+  calc(var(--under-band, 0px) + #{var.$nav-clearance-flow} + #{var.$space-4})
+    var.$hero-bleed-pad calc(var(--card-bottom) + var(--photo-tail, 0px)) round
+    #{var.$common-border-radius}
 );
 
 @keyframes card {
@@ -138,25 +142,19 @@ $card: inset(
   }
 }
 
-.stick:has(> a[href^='#']) {
+.screen:has(> a[href^='#']) {
   @include var.hint-room(var.$hero-bleed-pad);
 }
 
-// No photo: the copy on the page ground, nothing to pin.
-.hero:not([data-hero-theme]) {
+// No photo: the copy on the page ground.
+.hero:not([data-hero-theme]) .screen {
   height: auto;
   min-height: calc(100svh - var(--announce-height));
-
-  .stick {
-    position: relative;
-    height: auto;
-    min-height: calc(100svh - var(--announce-height));
-  }
 }
 
 @media (max-width: var.$media-mobile-width) {
-  .stick {
-    --card-bottom: 52%;
+  .screen {
+    --card-bottom: 52lvh;
   }
 
   .photo picture img {
