@@ -221,9 +221,22 @@ $_not-module: 'script, style, template, [data-quiet], [data-sanity]:empty, [data
   }
 }
 
+// A full-screen photo hero fills the screen past the content cap too. 100vw
+// counts a classic scrollbar, so the bleed overshoots the screen by half of one
+// each side; the root clips that rather than scrolling sideways.
+@mixin hero-bleed {
+  margin-inline: calc(-1 * #{var.$inline-pad} - #{var.$hero-bleed});
+
+  @media (min-width: #{var.$content-max-width}) {
+    @at-root :global(html):has(#{&}) {
+      overflow-x: clip;
+    }
+  }
+}
+
 // A hero with a scroll hint keeps its bottom edge clear for it, lined up with the copy column.
-@mixin hint-room {
-  --hint-inset: #{var.$hero-pad};
+@mixin hint-room($inset: var.$hero-pad) {
+  --hint-inset: #{$inset};
   padding-block-end: calc(#{var.$space-6} + 3.5rem);
 }
 

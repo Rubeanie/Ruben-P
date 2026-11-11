@@ -9,6 +9,7 @@ $blend-end: 28lvh;
   isolation: isolate;
   height: 112lvh;
   @include var.hero-ground;
+  @include var.hero-bleed;
 }
 
 .stick {
@@ -22,7 +23,7 @@ $blend-end: 28lvh;
   justify-content: flex-end;
   // the band's share of the first screen, until it scrolls away and the screen pins
   height: calc(100lvh - var(--announce-offset));
-  padding: var.$hero-top var.$hero-pad var.$space-6;
+  padding: var.$hero-top var.$hero-bleed-pad var.$space-6;
   text-align: start;
 }
 
@@ -56,7 +57,7 @@ $blend-end: 28lvh;
 }
 
 $card: inset(
-  calc(#{var.$nav-clearance-flow} + #{var.$space-4}) #{var.$hero-pad}
+  calc(#{var.$nav-clearance-flow} + #{var.$space-4}) var.$hero-bleed-pad
     var(--card-bottom) round #{var.$common-border-radius}
 );
 
@@ -127,7 +128,7 @@ $card: inset(
 }
 
 .stick:has(> a[href^='#']) {
-  @include var.hint-room;
+  @include var.hint-room(var.$hero-bleed-pad);
 }
 
 // No photo: the copy on the page ground, nothing to pin.

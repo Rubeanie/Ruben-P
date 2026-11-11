@@ -182,5 +182,12 @@ $tile-gap: clamp(1.5rem, 2.5vw, 2.25rem);
 
 /* Heroes are the page's ground: they clear the navbar and pad themselves */
 $hero-pad: max(#{$inline-pad}, 4vw);
+// How far a full-screen photo hero reaches past the content cap each side, and
+// its padding with that reach added: its pad stops growing at the cap, so its
+// copy and card keep to the content column.
+$hero-bleed: max(0px, calc((100vw - #{$content-max-width}) / 2));
+$hero-bleed-pad: calc(
+  min(#{$hero-pad}, #{$content-max-width * 0.04}) + #{$hero-bleed}
+);
 $hero-top: calc(#{$nav-clearance-flow} + #{$space-6});
 $hero-heading: clamp(2.5rem, 1.2rem + 4.5vw, 5.5rem);
