@@ -12,14 +12,15 @@ const page = (key) => `var(--page-${key}, ${DEFAULT_THEME_COLORS[key]})`;
 // !important beats the ThemeProvider's inline page theme; removing the match
 // lets the registered colours transition back to it. The scroll blend runs
 // perceptually (oklch endpoints, so the browser never interpolates in sRGB)
-// from the hero's colours to the page's over 0 to `end`.
+// from the hero's colours to the page's over 0 to `end`. Both run on html
+// through the custom properties globals.scss composes, beside the band's.
 export default function ThemeStyle({ colors, end }) {
   const hero = decl((key) => `${colors[key]} !important`);
   const fade = KEYS.map((key) => `--color-${key} 0.6s ${EASE}`).join(', ');
 
   const css = `
 :root { --blend-end: ${end}; }
-html[data-hero-settled] { transition: ${fade}; }
+html[data-hero-settled] { --theme-fade: ${fade}; }
 @keyframes hero-tone {
   from { ${decl((key) => `oklch(from ${colors[key]} l c h)`)} }
   to { ${decl((key) => `oklch(from ${page(key)} l c h)`)} }
@@ -27,9 +28,8 @@ html[data-hero-settled] { transition: ${fade}; }
 @supports (animation-timeline: scroll()) {
   @media (prefers-reduced-motion: no-preference) {
     html:has([data-hero-theme]) {
-      animation: hero-tone linear both;
-      animation-timeline: scroll(root);
-      animation-range: 0 var(--blend-end);
+      --hero-animation: hero-tone;
+      --hero-range: 0 var(--blend-end);
     }
   }
 }
@@ -37,7 +37,7 @@ html[data-hero-settled] { transition: ${fade}; }
   html:has([data-hero-theme='on']) { ${hero} }
 }
 @media (prefers-reduced-motion: reduce) {
-  html[data-hero-settled] { transition: none; }
+  html[data-hero-settled] { --theme-fade: none; }
   html:has([data-hero-theme='on']) { ${hero} }
 }`;
 

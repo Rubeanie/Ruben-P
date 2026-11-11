@@ -82,7 +82,7 @@ $touch-target: 2.75rem;
 
 /* Transitions */
 $theme-transition: 0.15s ease-out;
-// The root's colour transitions; a rule on html that adds its own must repeat them.
+// The root's colour transitions; a hero swaps them for its own through --theme-fade.
 $theme-transitions:
   --color-primary $theme-transition,
   --color-secondary $theme-transition,

@@ -77,16 +77,50 @@
   initial-value: 0;
 }
 
+// The band's: a fixed range, so its dismiss fold collapses only the height
+// operand of --announce-offset (Announcement.module.scss).
+@keyframes announce-scrolled {
+  from {
+    --announce-scrolled: 0px;
+  }
+
+  to {
+    --announce-scrolled: #{var.$announce-height};
+  }
+}
+
+$theme-fade: var(--theme-fade, #{var.$theme-transitions});
+
+// The band and a hero both animate html, so neither sets the property itself:
+// each names its own animation (and a hero its fade) here, and none overrides
+// another. The band's fold also eases the clearance up when it is dismissed.
 html {
-  transition: var.$theme-transitions;
+  transition: $theme-fade, --announce-height 0.3s var.$ease-out;
   // Anchors and focused controls scroll into view below the pill, not under it.
   scroll-padding-top: var(--nav-clearance);
+}
+
+@supports (animation-timeline: scroll()) {
+  html {
+    animation-name: var(--band-animation, none), var(--hero-animation, none);
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll(root);
+    animation-range: var(--band-range, normal), var(--hero-range, normal);
+  }
 }
 
 // Fragment links glide; Next keeps route changes instant (data-scroll-behavior on html).
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
+  }
+}
+
+// Without the band's fold: a hero's --theme-fade can be none, valid only alone.
+@media (prefers-reduced-motion: reduce) {
+  html {
+    transition: $theme-fade;
   }
 }
 

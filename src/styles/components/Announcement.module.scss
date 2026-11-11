@@ -10,36 +10,19 @@ $fade: var.$space-3;
 // (measured), so there the icons, the logo and the X lift by the same nudge.
 $lift: -0.035em;
 
-// A fixed range, so the dismiss fold collapses only the height operand below.
-@keyframes announce-scrolled {
-  from {
-    --announce-scrolled: 0px;
-  }
-
-  to {
-    --announce-scrolled: #{$height};
-  }
-}
-
 // ---- Page geometry: the navbar pill rides under the band until it scrolls away ----
 // The navbar follows the band in flow; these publish the same offset for the
 // readers fixed to the viewport (--nav-clearance) and first-screen heroes.
 
 :global(html:not([data-announcement-hidden])):has(.band) {
   --announce-height: #{$height};
-  // the scroll-driven animation below or the scroll listener sets --announce-scrolled
+  // html's scroll-driven animation or the scroll listener sets --announce-scrolled
   --announce-offset: max(
     0px,
     var(--announce-height) - var(--announce-scrolled)
   );
-  // a dismissed band folds its height and the clearance follows it up
-  transition: var.$theme-transitions, --announce-height 0.3s var.$ease-out;
-
-  @supports (animation-timeline: scroll()) {
-    animation: announce-scrolled linear both;
-    animation-timeline: scroll(root);
-    animation-range: 0px $height;
-  }
+  --band-animation: announce-scrolled;
+  --band-range: 0px #{$height};
 }
 
 :global(html:not([data-announcement-hidden])):has(.band[data-dismissing]) {
@@ -324,9 +307,5 @@ $lift: -0.035em;
   .band,
   .band[data-dismissing] > * {
     transition: none;
-  }
-
-  :global(html:not([data-announcement-hidden])):has(.band) {
-    transition: var.$theme-transitions;
   }
 }
