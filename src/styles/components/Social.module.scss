@@ -13,7 +13,7 @@ $gap: 1.25rem;
 
 // Columns top out at --max-cols (from Sanity) via the max-width and drop as
 // the viewport narrows. Flex rather than grid so a short last row centres
-// under the full ones, like the skills.
+// under the full ones.
 .list {
   display: flex;
   flex-wrap: wrap;
@@ -27,9 +27,11 @@ $gap: 1.25rem;
 }
 
 .card {
-  // min(width, 100%) lets one column shrink on phones; interpolated so Sass
-  // doesn't try to evaluate min() itself.
-  flex: 0 0 min(#{$width}, 100%);
+  // A fixed width that gives way on phones; the zero minimum stops a long
+  // name widening its card past the screen.
+  flex: 0 0 $width;
+  min-width: 0;
+  max-width: 100%;
   border-radius: var.$common-border-radius;
   @include var.focus-ring(4px);
 
@@ -51,7 +53,7 @@ $gap: 1.25rem;
   align-items: stretch;
   // Laid out at hover size and scaled down at rest, so hovering never upscales
   // the raster (that's what blurred the text mid-zoom). The negative margins
-  // cancel the oversize so the card still fits its cell.
+  // cancel the oversize so the face still fits its card.
   width: $hover-scale * 100%;
   height: $height * $hover-scale;
   margin: ($height * ($hover-scale - 1) * -0.5) (($hover-scale - 1) * -50%);
