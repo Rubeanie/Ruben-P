@@ -7,7 +7,7 @@ $burger-end: 0.6rem; // the burger's inset from the bar's edge
 $menu-button-height: 3.125rem;
 
 // What the rim needs; without it the pill keeps its plain border.
-$rim-mask: '(mask-image: linear-gradient(#000, #000))';
+$rim-supports: '(mask-image: linear-gradient(#000, #000))';
 
 // Published for anything fixed to the viewport that must clear the pill (the bento's
 // morph clip and its search blur); a live announcement band above the pill counts.
@@ -77,7 +77,7 @@ $rim-mask: '(mask-image: linear-gradient(#000, #000))';
     // The edge is a border faded down the sides by a mask, which a border
     // colour can't do: bright along the top, quieter at the top of the page
     // than once scrolled. Without the mask the plain hairline border stays.
-    @supports #{$rim-mask} {
+    @supports #{$rim-supports} {
       border-color: transparent;
 
       &::before {
@@ -85,12 +85,15 @@ $rim-mask: '(mask-image: linear-gradient(#000, #000))';
         position: absolute;
         inset: calc(-1 * #{var.$hairline-width});
         // The line sits in a soft glow: a brighter bare 1px line steps
-        // visibly round the corners at one device pixel per CSS pixel.
+        // visibly round the corners at one device pixel per CSS pixel. The
+        // mask clips the outer glow to this box, so it shows in the corners
+        // only, where it is needed.
         border: var.$hairline-width solid rgba(255, 255, 255, 0.36);
         border-radius: inherit;
         box-shadow:
           inset 0 0 1.5px rgba(255, 255, 255, 0.5),
           0 0 1.5px rgba(255, 255, 255, 0.35);
+        // Full along the top, then 28% and 12% of the line down the sides.
         mask-image: linear-gradient(
           #000,
           rgba(0, 0, 0, 0.28) 35%,
@@ -463,7 +466,7 @@ html[data-nav-dropdown='true'] {
   }
 
   // Without the rim the border is the edge, and firms up as it always did.
-  @supports not #{$rim-mask} {
+  @supports not #{$rim-supports} {
     border-color: rgba(255, 255, 255, 0.14);
   }
 
