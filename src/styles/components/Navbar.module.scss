@@ -49,11 +49,12 @@ $menu-button-height: 3.125rem;
     max-width: var.$viewport-max-width;
     margin: 0 auto;
     padding: var.$nav-pad;
-    // light glass at the top of the page; full glass once scrolled (rules at file end)
+    position: relative;
     border: var.$hairline-width solid var.$hairline-color;
     border-radius: var.$nav-radius;
+    // light glass at the top of the page; full glass once scrolled (rules at file end)
     box-shadow:
-      inset 0 1px 0 var.$hairline-color,
+      0 0 0 var.$hairline-width rgba(0, 0, 0, 0.05),
       0 4px 12px rgba(0, 0, 0, 0.15);
     background-color: rgba(0, 0, 0, 0.35);
     transition:
@@ -68,6 +69,33 @@ $menu-button-height: 3.125rem;
     @supports (backdrop-filter: blur(1px)) {
       backdrop-filter: blur(4px) saturate(120%);
       background-color: rgba(0, 0, 0, 0.12);
+    }
+
+    // The edge is a ring masked out of a gradient, since a border can't fade
+    // down the sides: bright along the top, quieter at the top of the page
+    // than once scrolled. Without the mask the plain hairline border stays.
+    @supports (mask-composite: exclude) {
+      border-color: transparent;
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: calc(-1 * #{var.$hairline-width});
+        padding: var.$hairline-width;
+        border-radius: inherit;
+        background: linear-gradient(
+          rgba(255, 255, 255, 0.5),
+          rgba(255, 255, 255, 0.14) 35%,
+          rgba(255, 255, 255, 0.06) 65%,
+          rgba(0, 0, 0, 0.06)
+        );
+        mask:
+          linear-gradient(#000 0 0) content-box exclude,
+          linear-gradient(#000 0 0);
+        opacity: 0.35;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
     }
 
     a {
@@ -335,7 +363,13 @@ $menu-button-height: 3.125rem;
   .container {
     border-top: none;
     border-inline: none;
+    // The rim would run off the screen's edges: the hairline border instead.
+    border-bottom-color: var.$hairline-color;
     border-radius: 0 0 var.$nav-radius var.$nav-radius;
+
+    &::before {
+      content: none;
+    }
 
     .burger {
       display: block;
@@ -414,11 +448,19 @@ html[data-nav-dropdown='true'] {
 // Scrolled or menu open: full glass.
 :global(html[data-nav-scrolled='true']) .nav .container,
 :global(html[data-nav-dropdown='true']) .nav .container {
-  border-color: rgba(255, 255, 255, 0.14);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 0 0 var.$hairline-width rgba(0, 0, 0, 0.1),
     0 8px 24px rgba(0, 0, 0, 0.35);
   background-color: rgba(0, 0, 0, 0.65);
+
+  &::before {
+    opacity: 1;
+  }
+
+  // Without the rim the border is the edge, and firms up as it always did.
+  @supports not (mask-composite: exclude) {
+    border-color: rgba(255, 255, 255, 0.14);
+  }
 
   @supports (backdrop-filter: blur(1px)) {
     backdrop-filter: blur(14px) saturate(160%);
@@ -426,10 +468,23 @@ html[data-nav-dropdown='true'] {
   }
 }
 
-// Docked, the top highlight reads as a stray line, so drop it. Sits after the
-// full-glass rule so it wins when the menu is open.
+// Docked, an outline would run off the screen's edges, so only the drop stays
+// (the empty first layer keeps the drop paired with itself as the bar docks).
+// Sits after the full-glass rule so it wins when the menu is open.
 :global(html[data-nav-compact]) .nav .container {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 0 0 transparent, 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+// Its bottom hairline firms up with the full glass, as the border always did.
+:global(
+    html[data-nav-compact]:is(
+      [data-nav-scrolled='true'],
+      [data-nav-dropdown='true']
+    )
+  )
+  .nav
+  .container {
+  border-bottom-color: rgba(255, 255, 255, 0.14);
 }
 
 // Docking and the panel growing are position and size changes with no fade
