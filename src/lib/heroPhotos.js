@@ -1,7 +1,7 @@
 import { stegaClean } from '@sanity/client/stega';
 import { coverSizes, PHONE } from '@/lib/coverSizes';
 import { placeholderFor, resolveImage } from '@/lib/imageBlock';
-import { portraitCrop } from '@/lib/imageLoader';
+import { portraitCrop, squareCrop } from '@/lib/imageLoader';
 
 // The hero's settle starts the photo this much larger.
 export const GLASS_ZOOM = 1.12;
@@ -49,8 +49,25 @@ export function heroPhotos(module) {
         }
       ];
     }
-    case 'hero.split':
-      return [{ image, src, sizes: `${PHONE} 100vw, 50vw` }];
+    case 'hero.split': {
+      // The square is min(60svh, half the row) off phones; the row's half is
+      // 46vw inside the hero's 4vw padding, so they meet on a 60:46 screen.
+      // `wide` is how much wider than the square the picture is.
+      const square = (wide) =>
+        `${PHONE} ${Math.ceil(100 * wide)}vw, (max-aspect-ratio: 130/100) ${Math.ceil(46 * wide)}vw, ${Math.ceil(60 * wide)}vh`;
+      // An animation plays whole, so a landscape one covers the square by height.
+      if (image.moving)
+        return [{ image, src, sizes: square(Math.max(1, ratio || 1)) }];
+      // The CDN cuts a still to 1:1, so the rest of it never downloads.
+      return [
+        {
+          image,
+          src: squareCrop(src),
+          sizes: square(1),
+          placeholder: placeholderFor({ ...image, blur: field.blur }, 1)
+        }
+      ];
+    }
     case 'hero.saas':
       return [{ image, src, sizes: coverSizes(ratio, 100, 100, GLASS_ZOOM) }];
     default:

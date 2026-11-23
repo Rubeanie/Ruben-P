@@ -48,9 +48,9 @@ test('a hero contributes its photos, a video any block position', () => {
   expect(picks([hero, body])).toEqual([
     {
       kind: 'image',
-      src: cloudinary('cover'),
-      sizes: '(max-width: 43.75rem) 100vw, 50vw',
-      media: undefined
+      src: 'https://res.cloudinary.com/demo/image/upload/c_fill,ar_1:1,g_auto/v1/cover.jpg',
+      sizes:
+        '(max-width: 43.75rem) 100vw, (max-aspect-ratio: 130/100) 46vw, 60vh'
     },
     {
       kind: 'youtube',

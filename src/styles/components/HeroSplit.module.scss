@@ -1,18 +1,26 @@
 @use '../abstracts/index' as var;
 
+// heroPhotos sizes the photo by this height.
+$frame-size: 60svh;
+
 .hero {
   position: relative;
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
+  // The copy stops at its measure. Reversed, flex-end is the left: the frame
+  // keeps to that edge with the copy beside it, where the hint expects it.
+  justify-content: flex-end;
   gap: var.$space-6;
   min-height: 80lvh;
   padding: var.$hero-top var.$hero-pad var.$space-6;
   text-align: start;
   @include var.hero-ground;
 
+  // The copy keeps to the left edge and the frame to the right.
   &[data-image-right] {
     flex-direction: row;
+    justify-content: space-between;
   }
 }
 
@@ -22,8 +30,9 @@
 
 .frame {
   position: relative;
-  flex: 1 1 0;
-  aspect-ratio: 3 / 2;
+  flex: none;
+  width: min(#{$frame-size}, 50%);
+  aspect-ratio: 1 / 1;
   // One clip for the whole stack: overflow clips each layer on its own, and
   // their anti-aliased corners let the layer under show through.
   clip-path: inset(0 round var.$common-border-radius);
@@ -44,7 +53,11 @@
 
   // The image on the left puts the copy right of the gap.
   &:not([data-image-right]) {
-    --hint-inset: calc(50% + #{var.$space-6} / 2);
+    // The hint's 50% is of the padding box, the frame's of the content box.
+    --hint-inset: calc(
+      #{var.$hero-pad} + min(#{$frame-size}, 50% - #{var.$hero-pad}) +
+        #{var.$space-6}
+    );
   }
 }
 
@@ -56,7 +69,6 @@
   }
 
   .frame {
-    flex: none;
     width: 100%;
   }
 

@@ -36,6 +36,31 @@ describe('heroPhotos', () => {
     );
   });
 
+  test('the split hero shows a square cut, sized to its frame', () => {
+    const [photo, ...rest] = heroPhotos({
+      _type: 'hero.split',
+      image: image(still)
+    });
+    expect(rest).toHaveLength(0);
+    expect(photo).toMatchObject({
+      src: 'https://res.cloudinary.com/demo/image/upload/c_fill,ar_1:1,g_auto/v1/a.jpg',
+      sizes:
+        '(max-width: 43.75rem) 100vw, (max-aspect-ratio: 130/100) 46vw, 60vh'
+    });
+  });
+
+  test('a split hero animation plays whole, sized to cover the square', () => {
+    const [photo] = heroPhotos({
+      _type: 'hero.split',
+      image: image('https://res.cloudinary.com/demo/video/upload/v1/a.mp4')
+    });
+    // 3:2, so half as wide again as the square it covers.
+    expect(photo.sizes).toBe(
+      '(max-width: 43.75rem) 150vw, (max-aspect-ratio: 130/100) 69vw, 90vh'
+    );
+    expect(photo.placeholder).toBeUndefined();
+  });
+
   test('other modules, and heroes without a photo, have none', () => {
     expect(heroPhotos({ _type: 'callout' })).toEqual([]);
     expect(heroPhotos({ _type: 'hero.saas', image: null })).toEqual([]);
