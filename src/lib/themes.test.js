@@ -21,14 +21,14 @@ test('nextThemeAfter steps in list order, wraps, and starts at the first', () =>
 
 test('themeRendition shrinks Cloudinary photos', () => {
   expect(
-    themeRendition('https://res.cloudinary.com/c/image/upload/v1/a.png')
-  ).toBe('https://res.cloudinary.com/c/image/upload/w_200,f_png/v1/a.png');
+    themeRendition('https://res.cloudinary.com/demo/image/upload/v1/a.png')
+  ).toBe('https://res.cloudinary.com/demo/image/upload/w_200,f_png/v1/a.png');
   expect(
     themeRendition(
-      'https://res.cloudinary.com/c/image/upload/t_x/f_avif,w_2000/v12/d/a.avif'
+      'https://res.cloudinary.com/demo/image/upload/t_x/f_avif,w_2000/v12/d/a.avif'
     )
   ).toBe(
-    'https://res.cloudinary.com/c/image/upload/t_x/f_avif,w_2000/w_200,f_png/v12/d/a.avif'
+    'https://res.cloudinary.com/demo/image/upload/t_x/f_avif,w_2000/w_200,f_png/v12/d/a.avif'
   );
   expect(() => themeRendition('https://example.com/a.png')).toThrow();
 });
@@ -36,10 +36,10 @@ test('themeRendition shrinks Cloudinary photos', () => {
 test('landscapeRendition sizes Cloudinary photos', () => {
   expect(
     landscapeRendition(
-      'https://res.cloudinary.com/c/image/upload/t_x/v12/d/a.avif'
+      'https://res.cloudinary.com/demo/image/upload/t_x/v12/d/a.avif'
     )
   ).toBe(
-    'https://res.cloudinary.com/c/image/upload/t_x/if_ar_lt_1.78/c_fill,ar_16:9,g_auto/if_end/c_limit,w_3840,h_1080/f_auto,q_auto/v12/d/a.avif'
+    'https://res.cloudinary.com/demo/image/upload/t_x/if_ar_lt_1.78/c_fill,ar_16:9,g_auto/if_end/c_limit,w_3840,h_1080/f_auto,q_auto/v12/d/a.avif'
   );
   expect(landscapeRendition('https://example.com/a.png')).toBe(
     'https://example.com/a.png'
@@ -49,16 +49,16 @@ test('landscapeRendition sizes Cloudinary photos', () => {
 test('portraitRendition crops wide CDN photos to their middle 3:4', () => {
   expect(
     portraitRendition(
-      'https://res.cloudinary.com/c/image/upload/t_auto-optimised/v12/d/a.avif'
+      'https://res.cloudinary.com/demo/image/upload/t_auto-optimised/v12/d/a.avif'
     )
   ).toBe(
-    'https://res.cloudinary.com/c/image/upload/t_auto-optimised/if_ar_gt_0.75/c_fill,ar_3:4,g_auto/if_end/c_limit,h_1600,f_auto,q_auto/v12/d/a.avif'
+    'https://res.cloudinary.com/demo/image/upload/t_auto-optimised/if_ar_gt_0.75/c_fill,ar_3:4,g_auto/if_end/c_limit,h_1600,f_auto,q_auto/v12/d/a.avif'
   );
 });
 
 test('portraitRendition keeps the original on other hosts', () => {
   for (const url of [
-    'https://res.cloudinary.com/c/image/upload/a.png',
+    'https://res.cloudinary.com/demo/image/upload/a.png',
     'https://example.com/a-1920x1080.jpg',
     'blob:https://ruben-p.com/0b7e',
     'not a url'
@@ -68,7 +68,7 @@ test('portraitRendition keeps the original on other hosts', () => {
 });
 
 test('themeGate hands each theme its portrait crop', () => {
-  const url = 'https://res.cloudinary.com/c/image/upload/v1/a.avif';
+  const url = 'https://res.cloudinary.com/demo/image/upload/v1/a.avif';
   const gate = themeGate([{ url, colors: { background: '#000' } }]);
 
   expect(gate).toContain(JSON.stringify(portraitRendition(url)));
@@ -130,7 +130,7 @@ function gatePage(
 }
 
 const photo = (name, background) => ({
-  url: `https://res.cloudinary.com/c/image/upload/v1/${name}.avif`,
+  url: `https://res.cloudinary.com/demo/image/upload/v1/${name}.avif`,
   colors: { primary: '#fff', background }
 });
 
@@ -172,7 +172,7 @@ test('themeGate leaves the defaults when no theme has colours', () => {
 });
 
 test('themeGate sets the still of a video theme', () => {
-  const video = 'https://res.cloudinary.com/c/video/upload/v1/d/a.mp4';
+  const video = 'https://res.cloudinary.com/demo/video/upload/v1/d/a.mp4';
   const page = gatePage([{ url: video, colors: { background: '#000' } }]);
   expect(page.properties['--image-background-still']).toBe(
     `url('${stillRendition(video)}')`
@@ -191,23 +191,23 @@ test('themeGate escapes markup in theme data', () => {
 });
 
 test('a Cloudinary video themes the page as a looping animation, six seconds at most', () => {
-  const video = 'https://res.cloudinary.com/c/video/upload/v1/d/a.mp4';
+  const video = 'https://res.cloudinary.com/demo/video/upload/v1/d/a.mp4';
   expect(themeRendition(video)).toBe(
-    'https://res.cloudinary.com/c/video/upload/so_0,w_200,f_png/v1/d/a.mp4'
+    'https://res.cloudinary.com/demo/video/upload/so_0,w_200,f_png/v1/d/a.mp4'
   );
   expect(landscapeRendition(video)).toBe(
-    'https://res.cloudinary.com/c/video/upload/du_6/c_limit,w_1920/fps_15/e_loop/fl_animated,fl_awebp,f_webp/v1/d/a.mp4'
+    'https://res.cloudinary.com/demo/video/upload/du_6/c_limit,w_1920/fps_15/e_loop/fl_animated,fl_awebp,f_webp/v1/d/a.mp4'
   );
   expect(portraitRendition(video)).toBe(landscapeRendition(video));
 });
 
 test('a video theme has a first-frame still for reduced motion, a photo none', () => {
-  const video = 'https://res.cloudinary.com/c/video/upload/v1/d/a.mp4';
+  const video = 'https://res.cloudinary.com/demo/video/upload/v1/d/a.mp4';
   const still =
-    'https://res.cloudinary.com/c/video/upload/so_0,f_webp/c_limit,w_1920,f_auto,q_auto/v1/d/a.webp';
+    'https://res.cloudinary.com/demo/video/upload/so_0,f_webp/c_limit,w_1920,f_auto,q_auto/v1/d/a.webp';
   expect(stillRendition(video)).toBe(still);
   expect(
-    stillRendition('https://res.cloudinary.com/c/image/upload/v1/a.png')
+    stillRendition('https://res.cloudinary.com/demo/image/upload/v1/a.png')
   ).toBeNull();
   expect(themeGate([{ url: video, colors: { background: '#000' } }])).toContain(
     JSON.stringify(still)

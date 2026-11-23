@@ -4,7 +4,7 @@ import { clipWidth } from '@/lib/imageBlock';
 import { clipUrls, clipWidthsFor } from './cloudinaryDerived';
 
 const clip =
-  'https://res.cloudinary.com/ruben-p/video/upload/v1/samples/dance-2.mp4';
+  'https://res.cloudinary.com/demo/video/upload/v1/samples/dance-2.mp4';
 
 describe('clipWidthsFor', () => {
   test('a post cover takes both tile widths', () => {
@@ -48,8 +48,8 @@ describe('clipWidthsFor', () => {
 describe('clipUrls', () => {
   test('are the WebM and MP4 per width', () => {
     expect(clipUrls(clip, { fps: 10 }, [1200])).toEqual([
-      'https://res.cloudinary.com/ruben-p/video/upload/du_60/c_limit,w_1200/fps_10/ac_none,f_webm,vc_vp9,q_auto/v1/samples/dance-2.webm',
-      'https://res.cloudinary.com/ruben-p/video/upload/du_60/c_limit,w_1200/fps_10/ac_none,f_mp4,vc_h264,q_auto/v1/samples/dance-2.mp4'
+      'https://res.cloudinary.com/demo/video/upload/du_60/c_limit,w_1200/fps_10/ac_none,f_webm,vc_vp9,q_auto/v1/samples/dance-2.webm',
+      'https://res.cloudinary.com/demo/video/upload/du_60/c_limit,w_1200/fps_10/ac_none,f_mp4,vc_h264,q_auto/v1/samples/dance-2.mp4'
     ]);
   });
 

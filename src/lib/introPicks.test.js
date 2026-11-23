@@ -270,7 +270,7 @@ test('picks skip animated GIFs', () => {
 });
 
 test('a clip playing as video warms its first frame, an animated one nothing', () => {
-  const url = 'https://res.cloudinary.com/c/video/upload/v1/a.mp4';
+  const url = 'https://res.cloudinary.com/demo/video/upload/v1/a.mp4';
   const clip = (settings) => ({
     _type: 'imageBlock',
     image: {
@@ -283,7 +283,7 @@ test('a clip playing as video warms its first frame, an animated one nothing', (
       (p) => p.src
     )
   ).toEqual([
-    'https://res.cloudinary.com/c/video/upload/so_2,f_webp/v1/a.webp'
+    'https://res.cloudinary.com/demo/video/upload/so_2,f_webp/v1/a.webp'
   ]);
 });
 
