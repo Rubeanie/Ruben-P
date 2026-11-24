@@ -1,4 +1,5 @@
 /** biome-ignore-all lint/performance/noImgElement: Satori draws plain img elements */
+import sharp from 'sharp';
 import { alpha } from './colours';
 import { factsRow } from './facts';
 import { baseline, fitTitle, lineWidth } from './fit';
@@ -72,35 +73,56 @@ const fadeAt = (x) =>
     ? FADE[0] + ((FADE[1] - FADE[0]) * x) / (W * 0.7)
     : FADE[1] + ((FADE[2] - FADE[1]) * (x - W * 0.7)) / (W * 0.3);
 
-// What the fade lacks behind a block, as an extra shade that feathers out over FEATHER px
-// above, below and to the right of it; gradients, since a blur filter here rendered hard edges.
-const FEATHER = 48;
-function shadeSvg(blocks, shades, ground) {
-  const shapes = blocks.map((lines, i) => {
-    const right = Math.max(...lines.map((l) => l.x + l.w));
-    const top = Math.min(...lines.map((l) => l.y)) - FEATHER;
-    const height = Math.max(...lines.map((l) => l.y + l.h)) - top + FEATHER;
-    const width = right + FEATHER;
-    const base = fadeAt(right);
-    if (shades[i] <= base) return '';
-    const a = (1 - (1 - shades[i]) / (1 - base)).toFixed(3);
-    const f = (FEATHER / height).toFixed(3);
-    const stop = (offset, opacity) =>
-      `<stop offset="${offset}" stop-color="${ground}" stop-opacity="${opacity}"/>`;
-    return `<linearGradient id="v${i}" x1="0" y1="0" x2="0" y2="1">${stop(0, 0)}${stop(f, a)}${stop(1 - f, a)}${stop(1, 0)}</linearGradient>
-<linearGradient id="h${i}" x1="0" y1="0" x2="1" y2="0"><stop offset="${(right / width).toFixed(3)}" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
-<mask id="m${i}"><rect y="${top}" width="${width}" height="${height}" fill="url(#h${i})"/></mask>
-<rect y="${top}" width="${width}" height="${height}" fill="url(#v${i})" mask="url(#m${i})"/>`;
-  });
-  return shapes.some(Boolean)
-    ? `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">${shapes.join('')}</svg>`
-    : null;
+// What the fade lacks behind the text, as an extra shade over everything above and left of
+// each block, blurred out past its bottom and right. Each block's shade is a grey level, the
+// strongest drawn last, so they combine as a max. sharp blurs it, since Satori's SVG blur
+// renders with hard edges.
+const BLUR = 140;
+async function shadeSrc(blocks, shades, ground) {
+  const extents = blocks
+    .map((lines, i) => {
+      const right = Math.max(...lines.map((l) => l.x + l.w));
+      const bottom = Math.max(...lines.map((l) => l.y + l.h));
+      const base = fadeAt(right);
+      return shades[i] > base
+        ? { right, bottom, shade: 1 - (1 - shades[i]) / (1 - base) }
+        : null;
+    })
+    .filter(Boolean)
+    .sort((p, q) => p.shade - q.shade);
+  if (!extents.length) return null;
+  // sharp cuts its kernel off near 1.8 sigma, so 2.5 sigma past the text keeps the whole shade
+  // over it, and the blur copies the canvas edge, so the top and left stay full. Rounded up so
+  // contrast never lands under its target.
+  const reach = 2.5 * BLUR;
+  const grey = (shade) => {
+    const v = Math.ceil(shade * 255);
+    return `rgb(${v},${v},${v})`;
+  };
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}"><rect width="${W}" height="${H}"/>${extents
+    .map(
+      (e) =>
+        `<rect width="${e.right + reach}" height="${e.bottom + reach}" fill="${grey(e.shade)}"/>`
+    )
+    .join('')}</svg>`;
+  const mask = await sharp(Buffer.from(svg))
+    .blur(BLUR)
+    .extractChannel(0)
+    .raw()
+    .toBuffer();
+  const png = await sharp({
+    create: { width: W, height: H, channels: 3, background: ground }
+  })
+    .joinChannel(mask, { raw: { width: W, height: H, channels: 1 } })
+    .png()
+    .toBuffer();
+  return `data:image/png;base64,${png.toString('base64')}`;
 }
 
 // The photo under its fade, with the extra shade each text block needs.
 async function photoGround(photo, blocks, theme) {
   const shades = await blockShades(photo, blocks, theme.background, theme.text);
-  const shade = shadeSvg(blocks, shades, theme.background);
+  const shade = await shadeSrc(blocks, shades, theme.background);
   return [
     <Layer key='photo' src={jpegSrc(photo)} />,
     <FullBleed
@@ -109,7 +131,7 @@ async function photoGround(photo, blocks, theme) {
         backgroundImage: `linear-gradient(90deg, ${FADE.map((a, i) => `${alpha(theme.background, a)} ${[0, 70, 100][i]}%`).join(', ')})`
       }}
     />,
-    shade && <Layer key='shade' src={svgSrc(shade)} />
+    shade && <Layer key='shade' src={shade} />
   ];
 }
 
