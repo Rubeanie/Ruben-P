@@ -38,6 +38,13 @@ $frame-size: 60svh;
   clip-path: inset(0 round var.$common-border-radius);
   border-radius: var.$common-border-radius;
 
+  // A still's pair (Photo's <picture>): each cut already framed by the CDN,
+  // over its own placeholder until it loads.
+  picture img {
+    background-image: var(--placeholder);
+    background-position: 50% 50%;
+  }
+
   // The ring sits over the picture, where an inset shadow on the frame would be covered.
   &::after {
     content: '';
@@ -62,14 +69,27 @@ $frame-size: 60svh;
 }
 
 @media (max-width: var.$media-mobile-width) {
+  // Stacked from the top, with a tight gap so the photo clears the browser's
+  // toolbar.
   .hero,
   .hero[data-image-right] {
     flex-direction: column;
-    gap: var.$space-5;
+    justify-content: flex-start;
+    gap: var.$space-4;
+  }
+
+  .copy {
+    flex: none;
   }
 
   .frame {
     width: 100%;
+    // heroPhotos cuts the phone's photo to this.
+    aspect-ratio: 4 / 3;
+
+    picture img {
+      background-image: var(--phone-placeholder);
+    }
   }
 
   // Stacked, copy on top.

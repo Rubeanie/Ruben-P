@@ -56,8 +56,9 @@ const HEX = /^#[\da-f]{3,8}$/i;
 // field's blur switched off, its dominant colour. The blur is an SVG in the
 // image's own shape, so next/image's cover-fit and object-position frame it
 // like the photo; the lqip overhangs the box so the blur keeps its edges.
-// `crop` (width / height) narrows it to the cut the CDN's g_auto makes around
-// the subject, for a rendition that is that cut.
+// `crop` (width / height) cuts it to the CDN's g_auto cut around the subject,
+// for a rendition that is that cut: narrower trims the sides, wider the top
+// and bottom.
 export function placeholderFor(
   { blur, lqip, palette, width, height, focus },
   crop
@@ -65,9 +66,11 @@ export function placeholderFor(
   if (blur !== false && lqip?.startsWith('data:image/')) {
     const h = Math.round((100 * height) / width) || 56;
     const w = Math.min(100, crop ? Math.round(h * crop) : 100);
+    const v = crop && h * crop > 100 ? Math.round(100 / crop) : h;
     const x = Math.min(Math.max(0, (focus?.x ?? 0.5) * 100 - w / 2), 100 - w);
+    const y = Math.min(Math.max(0, (focus?.y ?? 0.5) * h - v / 2), h - v);
     return svgUrl(
-      `<svg xmlns='http://www.w3.org/2000/svg' viewBox='${Math.round(x)} 0 ${w} ${h}'><filter id='b'><feGaussianBlur stdDeviation='4'/></filter><image x='-10' y='${-h / 10}' width='120' height='${h * 1.2}' preserveAspectRatio='none' filter='url(#b)' href='${lqip}'/></svg>`
+      `<svg xmlns='http://www.w3.org/2000/svg' viewBox='${Math.round(x)} ${Math.round(y)} ${w} ${v}'><filter id='b'><feGaussianBlur stdDeviation='4'/></filter><image x='-10' y='${-h / 10}' width='120' height='${h * 1.2}' preserveAspectRatio='none' filter='url(#b)' href='${lqip}'/></svg>`
     );
   }
   const colour = palette?.dominant?.background;

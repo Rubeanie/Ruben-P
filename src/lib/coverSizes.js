@@ -2,7 +2,7 @@
 export const PHONE = '(max-width: 43.75rem)';
 
 // Rounds off float noise (1.5 * 1.12 * 100 is 168.00000000000003) before ceil.
-const up = (value) => Math.ceil(Math.round(value * 1000) / 1000);
+export const up = (value) => Math.ceil(Math.round(value * 1000) / 1000);
 
 // `sizes` for a cover-fit photo in a box `heightVh` tall and `widthVw` wide:
 // on screens narrower than the photo's ratio it fills by height, not width.

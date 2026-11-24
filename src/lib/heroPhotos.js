@@ -1,7 +1,7 @@
 import { stegaClean } from '@sanity/client/stega';
-import { coverSizes, PHONE } from '@/lib/coverSizes';
+import { coverSizes, PHONE, up } from '@/lib/coverSizes';
 import { placeholderFor, resolveImage } from '@/lib/imageBlock';
-import { portraitCrop, squareCrop } from '@/lib/imageLoader';
+import { fillCrop, portraitCrop } from '@/lib/imageLoader';
 
 // The hero's settle starts the photo this much larger.
 export const GLASS_ZOOM = 1.12;
@@ -50,22 +50,27 @@ export function heroPhotos(module) {
       ];
     }
     case 'hero.split': {
-      // The square is min(60svh, half the row) off phones; the row's half is
-      // 46vw inside the hero's 4vw padding, so they meet on a 60:46 screen.
-      // `wide` is how much wider than the square the picture is.
-      const square = (wide) =>
-        `${PHONE} ${Math.ceil(100 * wide)}vw, (max-aspect-ratio: 130/100) ${Math.ceil(46 * wide)}vw, ${Math.ceil(60 * wide)}vh`;
-      // An animation plays whole, so a landscape one covers the square by height.
-      if (image.moving)
-        return [{ image, src, sizes: square(Math.max(1, ratio || 1)) }];
-      // The CDN cuts a still to 1:1, so the rest of it never downloads.
+      // The frame is a square of min(60svh, half the row) off phones; the
+      // row's half is 46vw inside the hero's 4vw padding, so they meet on a
+      // 60:46 screen. On phones it's 4:3 across the screen. `r` is the
+      // picture's width / height; a wider one covers the frame by height.
+      const frameSizes = (r) => {
+        const wide = Math.max(1, r);
+        return `${PHONE} ${up(100 * Math.max(1, (r * 3) / 4))}vw, (max-aspect-ratio: 130/100) ${up(46 * wide)}vw, ${up(60 * wide)}vh`;
+      };
+      // An animation plays whole, so it's sized to cover the frame.
+      if (image.moving) return [{ image, src, sizes: frameSizes(ratio || 1) }];
+      // The CDN cuts a still to 1:1, and to 4:3 for phones, where the frame
+      // spans the screen under the copy and a square would run off it; the
+      // rest of the photo never downloads.
+      const cut = (w, h) => ({
+        image,
+        src: fillCrop(src, `${w}:${h}`),
+        placeholder: placeholderFor({ ...image, blur: field.blur }, w / h)
+      });
       return [
-        {
-          image,
-          src: squareCrop(src),
-          sizes: square(1),
-          placeholder: placeholderFor({ ...image, blur: field.blur }, 1)
-        }
+        { ...cut(1, 1), sizes: frameSizes(1), media: PAIR_MEDIA[0] },
+        { ...cut(4, 3), sizes: '100vw', media: PAIR_MEDIA[1] }
       ];
     }
     case 'hero.saas':

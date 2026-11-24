@@ -29,9 +29,9 @@ const sized = (width) => `c_limit,f_auto,q_auto,w_${width}`;
 // Library focal point steers); a taller one stays whole. Sizing goes after it.
 export const portraitCrop = (src) =>
   cloudinaryTransform(src, 'if_ar_gt_0.75/c_fill,ar_3:4,g_auto/if_end');
-// Any image cut to a square around its subject (g_auto, as above).
-export const squareCrop = (src) =>
-  cloudinaryTransform(src, 'c_fill,ar_1:1,g_auto');
+// Any image cut to `ratio` (like '1:1') around its subject (g_auto, as above).
+export const fillCrop = (src, ratio) =>
+  cloudinaryTransform(src, `c_fill,ar_${ratio},g_auto`);
 const cloudinaryLoader = ({ src, width }) =>
   src.replace(CLOUDINARY_CHAIN, `/image/upload/$1${sized(width)}/$2`);
 

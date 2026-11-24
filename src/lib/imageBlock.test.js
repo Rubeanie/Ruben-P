@@ -72,6 +72,15 @@ test('the placeholder is the blurred lqip unless blur is off, then the colour', 
   expect(
     svg(placeholderFor({ ...derived, width: 1920, height: 1080 }, 3 / 4))
   ).toContain("viewBox='8 0 42 56'");
+  // A cut wider than the image trims its top and bottom instead, around the
+  // subject: 75 of 100 tall, centred on y 60.
+  const square = {
+    ...derived,
+    width: 1000,
+    height: 1000,
+    focus: { x: 0.5, y: 0.6 }
+  };
+  expect(svg(placeholderFor(square, 4 / 3))).toContain("viewBox='0 23 100 75'");
   expect(svg(placeholderFor({ ...derived, blur: false }))).toContain(
     "fill='#112233'"
   );

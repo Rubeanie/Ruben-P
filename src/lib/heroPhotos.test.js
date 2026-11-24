@@ -36,16 +36,22 @@ describe('heroPhotos', () => {
     );
   });
 
-  test('the split hero shows a square cut, sized to its frame', () => {
-    const [photo, ...rest] = heroPhotos({
+  test('the split hero shows a square cut, and a 4:3 one on phones', () => {
+    const [photo, phone, ...rest] = heroPhotos({
       _type: 'hero.split',
       image: image(still)
     });
     expect(rest).toHaveLength(0);
     expect(photo).toMatchObject({
       src: 'https://res.cloudinary.com/demo/image/upload/c_fill,ar_1:1,g_auto/v1/a.jpg',
+      media: 'not all and (max-width: 43.75rem)',
       sizes:
         '(max-width: 43.75rem) 100vw, (max-aspect-ratio: 130/100) 46vw, 60vh'
+    });
+    expect(phone).toMatchObject({
+      src: 'https://res.cloudinary.com/demo/image/upload/c_fill,ar_4:3,g_auto/v1/a.jpg',
+      media: '(max-width: 43.75rem)',
+      sizes: '100vw'
     });
   });
 
@@ -54,9 +60,10 @@ describe('heroPhotos', () => {
       _type: 'hero.split',
       image: image('https://res.cloudinary.com/demo/video/upload/v1/a.mp4')
     });
-    // 3:2, so half as wide again as the square it covers.
+    // 3:2: half as wide again as the square it covers, an eighth wider than
+    // the phone's 4:3 frame.
     expect(photo.sizes).toBe(
-      '(max-width: 43.75rem) 150vw, (max-aspect-ratio: 130/100) 69vw, 90vh'
+      '(max-width: 43.75rem) 113vw, (max-aspect-ratio: 130/100) 69vw, 90vh'
     );
     expect(photo.placeholder).toBeUndefined();
   });
