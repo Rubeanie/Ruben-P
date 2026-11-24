@@ -11,7 +11,7 @@ import {
 import { RATE_LIMIT, RATE_WINDOW } from '@/lib/studioReview';
 
 // The cloud every res.cloudinary.com URL on the site points at; public anyway.
-const CLOUD_NAME = 'ruben-p';
+export const CLOUD_NAME = 'ruben-p';
 const MAX_BODY = 1024;
 
 const PAGE_EXISTS = `count(*[_type in ['page', 'page.post'] && metadata.slug.current == $path]) > 0`;

@@ -1,6 +1,6 @@
 import { expect, test } from 'bun:test';
 import { folderFor } from './cloudinaryFolder';
-import { createSignHandler, signParams } from './cloudinarySign';
+import { CLOUD_NAME, createSignHandler, signParams } from './cloudinarySign';
 import { RATE_LIMIT } from './studioReview';
 
 const MEMBER = 'member-token';
@@ -139,6 +139,6 @@ test('a member gets the fixed params, signed, and never the secret', async () =>
     timestamp: NOW / 1000
   });
   expect(body.apiKey).toBe('1234');
-  expect(body.cloudName).toBe('ruben-p');
+  expect(body.cloudName).toBe(CLOUD_NAME);
   expect(body.signature).toBe(signParams(body.params, SECRET));
 });
