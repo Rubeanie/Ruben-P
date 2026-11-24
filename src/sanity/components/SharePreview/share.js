@@ -1,5 +1,5 @@
 import { resolveImage, stillOf } from '@/lib/imageBlock';
-import { resolveMetadata } from '@/lib/resolveMetadata';
+import { resolveMetadata, withTitleSuffix } from '@/lib/resolveMetadata';
 import { SHARE_IMAGE } from '@/lib/shareImage/layout';
 import { shareImageUrl } from '@/lib/shareImage/url';
 import { templateSlugs } from '@/lib/slug';
@@ -44,8 +44,20 @@ function sourcesOf(page, site, tags) {
   };
 
   return {
+    // In the resolver's order, so a page title that happens to equal the
+    // suffixed meta title isn't named as the source.
     title: pick(tags.title, [
+      [
+        withTitleSuffix(p.metaTitle, s.titleSuffix, p.addTitleSuffix),
+        'page',
+        'Meta title + suffix'
+      ],
       [p.metaTitle, 'page', 'Meta title'],
+      [
+        withTitleSuffix(page?.title, s.titleSuffix, p.addTitleSuffix),
+        'page',
+        'Page title + suffix'
+      ],
       [page?.title, 'page', 'Page title']
     ]),
     description: pick(tags.description, [

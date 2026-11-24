@@ -30,6 +30,13 @@ function shareImages(pageSeo, path) {
   return [];
 }
 
+// "About | Ruben Panzich", with Site settings' suffix; left bare when switched off or empty.
+export function withTitleSuffix(base, suffix, enabled) {
+  const end = stegaClean(suffix)?.trim();
+  if (!stegaClean(base)?.trim() || !end || enabled === false) return base;
+  return `${base} ${end}`;
+}
+
 // Every tag is spelled out, including what Next would otherwise inherit, so the Studio
 // preview can read the returned object as the page's head.
 export function resolveMetadata(page, site) {
@@ -44,7 +51,13 @@ export function resolveMetadata(page, site) {
     pageSeo,
     site?.seo
   );
-  const title = pageSeo.metaTitle || pageTitle || '';
+  const baseTitle = pageSeo.metaTitle || pageTitle || '';
+  // Search results and tabs only: share titles stay bare.
+  const title = withTitleSuffix(
+    baseTitle,
+    site?.seo?.titleSuffix,
+    pageSeo.addTitleSuffix
+  );
   // A post's summary comes after the page's own description, before the site's.
   const description =
     pageSeo.metaDescription || page?.summary || metaDescription || '';
@@ -62,7 +75,7 @@ export function resolveMetadata(page, site) {
   const openGraph = hasOg
     ? {
         // Own Open Graph title, then own meta title, then the document's own title.
-        title: pageSeo.openGraph?.title || title || undefined,
+        title: pageSeo.openGraph?.title || baseTitle || undefined,
         // Its own description, then the page's meta description and summary, then the site's.
         description:
           pageSeo.openGraph?.description ||
@@ -83,7 +96,7 @@ export function resolveMetadata(page, site) {
     title,
     description,
     twitter: {
-      title: openGraph?.title || title || undefined,
+      title: openGraph?.title || baseTitle || undefined,
       description: openGraph?.description || description || undefined,
       images: openGraph?.images ?? [],
       creator: twitter?.handle,

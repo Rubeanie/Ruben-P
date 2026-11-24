@@ -9,6 +9,7 @@ const img = (name) => ({ asset: { secure_url: CDN + name } });
 const site = {
   seo: {
     metaDescription: 'Site description',
+    titleSuffix: '| Site name',
     nofollowAttributes: true,
     openGraph: {
       description: null,
@@ -31,7 +32,7 @@ test('meta title and description fall back to Site settings field by field', () 
     pageWith({ metaTitle: 'Page title', metaDescription: null }),
     site
   );
-  expect(m.title).toBe('Page title');
+  expect(m.title).toBe('Page title | Site name');
   expect(m.description).toBe('Site description');
 });
 
@@ -40,7 +41,7 @@ test("the head title falls back to the document's own title before Site settings
     pageWith({ metaTitle: null }, { title: 'About' }),
     site
   );
-  expect(m.title).toBe('About');
+  expect(m.title).toBe('About | Site name');
 });
 
 test('the head title is empty when the document has no title of its own', () => {
@@ -300,4 +301,29 @@ test('Site settings meta tags become the layout metadata, nameless ones dropped'
   ).toEqual({ 'theme-x': 'a' });
   expect(metaTagsOf(null)).toEqual({});
   expect(resolveMetadata(pageWith({}), site).other).toBeUndefined();
+});
+
+test('the Site settings suffix is added to the head title unless switched off', () => {
+  const on = pageWith({ metaTitle: 'Contact' });
+  expect(resolveMetadata(on, site).title).toBe('Contact | Site name');
+  const off = pageWith({ metaTitle: 'Contact', addTitleSuffix: false });
+  expect(resolveMetadata(off, site).title).toBe('Contact');
+  const set = pageWith({ metaTitle: 'Contact', addTitleSuffix: true });
+  expect(resolveMetadata(set, site).title).toBe('Contact | Site name');
+});
+
+test('an empty title gets no lone suffix', () => {
+  expect(resolveMetadata(pageWith({ metaTitle: null }), site).title).toBe('');
+  expect(resolveMetadata(pageWith({ metaTitle: ' ' }), site).title).toBe(' ');
+});
+
+test('no suffix in Site settings leaves the title bare', () => {
+  const m = resolveMetadata(pageWith({ metaTitle: 'Contact' }), { seo: {} });
+  expect(m.title).toBe('Contact');
+});
+
+test('share titles never carry the suffix', () => {
+  const m = resolveMetadata(pageWith({ metaTitle: 'Contact' }), site);
+  expect(m.openGraph.title).toBe('Contact');
+  expect(m.twitter.title).toBe('Contact');
 });

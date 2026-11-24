@@ -16,6 +16,8 @@ const twitterQuery = groq`
 
 const seoFieldsQuery = groq`
   metaTitle,
+  titleSuffix,
+  addTitleSuffix,
   nofollowAttributes,
   focusKeyphrase,
   metaDescription,

@@ -24,7 +24,24 @@ export const seoMetaFields = {
       title: 'Meta title',
       type: 'string',
       hidden: onSite,
-      description: `The title used in search results and browser tabs. Recommended length: ${TITLE_LENGTH.join('-')} characters.`
+      description: `The title used in search results and browser tabs. Site settings' title suffix is added after it unless turned off below. Recommended length: ${TITLE_LENGTH.join('-')} characters.`
+    },
+    {
+      name: 'titleSuffix',
+      title: 'Title suffix',
+      type: 'string',
+      hidden: ({ document }) => !onSite({ document }),
+      description:
+        'Added after every page title, after a space, like "| Ruben Panzich". Search results and browser tabs show it; link previews and share cards never do. A page can turn it off.'
+    },
+    {
+      name: 'addTitleSuffix',
+      title: 'Add title suffix',
+      type: 'boolean',
+      initialValue: true,
+      hidden: onSite,
+      description:
+        "Adds Site settings' title suffix after this page's title in search results and browser tabs. Link previews and share cards never show it."
     },
     {
       name: 'metaDescription',
