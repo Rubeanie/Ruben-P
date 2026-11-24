@@ -5,8 +5,12 @@ import { isIndexable } from '@/lib/slug';
 import { stillOf } from '@/lib/imageBlock';
 import { heroPhoto } from '@/lib/heroPhotos';
 
-// Every indexable CMS page and post (home included). Tagged like the pages
-// themselves, so a publish refreshes the sitemap too.
+// Built per request: on Vercel a publish's tag revalidation left the
+// prerendered XML stale. That makes its one Sanity read uncached too, which is
+// fine for a file crawlers fetch a few times a day.
+export const dynamic = 'force-dynamic';
+
+// Every indexable CMS page and post (home included).
 export default async function sitemap() {
   const { pages, site } = await fetchSanity(sitemapQuery, {
     perspective: 'published',
